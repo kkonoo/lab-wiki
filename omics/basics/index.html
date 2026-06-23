@@ -1,0 +1,1681 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Omics 공통 개념을 질문으로 탐색하는 Lab Wiki">
+  <title>Omics Basics · Lab Wiki</title>
+  <style>
+    :root {
+      --ink: #18211b;
+      --muted: #667168;
+      --paper: #f7f7f2;
+      --surface: #ffffff;
+      --line: #d8ddd7;
+      --green: #1f5d43;
+      --green-soft: #e7f0ea;
+      --blue: #315d78;
+      --rust: #94553b;
+      --gold: #936f21;
+      --shadow: 0 14px 35px rgba(24, 33, 27, .07);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    button, input { font: inherit; }
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 247, 242, .94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .topbar-inner {
+      width: min(1180px, calc(100% - 40px));
+      min-height: 64px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .brand {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--ink);
+      cursor: pointer;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.18rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .brand span { color: var(--green); }
+    .brand-group { display: flex; align-items: center; white-space: nowrap; }
+    .brand-home { text-decoration: none; }
+    .brand-domain { margin-left: 6px; }
+    .top-search {
+      flex: 1;
+      max-width: 560px;
+      margin-left: auto;
+      position: relative;
+    }
+    .top-search input {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      padding: 0 44px 0 14px;
+      color: var(--ink);
+      outline: none;
+    }
+    .top-search input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+    .keycap {
+      position: absolute;
+      right: 10px;
+      top: 9px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--muted);
+      background: var(--paper);
+      padding: 1px 6px;
+      font-size: .75rem;
+    }
+
+    main { min-height: calc(100vh - 140px); }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+
+    .hero {
+      padding: 78px 0 52px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(rgba(31, 93, 67, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 93, 67, .035) 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { font-family: Georgia, "Noto Serif KR", serif; line-height: 1.25; }
+    .hero h1 { margin: 0; font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: -.045em; }
+    .hero-copy { margin: 16px auto 26px; max-width: 650px; color: var(--muted); font-size: 1.04rem; }
+    .hero-search { width: min(720px, calc(100% - 32px)); margin: 0 auto; position: relative; }
+    .hero-search input {
+      width: 100%;
+      height: 62px;
+      border: 1px solid #bac6bd;
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 0 58px 0 20px;
+      color: var(--ink);
+      font-size: 1.03rem;
+      outline: none;
+    }
+    .hero-search input:focus { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft), var(--shadow); }
+    .search-icon { position: absolute; right: 20px; top: 18px; color: var(--green); font-size: 1.3rem; }
+    .search-hint { margin: 11px 0 0; color: var(--muted); font-size: .82rem; }
+
+    .browse { padding: 58px 0 76px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    .section-heading h2 { margin: 0; font-size: 1.65rem; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .category-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .category-card {
+      position: relative;
+      min-height: 235px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 26px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .category-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .category-card:focus-visible { outline: 3px solid var(--green-soft); outline-offset: 2px; }
+    .category-number { color: var(--accent); font-family: Georgia, serif; font-size: .95rem; font-weight: 700; }
+    .category-card h3 { margin: 12px 0 10px; font-size: 1.65rem; }
+    .category-card p { margin: 0 0 25px; max-width: 520px; color: var(--muted); }
+    .card-route { position: absolute; left: 26px; bottom: 23px; color: var(--accent); font-size: .86rem; font-weight: 750; }
+
+    .breadcrumb { padding: 30px 0 18px; color: var(--muted); font-size: .84rem; }
+    .breadcrumb button { border: 0; padding: 0; background: none; color: var(--green); cursor: pointer; }
+    .breadcrumb span { margin: 0 8px; color: #9ca49e; }
+    .page-header { padding: 18px 0 36px; border-bottom: 1px solid var(--line); }
+    .page-header h1 { margin: 7px 0 12px; font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.035em; }
+    .page-header .lead { margin: 0; max-width: 740px; color: var(--muted); font-size: 1.04rem; }
+    .question-list { padding: 42px 0 72px; display: grid; gap: 16px; }
+    .question-block { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: visible; }
+    .question-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); }
+    .question-head small { color: var(--green); font-weight: 800; }
+    .question-head h2 { margin: 5px 0 7px; font-size: 1.35rem; }
+    .question-head p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .concept-row { display: grid; grid-template-columns: 1.2fr 2fr auto; align-items: center; gap: 18px; padding: 17px 24px; border-top: 1px solid #edf0ec; }
+    .concept-row:first-child { border-top: 0; }
+    .concept-row strong { font-size: .95rem; }
+    .concept-row p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .concept-row button { border: 0; background: none; color: var(--green); font-weight: 750; cursor: pointer; padding: 5px; }
+    .concept-row .map-label { color: #8b948d; font-size: .78rem; white-space: nowrap; }
+
+    .search-page { padding-bottom: 72px; }
+    .search-summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 10px 0 22px; }
+    .search-summary p { margin: 0; color: var(--muted); }
+    .filters { display: flex; flex-wrap: wrap; gap: 7px; }
+    .filter-btn { border: 1px solid var(--line); border-radius: 999px; background: var(--surface); padding: 6px 12px; color: var(--muted); cursor: pointer; font-size: .8rem; }
+    .filter-btn.active { border-color: var(--green); background: var(--green-soft); color: var(--green); font-weight: 750; }
+    .results { display: grid; gap: 12px; }
+    .result-card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 20px 22px; cursor: pointer; text-align: left; }
+    .result-card:hover { border-color: #93aa9a; box-shadow: 0 7px 20px rgba(24, 33, 27, .05); }
+    .result-path { color: var(--green); font-size: .76rem; font-weight: 750; }
+    .result-card h2 { margin: 4px 0 6px; font-size: 1.25rem; }
+    .result-card p { margin: 0; color: var(--muted); font-size: .9rem; }
+    mark { background: #fff0ad; color: inherit; padding: 0 2px; }
+    .empty { border: 1px dashed #b8c0ba; border-radius: var(--radius); padding: 48px 24px; text-align: center; color: var(--muted); }
+
+    .article-layout { display: grid; grid-template-columns: minmax(0, 740px) 260px; gap: 64px; padding: 12px 0 80px; align-items: start; }
+    .article { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(25px, 5vw, 52px); }
+    .article h1 { margin: 6px 0 5px; font-size: clamp(2.1rem, 5vw, 3.5rem); letter-spacing: -.03em; }
+    .aliases { margin: 0 0 26px; color: var(--muted); font-size: .83rem; }
+    .definition { margin: 0 0 34px; padding: 18px 20px; border-left: 4px solid var(--green); background: var(--green-soft); font-size: 1.03rem; }
+    .article h2 { margin: 34px 0 12px; padding-bottom: 7px; border-bottom: 1px solid var(--line); font-size: 1.32rem; }
+    .article p { margin: 0 0 15px; }
+    .article ul { margin: 0 0 18px; padding-left: 22px; }
+    .article li { margin: 6px 0; }
+    .fact-list {
+      display: grid;
+      gap: 9px;
+      margin: 0 0 18px;
+      padding-left: 20px;
+      color: #37423a;
+    }
+    .fact-list li { padding-left: 4px; }
+    .fact-list li::marker { color: var(--green); }
+    .term-link { border: 0; border-bottom: 1px solid #8aa897; background: none; padding: 0; color: var(--green); cursor: pointer; font-weight: 700; }
+    .glossary-term {
+      position: relative;
+      border-bottom: 1px dotted var(--green);
+      color: #174b37;
+      cursor: help;
+      outline: none;
+    }
+    .glossary-term::after {
+      content: attr(data-definition);
+      position: absolute;
+      z-index: 40;
+      left: 0;
+      bottom: calc(100% + 8px);
+      width: max-content;
+      max-width: min(320px, calc(100vw - 40px));
+      padding: 10px 12px;
+      border-radius: 7px;
+      background: #17221b;
+      color: #f8faf8;
+      box-shadow: 0 10px 28px rgba(10, 20, 14, .24);
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      font-size: .78rem;
+      font-weight: 500;
+      line-height: 1.55;
+      letter-spacing: 0;
+      white-space: normal;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(4px);
+      transition: opacity .14s ease, transform .14s ease, visibility .14s ease;
+      pointer-events: none;
+    }
+    .glossary-term:hover::after,
+    .glossary-term:focus::after {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .glossary-term:focus { border-bottom-style: solid; }
+    .tooltip-hint {
+      margin: -15px 0 25px;
+      color: var(--muted);
+      font-size: .76rem;
+    }
+    .aside { position: sticky; top: 88px; }
+    .aside-box { border-top: 3px solid var(--green); background: var(--surface); padding: 18px; box-shadow: 0 8px 24px rgba(24,33,27,.05); }
+    .aside-box h3 { margin: 0 0 12px; font-size: 1rem; }
+    .related-list { display: grid; gap: 9px; }
+    .related-list button { border: 0; background: none; padding: 0; text-align: left; color: var(--green); cursor: pointer; font-size: .87rem; }
+    .source-box { margin-top: 16px; border-top-color: var(--blue); }
+    .source-list { display: grid; gap: 9px; }
+    .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
+    .source-list a:hover { text-decoration: underline; }
+    .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
+
+    footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
+    footer .container { display: flex; justify-content: space-between; gap: 20px; }
+
+    @media (max-width: 820px) {
+      .topbar-inner { width: min(100% - 24px, 1180px); gap: 12px; }
+      .brand { font-size: 1rem; }
+      .keycap { display: none; }
+      .container { width: min(100% - 28px, 1120px); }
+      .hero { padding-top: 54px; }
+      .category-grid { grid-template-columns: 1fr; }
+      .category-card { min-height: 215px; }
+      .concept-row { grid-template-columns: 1fr auto; }
+      .concept-row p { grid-column: 1 / -1; grid-row: 2; }
+      .article-layout { grid-template-columns: 1fr; gap: 20px; }
+      .aside { position: static; }
+      .search-summary { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 520px) {
+      .topbar-inner { min-height: 58px; }
+      .brand-domain { display: none; }
+      .top-search input { height: 38px; }
+      .hero h1 { font-size: 2.55rem; }
+      .hero-search input { height: 56px; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .category-card { padding: 21px; }
+      .card-route { left: 21px; }
+      .question-head, .concept-row { padding-left: 18px; padding-right: 18px; }
+      .article { border-left: 0; border-right: 0; border-radius: 0; margin-left: -14px; margin-right: -14px; }
+      footer .container { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html">Lab Wiki</a><button class="brand brand-domain" type="button" data-route="home"><span>/ Omics Basics</span></button></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer>
+    <div class="container">
+      <span>Omics Basics · Public knowledge · Standard methods · Updated 2026-06-23</span>
+      <span>Excluded: Project · Hypothesis · Internal result</span>
+    </div>
+  </footer>
+
+  <script>
+    const sections = {
+    "measurement": {
+        "number": "01",
+        "title": "Measurement",
+        "english": "WHAT IS MEASURED",
+        "accent": "#8b4f3a",
+        "summary": "Omics · Assay · Sample · Replicate · Feature",
+        "groups": [
+            {
+                "q": "Omics는 무엇을 측정하는가?",
+                "note": "Biological layer → assay → measurement",
+                "items": [
+                    [
+                        "omics-modality",
+                        "Omics & modality",
+                        "Genome · transcriptome · epigenome · proteome · metabolome"
+                    ],
+                    [
+                        "assay-platform",
+                        "Assay & platform",
+                        "Biological property를 measurable signal로 변환"
+                    ]
+                ]
+            },
+            {
+                "q": "무엇을 하나의 sample로 보는가?",
+                "note": "Biological unit → experimental unit → aliquot",
+                "items": [
+                    [
+                        "sample-unit",
+                        "Sample & experimental unit",
+                        "실제 independent comparison의 단위"
+                    ],
+                    [
+                        "replicates",
+                        "Biological & technical replicate",
+                        "Biological variation과 measurement variation의 구분"
+                    ]
+                ]
+            },
+            {
+                "q": "무엇을 feature로 세는가?",
+                "note": "Gene · peak · protein · metabolite",
+                "items": [
+                    [
+                        "feature-identifier",
+                        "Feature & identifier",
+                        "Row가 의미하는 biological entity와 ID system"
+                    ]
+                ]
+            }
+        ]
+    },
+    "data": {
+        "number": "02",
+        "title": "Data Structure",
+        "english": "HOW DATA IS STORED",
+        "accent": "#526b7a",
+        "summary": "Matrix · Count · Abundance · Metadata · Missingness",
+        "groups": [
+            {
+                "q": "Omics data는 왜 matrix로 표현하는가?",
+                "note": "Feature × sample observation table",
+                "items": [
+                    [
+                        "data-matrix",
+                        "Data matrix",
+                        "Rows = features · columns = samples/cells"
+                    ],
+                    [
+                        "count-abundance",
+                        "Count & abundance",
+                        "Raw count와 continuous intensity의 차이"
+                    ]
+                ]
+            },
+            {
+                "q": "Metadata는 왜 필요한가?",
+                "note": "Value가 만들어진 biological·technical context",
+                "items": [
+                    [
+                        "metadata",
+                        "Metadata",
+                        "Group · batch · donor · condition · platform"
+                    ]
+                ]
+            },
+            {
+                "q": "0과 missing value는 같은가?",
+                "note": "True zero · below detection · dropout · not measured",
+                "items": [
+                    [
+                        "missingness-sparsity",
+                        "Missingness & sparsity",
+                        "관측되지 않은 값과 biological absence의 구분"
+                    ]
+                ]
+            }
+        ]
+    },
+    "preprocess": {
+        "number": "03",
+        "title": "Preprocessing & QC",
+        "english": "MAKING DATA COMPARABLE",
+        "accent": "#1f5d43",
+        "summary": "Quality control · Normalization · Transformation · Batch effect",
+        "groups": [
+            {
+                "q": "먼저 무엇을 확인하고 걸러내는가?",
+                "note": "Sample quality · feature quality · technical artifact",
+                "items": [
+                    [
+                        "quality-control",
+                        "Quality control",
+                        "Low-quality sample과 unreliable feature 확인"
+                    ]
+                ]
+            },
+            {
+                "q": "Sample 간 값을 어떻게 comparable하게 만드는가?",
+                "note": "Library size · composition · scale",
+                "items": [
+                    [
+                        "normalization",
+                        "Normalization",
+                        "Technical scale 차이 조정"
+                    ],
+                    [
+                        "transformation-scaling",
+                        "Transformation & scaling",
+                        "Distribution과 feature scale을 analysis에 맞게 변환"
+                    ]
+                ]
+            },
+            {
+                "q": "Batch effect는 어떻게 다루는가?",
+                "note": "Design confounding → diagnosis → correction",
+                "items": [
+                    [
+                        "batch-effect",
+                        "Batch effect",
+                        "Biology와 무관한 systematic technical variation"
+                    ]
+                ]
+            }
+        ]
+    },
+    "analysis": {
+        "number": "04",
+        "title": "Analysis & Interpretation",
+        "english": "ASKING QUESTIONS",
+        "accent": "#8a6b25",
+        "summary": "Design · Differential analysis · FDR · Enrichment · Visualization",
+        "groups": [
+            {
+                "q": "어떤 comparison을 test하는가?",
+                "note": "Research question → design matrix → contrast",
+                "items": [
+                    [
+                        "experimental-design",
+                        "Experimental design & contrast",
+                        "Group comparison과 covariate를 model로 표현"
+                    ]
+                ]
+            },
+            {
+                "q": "Differential analysis 결과는 어떻게 읽는가?",
+                "note": "Effect size · uncertainty · statistical evidence",
+                "items": [
+                    [
+                        "differential-analysis",
+                        "Differential analysis",
+                        "Condition에 따라 달라지는 feature 탐색"
+                    ],
+                    [
+                        "multiple-testing",
+                        "Multiple testing & FDR",
+                        "많은 feature를 동시에 test할 때의 error control"
+                    ]
+                ]
+            },
+            {
+                "q": "Feature list를 biology로 어떻게 요약하는가?",
+                "note": "Gene set · pathway · ontology",
+                "items": [
+                    [
+                        "enrichment",
+                        "Enrichment analysis",
+                        "Feature-level result를 biological set으로 요약"
+                    ]
+                ]
+            },
+            {
+                "q": "전체 data pattern은 어떻게 확인하는가?",
+                "note": "Distribution · sample relationship · dominant axes",
+                "items": [
+                    [
+                        "exploratory-visualization",
+                        "Exploratory visualization",
+                        "PCA · heatmap · distribution plot의 역할"
+                    ]
+                ]
+            }
+        ]
+    }
+};
+
+    const articles = {
+
+  "omics-modality": {
+    "title": "Omics & modality",
+    "aliases": [
+      "omics",
+      "modality",
+      "multi-omics"
+    ],
+    "section": "measurement",
+    "summary": "특정 biological layer를 genome scale로 측정하고 해석하는 접근",
+    "body": [
+      [
+        "Omics",
+        [
+          "Genome-wide 또는 system-wide scale에서 많은 biological entities를 동시에 측정",
+          "한두 개 marker가 아니라 전체 pattern과 coordinated change를 분석",
+          "Measurement technology와 computational analysis가 함께 정의하는 data domain"
+        ]
+      ],
+      [
+        "Major modalities",
+        [
+          "Genomics: DNA sequence와 genetic variation",
+          "Transcriptomics / epigenomics: RNA abundance 또는 chromatin state",
+          "Proteomics / metabolomics: protein과 small-molecule abundance"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "서로 다른 modality는 biological layer와 measurement scale이 다름",
+          "같은 sample에서 얻어도 feature ID와 noise structure가 다름",
+          "Multi-omics는 단순 concatenation이 아니라 layer 간 relationship을 분석"
+        ]
+      ]
+    ],
+    "related": [
+      "assay-platform",
+      "feature-identifier",
+      "data-matrix"
+    ]
+  },
+  "assay-platform": {
+    "title": "Assay & platform",
+    "aliases": [
+      "assay",
+      "platform",
+      "library preparation"
+    ],
+    "section": "measurement",
+    "summary": "Biological property를 measurable signal로 변환하는 experimental procedure와 instrument",
+    "body": [
+      [
+        "Assay",
+        [
+          "무엇을 capture·label·amplify·detect할지 정하는 experimental procedure",
+          "예: RNA-seq · ATAC-seq · mass spectrometry",
+          "Assay chemistry가 관측 가능한 feature와 bias를 결정"
+        ]
+      ],
+      [
+        "Platform",
+        [
+          "Signal을 실제로 read하는 instrument와 technology",
+          "Read length · depth · sensitivity · dynamic range가 platform별로 다름",
+          "같은 assay도 platform과 protocol version에 따라 data property가 달라질 수 있음"
+        ]
+      ],
+      [
+        "Record together",
+        [
+          "Assay name · protocol · kit · platform · software version",
+          "Input amount · sequencing depth · run date · operator",
+          "Batch effect 해석을 위해 metadata로 보존"
+        ]
+      ]
+    ],
+    "related": [
+      "omics-modality",
+      "sample-unit",
+      "metadata"
+    ]
+  },
+  "sample-unit": {
+    "title": "Sample & experimental unit",
+    "aliases": [
+      "sample",
+      "experimental unit",
+      "specimen",
+      "aliquot"
+    ],
+    "section": "measurement",
+    "summary": "측정에 투입된 material과 실제 independent comparison을 이루는 biological unit",
+    "body": [
+      [
+        "Three levels",
+        [
+          "Biological unit: donor · animal · tissue 등 independent source",
+          "Sample: assay에 투입된 material",
+          "Aliquot / library: 같은 sample에서 분리되거나 제작된 technical unit"
+        ]
+      ],
+      [
+        "Experimental unit",
+        [
+          "Treatment가 independently assigned되는 최소 단위",
+          "Statistical replicate 수는 experimental unit 기준",
+          "Cell 수나 read 수가 많아도 donor가 하나면 biological n은 1일 수 있음"
+        ]
+      ],
+      [
+        "Checklist",
+        [
+          "Sample ID와 donor / subject ID를 분리해 기록",
+          "Repeated measure · paired design · nested structure 표시",
+          "Pseudoreplication을 피하려면 analysis unit을 design과 맞춤"
+        ]
+      ]
+    ],
+    "related": [
+      "replicates",
+      "metadata",
+      "experimental-design"
+    ]
+  },
+  "replicates": {
+    "title": "Biological & technical replicate",
+    "aliases": [
+      "biological replicate",
+      "technical replicate",
+      "replicate",
+      "pseudoreplication"
+    ],
+    "section": "measurement",
+    "summary": "Biological variation과 measurement variation을 구분하기 위한 반복 측정",
+    "body": [
+      [
+        "Biological replicate",
+        [
+          "Independent donor · animal · culture 등에서 얻은 sample",
+          "Population 또는 biological variability를 반영",
+          "Inference 범위를 결정하는 핵심 n"
+        ]
+      ],
+      [
+        "Technical replicate",
+        [
+          "같은 biological material의 library · run · measurement 반복",
+          "Assay precision과 technical variability 평가",
+          "Independent biological evidence로 count하지 않음"
+        ]
+      ],
+      [
+        "Analysis",
+        [
+          "Technical replicate를 merge할지 model에 포함할지 사전 결정",
+          "Paired / repeated design에서는 replicate identity를 보존",
+          "Cell·read를 replicate처럼 취급하면 uncertainty가 과소 추정될 수 있음"
+        ]
+      ]
+    ],
+    "related": [
+      "sample-unit",
+      "experimental-design",
+      "batch-effect"
+    ]
+  }
+
+
+,
+
+  "feature-identifier": {
+    "title": "Feature & identifier",
+    "aliases": [
+      "feature",
+      "feature ID",
+      "gene ID",
+      "identifier"
+    ],
+    "section": "measurement",
+    "summary": "Omics matrix의 row를 이루는 gene·peak·protein·metabolite 등의 측정 단위",
+    "body": [
+      [
+        "Feature",
+        [
+          "Transcriptomics: gene 또는 transcript",
+          "Epigenomics: genomic peak · region · CpG",
+          "Proteomics / metabolomics: protein · peptide · compound"
+        ]
+      ],
+      [
+        "Identifier",
+        [
+          "Gene symbol만으로는 version과 species가 불명확할 수 있음",
+          "Stable ID 예: Ensembl gene ID · UniProt accession · metabolite database ID",
+          "Annotation version이 바뀌면 one-to-many 또는 retired ID가 생길 수 있음"
+        ]
+      ],
+      [
+        "Checklist",
+        [
+          "Feature type과 ID namespace를 명시",
+          "Species · genome build · annotation release 기록",
+          "ID conversion 과정에서 unmatched / duplicate feature 수 확인"
+        ]
+      ]
+    ],
+    "related": [
+      "omics-modality",
+      "data-matrix",
+      "metadata"
+    ]
+  },
+  "data-matrix": {
+    "title": "Data matrix",
+    "aliases": [
+      "data matrix",
+      "count matrix",
+      "expression matrix",
+      "feature matrix"
+    ],
+    "section": "data",
+    "summary": "Rows에 feature, columns에 sample 또는 cell을 두는 Omics의 기본 data structure",
+    "body": [
+      [
+        "Axes",
+        [
+          "Row: gene · peak · protein · metabolite 같은 feature",
+          "Column: sample · cell · spot 같은 observation",
+          "Cell value: count · intensity · abundance · score"
+        ]
+      ],
+      [
+        "Dimensions",
+        [
+          "Bulk data: 보통 feature × sample",
+          "Single-cell / spatial data: feature × cell 또는 spot으로 매우 큼",
+          "Orientation은 file과 software마다 반대일 수 있어 확인 필요"
+        ]
+      ],
+      [
+        "Integrity",
+        [
+          "Matrix column ID와 sample metadata ID가 정확히 match해야 함",
+          "Duplicate feature와 duplicate sample ID 확인",
+          "Raw · normalized · scaled matrix를 같은 이름으로 덮어쓰지 않음"
+        ]
+      ]
+    ],
+    "related": [
+      "feature-identifier",
+      "count-abundance",
+      "metadata"
+    ]
+  },
+  "count-abundance": {
+    "title": "Count & abundance",
+    "aliases": [
+      "count",
+      "raw count",
+      "abundance",
+      "intensity",
+      "TPM"
+    ],
+    "section": "data",
+    "summary": "Assay signal을 feature별 numeric value로 표현한 measurement scale",
+    "body": [
+      [
+        "Count data",
+        [
+          "Sequencing read 또는 molecule이 feature에 assign된 integer value",
+          "Library size와 composition에 직접 영향받음",
+          "Negative binomial 등 count-aware model에 사용"
+        ]
+      ],
+      [
+        "Continuous abundance",
+        [
+          "Mass spectrometry intensity · normalized expression · proportion 등",
+          "Dynamic range와 lower detection limit가 assay마다 다름",
+          "Log transform 전 zero와 negative value 처리 확인"
+        ]
+      ],
+      [
+        "Do not mix",
+        [
+          "Raw count · TPM/CPM · normalized count는 의미가 다름",
+          "Method가 요구하는 input scale을 확인",
+          "Figure용 transformed value와 statistical test input을 구분"
+        ]
+      ]
+    ],
+    "related": [
+      "data-matrix",
+      "normalization",
+      "transformation-scaling"
+    ]
+  },
+  "metadata": {
+    "title": "Metadata",
+    "aliases": [
+      "metadata",
+      "sample sheet",
+      "feature annotation",
+      "data dictionary"
+    ],
+    "section": "data",
+    "summary": "Omics value가 만들어진 biological·technical context를 설명하는 data",
+    "body": [
+      [
+        "Sample metadata",
+        [
+          "Condition · time point · tissue · cell type · donor",
+          "Batch · run · plate · library preparation · platform",
+          "Age · sex · treatment 같은 analysis covariate"
+        ]
+      ],
+      [
+        "Feature metadata",
+        [
+          "Feature ID · symbol · genomic position · annotation type",
+          "Species · genome build · database release",
+          "Protein / metabolite mapping과 ambiguity"
+        ]
+      ],
+      [
+        "Quality rules",
+        [
+          "Machine-readable category와 missing-value code 사용",
+          "Sample ID를 matrix column과 일대일로 연결",
+          "Free-text note와 analysis-ready variable을 분리"
+        ]
+      ]
+    ],
+    "related": [
+      "sample-unit",
+      "data-matrix",
+      "experimental-design"
+    ]
+  }
+
+,
+
+  "missingness-sparsity": {
+    "title": "Missingness & sparsity",
+    "aliases": [
+      "missingness",
+      "missing value",
+      "sparsity",
+      "zero inflation",
+      "dropout"
+    ],
+    "section": "data",
+    "summary": "관측되지 않은 값, true zero와 assay detection limit를 구분하는 문제",
+    "body": [
+      [
+        "Different meanings",
+        [
+          "Missing: 측정 또는 기록 자체가 없음",
+          "Zero: 측정 결과가 실제 0으로 기록됨",
+          "Below detection / dropout: 존재할 수 있지만 assay가 signal을 잡지 못함"
+        ]
+      ],
+      [
+        "Why sparse",
+        [
+          "Single-cell count matrix는 많은 gene–cell entry가 zero",
+          "Proteomics / metabolomics는 lower detection limit 때문에 missing value 발생",
+          "Filtering과 imputation strategy는 mechanism에 따라 달라야 함"
+        ]
+      ],
+      [
+        "Checklist",
+        [
+          "0을 NA로 또는 NA를 0으로 무조건 변환하지 않음",
+          "Missingness가 condition·batch와 연관되는지 확인",
+          "Method가 zero와 missing value를 어떻게 처리하는지 확인"
+        ]
+      ]
+    ],
+    "related": [
+      "data-matrix",
+      "quality-control",
+      "normalization"
+    ]
+  },
+  "quality-control": {
+    "title": "Quality control",
+    "aliases": [
+      "quality control",
+      "QC",
+      "quality metric",
+      "outlier"
+    ],
+    "section": "preprocess",
+    "summary": "Low-quality sample·feature와 technical artifact를 analysis 전에 확인하는 과정",
+    "body": [
+      [
+        "Sample-level QC",
+        [
+          "Total signal · library size · detected feature 수",
+          "Mapping rate · duplication · contamination 등 assay-specific metric",
+          "PCA / correlation에서 isolated sample과 batch pattern"
+        ]
+      ],
+      [
+        "Feature-level QC",
+        [
+          "Extremely low abundance 또는 low detection frequency",
+          "Unreliable identifier · ambiguous mapping · control feature",
+          "Assay-specific background와 detection threshold"
+        ]
+      ],
+      [
+        "Principles",
+        [
+          "Threshold를 result에 맞춰 사후 변경하지 않음",
+          "Filter 전후 sample·feature 수와 reason 기록",
+          "Outlier 제거보다 먼저 metadata·label·technical failure 확인"
+        ]
+      ]
+    ],
+    "related": [
+      "metadata",
+      "normalization",
+      "exploratory-visualization"
+    ]
+  },
+  "normalization": {
+    "title": "Normalization",
+    "aliases": [
+      "normalization",
+      "size factor",
+      "library size normalization"
+    ],
+    "section": "preprocess",
+    "summary": "Sample 간 technical scale과 composition 차이를 조정해 비교 가능하게 만드는 과정",
+    "body": [
+      [
+        "Why needed",
+        [
+          "Sequencing depth · total ion current · loading amount가 sample마다 다름",
+          "Raw value 차이가 biology보다 measurement scale을 반영할 수 있음",
+          "Normalization target은 assay와 downstream model에 따라 다름"
+        ]
+      ],
+      [
+        "Common ideas",
+        [
+          "Global scaling: total count 또는 size factor 조정",
+          "Composition-aware method: 일부 highly abundant feature의 영향 완화",
+          "Reference / control 기반 normalization: spike-in·housekeeping·internal standard"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "Normalization은 batch correction이나 biological adjustment와 다름",
+          "모든 feature의 total abundance가 실제로 달라지는 design에서는 global assumption 주의",
+          "Method 이름·parameter·input scale을 기록"
+        ]
+      ]
+    ],
+    "related": [
+      "count-abundance",
+      "transformation-scaling",
+      "batch-effect"
+    ]
+  },
+  "transformation-scaling": {
+    "title": "Transformation & scaling",
+    "aliases": [
+      "transformation",
+      "log transformation",
+      "variance stabilization",
+      "scaling",
+      "z-score"
+    ],
+    "section": "preprocess",
+    "summary": "Value distribution과 feature scale을 downstream analysis에 맞게 바꾸는 과정",
+    "body": [
+      [
+        "Transformation",
+        [
+          "Log transform: large value range를 압축",
+          "Variance-stabilizing transform: mean–variance relationship 완화",
+          "Pseudocount 선택은 low value와 zero 해석에 영향"
+        ]
+      ],
+      [
+        "Scaling",
+        [
+          "Centering: feature mean을 0으로 이동",
+          "Standardization: standard deviation으로 나눠 comparable scale 생성",
+          "Z-score는 relative pattern을 보여주지만 original abundance를 보존하지 않음"
+        ]
+      ],
+      [
+        "Use",
+        [
+          "PCA·clustering·heatmap은 transformed/scaled data를 자주 사용",
+          "Differential model은 raw count를 직접 요구할 수 있음",
+          "Visualization matrix와 statistical-test input을 구분"
+        ]
+      ]
+    ],
+    "related": [
+      "normalization",
+      "exploratory-visualization",
+      "differential-analysis"
+    ]
+  }
+
+,
+
+  "batch-effect": {
+    "title": "Batch effect",
+    "aliases": [
+      "batch effect",
+      "batch correction",
+      "integration",
+      "confounding"
+    ],
+    "section": "preprocess",
+    "summary": "Biology와 무관하게 processing batch에 따라 생기는 systematic technical variation",
+    "body": [
+      [
+        "Sources",
+        [
+          "Library preparation date · reagent lot · plate · run · operator",
+          "Sample storage · processing time · instrument drift",
+          "Site 또는 cohort 차이가 biology와 함께 섞일 수 있음"
+        ]
+      ],
+      [
+        "Diagnosis",
+        [
+          "PCA / clustering에서 batch별 separation 확인",
+          "Known biological group과 batch의 contingency table 확인",
+          "QC metric과 feature-level effect의 batch association 확인"
+        ]
+      ],
+      [
+        "Handling",
+        [
+          "가장 좋은 대응은 balanced experimental design과 randomization",
+          "Statistical model에 batch covariate 포함",
+          "Correction / integration 후 biological signal 보존과 over-correction 점검"
+        ]
+      ]
+    ],
+    "related": [
+      "experimental-design",
+      "quality-control",
+      "exploratory-visualization"
+    ]
+  },
+  "experimental-design": {
+    "title": "Experimental design & contrast",
+    "aliases": [
+      "experimental design",
+      "design matrix",
+      "contrast",
+      "covariate",
+      "paired design"
+    ],
+    "section": "analysis",
+    "summary": "Research question과 sample structure를 statistical model의 comparison으로 표현",
+    "body": [
+      [
+        "Design matrix",
+        [
+          "Row는 sample, column은 condition·batch·covariate",
+          "Paired / repeated sample은 donor identity 또는 block을 model",
+          "Biological replicate 수가 estimable effect와 uncertainty를 결정"
+        ]
+      ],
+      [
+        "Contrast",
+        [
+          "Model coefficient의 어떤 combination을 test할지 정의",
+          "예: treatment vs control · interaction · time trend",
+          "Reference level과 sign convention에 따라 effect direction이 달라짐"
+        ]
+      ],
+      [
+        "Before testing",
+        [
+          "Condition과 batch가 완전히 confounded되면 분리 추정 불가",
+          "Metadata category · missingness · replicate balance 확인",
+          "Primary comparison과 covariate를 result 확인 전에 고정"
+        ]
+      ]
+    ],
+    "related": [
+      "sample-unit",
+      "replicates",
+      "differential-analysis",
+      "batch-effect"
+    ]
+  },
+  "differential-analysis": {
+    "title": "Differential analysis",
+    "aliases": [
+      "differential analysis",
+      "differential expression",
+      "DEG",
+      "fold change"
+    ],
+    "section": "analysis",
+    "summary": "Condition에 따라 abundance가 systematic하게 달라지는 feature를 찾는 analysis",
+    "body": [
+      [
+        "Model",
+        [
+          "Feature별로 count 또는 transformed abundance를 outcome으로 model",
+          "Condition effect와 batch·donor 같은 covariate를 함께 추정",
+          "Assay distribution에 맞는 linear · count · hurdle model 선택"
+        ]
+      ],
+      [
+        "Outputs",
+        [
+          "Effect size: log fold change 또는 group difference",
+          "Uncertainty: standard error · confidence interval",
+          "Evidence: p-value와 multiple-testing adjusted value"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "Statistical significance와 biological importance를 구분",
+          "Low count·small n에서는 effect estimate가 불안정",
+          "Feature list뿐 아니라 direction·magnitude·sample pattern을 함께 확인"
+        ]
+      ]
+    ],
+    "related": [
+      "experimental-design",
+      "multiple-testing",
+      "enrichment",
+      "transformation-scaling"
+    ]
+  }
+
+,
+
+  "multiple-testing": {
+    "title": "Multiple testing & FDR",
+    "aliases": [
+      "multiple testing",
+      "FDR",
+      "false discovery rate",
+      "adjusted p-value",
+      "q-value"
+    ],
+    "section": "analysis",
+    "summary": "많은 feature를 동시에 test할 때 false positive를 관리하는 error-control framework",
+    "body": [
+      [
+        "The problem",
+        [
+          "Feature 수가 많으면 nominal p < 0.05 result가 우연히 다수 발생",
+          "Omics에서는 수천–수백만 hypothesis를 동시에 test",
+          "Raw p-value만으로 significant feature를 선택하면 false discovery 증가"
+        ]
+      ],
+      [
+        "FDR",
+        [
+          "False discovery rate: selected result 중 expected false-positive proportion",
+          "Benjamini–Hochberg adjusted p-value를 흔히 사용",
+          "FDR 0.05는 각 feature가 5% 확률로 false라는 의미가 아님"
+        ]
+      ],
+      [
+        "Reporting",
+        [
+          "Test한 feature universe와 filtering rule 명시",
+          "Raw p-value · adjusted p-value · effect size를 함께 제공",
+          "Threshold 바로 위아래보다 전체 evidence와 independent validation을 고려"
+        ]
+      ]
+    ],
+    "related": [
+      "differential-analysis",
+      "effect-size",
+      "enrichment"
+    ]
+  },
+  "enrichment": {
+    "title": "Enrichment analysis",
+    "aliases": [
+      "enrichment analysis",
+      "pathway analysis",
+      "gene set enrichment",
+      "over-representation analysis"
+    ],
+    "section": "analysis",
+    "summary": "Feature-level result를 pathway·ontology·gene set 단위로 요약하는 analysis",
+    "body": [
+      [
+        "Approaches",
+        [
+          "Over-representation: selected list에서 set member가 과다한지 test",
+          "Rank-based enrichment: 전체 ranked feature list를 사용",
+          "Topology-aware method: pathway structure와 direction을 추가로 활용"
+        ]
+      ],
+      [
+        "Inputs",
+        [
+          "Feature identifier와 species가 database와 일치해야 함",
+          "Background universe는 실제로 test 가능한 feature로 설정",
+          "Gene set database와 release version 기록"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "Related pathway는 overlapping genes 때문에 함께 significant할 수 있음",
+          "Large / small gene set과 annotation bias에 주의",
+          "Enrichment는 mechanism proof가 아니라 result organization과 hypothesis summary"
+        ]
+      ]
+    ],
+    "related": [
+      "differential-analysis",
+      "multiple-testing",
+      "feature-identifier"
+    ]
+  },
+  "exploratory-visualization": {
+    "title": "Exploratory visualization",
+    "aliases": [
+      "PCA",
+      "heatmap",
+      "boxplot",
+      "density plot",
+      "exploratory analysis"
+    ],
+    "section": "analysis",
+    "summary": "Distribution·sample relationship·dominant variation을 model fitting 전후에 확인하는 시각화",
+    "body": [
+      [
+        "Distribution",
+        [
+          "Library size · total signal · detected feature 수",
+          "Density / boxplot로 scale과 outlier 확인",
+          "Raw와 normalized distribution을 비교"
+        ]
+      ],
+      [
+        "Sample relationship",
+        [
+          "PCA: high-dimensional variation의 dominant axes 요약",
+          "Correlation heatmap / clustering: sample similarity 확인",
+          "Color와 shape에 condition·batch·donor metadata를 함께 표시"
+        ]
+      ],
+      [
+        "Limits",
+        [
+          "PCA / UMAP separation 자체가 statistical significance를 의미하지 않음",
+          "Scaling과 feature selection에 따라 plot이 달라짐",
+          "Exploratory pattern을 confirmatory test와 구분"
+        ]
+      ]
+    ],
+    "related": [
+      "quality-control",
+      "batch-effect",
+      "data-matrix"
+    ]
+  }
+
+    };
+
+    const sourceLinks = {
+  "omics-modality": [
+    [
+      "EMBL-EBI Functional Genomics Training",
+      "https://www.ebi.ac.uk/training/online/courses/functional-genomics-i-introduction-and-design/"
+    ]
+  ],
+  "assay-platform": [
+    [
+      "EMBL-EBI Functional Genomics Training",
+      "https://www.ebi.ac.uk/training/online/courses/functional-genomics-i-introduction-and-design/"
+    ]
+  ],
+  "sample-unit": [
+    [
+      "NCBI GEO Overview",
+      "https://www.ncbi.nlm.nih.gov/geo/info/overview.html"
+    ]
+  ],
+  "replicates": [
+    [
+      "EMBL-EBI Experimental Design Training",
+      "https://www.ebi.ac.uk/training/online/courses/functional-genomics-i-introduction-and-design/"
+    ]
+  ],
+  "feature-identifier": [
+    [
+      "Ensembl BioMart",
+      "https://www.ensembl.org/biomart/martview/"
+    ]
+  ],
+  "data-matrix": [
+    [
+      "Bioconductor SummarizedExperiment",
+      "https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html"
+    ]
+  ],
+  "count-abundance": [
+    [
+      "DESeq2 vignette",
+      "https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html"
+    ]
+  ],
+  "metadata": [
+    [
+      "NCBI GEO Overview",
+      "https://www.ncbi.nlm.nih.gov/geo/info/overview.html"
+    ]
+  ],
+  "missingness-sparsity": [
+    [
+      "EMBL-EBI Expression Analysis Training",
+      "https://www.ebi.ac.uk/training/online/courses/functional-genomics-ii-common-technologies-and-data-analysis-methods/"
+    ]
+  ],
+  "quality-control": [
+    [
+      "MultiQC documentation",
+      "https://docs.seqera.io/multiqc/"
+    ]
+  ],
+  "normalization": [
+    [
+      "DESeq2 vignette",
+      "https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html"
+    ]
+  ],
+  "transformation-scaling": [
+    [
+      "DESeq2 transformations",
+      "https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#count-data-transformations"
+    ]
+  ],
+  "batch-effect": [
+    [
+      "Bioconductor sva",
+      "https://bioconductor.org/packages/release/bioc/html/sva.html"
+    ]
+  ],
+  "experimental-design": [
+    [
+      "limma User's Guide",
+      "https://bioconductor.org/packages/release/bioc/html/limma.html"
+    ]
+  ],
+  "differential-analysis": [
+    [
+      "DESeq2 vignette",
+      "https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html"
+    ],
+    [
+      "limma",
+      "https://bioconductor.org/packages/release/bioc/html/limma.html"
+    ]
+  ],
+  "multiple-testing": [
+    [
+      "R p.adjust documentation",
+      "https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html"
+    ]
+  ],
+  "enrichment": [
+    [
+      "Gene Ontology enrichment",
+      "https://geneontology.org/docs/go-enrichment-analysis/"
+    ],
+    [
+      "MSigDB",
+      "https://www.gsea-msigdb.org/gsea/msigdb/"
+    ]
+  ],
+  "exploratory-visualization": [
+    [
+      "EMBL-EBI Expression Analysis Training",
+      "https://www.ebi.ac.uk/training/online/courses/functional-genomics-ii-common-technologies-and-data-analysis-methods/"
+    ]
+  ]
+};
+
+    const glossaryTerms = {
+    "omics": {
+        "key": "omics",
+        "definition": "특정 biological layer를 genome scale로 측정·분석하는 접근."
+    },
+    "modality": {
+        "key": "modality",
+        "definition": "측정 대상과 assay type으로 구분되는 data 종류."
+    },
+    "assay": {
+        "key": "assay",
+        "definition": "Biological property를 measurable signal로 변환하는 실험 절차."
+    },
+    "sample": {
+        "key": "sample",
+        "definition": "측정에 투입된 material; experimental unit과 동일한지 확인 필요."
+    },
+    "biological replicate": {
+        "key": "biological-replicate",
+        "definition": "Independent biological unit에서 얻은 반복 측정."
+    },
+    "technical replicate": {
+        "key": "technical-replicate",
+        "definition": "같은 biological material을 반복 측정한 것."
+    },
+    "feature": {
+        "key": "feature",
+        "definition": "Matrix의 row를 이루는 gene·peak·protein·metabolite 등의 측정 단위."
+    },
+    "count matrix": {
+        "key": "matrix",
+        "definition": "Feature × sample/cell 구조의 raw count table."
+    },
+    "data matrix": {
+        "key": "matrix",
+        "definition": "Row는 feature, column은 sample/cell인 rectangular data structure."
+    },
+    "metadata": {
+        "key": "metadata",
+        "definition": "Sample·feature의 biological·technical context를 설명하는 data."
+    },
+    "normalization": {
+        "key": "normalization",
+        "definition": "Sample 간 technical scale 차이를 조정해 비교 가능하게 만드는 과정."
+    },
+    "quality control": {
+        "key": "qc",
+        "definition": "Low-quality sample·feature와 technical artifact를 확인하는 과정."
+    },
+    "qc": {
+        "key": "qc",
+        "definition": "Low-quality sample·feature와 technical artifact를 확인하는 과정."
+    },
+    "batch effect": {
+        "key": "batch",
+        "definition": "Biology와 무관하게 batch에 따라 생기는 systematic variation."
+    },
+    "differential analysis": {
+        "key": "differential",
+        "definition": "Condition에 따라 abundance가 달라지는 feature를 찾는 analysis."
+    },
+    "effect size": {
+        "key": "effect-size",
+        "definition": "Group difference 또는 association의 direction과 magnitude."
+    },
+    "fdr": {
+        "key": "fdr",
+        "definition": "Significant result 중 expected false discovery proportion."
+    },
+    "sparsity": {
+        "key": "sparsity",
+        "definition": "Matrix에서 zero가 높은 비율을 차지하는 특성."
+    }
+};
+    const glossaryPattern = /(^|[^A-Za-z0-9])(biological replicate|technical replicate|differential analysis|quality control|normalization|batch effect|effect size|count matrix|data matrix|metadata|modality|sparsity|feature|sample|assay|omics|FDR|QC)(?=$|[^A-Za-z0-9])/gi;
+
+    function createAnnotator() {
+      const seen = new Set();
+      return function (text) {
+        return esc(text).replace(glossaryPattern, function (match, prefix, term) {
+          const item = glossaryTerms[term.toLowerCase()];
+          if (!item || seen.has(item.key)) return match;
+          seen.add(item.key);
+          return prefix + '<span class="glossary-term" tabindex="0" data-definition="' + esc(item.definition) + '">' + esc(term) + '</span>';
+        });
+      };
+    }
+
+    const app = document.getElementById("app");
+    const topSearch = document.getElementById("topSearch");
+    let activeFilter = "all";
+
+    function esc(value) {
+      return String(value).replace(/[&<>'"]/g, function (c) {
+        return {"&":"&amp;", "<":"&lt;", ">":"&gt;", "'":"&#39;", '"':"&quot;"}[c];
+      });
+    }
+
+    function route(hash) {
+      window.location.hash = hash;
+    }
+
+    function categoryCards() {
+      return Object.keys(sections).map(function (key) {
+        const s = sections[key];
+        return '<button class="category-card" style="--accent:' + s.accent + '" data-section="' + key + '">' +
+          '<span class="category-number">' + s.number + ' · ' + s.english + '</span>' +
+          '<h3>' + s.title + '</h3><p>' + s.summary + '</p>' +
+          '<span class="card-route">질문으로 살펴보기 →</span></button>';
+      }).join("");
+    }
+
+    function renderHome() {
+      document.title = "Omics Basics";
+      app.innerHTML = '<section class="hero"><div class="container">' +
+        '<p class="eyebrow">Omics foundation</p><h1>Omics Basics</h1>' +
+        '<p class="hero-copy">Measurement · Data Structure · Preprocessing · Analysis</p>' +
+        '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="Omics Basics 통합 검색" placeholder="Search: sample, normalization, batch effect"><span class="search-icon">⌕</span></form>' +
+        '<p class="search-hint">Korean / English / acronym</p></div></section>' +
+        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>질문을 따라 큰 구조부터 살펴보세요.</p></div>' +
+        '<div class="category-grid">' + categoryCards() + '</div></div></section>';
+      document.getElementById("heroSearchForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const q = document.getElementById("heroSearch").value.trim();
+        if (q) route("search/" + encodeURIComponent(q));
+      });
+      window.scrollTo(0, 0);
+    }
+
+    function renderSection(key) {
+      const s = sections[key];
+      if (!s) return renderHome();
+      document.title = s.title + " · Omics Basics";
+      const annotateOnce = createAnnotator();
+      const groups = s.groups.map(function (group, i) {
+        const items = group.items.map(function (item) {
+          const hasPage = Boolean(item[0] && articles[item[0]]);
+          return '<div class="concept-row"><strong>' + annotateOnce(item[1]) + '</strong><p>' + annotateOnce(item[2]) + '</p>' +
+            (hasPage ? '<button data-article="' + item[0] + '">읽기 →</button>' : '<span class="map-label">개념 지도</span>') + '</div>';
+        }).join("");
+        return '<section class="question-block"><div class="question-head"><small>QUESTION ' + String(i + 1).padStart(2, "0") + '</small>' +
+          '<h2>' + annotateOnce(group.q) + '</h2><p>' + annotateOnce(group.note) + '</p></div><div>' + items + '</div></section>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb" aria-label="현재 위치"><button data-route="home">홈</button><span>›</span>' + s.title + '</nav>' +
+        '<header class="page-header" style="border-top:4px solid ' + s.accent + '"><p class="eyebrow">' + s.number + ' · ' + s.english + '</p><h1>' + s.title + '</h1><p class="lead">' + s.summary + '</p></header>' +
+        '<div class="question-list">' + groups + '</div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function articleText(a) {
+      const bodyText = a.body.map(function (b) { return [b[0]].concat(Array.isArray(b[1]) ? b[1] : [b[1]]).join(" "); });
+      return [a.title, a.aliases.join(" "), a.summary].concat(bodyText).join(" ").toLowerCase();
+    }
+
+    function highlight(text, query) {
+      if (!query) return esc(text);
+      const safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return esc(text).replace(new RegExp("(" + safe + ")", "ig"), "<mark>$1</mark>");
+    }
+
+    function searchArticles(query, filter) {
+      const q = query.trim().toLowerCase();
+      if (!q) return [];
+      return Object.keys(articles).map(function (id) {
+        const a = articles[id];
+        if (filter !== "all" && a.section !== filter) return null;
+        const hay = articleText(a);
+        const pos = hay.indexOf(q);
+        if (pos < 0) return null;
+        const titleHit = a.title.toLowerCase().includes(q) ? 3 : 0;
+        const aliasHit = a.aliases.join(" ").toLowerCase().includes(q) ? 2 : 0;
+        return { id: id, article: a, score: titleHit + aliasHit + 1 };
+      }).filter(Boolean).sort(function (a, b) { return b.score - a.score || a.article.title.localeCompare(b.article.title); });
+    }
+
+    function renderSearch(query) {
+      document.title = '"' + query + '" 검색 · Omics Basics';
+      const filterButtons = ['<button class="filter-btn ' + (activeFilter === "all" ? "active" : "") + '" data-filter="all">전체</button>'].concat(
+        Object.keys(sections).map(function (key) { return '<button class="filter-btn ' + (activeFilter === key ? "active" : "") + '" data-filter="' + key + '">' + sections[key].title + '</button>'; })
+      ).join("");
+      const found = searchArticles(query, activeFilter);
+      const cards = found.length ? found.map(function (r) {
+        const s = sections[r.article.section];
+        return '<button class="result-card" data-article="' + r.id + '"><span class="result-path">' + s.title + ' › 문서</span>' +
+          '<h2>' + highlight(r.article.title, query) + '</h2><p>' + highlight(r.article.summary, query) + '</p></button>';
+      }).join("") : '<div class="empty"><strong>No results</strong><br>Try: English / Korean / acronym</div>';
+      app.innerHTML = '<div class="container search-page"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span>검색</nav>' +
+        '<header class="page-header"><p class="eyebrow">Search</p><h1>“' + esc(query) + '”</h1></header>' +
+        '<div class="search-summary"><p>Public pages · <strong>' + found.length + '</strong></p><div class="filters">' + filterButtons + '</div></div>' +
+        '<div class="results">' + cards + '</div></div>';
+      topSearch.value = query;
+      window.scrollTo(0, 0);
+    }
+
+    function renderArticle(id) {
+      const a = articles[id];
+      if (!a) return renderHome();
+      const s = sections[a.section];
+      const annotateOnce = createAnnotator();
+      document.title = a.title + " · Omics Basics";
+      const body = a.body.map(function (part) {
+        const points = Array.isArray(part[1]) ? part[1] : part[1].replace(/\.\s+/g, ".||| ").split("|||").filter(Boolean);
+        return '<section><h2>' + part[0] + '</h2><ul class="fact-list">' + points.map(function (point) { return "<li>" + annotateOnce(point.trim()) + "</li>"; }).join("") + "</ul></section>";
+      }).join("");
+      const related = a.related.filter(function (rid) { return articles[rid]; }).map(function (rid) {
+        return '<button data-article="' + rid + '">' + articles[rid].title + ' →</button>';
+      }).join("");
+      const sources = (sourceLinks[id] || []).map(function (source) {
+        return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
+        '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
+        '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
+        '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
+        '<div class="aside-box source-box"><h3>Sources</h3><div class="source-list">' + sources + '</div></div>' +
+        '<div class="policy-note">Public concepts · Standard methods<br>Excluded: Project · Hypothesis · Internal result</div></aside></div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function handleRoute() {
+      const raw = window.location.hash.replace(/^#/, "");
+      const parts = raw.split("/");
+      if (!raw || raw === "home") return renderHome();
+      if (parts[0] === "section") return renderSection(parts[1]);
+      if (parts[0] === "article") return renderArticle(parts[1]);
+      if (parts[0] === "search") return renderSearch(decodeURIComponent(parts.slice(1).join("/")));
+      renderHome();
+    }
+
+    document.addEventListener("click", function (e) {
+      const home = e.target.closest("[data-route='home']");
+      const section = e.target.closest("[data-section]");
+      const article = e.target.closest("[data-article]");
+      const filter = e.target.closest("[data-filter]");
+      if (home) route("home");
+      else if (article) route("article/" + article.dataset.article);
+      else if (section) route("section/" + section.dataset.section);
+      else if (filter) { activeFilter = filter.dataset.filter; const q = decodeURIComponent(window.location.hash.split("/").slice(1).join("/")); renderSearch(q); }
+    });
+
+    document.getElementById("topSearchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const q = topSearch.value.trim();
+      if (q) { activeFilter = "all"; route("search/" + encodeURIComponent(q)); }
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+        e.preventDefault(); topSearch.focus();
+      }
+    });
+    window.addEventListener("hashchange", handleRoute);
+    handleRoute();
+  </script>
+</body>
+</html>

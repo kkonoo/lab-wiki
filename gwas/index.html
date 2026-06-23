@@ -1,0 +1,2224 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="GWAS와 유전학 개념을 단계적으로 탐색하는 Lab Wiki 프로토타입">
+  <title>GWAS Lab Wiki</title>
+  <style>
+    :root {
+      --ink: #18211b;
+      --muted: #667168;
+      --paper: #f7f7f2;
+      --surface: #ffffff;
+      --line: #d8ddd7;
+      --green: #1f5d43;
+      --green-soft: #e7f0ea;
+      --blue: #315d78;
+      --rust: #94553b;
+      --gold: #936f21;
+      --shadow: 0 14px 35px rgba(24, 33, 27, .07);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    button, input { font: inherit; }
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 247, 242, .94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .topbar-inner {
+      width: min(1180px, calc(100% - 40px));
+      min-height: 64px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .brand {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--ink);
+      cursor: pointer;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.18rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .brand span { color: var(--green); }
+    .brand-group { display: flex; align-items: center; white-space: nowrap; }
+    .brand-home { text-decoration: none; }
+    .brand-domain { margin-left: 6px; }
+    .top-search {
+      flex: 1;
+      max-width: 560px;
+      margin-left: auto;
+      position: relative;
+    }
+    .top-search input {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      padding: 0 44px 0 14px;
+      color: var(--ink);
+      outline: none;
+    }
+    .top-search input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+    .keycap {
+      position: absolute;
+      right: 10px;
+      top: 9px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--muted);
+      background: var(--paper);
+      padding: 1px 6px;
+      font-size: .75rem;
+    }
+
+    main { min-height: calc(100vh - 140px); }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+
+    .hero {
+      padding: 78px 0 52px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(rgba(31, 93, 67, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 93, 67, .035) 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { font-family: Georgia, "Noto Serif KR", serif; line-height: 1.25; }
+    .hero h1 { margin: 0; font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: -.045em; }
+    .hero-copy { margin: 16px auto 26px; max-width: 650px; color: var(--muted); font-size: 1.04rem; }
+    .hero-search { width: min(720px, calc(100% - 32px)); margin: 0 auto; position: relative; }
+    .hero-search input {
+      width: 100%;
+      height: 62px;
+      border: 1px solid #bac6bd;
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 0 58px 0 20px;
+      color: var(--ink);
+      font-size: 1.03rem;
+      outline: none;
+    }
+    .hero-search input:focus { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft), var(--shadow); }
+    .search-icon { position: absolute; right: 20px; top: 18px; color: var(--green); font-size: 1.3rem; }
+    .search-hint { margin: 11px 0 0; color: var(--muted); font-size: .82rem; }
+
+    .browse { padding: 58px 0 76px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    .section-heading h2 { margin: 0; font-size: 1.65rem; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .category-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .category-card {
+      position: relative;
+      min-height: 235px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 26px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .category-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .category-card:focus-visible { outline: 3px solid var(--green-soft); outline-offset: 2px; }
+    .category-number { color: var(--accent); font-family: Georgia, serif; font-size: .95rem; font-weight: 700; }
+    .category-card h3 { margin: 12px 0 10px; font-size: 1.65rem; }
+    .category-card p { margin: 0 0 25px; max-width: 520px; color: var(--muted); }
+    .card-route { position: absolute; left: 26px; bottom: 23px; color: var(--accent); font-size: .86rem; font-weight: 750; }
+
+    .breadcrumb { padding: 30px 0 18px; color: var(--muted); font-size: .84rem; }
+    .breadcrumb button { border: 0; padding: 0; background: none; color: var(--green); cursor: pointer; }
+    .breadcrumb span { margin: 0 8px; color: #9ca49e; }
+    .page-header { padding: 18px 0 36px; border-bottom: 1px solid var(--line); }
+    .page-header h1 { margin: 7px 0 12px; font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.035em; }
+    .page-header .lead { margin: 0; max-width: 740px; color: var(--muted); font-size: 1.04rem; }
+    .question-list { padding: 42px 0 72px; display: grid; gap: 16px; }
+    .question-block { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: visible; }
+    .question-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); }
+    .question-head small { color: var(--green); font-weight: 800; }
+    .question-head h2 { margin: 5px 0 7px; font-size: 1.35rem; }
+    .question-head p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .concept-row { display: grid; grid-template-columns: 1.2fr 2fr auto; align-items: center; gap: 18px; padding: 17px 24px; border-top: 1px solid #edf0ec; }
+    .concept-row:first-child { border-top: 0; }
+    .concept-row strong { font-size: .95rem; }
+    .concept-row p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .concept-row button { border: 0; background: none; color: var(--green); font-weight: 750; cursor: pointer; padding: 5px; }
+    .concept-row .map-label { color: #8b948d; font-size: .78rem; white-space: nowrap; }
+
+    .search-page { padding-bottom: 72px; }
+    .search-summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 10px 0 22px; }
+    .search-summary p { margin: 0; color: var(--muted); }
+    .filters { display: flex; flex-wrap: wrap; gap: 7px; }
+    .filter-btn { border: 1px solid var(--line); border-radius: 999px; background: var(--surface); padding: 6px 12px; color: var(--muted); cursor: pointer; font-size: .8rem; }
+    .filter-btn.active { border-color: var(--green); background: var(--green-soft); color: var(--green); font-weight: 750; }
+    .results { display: grid; gap: 12px; }
+    .result-card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 20px 22px; cursor: pointer; text-align: left; }
+    .result-card:hover { border-color: #93aa9a; box-shadow: 0 7px 20px rgba(24, 33, 27, .05); }
+    .result-path { color: var(--green); font-size: .76rem; font-weight: 750; }
+    .result-card h2 { margin: 4px 0 6px; font-size: 1.25rem; }
+    .result-card p { margin: 0; color: var(--muted); font-size: .9rem; }
+    mark { background: #fff0ad; color: inherit; padding: 0 2px; }
+    .empty { border: 1px dashed #b8c0ba; border-radius: var(--radius); padding: 48px 24px; text-align: center; color: var(--muted); }
+
+    .article-layout { display: grid; grid-template-columns: minmax(0, 740px) 260px; gap: 64px; padding: 12px 0 80px; align-items: start; }
+    .article { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(25px, 5vw, 52px); }
+    .article h1 { margin: 6px 0 5px; font-size: clamp(2.1rem, 5vw, 3.5rem); letter-spacing: -.03em; }
+    .aliases { margin: 0 0 26px; color: var(--muted); font-size: .83rem; }
+    .definition { margin: 0 0 34px; padding: 18px 20px; border-left: 4px solid var(--green); background: var(--green-soft); font-size: 1.03rem; }
+    .article h2 { margin: 34px 0 12px; padding-bottom: 7px; border-bottom: 1px solid var(--line); font-size: 1.32rem; }
+    .article p { margin: 0 0 15px; }
+    .article ul { margin: 0 0 18px; padding-left: 22px; }
+    .article li { margin: 6px 0; }
+    .fact-list {
+      display: grid;
+      gap: 9px;
+      margin: 0 0 18px;
+      padding-left: 20px;
+      color: #37423a;
+    }
+    .fact-list li { padding-left: 4px; }
+    .fact-list li::marker { color: var(--green); }
+    .term-link { border: 0; border-bottom: 1px solid #8aa897; background: none; padding: 0; color: var(--green); cursor: pointer; font-weight: 700; }
+    .glossary-term {
+      position: relative;
+      border-bottom: 1px dotted var(--green);
+      color: #174b37;
+      cursor: help;
+      outline: none;
+    }
+    .glossary-term::after {
+      content: attr(data-definition);
+      position: absolute;
+      z-index: 40;
+      left: 0;
+      bottom: calc(100% + 8px);
+      width: max-content;
+      max-width: min(320px, calc(100vw - 40px));
+      padding: 10px 12px;
+      border-radius: 7px;
+      background: #17221b;
+      color: #f8faf8;
+      box-shadow: 0 10px 28px rgba(10, 20, 14, .24);
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      font-size: .78rem;
+      font-weight: 500;
+      line-height: 1.55;
+      letter-spacing: 0;
+      white-space: normal;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(4px);
+      transition: opacity .14s ease, transform .14s ease, visibility .14s ease;
+      pointer-events: none;
+    }
+    .glossary-term:hover::after,
+    .glossary-term:focus::after {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .glossary-term:focus { border-bottom-style: solid; }
+    .tooltip-hint {
+      margin: -15px 0 25px;
+      color: var(--muted);
+      font-size: .76rem;
+    }
+    .aside { position: sticky; top: 88px; }
+    .aside-box { border-top: 3px solid var(--green); background: var(--surface); padding: 18px; box-shadow: 0 8px 24px rgba(24,33,27,.05); }
+    .aside-box h3 { margin: 0 0 12px; font-size: 1rem; }
+    .related-list { display: grid; gap: 9px; }
+    .related-list button { border: 0; background: none; padding: 0; text-align: left; color: var(--green); cursor: pointer; font-size: .87rem; }
+    .source-box { margin-top: 16px; border-top-color: var(--blue); }
+    .source-list { display: grid; gap: 9px; }
+    .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
+    .source-list a:hover { text-decoration: underline; }
+    .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
+
+    footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
+    footer .container { display: flex; justify-content: space-between; gap: 20px; }
+
+    @media (max-width: 820px) {
+      .topbar-inner { width: min(100% - 24px, 1180px); gap: 12px; }
+      .brand { font-size: 1rem; }
+      .keycap { display: none; }
+      .container { width: min(100% - 28px, 1120px); }
+      .hero { padding-top: 54px; }
+      .category-grid { grid-template-columns: 1fr; }
+      .category-card { min-height: 215px; }
+      .concept-row { grid-template-columns: 1fr auto; }
+      .concept-row p { grid-column: 1 / -1; grid-row: 2; }
+      .article-layout { grid-template-columns: 1fr; gap: 20px; }
+      .aside { position: static; }
+      .search-summary { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 520px) {
+      .topbar-inner { min-height: 58px; }
+      .brand-domain { display: none; }
+      .top-search input { height: 38px; }
+      .hero h1 { font-size: 2.55rem; }
+      .hero-search input { height: 56px; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .category-card { padding: 21px; }
+      .card-route { left: 21px; }
+      .question-head, .concept-row { padding-left: 18px; padding-right: 18px; }
+      .article { border-left: 0; border-right: 0; border-radius: 0; margin-left: -14px; margin-right: -14px; }
+      footer .container { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../index.html">Lab Wiki</a><button class="brand brand-domain" type="button" data-route="home"><span>/ GWAS</span></button></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer>
+    <div class="container">
+      <span>GWAS Lab Wiki · Public knowledge · Standard methods · Updated 2026-06-23</span>
+      <span>Excluded: Project · Hypothesis · Internal result</span>
+    </div>
+  </footer>
+
+  <script>
+    const sections = {
+      genetics: {
+        number: "01", title: "Genetics Basics", english: "FOUNDATION", accent: "#1f5d43",
+        summary: "Genetic variant · Genotype · Population 차이는 GWAS에 어떤 영향을 주는가? · Imputation",
+        groups: [
+          { q: "Genetic variant는 무엇이고 어떻게 표현되는가?", note: "DNA sequence → allele → genotype", items: [
+            ["variant", "Genetic variant & SNP", "DNA sequence difference · common variant unit"],
+            ["allele", "Allele", "Alternative sequence at one genetic locus"],
+            ["genotype", "Genotype & dosage", "Allele combination · probabilistic representation"]
+          ]},
+          { q: "가까운 variant들은 왜 함께 움직이는가?", note: "Chromosome position → LD → haplotype", items: [
+            ["ld", "Linkage disequilibrium", "Non-random association between alleles"],
+            ["haplotype", "Haplotype", "Allele combination inherited on one chromosome"]
+          ]},
+          { q: "Population 차이는 GWAS에 어떤 영향을 주는가?", note: "Allele frequency → ancestry → population structure", items: [
+            ["maf", "Minor allele frequency", "Frequency of the less common allele"],
+            ["ancestry", "Ancestry & population structure", "Systematic genetic differences between populations"]
+          ]},
+          { q: "Genotype data는 어떻게 만들고 보완하는가?", note: "Genotyping / sequencing → imputation", items: [
+            ["genotyping", "Genotyping & sequencing", "Direct measurement of genetic variation"],
+            ["imputation", "Genotype imputation", "Inference with a reference panel"]
+          ]}
+        ]
+      },
+      gwas: {
+        number: "02", title: "GWAS", english: "ASSOCIATION", accent: "#315d78",
+        summary: "Study design · QC · Association test · Result interpretation",
+        groups: [
+          { q: "GWAS는 무엇을 비교하는가?", note: "Genetic variant와 phenotype의 statistical association", items: [
+            ["gwas", "Genome-wide association study", "Genome-wide variant–trait association"],
+            ["phenotype", "Phenotype & study design", "Binary / quantitative trait · cohort design"]
+          ]},
+          { q: "Association test 전에 무엇을 확인해야 하는가?", note: "Sample / variant QC → covariate 설정", items: [
+            ["qc", "Sample & variant QC", "Missingness · frequency · heterozygosity"],
+            ["covariates", "Covariate & principal components", "Non-genetic factors · population structure"]
+          ]},
+          { q: "Association은 어떻게 검정하는가?", note: "Regression model → effect size → multiple testing", items: [
+            ["association-model", "Association model", "Statistical model matched to trait type"],
+            ["significance", "Genome-wide significance", "Threshold for large-scale multiple testing"]
+          ]},
+          { q: "GWAS 결과는 어떻게 읽는가?", note: "Manhattan plot · QQ plot · summary statistics", items: [
+            ["manhattan", "Manhattan plot", "Association signal by genomic position"],
+            ["qq-plot", "QQ plot", "Observed vs. expected test statistics"],
+            ["sumstats", "GWAS summary statistics", "Variant-level effect size and test result"]
+          ]}
+        ]
+      },
+      postgwas: {
+        number: "03", title: "Post-GWAS", english: "INTERPRETATION", accent: "#94553b",
+        summary: "Locus · Fine-mapping · Variant-to-gene · Causal inference",
+        groups: [
+          { q: "Association signal의 범위는 어떻게 정하는가?", note: "Lead variant → conditional analysis → fine-mapping", items: [
+            ["locus-lead", "Locus & lead variant", "Representative variant · surrounding region"],
+            ["conditional", "Conditional analysis", "Independent signal after conditioning"],
+            ["fine-mapping", "Fine-mapping", "Probabilistic ranking of causal candidates"]
+          ]},
+          { q: "Variant를 function과 gene에 어떻게 연결하는가?", note: "Annotation → variant-to-gene → colocalization", items: [
+            ["functional-annotation", "Functional annotation", "Genomic location · predicted function"],
+            ["variant-to-gene", "Variant-to-gene mapping", "Distance · regulation · QTL evidence"],
+            ["coloc", "Colocalization", "Shared causal variant between two signals"]
+          ]},
+          { q: "Gene-level association과 causality는 어떻게 구분하는가?", note: "TWAS와 Mendelian randomization의 질문 차이", items: [
+            ["twas", "TWAS", "Predicted gene expression–trait association"],
+            ["mr", "Mendelian randomization", "Causal inference with genetic instruments"]
+          ]},
+          { q: "Trait와 individual level로 어떻게 확장하는가?", note: "Genetic correlation → polygenic risk score", items: [
+            ["genetic-correlation", "Genetic correlation", "Shared genetic effects between traits"],
+            ["prs", "Polygenic risk score", "Individual score from multiple variant effects"]
+          ]}
+        ]
+      },
+      tools: {
+        number: "04", title: "Tools / Databases", english: "RESOURCES", accent: "#936f21",
+        summary: "QC · Association · Reference panel · Public summary statistics",
+        groups: [
+          { q: "Genotype QC와 preprocessing에는 무엇을 쓰는가?", note: "Format conversion · filtering · LD · PCA", items: [
+            ["plink", "PLINK", "General-purpose genotype QC and analysis"]
+          ]},
+          { q: "GWAS data와 summary statistics는 어디서 찾는가?", note: "Study metadata · association · full summary statistics", items: [
+            ["gwas-catalog", "GWAS Catalog", "Curated published GWAS resource"],
+            ["opengwas", "OpenGWAS", "Programmatic GWAS summary statistics resource"]
+          ]},
+          { q: "LD와 reference 정보는 어디서 확인하는가?", note: "Reference panel · variant ID · population-specific LD", items: [
+            ["1000-genomes", "1000 Genomes Project", "Population genetic variation reference"],
+            ["dbsnp-ldlink", "dbSNP & LDlink", "Variant identifier · population-specific LD"]
+          ]},
+          { q: "Variant와 molecular trait는 어디서 연결하는가?", note: "Tissue-specific QTL · regulatory annotation", items: [
+            ["gtex", "GTEx", "Tissue-specific gene expression and eQTL"],
+            ["annotation-resources", "Functional annotation resources", "Genomic location · regulatory function"]
+          ]}
+        ]
+      }
+    };
+
+    const articles = {
+      variant: {
+        title: "Genetic variant & SNP", aliases: ["genetic variant", "SNP", "single nucleotide polymorphism", "유전변이"], section: "genetics",
+        summary: "Reference sequence와 다른 DNA position 또는 sequence; SNP는 single-nucleotide variant",
+        body: [
+          [
+                    "Core question",
+                    [
+                              "Genome-wide genetic variant와 phenotype 사이의 statistical association 탐색",
+                              "Phenotype: disease status 같은 binary trait 또는 height·blood pressure 같은 quantitative trait",
+                              "기본 output: variant별 effect size · standard error · p-value"
+                    ]
+          ],
+          [
+                    "Workflow",
+                    [
+                              "Phenotype과 covariate 정의 → sample / variant QC → genotype imputation",
+                              "Trait type과 sample structure에 맞는 association model 선택",
+                              "Population structure · relatedness · batch effect 등 potential confounder 조정"
+                    ]
+          ],
+          [
+                    "Interpretation",
+                    [
+                              "Small p-value: null model과 잘 맞지 않는 association; biological importance와 동일하지 않음",
+                              "Association ≠ causality; causal variant·gene·mechanism은 Post-GWAS analysis가 필요",
+                              "Effect size · allele frequency · ancestry · replication을 함께 확인"
+                    ]
+          ]
+], related: ["ld", "gwas", "sumstats"]
+      },
+      ld: {
+        title: "Linkage disequilibrium", aliases: ["LD", "연관불균형", "linkage disequilibrium"], section: "genetics",
+        summary: "서로 다른 locus의 allele 조합이 population에서 non-random하게 함께 나타나는 현상",
+        body: [
+          [
+                    "Core concept",
+                    [
+                              "Linkage disequilibrium (LD): 서로 다른 locus의 allele 조합이 random expectation과 다르게 함께 나타나는 상태",
+                              "가까운 variant: recombination으로 분리될 확률이 낮아 함께 inherited될 가능성이 큼",
+                              "Individual-level property가 아니라 population-level correlation pattern"
+                    ]
+          ],
+          [
+                    "Metrics",
+                    [
+                              "r²: 한 variant가 다른 variant를 얼마나 잘 predict하는지; 0–1 범위",
+                              "D′: 가능한 최대 LD 대비 관찰된 LD; historical recombination에 민감",
+                              "High D′와 high r²는 동일하지 않음; 목적에 따라 metric 선택"
+                    ]
+          ],
+          [
+                    "Interpretation",
+                    [
+                              "LD structure는 ancestry와 population에 따라 달라짐",
+                              "GWAS sample과 LD reference population이 다르면 clumping·fine-mapping 결과가 달라질 수 있음",
+                              "Physical distance만으로 LD를 판단하지 않고 population-matched reference에서 확인"
+                    ]
+          ]
+], related: ["variant", "gwas", "coloc"]
+      },
+      gwas: {
+        title: "Genome-wide association study", aliases: ["GWAS", "전장유전체연관분석", "genome-wide association study"], section: "gwas",
+        summary: "Genome-wide genetic variant와 phenotype의 statistical association을 검사하는 study design",
+        body: [
+          ["Core question", "GWAS는 각 genetic variant가 phenotype의 차이와 연관되는지를 변이별로 검정합니다. 질병 유무 같은 이분형 형질과 키·혈압 같은 연속형 형질 모두 분석할 수 있습니다."],
+          ["Workflow", "표본과 변이의 품질을 확인하고, phenotype과 covariate를 정의한 뒤, 각 변이에 대한 연관성 모형을 적합합니다. population structure와 친족 관계처럼 결과를 왜곡할 수 있는 요인은 연구 설계와 통계 모형에서 다룹니다."],
+          ["Interpretation", "유의한 연관성은 변이와 형질 사이의 통계적 관계를 뜻합니다. 그 자체만으로 causal variant, 표적 유전자 또는 생물학적 기전이 확정되지는 않습니다. effect size, 빈도, 표본 구성과 재현 근거를 함께 해석합니다."]
+        ], related: ["variant", "manhattan", "sumstats", "gwas-catalog"]
+      },
+      manhattan: {
+        title: "Manhattan plot", aliases: ["맨해튼 플롯", "Manhattan plot", "GWAS plot"], section: "gwas",
+        summary: "GWAS association signal을 genomic position과 −log10(p-value)로 표시한 plot",
+        body: [
+          [
+                    "Display",
+                    [
+                              "x-axis: chromosome과 genomic position",
+                              "y-axis: −log10(p-value); 위쪽일수록 stronger association",
+                              "하나의 locus에서 LD가 있는 여러 variant가 함께 peak를 형성"
+                    ]
+          ],
+          [
+                    "Reading",
+                    [
+                              "Genome-wide significance line을 넘는 locus와 lead variant 확인",
+                              "Peak 주변 signal shape와 independent signal 존재 여부 확인",
+                              "QQ plot·regional plot·summary statistics와 함께 해석"
+                    ]
+          ],
+          [
+                    "Not shown",
+                    [
+                              "Effect direction과 magnitude는 표시하지 않음",
+                              "Allele frequency · sample size · heterogeneity도 직접 확인 불가",
+                              "Peak 자체는 causal variant나 target gene을 확정하지 않음"
+                    ]
+          ]
+], related: ["gwas", "sumstats", "ld"]
+      },
+      sumstats: {
+        title: "GWAS summary statistics", aliases: ["summary stats", "sumstats", "요약통계", "GWAS summary statistics"], section: "gwas",
+        summary: "Individual-level genotype 없이 공유되는 variant-level association result table",
+        body: [
+          [
+                    "Core columns",
+                    [
+                              "Variant identifier · chromosome · position · genome build",
+                              "Effect allele · other allele · allele frequency",
+                              "Effect size · standard error · p-value · sample size"
+                    ]
+          ],
+          [
+                    "Effect size",
+                    [
+                              "Quantitative trait: 주로 beta; binary trait: log(OR) 또는 odds ratio",
+                              "Positive / negative direction은 effect allele 기준",
+                              "Dataset 결합 전 allele harmonization과 palindromic SNP 처리 필요"
+                    ]
+          ],
+          [
+                    "Reuse checklist",
+                    [
+                              "Phenotype definition · ancestry · analysis model · sample overlap",
+                              "Genome build · variant ID convention · allele coding",
+                              "QC filter · missing-value code · effective sample size"
+                    ]
+          ]
+], related: ["gwas", "manhattan", "gwas-catalog", "coloc"]
+      },
+      coloc: {
+        title: "Colocalization", aliases: ["coloc", "공위치 분석", "colocalisation", "colocalization"], section: "postgwas",
+        summary: "같은 locus의 두 association signal이 causal variant를 공유하는지 평가하는 analysis",
+        body: [
+          [
+                    "Purpose",
+                    [
+                              "같은 locus에서 두 signal이 overlap해도 distinct causal variants가 LD로 겹쳐 보일 수 있음",
+                              "Colocalization: shared causal variant와 separate causal variants 가설을 비교",
+                              "단순한 lead SNP overlap보다 locus 전체 association pattern을 활용"
+                    ]
+          ],
+          [
+                    "Input",
+                    [
+                              "두 trait의 동일 locus에 대한 variant-level summary statistics",
+                              "Allele alignment · genome build · comparable variant set",
+                              "Method에 따라 allele frequency · sample size · LD reference 필요"
+                    ]
+          ],
+          [
+                    "Interpretation",
+                    [
+                              "주요 output: hypothesis별 posterior probability",
+                              "Result는 prior · locus window · variant density · causal-variant assumption에 민감",
+                              "High shared-signal probability도 biological mechanism 자체를 증명하지는 않음"
+                    ]
+          ]
+], related: ["ld", "sumstats", "gwas"]
+      },
+      plink: {
+        title: "PLINK", aliases: ["PLINK 2", "plink", "플링크"], section: "tools",
+        summary: "Genotype QC, format conversion, LD/PCA와 basic association에 사용하는 command-line tool",
+        body: [
+          [
+                    "Core functions",
+                    [
+                              "Sample QC: missingness · sex check · heterozygosity · relatedness",
+                              "Variant QC: missingness · MAF · Hardy–Weinberg equilibrium",
+                              "LD pruning · PCA · allele frequency · basic association test"
+                    ]
+          ],
+          [
+                    "Input / output",
+                    [
+                              "PLINK 1 binary: BED / BIM / FAM",
+                              "PLINK 2: PGEN / PVAR / PSAM; VCF 등 외부 format 변환 지원",
+                              "Command와 file support는 version-dependent; log와 output schema 확인"
+                    ]
+          ],
+          [
+                    "Checklist",
+                    [
+                              "Genome build · chromosome naming · sample ID alignment",
+                              "Phenotype / covariate missing-value code와 row matching",
+                              "Effect / reference allele coding과 software version 기록"
+                    ]
+          ]
+], related: ["variant", "ld", "gwas"]
+      },
+      "gwas-catalog": {
+        title: "GWAS Catalog", aliases: ["NHGRI-EBI GWAS Catalog", "GWAS 카탈로그", "GWAS Catalog"], section: "tools",
+        summary: "Published human GWAS의 study metadata, association과 summary statistics를 제공하는 curated database",
+        body: [
+          [
+                    "Contents",
+                    [
+                              "Published human GWAS의 study metadata와 reported variant–trait association",
+                              "Trait ontology · sample size · ancestry · publication 정보",
+                              "연구자가 제공한 경우 genome-wide summary statistics 연결"
+                    ]
+          ],
+          [
+                    "Search",
+                    [
+                              "Trait synonym과 ontology term을 함께 검색",
+                              "같은 publication 안의 analysis·cohort·ancestry record를 구분",
+                              "Study accession과 summary-statistics availability 확인"
+                    ]
+          ],
+          [
+                    "Reuse",
+                    [
+                              "Association table: reported significant variants 중심",
+                              "Post-GWAS analysis: 보통 genome-wide summary statistics 필요",
+                              "Download 후 genome build · allele · ancestry · phenotype definition 재확인"
+                    ]
+          ]
+], related: ["gwas", "sumstats", "variant"]
+      },
+
+  "allele": {
+    "title": "Allele",
+    "aliases": [
+      "allele",
+      "대립유전자"
+    ],
+    "section": "genetics",
+    "summary": "하나의 genetic locus에서 관찰될 수 있는 서로 다른 sequence form",
+    "body": [
+      [
+        "Definition",
+        [
+          "같은 genomic position에서 가능한 DNA sequence의 alternative form",
+          "Diploid genome에서는 autosome locus마다 보통 maternal allele과 paternal allele을 하나씩 보유",
+          "Population에서는 한 locus에 두 개보다 많은 allele이 존재할 수 있음"
+        ]
+      ],
+      [
+        "Notation",
+        [
+          "Reference allele: reference genome에 기록된 allele; common allele과 항상 동일하지 않음",
+          "Alternate allele: reference와 다른 allele",
+          "Effect allele: association result의 effect size 방향을 정의하는 allele"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "Risk allele이라는 표현은 phenotype과 analysis context에 의존",
+          "서로 다른 dataset 결합 시 effect allele과 other allele의 alignment 확인",
+          "A/T 또는 C/G palindromic SNP는 strand ambiguity에 주의"
+        ]
+      ]
+    ],
+    "related": [
+      "variant",
+      "genotype",
+      "sumstats"
+    ]
+  },
+  "genotype": {
+    "title": "Genotype & dosage",
+    "aliases": [
+      "genotype",
+      "dosage",
+      "genotype dosage"
+    ],
+    "section": "genetics",
+    "summary": "Individual이 특정 locus에서 보유한 allele combination과 그 수치 표현",
+    "body": [
+      [
+        "Genotype",
+        [
+          "Biallelic autosomal variant의 genotype: 0/0 · 0/1 · 1/1",
+          "Allele count 표현: effect allele 수를 0 · 1 · 2로 coding",
+          "Phased genotype은 두 allele이 어느 chromosome copy에 있는지 구분"
+        ]
+      ],
+      [
+        "Dosage",
+        [
+          "Imputed genotype의 uncertainty를 반영한 expected allele count",
+          "범위: 보통 0–2의 continuous value",
+          "Hard call보다 uncertainty 정보를 보존해 association test에 유리"
+        ]
+      ],
+      [
+        "Checks",
+        [
+          "Allele coding과 missing-value convention 확인",
+          "Imputation quality가 낮은 variant는 dosage가 부정확할 수 있음",
+          "Sex chromosome은 ploidy와 coding이 autosome과 다를 수 있음"
+        ]
+      ]
+    ],
+    "related": [
+      "allele",
+      "imputation",
+      "plink"
+    ]
+  },
+  "haplotype": {
+    "title": "Haplotype",
+    "aliases": [
+      "haplotype",
+      "phase",
+      "phasing"
+    ],
+    "section": "genetics",
+    "summary": "하나의 chromosome copy에서 함께 inherited되는 allele combination",
+    "body": [
+      [
+        "Definition",
+        [
+          "서로 가까운 여러 locus의 allele arrangement",
+          "Genotype은 allele pair를 보여주지만 haplotype은 chromosome별 phase를 구분",
+          "Population history와 recombination pattern을 반영"
+        ]
+      ],
+      [
+        "Phasing",
+        [
+          "Observed genotype에서 maternal / paternal chromosome의 allele 배치를 추정",
+          "Family data 또는 population reference panel 활용",
+          "Imputation 전에 일반적으로 phasing step 수행"
+        ]
+      ],
+      [
+        "In GWAS",
+        [
+          "LD block과 tag SNP 이해의 기반",
+          "Reference panel의 haplotype diversity가 imputation accuracy에 영향",
+          "Long-range haplotype은 ancestry와 selection 분석에도 사용"
+        ]
+      ]
+    ],
+    "related": [
+      "ld",
+      "genotype",
+      "imputation"
+    ]
+  },
+  "maf": {
+    "title": "Minor allele frequency",
+    "aliases": [
+      "MAF",
+      "minor allele frequency",
+      "allele frequency"
+    ],
+    "section": "genetics",
+    "summary": "특정 population에서 두 allele 중 덜 흔한 allele의 frequency",
+    "body": [
+      [
+        "Definition",
+        [
+          "Biallelic variant에서 frequency가 낮은 allele의 proportion",
+          "범위: 0–0.5",
+          "Minor allele은 population과 dataset에 따라 달라질 수 있음"
+        ]
+      ],
+      [
+        "Why it matters",
+        [
+          "Low-frequency variant는 carrier 수가 적어 effect estimate가 불안정",
+          "QC threshold와 association model 선택에 사용",
+          "Imputation accuracy는 일반적으로 rare variant에서 낮아짐"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "MAF만으로 allele identity를 전달하지 않으므로 effect allele frequency와 구분",
+          "Reference population과 study population의 frequency 차이 확인",
+          "Case-control study에서는 control frequency와 전체 sample frequency가 다를 수 있음"
+        ]
+      ]
+    ],
+    "related": [
+      "allele",
+      "qc",
+      "sumstats"
+    ]
+  }
+
+,
+
+  "ancestry": {
+    "title": "Ancestry & population structure",
+    "aliases": [
+      "ancestry",
+      "population structure",
+      "population stratification"
+    ],
+    "section": "genetics",
+    "summary": "Shared genetic history에서 생기는 population-level genetic structure",
+    "body": [
+      [
+        "Core concepts",
+        [
+          "Ancestry: genetic similarity와 shared demographic history를 요약하는 개념",
+          "Population structure: allele frequency가 subgroup 간 systematic하게 다른 pattern",
+          "Self-identified ethnicity와 genetic ancestry는 동일한 variable이 아님"
+        ]
+      ],
+      [
+        "Why it matters",
+        [
+          "Phenotype prevalence와 ancestry가 함께 달라지면 spurious association 가능",
+          "LD와 allele frequency가 population마다 달라 fine-mapping과 PRS transferability에 영향",
+          "Reference panel은 study population과 가능한 한 match"
+        ]
+      ],
+      [
+        "Common handling",
+        [
+          "PCA로 major ancestry axes를 요약해 covariate로 사용",
+          "Closely related sample과 population outlier를 QC 단계에서 확인",
+          "Mixed model 또는 stratified analysis로 residual structure를 조정"
+        ]
+      ]
+    ],
+    "related": [
+      "covariates",
+      "ld",
+      "prs"
+    ]
+  },
+  "genotyping": {
+    "title": "Genotyping & sequencing",
+    "aliases": [
+      "genotyping",
+      "genotyping array",
+      "sequencing",
+      "WGS"
+    ],
+    "section": "genetics",
+    "summary": "Genetic variant를 직접 측정하는 array·sequencing 기반 data generation",
+    "body": [
+      [
+        "Genotyping array",
+        [
+          "미리 선택된 probe set으로 특정 variant의 allele을 측정",
+          "Sample당 cost와 processing efficiency가 높아 large cohort에 적합",
+          "Array에 없는 variant는 reference panel 기반 imputation으로 보완"
+        ]
+      ],
+      [
+        "Sequencing",
+        [
+          "WGS: genome 전반의 sequence를 측정",
+          "WES: protein-coding exon 중심",
+          "Depth와 variant-calling pipeline이 genotype quality에 영향"
+        ]
+      ],
+      [
+        "Before analysis",
+        [
+          "Genome build · platform · batch · sample identity 확인",
+          "Array strand와 allele coding harmonization",
+          "Sequencing data는 coverage · mapping quality · genotype quality 확인"
+        ]
+      ]
+    ],
+    "related": [
+      "variant",
+      "qc",
+      "imputation"
+    ]
+  },
+  "imputation": {
+    "title": "Genotype imputation",
+    "aliases": [
+      "imputation",
+      "genotype imputation",
+      "imputation quality"
+    ],
+    "section": "genetics",
+    "summary": "Observed genotype와 reference haplotype을 이용해 untyped variant를 추정하는 과정",
+    "body": [
+      [
+        "Workflow",
+        [
+          "Pre-phasing: sample genotype의 haplotype phase 추정",
+          "Reference panel matching: observed haplotype과 유사한 reference segment 탐색",
+          "Imputation: untyped variant의 genotype probability 또는 dosage 계산"
+        ]
+      ],
+      [
+        "Quality",
+        [
+          "INFO 또는 imputation r²로 variant-level accuracy 평가",
+          "Rare variant와 ancestry-mismatched reference에서 quality가 낮아질 수 있음",
+          "Low-quality imputed variant는 association test 전 filtering"
+        ]
+      ],
+      [
+        "Checklist",
+        [
+          "Genome build와 variant identifier harmonization",
+          "Reference panel의 ancestry · sample size · variant coverage",
+          "Allele frequency consistency와 strand issue 확인"
+        ]
+      ]
+    ],
+    "related": [
+      "haplotype",
+      "genotype",
+      "1000-genomes"
+    ]
+  },
+  "phenotype": {
+    "title": "Phenotype & study design",
+    "aliases": [
+      "phenotype",
+      "trait",
+      "case-control",
+      "quantitative trait"
+    ],
+    "section": "gwas",
+    "summary": "GWAS에서 association의 outcome이 되는 trait와 sample comparison 설계",
+    "body": [
+      [
+        "Phenotype",
+        [
+          "Binary trait: case / control처럼 category로 표현",
+          "Quantitative trait: height·blood pressure처럼 continuous value",
+          "Definition과 measurement reliability가 GWAS power와 interpretation에 직접 영향"
+        ]
+      ],
+      [
+        "Study design",
+        [
+          "Case-control: disease status에 따른 allele frequency 차이 평가",
+          "Cohort / population-based: quantitative trait와 incident outcome 분석",
+          "Meta-analysis: 여러 cohort의 compatible result 결합"
+        ]
+      ],
+      [
+        "Checklist",
+        [
+          "Inclusion / exclusion criteria와 phenotype coding",
+          "Age · sex · medication · measurement batch 같은 covariate",
+          "Sample overlap · relatedness · ancestry composition"
+        ]
+      ]
+    ],
+    "related": [
+      "gwas",
+      "association-model",
+      "covariates"
+    ]
+  }
+
+,
+
+  "qc": {
+    "title": "Sample & variant QC",
+    "aliases": [
+      "quality control",
+      "QC",
+      "sample QC",
+      "variant QC"
+    ],
+    "section": "gwas",
+    "summary": "Association test 전에 sample과 variant의 error·contamination·inconsistency를 확인하는 과정",
+    "body": [
+      [
+        "Sample QC",
+        [
+          "Missingness · heterozygosity · reported/genetic sex consistency",
+          "Duplicate · contamination · cryptic relatedness",
+          "Ancestry outlier와 batch-specific pattern"
+        ]
+      ],
+      [
+        "Variant QC",
+        [
+          "Call rate / missingness · MAF · Hardy–Weinberg equilibrium",
+          "Differential missingness와 batch effect",
+          "Imputed data: INFO 또는 imputation r²"
+        ]
+      ],
+      [
+        "Principle",
+        [
+          "Threshold는 platform · sample size · study design에 맞게 사전 정의",
+          "Filter 전후 sample / variant count 기록",
+          "QC plot과 log를 보존해 exclusion reason 추적"
+        ]
+      ]
+    ],
+    "related": [
+      "plink",
+      "maf",
+      "ancestry"
+    ]
+  },
+  "covariates": {
+    "title": "Covariates & principal components",
+    "aliases": [
+      "covariate",
+      "principal component",
+      "PCA",
+      "genetic PCs"
+    ],
+    "section": "gwas",
+    "summary": "Phenotype과 genotype association을 왜곡할 수 있는 systematic variation의 조정 변수",
+    "body": [
+      [
+        "Covariates",
+        [
+          "기본 예: age · sex · recruitment site · genotyping batch",
+          "Phenotype-specific factor는 causal structure를 고려해 선택",
+          "Outcome의 consequence를 무분별하게 조정하면 bias 가능"
+        ]
+      ],
+      [
+        "Genetic PCs",
+        [
+          "LD-pruned genotype matrix의 major variation axes",
+          "주로 ancestry-related population structure를 요약",
+          "필요한 PC 수는 cohort structure와 diagnostic result를 보고 결정"
+        ]
+      ],
+      [
+        "Checks",
+        [
+          "Covariate missingness와 coding 확인",
+          "PC scatter plot으로 ancestry cluster와 outlier 확인",
+          "QQ plot · LDSC intercept 등으로 residual inflation 평가"
+        ]
+      ]
+    ],
+    "related": [
+      "ancestry",
+      "qq-plot",
+      "association-model"
+    ]
+  },
+  "association-model": {
+    "title": "Association model",
+    "aliases": [
+      "association test",
+      "linear regression",
+      "logistic regression",
+      "mixed model"
+    ],
+    "section": "gwas",
+    "summary": "Genotype dosage와 phenotype의 statistical relationship을 variant별로 추정하는 model",
+    "body": [
+      [
+        "Basic models",
+        [
+          "Quantitative trait: linear regression",
+          "Binary trait: logistic regression",
+          "Predictor: allele count 또는 dosage; output: effect estimate · SE · p-value"
+        ]
+      ],
+      [
+        "Mixed models",
+        [
+          "Genetic relationship matrix를 이용해 relatedness와 population structure를 model",
+          "Large biobank와 related sample에서 calibration과 power 개선",
+          "Binary trait imbalance에는 SAIGE·REGENIE 등 specialized method 사용"
+        ]
+      ],
+      [
+        "Model choice",
+        [
+          "Trait type · case-control ratio · relatedness · sample size",
+          "Rare variant에서는 standard asymptotic test가 불안정할 수 있음",
+          "Software version · covariate · transformation을 result와 함께 기록"
+        ]
+      ]
+    ],
+    "related": [
+      "gwas",
+      "phenotype",
+      "covariates",
+      "plink"
+    ]
+  },
+  "significance": {
+    "title": "Genome-wide significance",
+    "aliases": [
+      "genome-wide significance",
+      "multiple testing",
+      "5e-8"
+    ],
+    "section": "gwas",
+    "summary": "Genome-wide multiple testing을 고려해 association을 판정하는 significance threshold",
+    "body": [
+      [
+        "Why correction is needed",
+        [
+          "GWAS는 수십만–수백만 variant를 동시에 test",
+          "Nominal p < 0.05를 사용하면 false positive가 대량 발생",
+          "Threshold는 family-wise error를 제한하도록 설정"
+        ]
+      ],
+      [
+        "Common threshold",
+        [
+          "Common-variant GWAS에서 p < 5×10⁻⁸을 관례적으로 사용",
+          "Variant 수·ancestry·analysis type에 따라 effective test 수가 달라질 수 있음",
+          "Suggestive threshold는 discovery prioritization용이며 confirmed association과 구분"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "Significance ≠ large effect size 또는 biological importance",
+          "Independent replication과 consistent direction 확인",
+          "Winner's curse로 discovery effect size가 과대 추정될 수 있음"
+        ]
+      ]
+    ],
+    "related": [
+      "gwas",
+      "manhattan",
+      "qq-plot"
+    ]
+  }
+
+,
+
+  "qq-plot": {
+    "title": "QQ plot",
+    "aliases": [
+      "QQ plot",
+      "quantile-quantile plot",
+      "lambda GC"
+    ],
+    "section": "gwas",
+    "summary": "Observed p-value distribution과 null expectation을 비교하는 GWAS diagnostic plot",
+    "body": [
+      [
+        "Axes",
+        [
+          "x-axis: null model에서 기대되는 −log10(p-value)",
+          "y-axis: observed −log10(p-value)",
+          "대부분의 point가 diagonal에 가까우면 global calibration이 양호"
+        ]
+      ],
+      [
+        "Patterns",
+        [
+          "Tail만 위로 이탈: 일부 true association 가능",
+          "전체가 위로 shift: confounding · relatedness · artifact 또는 polygenicity",
+          "아래로 shift: conservative test 또는 over-correction 가능"
+        ]
+      ],
+      [
+        "Checks",
+        [
+          "Genomic inflation factor λGC는 sample size에 민감",
+          "LDSC intercept는 polygenicity와 confounding 구분에 도움",
+          "Manhattan plot·ancestry QC·batch diagnostic과 함께 해석"
+        ]
+      ]
+    ],
+    "related": [
+      "manhattan",
+      "covariates",
+      "gwas"
+    ]
+  },
+  "locus-lead": {
+    "title": "Locus & lead variant",
+    "aliases": [
+      "locus",
+      "lead SNP",
+      "lead variant",
+      "index variant"
+    ],
+    "section": "postgwas",
+    "summary": "GWAS association signal을 대표하는 variant와 주변 genomic region",
+    "body": [
+      [
+        "Lead variant",
+        [
+          "한 region에서 가장 작은 p-value를 가진 representative variant",
+          "Lead variant 자체가 causal variant라는 의미는 아님",
+          "LD clumping 또는 conditional analysis 기준에 따라 선택 결과가 달라질 수 있음"
+        ]
+      ],
+      [
+        "Locus",
+        [
+          "Lead variant 주변의 LD-correlated variant가 포함된 analysis region",
+          "고정 distance window 또는 LD boundary로 정의",
+          "Gene boundary와 동일하지 않음"
+        ]
+      ],
+      [
+        "Reporting",
+        [
+          "Variant ID · chromosome · position · genome build",
+          "Effect allele · effect size · p-value · allele frequency",
+          "Locus definition과 LD reference population"
+        ]
+      ]
+    ],
+    "related": [
+      "ld",
+      "conditional",
+      "fine-mapping"
+    ]
+  },
+  "conditional": {
+    "title": "Conditional analysis",
+    "aliases": [
+      "conditional analysis",
+      "joint analysis",
+      "COJO"
+    ],
+    "section": "postgwas",
+    "summary": "기존 association signal을 model에 포함한 뒤 남는 independent signal을 평가하는 analysis",
+    "body": [
+      [
+        "Concept",
+        [
+          "Top variant를 covariate처럼 조건으로 넣고 주변 variant를 재검정",
+          "Residual association이 있으면 additional independent signal 가능",
+          "LD만으로 생긴 secondary peak와 distinct signal 구분"
+        ]
+      ],
+      [
+        "Data",
+        [
+          "Individual-level genotype가 가장 직접적",
+          "Summary-data method는 effect estimate와 ancestry-matched LD reference 사용",
+          "Stepwise selection은 threshold와 region definition에 민감"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "Independent statistical signal ≠ independent biological mechanism",
+          "Allele alignment와 LD mismatch가 false signal을 만들 수 있음",
+          "Fine-mapping 전 signal count와 region structure를 정리하는 데 사용"
+        ]
+      ]
+    ],
+    "related": [
+      "locus-lead",
+      "ld",
+      "fine-mapping"
+    ]
+  },
+  "fine-mapping": {
+    "title": "Fine-mapping",
+    "aliases": [
+      "fine-mapping",
+      "PIP",
+      "credible set"
+    ],
+    "section": "postgwas",
+    "summary": "GWAS locus 안에서 causal variant candidate를 probability로 prioritization하는 analysis",
+    "body": [
+      [
+        "Outputs",
+        [
+          "Posterior inclusion probability (PIP): 각 variant가 causal일 probability",
+          "Credible set: 지정된 posterior mass를 포함하는 candidate variant set",
+          "Multiple causal signal을 허용하는 method와 single-causal assumption method 구분"
+        ]
+      ],
+      [
+        "Inputs",
+        [
+          "Variant-level summary statistics 또는 individual-level data",
+          "Accurate LD matrix와 consistent allele coding",
+          "Optional functional annotation으로 prior information 추가 가능"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "High PIP는 model과 input 아래에서의 statistical priority",
+          "LD mismatch · missing causal variant · wrong signal count가 result를 왜곡",
+          "Functional evidence와 experimental validation을 함께 확인"
+        ]
+      ]
+    ],
+    "related": [
+      "locus-lead",
+      "conditional",
+      "functional-annotation",
+      "variant-to-gene"
+    ]
+  }
+
+,
+
+  "functional-annotation": {
+    "title": "Functional annotation",
+    "aliases": [
+      "functional annotation",
+      "VEP",
+      "regulatory annotation"
+    ],
+    "section": "postgwas",
+    "summary": "Variant의 genomic location과 predicted molecular consequence를 부여하는 과정",
+    "body": [
+      [
+        "Annotation types",
+        [
+          "Coding consequence: synonymous · missense · stop-gain 등",
+          "Regulatory context: promoter · enhancer · open chromatin · TF binding",
+          "Conservation · deleteriousness score · tissue-specific activity"
+        ]
+      ],
+      [
+        "Inputs",
+        [
+          "Variant position과 genome build",
+          "Transcript set과 annotation database version",
+          "Cell type / tissue context에 맞는 epigenomic data"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "Predicted consequence ≠ experimentally confirmed function",
+          "Nearest gene이 causal gene이라는 보장은 없음",
+          "Fine-mapping PIP·QTL·chromatin interaction 등 independent evidence와 결합"
+        ]
+      ]
+    ],
+    "related": [
+      "fine-mapping",
+      "variant-to-gene",
+      "annotation-resources"
+    ]
+  },
+  "variant-to-gene": {
+    "title": "Variant-to-gene mapping",
+    "aliases": [
+      "variant-to-gene",
+      "V2G",
+      "effector gene"
+    ],
+    "section": "postgwas",
+    "summary": "Associated variant를 potential effector gene에 연결하는 evidence integration",
+    "body": [
+      [
+        "Evidence",
+        [
+          "Physical proximity: nearest gene 또는 distance-based mapping",
+          "Molecular QTL: eQTL · sQTL · pQTL association",
+          "Chromatin interaction · enhancer–promoter map · perturbation result"
+        ]
+      ],
+      [
+        "Integration",
+        [
+          "Fine-mapped variant를 우선 사용해 LD proxy 수를 축소",
+          "Relevant tissue / cell type evidence에 높은 weight",
+          "서로 다른 evidence가 같은 gene으로 converge하는지 확인"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "Gene assignment는 probability 또는 evidence score로 표현",
+          "Single locus에서 multiple gene이 관여할 수 있음",
+          "Association-to-gene mapping과 therapeutic target validation은 별도 단계"
+        ]
+      ]
+    ],
+    "related": [
+      "functional-annotation",
+      "coloc",
+      "gtex"
+    ]
+  },
+  "twas": {
+    "title": "TWAS",
+    "aliases": [
+      "TWAS",
+      "transcriptome-wide association study",
+      "PrediXcan"
+    ],
+    "section": "postgwas",
+    "summary": "Genetically predicted gene expression과 phenotype의 association을 gene level에서 test",
+    "body": [
+      [
+        "Workflow",
+        [
+          "Reference eQTL data로 gene-expression prediction model 학습",
+          "GWAS genotype 또는 summary statistics에 prediction weight 적용",
+          "Predicted expression–trait association을 gene별로 test"
+        ]
+      ],
+      [
+        "What it adds",
+        [
+          "Variant-level signal을 gene-level hypothesis로 요약",
+          "Tissue-specific expression model 비교 가능",
+          "Genome-wide gene test이므로 multiple-testing correction 필요"
+        ]
+      ],
+      [
+        "Limitations",
+        [
+          "Significant TWAS ≠ gene expression의 causal effect",
+          "LD와 co-regulation으로 nearby gene이 함께 significant할 수 있음",
+          "Colocalization·conditional analysis·functional evidence로 follow-up"
+        ]
+      ]
+    ],
+    "related": [
+      "gtex",
+      "coloc",
+      "mr",
+      "variant-to-gene"
+    ]
+  },
+  "mr": {
+    "title": "Mendelian randomization",
+    "aliases": [
+      "MR",
+      "Mendelian randomization",
+      "instrumental variable"
+    ],
+    "section": "postgwas",
+    "summary": "Genetic variant를 instrumental variable로 사용해 exposure–outcome causal effect를 추정",
+    "body": [
+      [
+        "Core assumptions",
+        [
+          "Relevance: instrument가 exposure와 충분히 association",
+          "Independence: instrument와 exposure–outcome confounder가 independent",
+          "Exclusion restriction: instrument가 exposure 이외 pathway로 outcome에 영향하지 않음"
+        ]
+      ],
+      [
+        "Workflow",
+        [
+          "Exposure instrument selection과 LD clumping",
+          "Exposure / outcome allele harmonization",
+          "Wald ratio · IVW 등 effect estimation과 sensitivity analysis"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "Horizontal pleiotropy와 LD confounding이 주요 threat",
+          "Weak instrument · sample overlap · winner's curse 확인",
+          "MR result는 assumption-dependent causal evidence이며 단독 proof가 아님"
+        ]
+      ]
+    ],
+    "related": [
+      "sumstats",
+      "coloc",
+      "opengwas"
+    ]
+  }
+
+,
+
+  "genetic-correlation": {
+    "title": "Genetic correlation",
+    "aliases": [
+      "genetic correlation",
+      "rg",
+      "LD score regression",
+      "LDSC"
+    ],
+    "section": "postgwas",
+    "summary": "두 trait의 genetic effect가 genome-wide하게 공유되는 정도",
+    "body": [
+      [
+        "Meaning",
+        [
+          "rg 범위: −1에서 1",
+          "Positive rg: effect direction이 평균적으로 같은 경향",
+          "Phenotypic correlation과 동일하지 않으며 causality를 의미하지 않음"
+        ]
+      ],
+      [
+        "Estimation",
+        [
+          "LDSC는 GWAS summary statistics와 LD score를 사용",
+          "Sample overlap을 허용하면서 intercept로 일부 bias를 model",
+          "충분한 sample size와 well-calibrated summary statistics 필요"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "Ancestry와 phenotype definition을 맞춰 비교",
+          "Low heritability trait에서는 estimate가 불안정",
+          "Genome-wide sharing이 특정 locus 또는 mechanism 공유를 보장하지 않음"
+        ]
+      ]
+    ],
+    "related": [
+      "sumstats",
+      "qq-plot",
+      "prs"
+    ]
+  },
+  "prs": {
+    "title": "Polygenic risk score",
+    "aliases": [
+      "PRS",
+      "polygenic risk score",
+      "polygenic score",
+      "PGS"
+    ],
+    "section": "postgwas",
+    "summary": "여러 variant의 effect를 weighted sum으로 합친 individual-level genetic score",
+    "body": [
+      [
+        "Construction",
+        [
+          "Score = Σ genotype dosage × GWAS-derived weight",
+          "Clumping+thresholding 또는 LD-aware Bayesian method 사용",
+          "Training GWAS와 target sample을 분리해 overfitting 방지"
+        ]
+      ],
+      [
+        "Evaluation",
+        [
+          "Continuous trait: incremental R² 등",
+          "Binary trait: AUC · odds ratio by score group · calibration",
+          "Clinical utility는 baseline model 대비 added value로 평가"
+        ]
+      ],
+      [
+        "Transferability",
+        [
+          "Ancestry · LD · allele frequency · phenotype definition 차이에 민감",
+          "Target population에서 independent validation 필요",
+          "Risk stratification tool이며 deterministic diagnosis가 아님"
+        ]
+      ]
+    ],
+    "related": [
+      "gwas",
+      "ancestry",
+      "genetic-correlation",
+      "1000-genomes"
+    ]
+  },
+  "opengwas": {
+    "title": "OpenGWAS",
+    "aliases": [
+      "OpenGWAS",
+      "IEU OpenGWAS",
+      "GWAS API"
+    ],
+    "section": "tools",
+    "summary": "GWAS summary statistics를 검색·조회·analysis할 수 있는 programmatic data platform",
+    "body": [
+      [
+        "Contents",
+        [
+          "Trait별 GWAS dataset metadata와 variant-level association",
+          "Dataset ID를 이용한 API / R package access",
+          "MR·colocalization 등 summary-data workflow와 연계"
+        ]
+      ],
+      [
+        "Before use",
+        [
+          "Phenotype definition · ancestry · sample size · build 확인",
+          "Dataset version과 access status 확인",
+          "같은 cohort에서 파생된 dataset 간 sample overlap 주의"
+        ]
+      ],
+      [
+        "Use cases",
+        [
+          "Variant lookup과 instrument extraction",
+          "Two-sample MR exposure / outcome data",
+          "Public summary statistics 탐색과 reproducible query"
+        ]
+      ]
+    ],
+    "related": [
+      "sumstats",
+      "mr",
+      "gwas-catalog"
+    ]
+  },
+  "1000-genomes": {
+    "title": "1000 Genomes Project",
+    "aliases": [
+      "1000 Genomes",
+      "1000G",
+      "1KGP",
+      "IGSR"
+    ],
+    "section": "tools",
+    "summary": "Multiple population의 human genetic variation과 haplotype을 제공하는 public reference resource",
+    "body": [
+      [
+        "Contents",
+        [
+          "Population별 phased genotype와 variant call",
+          "Common·low-frequency variant와 haplotype reference",
+          "Genome build와 release에 따라 file set이 다름"
+        ]
+      ],
+      [
+        "Use cases",
+        [
+          "Genotype imputation reference",
+          "Population-specific LD calculation",
+          "Allele frequency와 ancestry reference"
+        ]
+      ],
+      [
+        "Checks",
+        [
+          "Study ancestry와 reference population match",
+          "Genome build · chromosome naming · variant representation",
+          "Small reference sample에서는 rare-variant LD estimate가 불안정"
+        ]
+      ]
+    ],
+    "related": [
+      "imputation",
+      "ld",
+      "ancestry",
+      "prs"
+    ]
+  }
+
+,
+
+  "dbsnp-ldlink": {
+    "title": "dbSNP & LDlink",
+    "aliases": [
+      "dbSNP",
+      "rsID",
+      "LDlink",
+      "LDproxy",
+      "LDmatrix"
+    ],
+    "section": "tools",
+    "summary": "Variant identifier·metadata와 population-specific LD를 조회하는 public resources",
+    "body": [
+      [
+        "dbSNP",
+        [
+          "rsID와 submitted variant record를 통합",
+          "Allele · genomic placement · reference assembly 정보",
+          "같은 rsID의 assembly별 position과 merged record 확인"
+        ]
+      ],
+      [
+        "LDlink",
+        [
+          "1000 Genomes population을 기반으로 LDproxy·LDmatrix 등 제공",
+          "Query variant 주변 correlated variant와 r² / D′ 확인",
+          "Population selection이 result에 직접 영향"
+        ]
+      ],
+      [
+        "Checks",
+        [
+          "Genome build와 rsID mapping 일치",
+          "Reference population과 study ancestry 일치",
+          "Web lookup result를 large-scale pipeline에 사용할 때 API limit와 version 기록"
+        ]
+      ]
+    ],
+    "related": [
+      "variant",
+      "ld",
+      "1000-genomes"
+    ]
+  },
+  "gtex": {
+    "title": "GTEx",
+    "aliases": [
+      "GTEx",
+      "Genotype-Tissue Expression",
+      "eQTL"
+    ],
+    "section": "tools",
+    "summary": "Human tissue별 gene expression과 genetic regulation을 제공하는 public resource",
+    "body": [
+      [
+        "Contents",
+        [
+          "Multiple tissue의 RNA-seq expression",
+          "Cis-eQTL · sQTL 등 genotype–molecular phenotype association",
+          "Tissue별 sample size와 donor composition이 다름"
+        ]
+      ],
+      [
+        "Use cases",
+        [
+          "GWAS locus의 candidate gene prioritization",
+          "Colocalization과 TWAS reference",
+          "Tissue-specific regulatory effect 비교"
+        ]
+      ],
+      [
+        "Interpretation",
+        [
+          "Bulk tissue signal은 cell-type-specific effect와 다를 수 있음",
+          "Non-significant eQTL은 no effect보다 power 부족일 수 있음",
+          "Genome build · gene annotation · release version 확인"
+        ]
+      ]
+    ],
+    "related": [
+      "coloc",
+      "twas",
+      "variant-to-gene"
+    ]
+  },
+  "annotation-resources": {
+    "title": "Functional annotation resources",
+    "aliases": [
+      "VEP",
+      "FUMA",
+      "ANNOVAR",
+      "functional annotation"
+    ],
+    "section": "tools",
+    "summary": "Variant consequence·regulatory context·gene mapping을 지원하는 annotation tools와 databases",
+    "body": [
+      [
+        "Variant consequence",
+        [
+          "Ensembl VEP: transcript consequence와 known variant annotation",
+          "ANNOVAR 등: gene-based · region-based · filter-based annotation",
+          "Transcript set과 genome build 선택이 output에 영향"
+        ]
+      ],
+      [
+        "Regulatory context",
+        [
+          "ENCODE / Roadmap: chromatin accessibility · histone mark · TF binding",
+          "CADD 등: multiple annotation을 통합한 deleteriousness score",
+          "Tissue / cell-type relevance를 별도로 확인"
+        ]
+      ],
+      [
+        "Integrated platforms",
+        [
+          "FUMA: GWAS locus annotation과 gene mapping workflow",
+          "Tool default를 그대로 사용하지 말고 parameter와 database version 기록",
+          "Predicted annotation은 functional validation과 구분"
+        ]
+      ]
+    ],
+    "related": [
+      "functional-annotation",
+      "variant-to-gene",
+      "gtex"
+    ]
+  }
+
+
+    };
+
+    const sourceLinks = {
+  "variant": [
+    [
+      "NHGRI Genetics Glossary",
+      "https://www.genome.gov/genetics-glossary"
+    ]
+  ],
+  "allele": [
+    [
+      "NHGRI Genetics Glossary",
+      "https://www.genome.gov/genetics-glossary"
+    ]
+  ],
+  "genotype": [
+    [
+      "NHGRI Genetics Glossary",
+      "https://www.genome.gov/genetics-glossary"
+    ]
+  ],
+  "haplotype": [
+    [
+      "1000 Genomes / IGSR",
+      "https://www.internationalgenome.org/"
+    ]
+  ],
+  "maf": [
+    [
+      "PLINK 2 documentation",
+      "https://www.cog-genomics.org/plink/2.0/"
+    ]
+  ],
+  "ancestry": [
+    [
+      "1000 Genomes / IGSR",
+      "https://www.internationalgenome.org/"
+    ]
+  ],
+  "genotyping": [
+    [
+      "NHGRI Genetics Glossary",
+      "https://www.genome.gov/genetics-glossary"
+    ]
+  ],
+  "imputation": [
+    [
+      "1000 Genomes / IGSR",
+      "https://www.internationalgenome.org/"
+    ]
+  ],
+  "ld": [
+    [
+      "LDlink",
+      "https://ldlink.nih.gov/"
+    ],
+    [
+      "1000 Genomes / IGSR",
+      "https://www.internationalgenome.org/"
+    ]
+  ],
+  "gwas": [
+    [
+      "NHGRI-EBI GWAS Catalog",
+      "https://www.ebi.ac.uk/gwas/"
+    ]
+  ],
+  "phenotype": [
+    [
+      "NHGRI-EBI GWAS Catalog",
+      "https://www.ebi.ac.uk/gwas/"
+    ]
+  ],
+  "qc": [
+    [
+      "PLINK 2 documentation",
+      "https://www.cog-genomics.org/plink/2.0/"
+    ]
+  ],
+  "covariates": [
+    [
+      "PLINK 2 documentation",
+      "https://www.cog-genomics.org/plink/2.0/"
+    ]
+  ],
+  "association-model": [
+    [
+      "PLINK 2 documentation",
+      "https://www.cog-genomics.org/plink/2.0/"
+    ],
+    [
+      "REGENIE",
+      "https://rgcgithub.github.io/regenie/"
+    ]
+  ],
+  "significance": [
+    [
+      "NHGRI-EBI GWAS Catalog",
+      "https://www.ebi.ac.uk/gwas/"
+    ]
+  ],
+  "manhattan": [
+    [
+      "NHGRI-EBI GWAS Catalog",
+      "https://www.ebi.ac.uk/gwas/"
+    ]
+  ],
+  "qq-plot": [
+    [
+      "PLINK 2 documentation",
+      "https://www.cog-genomics.org/plink/2.0/"
+    ]
+  ],
+  "sumstats": [
+    [
+      "GWAS Catalog summary statistics",
+      "https://www.ebi.ac.uk/gwas/downloads/summary-statistics"
+    ]
+  ],
+  "locus-lead": [
+    [
+      "NHGRI-EBI GWAS Catalog",
+      "https://www.ebi.ac.uk/gwas/"
+    ]
+  ],
+  "conditional": [
+    [
+      "GCTA-COJO",
+      "https://yanglab.westlake.edu.cn/software/gcta/"
+    ]
+  ],
+  "fine-mapping": [
+    [
+      "FINEMAP",
+      "http://www.christianbenner.com/"
+    ],
+    [
+      "SuSiE",
+      "https://stephenslab.github.io/susieR/"
+    ]
+  ],
+  "functional-annotation": [
+    [
+      "Ensembl VEP",
+      "https://www.ensembl.org/info/docs/tools/vep/index.html"
+    ]
+  ],
+  "variant-to-gene": [
+    [
+      "Open Targets Genetics",
+      "https://genetics.opentargets.org/"
+    ],
+    [
+      "FUMA",
+      "https://fuma.ctglab.nl/"
+    ]
+  ],
+  "coloc": [
+    [
+      "coloc documentation",
+      "https://chr1swallace.github.io/coloc/"
+    ]
+  ],
+  "twas": [
+    [
+      "PredictDB / PrediXcan",
+      "https://predictdb.org/"
+    ]
+  ],
+  "mr": [
+    [
+      "TwoSampleMR documentation",
+      "https://mrcieu.github.io/TwoSampleMR/"
+    ]
+  ],
+  "genetic-correlation": [
+    [
+      "LD Score Regression",
+      "https://github.com/bulik/ldsc"
+    ]
+  ],
+  "prs": [
+    [
+      "PGS Catalog",
+      "https://www.pgscatalog.org/"
+    ]
+  ],
+  "plink": [
+    [
+      "PLINK 2 documentation",
+      "https://www.cog-genomics.org/plink/2.0/"
+    ]
+  ],
+  "gwas-catalog": [
+    [
+      "NHGRI-EBI GWAS Catalog",
+      "https://www.ebi.ac.uk/gwas/"
+    ]
+  ],
+  "opengwas": [
+    [
+      "OpenGWAS",
+      "https://gwas.mrcieu.ac.uk/"
+    ],
+    [
+      "OpenGWAS API",
+      "https://api.opengwas.io/api/"
+    ]
+  ],
+  "1000-genomes": [
+    [
+      "1000 Genomes / IGSR",
+      "https://www.internationalgenome.org/"
+    ]
+  ],
+  "dbsnp-ldlink": [
+    [
+      "NCBI dbSNP",
+      "https://www.ncbi.nlm.nih.gov/snp/"
+    ],
+    [
+      "LDlink",
+      "https://ldlink.nih.gov/"
+    ]
+  ],
+  "gtex": [
+    [
+      "GTEx Portal",
+      "https://gtexportal.org/home/"
+    ]
+  ],
+  "annotation-resources": [
+    [
+      "Ensembl VEP",
+      "https://www.ensembl.org/info/docs/tools/vep/index.html"
+    ],
+    [
+      "FUMA",
+      "https://fuma.ctglab.nl/"
+    ]
+  ]
+};
+
+    const glossaryTerms = {
+      "genetic variant": { key: "variant", definition: "Reference sequence와 다른 DNA position 또는 sequence." },
+      "variant": { key: "variant", definition: "Reference sequence와 다른 DNA position 또는 sequence." },
+      "snp": { key: "snp", definition: "Single nucleotide position에서 나타나는 genetic variant." },
+      "allele": { key: "allele", definition: "하나의 locus에서 가능한 서로 다른 sequence form." },
+      "alleles": { key: "allele", definition: "하나의 locus에서 가능한 서로 다른 sequence form." },
+      "genotype": { key: "genotype", definition: "Individual이 보유한 allele combination 또는 allele count." },
+      "phenotype": { key: "phenotype", definition: "GWAS에서 분석하는 관찰 가능한 trait 또는 disease status." },
+      "locus": { key: "locus", definition: "Genome상의 특정 position 또는 genomic region." },
+      "loci": { key: "locus", definition: "Genome상의 특정 position 또는 genomic region." },
+      "ld": { key: "ld", definition: "서로 다른 variant가 population에서 non-random하게 함께 나타나는 pattern." },
+      "ancestry": { key: "ancestry", definition: "Shared genetic background를 반영하는 population structure." },
+      "association": { key: "association", definition: "Variant와 phenotype 사이의 statistical relationship; causality와는 구분." },
+      "effect size": { key: "effect-size", definition: "Association의 direction과 magnitude; 주로 beta 또는 OR로 표시." },
+      "p-value": { key: "p-value", definition: "Null model에서 현재보다 극단적인 result가 나올 probability." },
+      "summary statistics": { key: "summary-statistics", definition: "Variant별 effect size, SE, p-value 등을 담은 result table." },
+      "summary stats": { key: "summary-statistics", definition: "Variant별 effect size, SE, p-value 등을 담은 result table." },
+      "genome build": { key: "genome-build", definition: "Genomic position의 기준이 되는 reference genome version." },
+      "reference panel": { key: "reference-panel", definition: "Imputation 또는 LD 계산에 사용하는 reference genotype dataset." },
+      "causal variant": { key: "causal-variant", definition: "Phenotype 변화에 직접 관여한다고 추정되는 genetic variant." }
+    };
+    const glossaryPattern = /(^|[^A-Za-z0-9])(summary statistics|summary stats|genetic variant|causal variant|reference panel|genome build|effect size|association|phenotype|genotype|ancestry|alleles?|p-value|variant|locus|loci|SNP|LD)(?=$|[^A-Za-z0-9])/gi;
+
+    function createAnnotator() {
+      const seen = new Set();
+      return function (text) {
+        return esc(text).replace(glossaryPattern, function (match, prefix, term) {
+          const item = glossaryTerms[term.toLowerCase()];
+          if (!item || seen.has(item.key)) return match;
+          seen.add(item.key);
+          return prefix + '<span class="glossary-term" tabindex="0" data-definition="' + esc(item.definition) + '">' + esc(term) + '</span>';
+        });
+      };
+    }
+
+    const app = document.getElementById("app");
+    const topSearch = document.getElementById("topSearch");
+    let activeFilter = "all";
+
+    function esc(value) {
+      return String(value).replace(/[&<>'"]/g, function (c) {
+        return {"&":"&amp;", "<":"&lt;", ">":"&gt;", "'":"&#39;", '"':"&quot;"}[c];
+      });
+    }
+
+    function route(hash) {
+      window.location.hash = hash;
+    }
+
+    function categoryCards() {
+      return Object.keys(sections).map(function (key) {
+        const s = sections[key];
+        return '<button class="category-card" style="--accent:' + s.accent + '" data-section="' + key + '">' +
+          '<span class="category-number">' + s.number + ' · ' + s.english + '</span>' +
+          '<h3>' + s.title + '</h3><p>' + s.summary + '</p>' +
+          '<span class="card-route">질문으로 살펴보기 →</span></button>';
+      }).join("");
+    }
+
+    function renderHome() {
+      document.title = "GWAS Lab Wiki";
+      app.innerHTML = '<section class="hero"><div class="container">' +
+        '<p class="eyebrow">Genetics knowledge base</p><h1>GWAS Lab Wiki</h1>' +
+        '<p class="hero-copy">Genetics · GWAS · Post-GWAS · Resources</p>' +
+        '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="GWAS 위키 통합 검색" placeholder="Search: LD, linkage disequilibrium, summary statistics"><span class="search-icon">⌕</span></form>' +
+        '<p class="search-hint">Korean / English / acronym</p></div></section>' +
+        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>질문을 따라 큰 구조부터 살펴보세요.</p></div>' +
+        '<div class="category-grid">' + categoryCards() + '</div></div></section>';
+      document.getElementById("heroSearchForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const q = document.getElementById("heroSearch").value.trim();
+        if (q) route("search/" + encodeURIComponent(q));
+      });
+      window.scrollTo(0, 0);
+    }
+
+    function renderSection(key) {
+      const s = sections[key];
+      if (!s) return renderHome();
+      document.title = s.title + " · GWAS Lab Wiki";
+      const annotateOnce = createAnnotator();
+      const groups = s.groups.map(function (group, i) {
+        const items = group.items.map(function (item) {
+          const hasPage = Boolean(item[0] && articles[item[0]]);
+          return '<div class="concept-row"><strong>' + annotateOnce(item[1]) + '</strong><p>' + annotateOnce(item[2]) + '</p>' +
+            (hasPage ? '<button data-article="' + item[0] + '">읽기 →</button>' : '<span class="map-label">개념 지도</span>') + '</div>';
+        }).join("");
+        return '<section class="question-block"><div class="question-head"><small>QUESTION ' + String(i + 1).padStart(2, "0") + '</small>' +
+          '<h2>' + annotateOnce(group.q) + '</h2><p>' + annotateOnce(group.note) + '</p></div><div>' + items + '</div></section>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb" aria-label="현재 위치"><button data-route="home">홈</button><span>›</span>' + s.title + '</nav>' +
+        '<header class="page-header" style="border-top:4px solid ' + s.accent + '"><p class="eyebrow">' + s.number + ' · ' + s.english + '</p><h1>' + s.title + '</h1><p class="lead">' + s.summary + '</p></header>' +
+        '<div class="question-list">' + groups + '</div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function articleText(a) {
+      const bodyText = a.body.map(function (b) { return [b[0]].concat(Array.isArray(b[1]) ? b[1] : [b[1]]).join(" "); });
+      return [a.title, a.aliases.join(" "), a.summary].concat(bodyText).join(" ").toLowerCase();
+    }
+
+    function highlight(text, query) {
+      if (!query) return esc(text);
+      const safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return esc(text).replace(new RegExp("(" + safe + ")", "ig"), "<mark>$1</mark>");
+    }
+
+    function searchArticles(query, filter) {
+      const q = query.trim().toLowerCase();
+      if (!q) return [];
+      return Object.keys(articles).map(function (id) {
+        const a = articles[id];
+        if (filter !== "all" && a.section !== filter) return null;
+        const hay = articleText(a);
+        const pos = hay.indexOf(q);
+        if (pos < 0) return null;
+        const titleHit = a.title.toLowerCase().includes(q) ? 3 : 0;
+        const aliasHit = a.aliases.join(" ").toLowerCase().includes(q) ? 2 : 0;
+        return { id: id, article: a, score: titleHit + aliasHit + 1 };
+      }).filter(Boolean).sort(function (a, b) { return b.score - a.score || a.article.title.localeCompare(b.article.title); });
+    }
+
+    function renderSearch(query) {
+      document.title = '"' + query + '" 검색 · GWAS Lab Wiki';
+      const filterButtons = ['<button class="filter-btn ' + (activeFilter === "all" ? "active" : "") + '" data-filter="all">전체</button>'].concat(
+        Object.keys(sections).map(function (key) { return '<button class="filter-btn ' + (activeFilter === key ? "active" : "") + '" data-filter="' + key + '">' + sections[key].title + '</button>'; })
+      ).join("");
+      const found = searchArticles(query, activeFilter);
+      const cards = found.length ? found.map(function (r) {
+        const s = sections[r.article.section];
+        return '<button class="result-card" data-article="' + r.id + '"><span class="result-path">' + s.title + ' › 문서</span>' +
+          '<h2>' + highlight(r.article.title, query) + '</h2><p>' + highlight(r.article.summary, query) + '</p></button>';
+      }).join("") : '<div class="empty"><strong>No results</strong><br>Try: English / Korean / acronym</div>';
+      app.innerHTML = '<div class="container search-page"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span>검색</nav>' +
+        '<header class="page-header"><p class="eyebrow">Search</p><h1>“' + esc(query) + '”</h1></header>' +
+        '<div class="search-summary"><p>Public pages · <strong>' + found.length + '</strong></p><div class="filters">' + filterButtons + '</div></div>' +
+        '<div class="results">' + cards + '</div></div>';
+      topSearch.value = query;
+      window.scrollTo(0, 0);
+    }
+
+    function renderArticle(id) {
+      const a = articles[id];
+      if (!a) return renderHome();
+      const s = sections[a.section];
+      const annotateOnce = createAnnotator();
+      document.title = a.title + " · GWAS Lab Wiki";
+      const body = a.body.map(function (part) {
+        const points = Array.isArray(part[1]) ? part[1] : part[1].replace(/\.\s+/g, ".||| ").split("|||").filter(Boolean);
+        return '<section><h2>' + part[0] + '</h2><ul class="fact-list">' + points.map(function (point) { return "<li>" + annotateOnce(point.trim()) + "</li>"; }).join("") + "</ul></section>";
+      }).join("");
+      const related = a.related.filter(function (rid) { return articles[rid]; }).map(function (rid) {
+        return '<button data-article="' + rid + '">' + articles[rid].title + ' →</button>';
+      }).join("");
+      const sources = (sourceLinks[id] || []).map(function (source) {
+        return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
+        '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
+        '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
+        '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
+        '<div class="aside-box source-box"><h3>Sources</h3><div class="source-list">' + sources + '</div></div>' +
+        '<div class="policy-note">Public concepts · Standard methods<br>Excluded: Project · Hypothesis · Internal result</div></aside></div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function handleRoute() {
+      const raw = window.location.hash.replace(/^#/, "");
+      const parts = raw.split("/");
+      if (!raw || raw === "home") return renderHome();
+      if (parts[0] === "section") return renderSection(parts[1]);
+      if (parts[0] === "article") return renderArticle(parts[1]);
+      if (parts[0] === "search") return renderSearch(decodeURIComponent(parts.slice(1).join("/")));
+      renderHome();
+    }
+
+    document.addEventListener("click", function (e) {
+      const home = e.target.closest("[data-route='home']");
+      const section = e.target.closest("[data-section]");
+      const article = e.target.closest("[data-article]");
+      const filter = e.target.closest("[data-filter]");
+      if (home) route("home");
+      else if (article) route("article/" + article.dataset.article);
+      else if (section) route("section/" + section.dataset.section);
+      else if (filter) { activeFilter = filter.dataset.filter; const q = decodeURIComponent(window.location.hash.split("/").slice(1).join("/")); renderSearch(q); }
+    });
+
+    document.getElementById("topSearchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const q = topSearch.value.trim();
+      if (q) { activeFilter = "all"; route("search/" + encodeURIComponent(q)); }
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+        e.preventDefault(); topSearch.focus();
+      }
+    });
+    window.addEventListener("hashchange", handleRoute);
+    handleRoute();
+  </script>
+</body>
+</html>
