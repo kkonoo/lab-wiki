@@ -1,3 +1,3 @@
 # lab-wiki
 
-https://HaLab-KNUmed.github.io/lab-wiki
+https://kkonoo.github.io/lab-wiki
