@@ -1,0 +1,1748 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MS-based와 affinity-based proteomics를 질문으로 탐색하는 Lab Wiki">
+  <title>Proteomics · Lab Wiki</title>
+  <style>
+    :root {
+      --ink: #18211b;
+      --muted: #667168;
+      --paper: #f7f7f2;
+      --surface: #ffffff;
+      --line: #d8ddd7;
+      --green: #1f5d43;
+      --green-soft: #e7f0ea;
+      --blue: #315d78;
+      --rust: #94553b;
+      --gold: #936f21;
+      --shadow: 0 14px 35px rgba(24, 33, 27, .07);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    button, input { font: inherit; }
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 247, 242, .94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .topbar-inner {
+      width: min(1180px, calc(100% - 40px));
+      min-height: 64px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .brand {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--ink);
+      cursor: pointer;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.18rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .brand span { color: var(--green); }
+    .brand-group { display: flex; align-items: center; white-space: nowrap; }
+    .brand-home { text-decoration: none; }
+    .brand-domain { margin-left: 6px; }
+    .top-search {
+      flex: 1;
+      max-width: 560px;
+      margin-left: auto;
+      position: relative;
+    }
+    .top-search input {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      padding: 0 44px 0 14px;
+      color: var(--ink);
+      outline: none;
+    }
+    .top-search input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+    .keycap {
+      position: absolute;
+      right: 10px;
+      top: 9px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--muted);
+      background: var(--paper);
+      padding: 1px 6px;
+      font-size: .75rem;
+    }
+
+    main { min-height: calc(100vh - 140px); }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+
+    .hero {
+      padding: 78px 0 52px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(rgba(31, 93, 67, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 93, 67, .035) 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { font-family: Georgia, "Noto Serif KR", serif; line-height: 1.25; }
+    .hero h1 { margin: 0; font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: -.045em; }
+    .hero-copy { margin: 16px auto 26px; max-width: 650px; color: var(--muted); font-size: 1.04rem; }
+    .hero-search { width: min(720px, calc(100% - 32px)); margin: 0 auto; position: relative; }
+    .hero-search input {
+      width: 100%;
+      height: 62px;
+      border: 1px solid #bac6bd;
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 0 58px 0 20px;
+      color: var(--ink);
+      font-size: 1.03rem;
+      outline: none;
+    }
+    .hero-search input:focus { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft), var(--shadow); }
+    .search-icon { position: absolute; right: 20px; top: 18px; color: var(--green); font-size: 1.3rem; }
+    .search-hint { margin: 11px 0 0; color: var(--muted); font-size: .82rem; }
+
+    .browse { padding: 58px 0 76px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    .section-heading h2 { margin: 0; font-size: 1.65rem; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .category-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .category-card {
+      position: relative;
+      min-height: 235px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 26px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .category-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .category-card:focus-visible { outline: 3px solid var(--green-soft); outline-offset: 2px; }
+    .category-number { color: var(--accent); font-family: Georgia, serif; font-size: .95rem; font-weight: 700; }
+    .category-card h3 { margin: 12px 0 10px; font-size: 1.65rem; }
+    .category-card p { margin: 0 0 25px; max-width: 520px; color: var(--muted); }
+    .card-route { position: absolute; left: 26px; bottom: 23px; color: var(--accent); font-size: .86rem; font-weight: 750; }
+
+    .breadcrumb { padding: 30px 0 18px; color: var(--muted); font-size: .84rem; }
+    .breadcrumb button { border: 0; padding: 0; background: none; color: var(--green); cursor: pointer; }
+    .breadcrumb span { margin: 0 8px; color: #9ca49e; }
+    .page-header { padding: 18px 0 36px; border-bottom: 1px solid var(--line); }
+    .page-header h1 { margin: 7px 0 12px; font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.035em; }
+    .page-header .lead { margin: 0; max-width: 740px; color: var(--muted); font-size: 1.04rem; }
+    .question-list { padding: 42px 0 72px; display: grid; gap: 16px; }
+    .question-block { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: visible; }
+    .question-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); }
+    .question-head small { color: var(--green); font-weight: 800; }
+    .question-head h2 { margin: 5px 0 7px; font-size: 1.35rem; }
+    .question-head p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .concept-row { display: grid; grid-template-columns: 1.2fr 2fr auto; align-items: center; gap: 18px; padding: 17px 24px; border-top: 1px solid #edf0ec; }
+    .concept-row:first-child { border-top: 0; }
+    .concept-row strong { font-size: .95rem; }
+    .concept-row p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .concept-row button { border: 0; background: none; color: var(--green); font-weight: 750; cursor: pointer; padding: 5px; }
+    .concept-row .map-label { color: #8b948d; font-size: .78rem; white-space: nowrap; }
+
+    .search-page { padding-bottom: 72px; }
+    .search-summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 10px 0 22px; }
+    .search-summary p { margin: 0; color: var(--muted); }
+    .filters { display: flex; flex-wrap: wrap; gap: 7px; }
+    .filter-btn { border: 1px solid var(--line); border-radius: 999px; background: var(--surface); padding: 6px 12px; color: var(--muted); cursor: pointer; font-size: .8rem; }
+    .filter-btn.active { border-color: var(--green); background: var(--green-soft); color: var(--green); font-weight: 750; }
+    .results { display: grid; gap: 12px; }
+    .result-card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 20px 22px; cursor: pointer; text-align: left; }
+    .result-card:hover { border-color: #93aa9a; box-shadow: 0 7px 20px rgba(24, 33, 27, .05); }
+    .result-path { color: var(--green); font-size: .76rem; font-weight: 750; }
+    .result-card h2 { margin: 4px 0 6px; font-size: 1.25rem; }
+    .result-card p { margin: 0; color: var(--muted); font-size: .9rem; }
+    mark { background: #fff0ad; color: inherit; padding: 0 2px; }
+    .empty { border: 1px dashed #b8c0ba; border-radius: var(--radius); padding: 48px 24px; text-align: center; color: var(--muted); }
+
+    .article-layout { display: grid; grid-template-columns: minmax(0, 740px) 260px; gap: 64px; padding: 12px 0 80px; align-items: start; }
+    .article { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(25px, 5vw, 52px); }
+    .article h1 { margin: 6px 0 5px; font-size: clamp(2.1rem, 5vw, 3.5rem); letter-spacing: -.03em; }
+    .aliases { margin: 0 0 26px; color: var(--muted); font-size: .83rem; }
+    .definition { margin: 0 0 34px; padding: 18px 20px; border-left: 4px solid var(--green); background: var(--green-soft); font-size: 1.03rem; }
+    .article h2 { margin: 34px 0 12px; padding-bottom: 7px; border-bottom: 1px solid var(--line); font-size: 1.32rem; }
+    .article p { margin: 0 0 15px; }
+    .article ul { margin: 0 0 18px; padding-left: 22px; }
+    .article li { margin: 6px 0; }
+    .fact-list {
+      display: grid;
+      gap: 9px;
+      margin: 0 0 18px;
+      padding-left: 20px;
+      color: #37423a;
+    }
+    .fact-list li { padding-left: 4px; }
+    .fact-list li::marker { color: var(--green); }
+    .term-link { border: 0; border-bottom: 1px solid #8aa897; background: none; padding: 0; color: var(--green); cursor: pointer; font-weight: 700; }
+    .glossary-term {
+      position: relative;
+      border-bottom: 1px dotted var(--green);
+      color: #174b37;
+      cursor: help;
+      outline: none;
+    }
+    .glossary-term::after {
+      content: attr(data-definition);
+      position: absolute;
+      z-index: 40;
+      left: 0;
+      bottom: calc(100% + 8px);
+      width: max-content;
+      max-width: min(320px, calc(100vw - 40px));
+      padding: 10px 12px;
+      border-radius: 7px;
+      background: #17221b;
+      color: #f8faf8;
+      box-shadow: 0 10px 28px rgba(10, 20, 14, .24);
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      font-size: .78rem;
+      font-weight: 500;
+      line-height: 1.55;
+      letter-spacing: 0;
+      white-space: normal;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(4px);
+      transition: opacity .14s ease, transform .14s ease, visibility .14s ease;
+      pointer-events: none;
+    }
+    .glossary-term:hover::after,
+    .glossary-term:focus::after {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .glossary-term:focus { border-bottom-style: solid; }
+    .tooltip-hint {
+      margin: -15px 0 25px;
+      color: var(--muted);
+      font-size: .76rem;
+    }
+    .aside { position: sticky; top: 88px; }
+    .aside-box { border-top: 3px solid var(--green); background: var(--surface); padding: 18px; box-shadow: 0 8px 24px rgba(24,33,27,.05); }
+    .aside-box h3 { margin: 0 0 12px; font-size: 1rem; }
+    .related-list { display: grid; gap: 9px; }
+    .related-list button { border: 0; background: none; padding: 0; text-align: left; color: var(--green); cursor: pointer; font-size: .87rem; }
+    .source-box { margin-top: 16px; border-top-color: var(--blue); }
+    .source-list { display: grid; gap: 9px; }
+    .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
+    .source-list a:hover { text-decoration: underline; }
+    .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
+
+    footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
+    footer .container { display: flex; justify-content: space-between; gap: 20px; }
+
+    @media (max-width: 820px) {
+      .topbar-inner { width: min(100% - 24px, 1180px); gap: 12px; }
+      .brand { font-size: 1rem; }
+      .keycap { display: none; }
+      .container { width: min(100% - 28px, 1120px); }
+      .hero { padding-top: 54px; }
+      .category-grid { grid-template-columns: 1fr; }
+      .category-card { min-height: 215px; }
+      .concept-row { grid-template-columns: 1fr auto; }
+      .concept-row p { grid-column: 1 / -1; grid-row: 2; }
+      .article-layout { grid-template-columns: 1fr; gap: 20px; }
+      .aside { position: static; }
+      .search-summary { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 520px) {
+      .topbar-inner { min-height: 58px; }
+      .brand-domain { display: none; }
+      .top-search input { height: 38px; }
+      .hero h1 { font-size: 2.55rem; }
+      .hero-search input { height: 56px; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .category-card { padding: 21px; }
+      .card-route { left: 21px; }
+      .question-head, .concept-row { padding-left: 18px; padding-right: 18px; }
+      .article { border-left: 0; border-right: 0; border-radius: 0; margin-left: -14px; margin-right: -14px; }
+      footer .container { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html">Lab Wiki</a><button class="brand brand-domain" type="button" data-route="home"><span>/ Proteomics</span></button></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer>
+    <div class="container">
+      <span>Proteomics · Public knowledge · Standard methods · Updated 2026-06-24</span>
+      <span>Excluded: Project · Hypothesis · Internal result</span>
+    </div>
+  </footer>
+
+  <script>
+    const sections = {"platform":{"number":"01","title":"Measurement Platforms","english":"WHAT PRODUCES THE SIGNAL","accent":"#8b4f3a","summary":"Proteome · MS-based · Affinity-based · SomaScan · Olink","groups":[{"q":"Proteomics는 무엇을 측정하는가?","note":"Protein layer → measurable evidence","items":[["proteome","Proteome & proteomics","관측 가능한 protein layer와 measurement boundary"],["protein-peptide","Protein · peptide · proteoform","Biological entity와 assay evidence의 차이"]]},{"q":"MS-based와 affinity-based는 무엇이 다른가?","note":"Ion signal vs binding-derived signal","items":[["platform-overview","Platform overview","질문에 따라 measurement principle을 선택"],["ms-based","MS-based proteomics","Peptide ion과 fragment spectrum으로 identify·quantify"],["affinity-based","Affinity-based proteomics","Antibody 또는 aptamer binding을 proxy signal로 변환"]]},{"q":"SomaScan과 Olink는 무엇이 다른가?","note":"SOMAmer aptamer vs antibody-pair PEA","items":[["somascan","SomaScan","SOMAmer-based affinity assay"],["olink","Olink PEA","Paired-antibody proximity extension assay"]]}]},"ms":{"number":"02","title":"MS-based Workflow","english":"FROM SAMPLE TO PEPTIDE SIGNAL","accent":"#526b7a","summary":"Preparation · LC-MS/MS · DDA/DIA · Identification · Quantification","groups":[{"q":"Sample은 어떻게 peptide가 되는가?","note":"Extraction → cleanup → digestion","items":[["sample-prep","Sample preparation","Protein extraction과 interference removal"],["digestion","Enzymatic digestion","Protein을 peptide로 절단"]]},{"q":"Peptide signal은 어떻게 획득하는가?","note":"LC separation → ionization → MS/MS","items":[["lc-ms","LC-MS/MS","Peptide separation과 mass analysis"],["dda-dia","DDA · DIA · targeted acquisition","어떤 ion을 fragment할지 결정"]]},{"q":"Peptide identity와 abundance는 어떻게 얻는가?","note":"Spectrum matching → confidence → quantification","items":[["database-search","Database search & PSM","Spectrum과 peptide sequence를 matching"],["quantification","Peptide & protein quantification","Signal intensity를 abundance로 요약"]]}]},"affinity":{"number":"03","title":"Affinity-based Workflow","english":"FROM BINDING TO PROXY SIGNAL","accent":"#6f6948","summary":"Binding reagent · DNA proxy · Specificity · QC · Plasma pQTL","groups":[{"q":"Protein binding은 어떻게 읽을 수 있는 signal이 되는가?","note":"Antibody/aptamer binding → nucleic-acid proxy","items":[["affinity-readout","Affinity signal & readout","Protein 자체가 아니라 binding-derived proxy를 읽음"]]},{"q":"Affinity signal은 어떻게 해석하고 QC하는가?","note":"Specificity · epitope · normalization","items":[["specificity-epitope","Specificity & epitope effect","Binding signal이 protein abundance와 항상 같지는 않음"],["affinity-qc","Normalization & QC","Plate·batch·control을 함께 점검"]]},{"q":"왜 plasma와 population study에 많이 쓰는가?","note":"Small volume · throughput · predefined panel","items":[["plasma-proteomics","Population-scale plasma proteomics","많은 sample을 동일 panel로 측정"],["pqtl-proteomics","pQTL & proteomics","Genetic variant와 protein signal의 association"]]}]},"analysis":{"number":"04","title":"Analysis & Resources","english":"FROM PROTEIN LIST TO BIOLOGY","accent":"#694f63","summary":"Differential abundance · PTM · Pathway · Tools · Repositories","groups":[{"q":"Condition에 따라 달라지는 protein은 어떻게 찾는가?","note":"Design → model → effect size → FDR","items":[["differential-proteomics","Differential abundance","Group·condition 간 protein signal 비교"]]},{"q":"Protein modification과 pathway는 어떻게 해석하는가?","note":"Site-level evidence → gene set/network","items":[["ptm","PTM & phosphoproteomics","Modification site를 별도로 enrich·identify"],["proteomics-enrichment","Pathway & network analysis","Protein list를 functional unit으로 요약"]]},{"q":"Tool과 public data는 어디서 찾는가?","note":"Processing software · reference · repository","items":[["proteomics-tools","Analysis tools","Workflow 단계별 software 선택"],["proteomics-databases","Databases & repositories","Reference와 public proteomics data"]]}]}};
+
+    const articles = {
+    "proteome":  {
+                     "title":  "Proteome \u0026 proteomics",
+                     "aliases":  [
+                                     "proteome",
+                                     "proteomics",
+                                     "protein expression"
+                                 ],
+                     "section":  "platform",
+                     "summary":  "특정 sample·condition·time에서 관측되는 전체 protein layer와 이를 large scale로 분석하는 field",
+                     "body":  [
+                                  [
+                                      "Proteome",
+                                      [
+                                          "Genome과 달리 tissue · cell state · time · treatment에 따라 크게 변함",
+                                          "Protein abundance뿐 아니라 localization · interaction · modification을 포함",
+                                          "한 assay에서 실제로 관측 가능한 proteome은 extraction과 detection range에 제한됨"
+                                      ]
+                                  ],
+                                  [
+                                      "Proteomics",
+                                      [
+                                          "많은 protein을 동시에 identify하고 quantify",
+                                          "Discovery proteomics와 targeted proteomics로 목적을 구분",
+                                          "Bottom-up · top-down 등 protein을 측정하는 level에 따라 workflow가 달라짐"
+                                      ]
+                                  ],
+                                  [
+                                      "Interpretation",
+                                      [
+                                          "Detected protein = sample에 존재하며 workflow에서 관측 가능한 protein",
+                                          "Not detected는 biological absence와 동일하지 않음",
+                                          "Coverage · dynamic range · missingness를 함께 보고 해석"
+                                      ]
+                                  ]
+                              ],
+                     "related":  [
+                                     "protein-peptide",
+                                     "sample-prep",
+                                     "quantification"
+                                 ]
+                 },
+    "protein-peptide":  {
+                            "title":  "Protein · peptide · proteoform",
+                            "aliases":  [
+                                            "protein",
+                                            "peptide",
+                                            "proteoform",
+                                            "protein group"
+                                        ],
+                            "section":  "platform",
+                            "summary":  "Biological protein과 MS에서 직접 관측되는 peptide evidence 사이의 measurement hierarchy",
+                            "body":  [
+                                         [
+                                             "Protein",
+                                             [
+                                                 "Amino-acid sequence가 folding과 interaction을 통해 기능",
+                                                 "Isoform · sequence variant · PTM에 따라 여러 molecular form 존재",
+                                                 "Database entry와 실제 sample의 molecular form이 일대일이 아닐 수 있음"
+                                             ]
+                                         ],
+                                         [
+                                             "Peptide",
+                                             [
+                                                 "Bottom-up proteomics에서 digestion으로 생성되는 측정 단위",
+                                                 "Peptide m/z · retention time · fragment spectrum으로 identity를 추론",
+                                                 "Unique peptide와 shared peptide가 protein inference에 다른 정보 제공"
+                                             ]
+                                         ],
+                                         [
+                                             "Proteoform",
+                                             [
+                                                 "하나의 gene에서 나온 specific sequence + PTM combination",
+                                                 "Bottom-up workflow는 전체 proteoform을 직접 reconstruct하기 어려움",
+                                                 "Protein-level result와 site-specific PTM result를 구분"
+                                             ]
+                                         ]
+                                     ],
+                            "related":  [
+                                            "digestion",
+                                            "database-search"
+                                        ]
+                        },
+    "sample-prep":  {
+                        "title":  "Sample preparation",
+                        "aliases":  [
+                                        "sample preparation",
+                                        "protein extraction",
+                                        "cleanup",
+                                        "reduction",
+                                        "alkylation"
+                                    ],
+                        "section":  "ms",
+                        "summary":  "Sample에서 protein을 추출하고 MS-compatible peptide mixture로 준비하는 과정",
+                        "body":  [
+                                     [
+                                         "Extraction",
+                                         [
+                                             "Tissue · cell · plasma 등 sample type에 맞는 lysis buffer 선택",
+                                             "Membrane protein · insoluble fraction 등 extraction bias가 coverage에 영향",
+                                             "Protease / phosphatase inhibitor는 목적에 따라 사용"
+                                         ]
+                                     ],
+                                     [
+                                         "Cleanup",
+                                         [
+                                             "Salt · detergent · lipid · nucleic acid 등 MS interference 제거",
+                                             "Protein amount와 concentration을 가능한 정확히 측정",
+                                             "Reduction / alkylation으로 disulfide bond를 풀고 재형성을 방지"
+                                         ]
+                                     ],
+                                     [
+                                         "Reproducibility",
+                                         [
+                                             "Input amount · buffer · temperature · incubation time 기록",
+                                             "Sample order를 randomize하고 batch를 balanced하게 배치",
+                                             "Loss와 contamination을 확인할 process control 포함"
+                                         ]
+                                     ]
+                                 ],
+                        "related":  [
+                                        "digestion"
+                                    ]
+                    },
+    "digestion":  {
+                      "title":  "Enzymatic digestion",
+                      "aliases":  [
+                                      "digestion",
+                                      "trypsin",
+                                      "protease",
+                                      "missed cleavage"
+                                  ],
+                      "section":  "ms",
+                      "summary":  "Protease로 protein을 peptide로 절단해 LC-MS/MS에서 측정 가능한 형태로 만드는 과정",
+                      "body":  [
+                                   [
+                                       "Trypsin",
+                                       [
+                                           "Lysine 또는 arginine 뒤를 주로 절단",
+                                           "MS에 적합한 peptide length와 charge distribution을 생성",
+                                           "가장 널리 사용되지만 모든 protein region을 동일하게 cover하지 않음"
+                                       ]
+                                   ],
+                                   [
+                                       "Quality factors",
+                                       [
+                                           "Enzyme-to-protein ratio · pH · temperature · digestion time",
+                                           "Missed cleavage는 incomplete digestion 또는 inaccessible site를 반영",
+                                           "Over-digestion은 non-specific cleavage와 sample loss를 증가시킬 수 있음"
+                                       ]
+                                   ],
+                                   [
+                                       "Search settings",
+                                       [
+                                           "Protease specificity와 allowed missed cleavage 수를 database search에 지정",
+                                           "Semi-specific / non-specific search는 search space와 false match를 증가",
+                                           "Digestion QC를 위해 peptide length와 missed-cleavage distribution 확인"
+                                       ]
+                                   ]
+                               ],
+                      "related":  [
+                                      "sample-prep",
+                                      "protein-peptide",
+                                      "database-search"
+                                  ]
+                  },
+    "lc-ms":  {
+                  "title":  "LC-MS/MS",
+                  "aliases":  [
+                                  "LC-MS/MS",
+                                  "liquid chromatography",
+                                  "mass spectrometry",
+                                  "retention time"
+                              ],
+                  "section":  "ms",
+                  "summary":  "Liquid chromatography로 peptide를 분리하고 tandem mass spectrometry로 ion signal을 측정하는 workflow",
+                  "body":  [
+                               [
+                                   "Liquid chromatography",
+                                   [
+                                       "Peptide mixture를 physicochemical property에 따라 시간축으로 분리",
+                                       "Retention time은 peptide identification과 quantification의 추가 dimension",
+                                       "Gradient length · column · flow가 peak capacity와 throughput에 영향"
+                                   ]
+                               ],
+                               [
+                                   "Ionization \u0026 MS",
+                                   [
+                                       "Electrospray ionization으로 peptide를 charged ion으로 변환",
+                                       "Mass analyzer가 ion의 m/z와 intensity를 측정",
+                                       "Tandem MS에서 precursor를 선택·fragment해 sequence information 생성"
+                                   ]
+                               ],
+                               [
+                                   "Data quality",
+                                   [
+                                       "Chromatographic peak width · retention-time stability · carryover",
+                                       "Mass accuracy · ion injection · instrument calibration",
+                                       "Blank · QC sample · standard peptide로 run performance 확인"
+                                   ]
+                               ]
+                           ],
+                  "related":  [
+                                  "dda-dia"
+                              ]
+              },
+    "dda-dia":  {
+                    "title":  "DDA · DIA · targeted acquisition",
+                    "aliases":  [
+                                    "DDA",
+                                    "DIA",
+                                    "data-dependent acquisition",
+                                    "data-independent acquisition",
+                                    "PRM",
+                                    "SRM"
+                                ],
+                    "section":  "ms",
+                    "summary":  "어떤 precursor를 fragment하고 기록할지 정하는 mass spectrometry acquisition strategy",
+                    "body":  [
+                                 [
+                                     "DDA",
+                                     [
+                                         "MS1에서 강한 precursor를 선택해 MS2 acquisition",
+                                         "Spectrum이 비교적 단순하고 database search가 직관적",
+                                         "Stochastic precursor selection으로 run 간 missing value가 생길 수 있음"
+                                     ]
+                                 ],
+                                 [
+                                     "DIA",
+                                     [
+                                         "넓은 m/z window를 순차적으로 fragment해 ion을 체계적으로 수집",
+                                         "Reproducible coverage와 data completeness에 유리",
+                                         "Complex MS2 signal의 computational deconvolution이 필요"
+                                     ]
+                                 ],
+                                 [
+                                     "Targeted",
+                                     [
+                                         "SRM / PRM은 predefined peptide를 집중 측정",
+                                         "Sensitivity와 quantitative precision이 높음",
+                                         "Discovery보다 candidate validation과 routine assay에 적합"
+                                     ]
+                                 ]
+                             ],
+                    "related":  [
+                                    "lc-ms",
+                                    "proteomics-tools"
+                                ]
+                },
+    "database-search":  {
+                            "title":  "Database search \u0026 PSM",
+                            "aliases":  [
+                                            "database search",
+                                            "PSM",
+                                            "peptide-spectrum match",
+                                            "search engine"
+                                        ],
+                            "section":  "ms",
+                            "summary":  "Experimental MS/MS spectrum을 protein database의 candidate peptide sequence와 matching하는 과정",
+                            "body":  [
+                                         [
+                                             "Search space",
+                                             [
+                                                 "Protein sequence database를 in silico digestion해 candidate peptide 생성",
+                                                 "Precursor mass · enzyme specificity · fixed/variable modification 설정",
+                                                 "Search space가 커질수록 random match와 computational cost가 증가"
+                                             ]
+                                         ],
+                                         [
+                                             "Scoring",
+                                             [
+                                                 "Observed fragment와 theoretical fragment의 agreement를 score",
+                                                 "Best candidate spectrum match를 PSM으로 보고",
+                                                 "Mass error · matched ion · intensity pattern 등을 search engine별로 활용"
+                                             ]
+                                         ],
+                                         [
+                                             "Validation",
+                                             [
+                                                 "Target-decoy approach로 false match distribution 추정",
+                                                 "PSM · peptide · protein level FDR을 구분",
+                                                 "Database version과 contaminant / decoy handling을 기록"
+                                             ]
+                                         ]
+                                     ],
+                            "related":  [
+
+                                        ]
+                        },
+    "quantification":  {
+                           "title":  "Peptide \u0026 protein quantification",
+                           "aliases":  [
+                                           "quantification",
+                                           "peptide intensity",
+                                           "protein intensity",
+                                           "LFQ intensity",
+                                           "reporter ion"
+                                       ],
+                           "section":  "ms",
+                           "summary":  "Mass spectrometry ion signal을 peptide와 protein abundance estimate로 변환",
+                           "body":  [
+                                        [
+                                            "Peptide-level signal",
+                                            [
+                                                "Label-free: precursor chromatographic peak area 또는 intensity",
+                                                "TMT: MS2/MS3 reporter ion intensity",
+                                                "Targeted: transition 또는 fragment peak area"
+                                            ]
+                                        ],
+                                        [
+                                            "Protein summarization",
+                                            [
+                                                "Unique / razor peptide의 signal을 protein group으로 aggregate",
+                                                "Median · sum · model-based summarization 등 방법이 다름",
+                                                "Peptide-specific ionization efficiency 때문에 absolute abundance와 직접 동일하지 않음"
+                                            ]
+                                        ],
+                                        [
+                                            "Interpretation",
+                                            [
+                                                "Relative quantification과 absolute quantification을 구분",
+                                                "Normalized intensity · log intensity · ratio의 scale을 명시",
+                                                "Protein-level value 뒤에 포함된 peptide 수와 coverage 확인"
+                                            ]
+                                        ]
+                                    ],
+                           "related":  [
+
+                                       ]
+                       },
+    "differential-proteomics":  {
+                                    "title":  "Differential abundance",
+                                    "aliases":  [
+                                                    "differential abundance",
+                                                    "differential proteomics",
+                                                    "fold change",
+                                                    "limma"
+                                                ],
+                                    "section":  "analysis",
+                                    "summary":  "Condition에 따라 protein abundance가 systematic하게 달라지는지 test하는 analysis",
+                                    "body":  [
+                                                 [
+                                                     "Design",
+                                                     [
+                                                         "Biological replicate와 paired / repeated structure 확인",
+                                                         "Batch · labeling plex · injection order를 covariate 또는 block으로 model",
+                                                         "Protein-level matrix의 scale과 missing-data strategy를 명시"
+                                                     ]
+                                                 ],
+                                                 [
+                                                     "Outputs",
+                                                     [
+                                                         "Effect size: log2 fold change 또는 group difference",
+                                                         "Uncertainty: standard error · confidence interval",
+                                                         "Evidence: p-value와 FDR-adjusted value"
+                                                     ]
+                                                 ],
+                                                 [
+                                                     "Interpretation",
+                                                     [
+                                                         "Large fold change와 low FDR을 함께 고려",
+                                                         "Single-peptide protein과 high-missingness result를 별도 점검",
+                                                         "Protein group ambiguity와 peptide-level consistency 확인"
+                                                     ]
+                                                 ]
+                                             ],
+                                    "related":  [
+                                                    "proteomics-enrichment"
+                                                ]
+                                },
+    "ptm":  {
+                "title":  "PTM \u0026 phosphoproteomics",
+                "aliases":  [
+                                "PTM",
+                                "post-translational modification",
+                                "phosphoproteomics",
+                                "site localization"
+                            ],
+                "section":  "analysis",
+                "summary":  "Phosphorylation 등 post-translational modification을 peptide site level에서 측정·해석",
+                "body":  [
+                             [
+                                 "PTM",
+                                 [
+                                     "Phosphorylation · acetylation · ubiquitination · glycosylation 등",
+                                     "Protein activity · localization · stability · interaction을 조절",
+                                     "Modification-specific mass shift를 database search에 설정"
+                                 ]
+                             ],
+                             [
+                                 "Enrichment \u0026 localization",
+                                 [
+                                     "Modified peptide는 낮은 abundance 때문에 affinity enrichment가 자주 필요",
+                                     "Fragment ion pattern으로 modification site probability를 계산",
+                                     "Peptide identification과 site localization confidence를 별도로 보고"
+                                 ]
+                             ],
+                             [
+                                 "Interpretation",
+                                 [
+                                     "PTM peptide change는 protein abundance change와 함께 비교",
+                                     "Site occupancy는 modified signal만으로 바로 계산되지 않음",
+                                     "Kinase-substrate enrichment는 pathway evidence이지 direct activity proof가 아님"
+                                 ]
+                             ]
+                         ],
+                "related":  [
+                                "database-search",
+                                "proteomics-enrichment"
+                            ]
+            },
+    "proteomics-enrichment":  {
+                                  "title":  "Pathway \u0026 network analysis",
+                                  "aliases":  [
+                                                  "pathway analysis",
+                                                  "enrichment analysis",
+                                                  "protein interaction network",
+                                                  "PPI"
+                                              ],
+                                  "section":  "analysis",
+                                  "summary":  "Protein-level result를 pathway·complex·interaction network 단위로 요약",
+                                  "body":  [
+                                               [
+                                                   "Enrichment",
+                                                   [
+                                                       "Selected protein list의 pathway over-representation",
+                                                       "전체 ranked protein list를 사용하는 gene-set enrichment",
+                                                       "Background는 실제로 quantified / tested된 protein set으로 설정"
+                                                   ]
+                                               ],
+                                               [
+                                                   "Networks",
+                                                   [
+                                                       "Known protein–protein interaction으로 module과 hub 탐색",
+                                                       "Complex database로 coordinated protein group 확인",
+                                                       "Database coverage가 well-studied protein에 편향될 수 있음"
+                                                   ]
+                                               ],
+                                               [
+                                                   "Interpretation",
+                                                   [
+                                                       "Gene symbol conversion과 protein group ambiguity 확인",
+                                                       "Overlapping gene set 때문에 related term이 반복될 수 있음",
+                                                       "Pathway result는 protein-level effect direction과 evidence로 돌아가 검토"
+                                                   ]
+                                               ]
+                                           ],
+                                  "related":  [
+                                                  "differential-proteomics",
+                                                  "ptm",
+                                                  "proteomics-databases"
+                                              ]
+                              },
+    "proteomics-tools":  {
+                             "title":  "Analysis tools",
+                             "aliases":  [
+                                             "MaxQuant",
+                                             "FragPipe",
+                                             "DIA-NN",
+                                             "Skyline",
+                                             "Proteome Discoverer"
+                                         ],
+                             "section":  "analysis",
+                             "summary":  "Identification·quantification·DIA analysis·targeted validation에 사용하는 representative software",
+                             "body":  [
+                                          [
+                                              "Discovery DDA",
+                                              [
+                                                  "MaxQuant: database search · LFQ · protein group workflow",
+                                                  "FragPipe: MSFragger 기반 modular identification / quantification",
+                                                  "Vendor software는 instrument-specific processing과 support를 제공"
+                                              ]
+                                          ],
+                                          [
+                                              "DIA",
+                                              [
+                                                  "DIA-NN: library-based / library-free DIA identification과 quantification",
+                                                  "Spectronaut 등 integrated commercial workflow도 사용",
+                                                  "Window scheme · library · FDR setting을 기록"
+                                              ]
+                                          ],
+                                          [
+                                              "Targeted \u0026 reproducibility",
+                                              [
+                                                  "Skyline: SRM/PRM/DIA method development와 peak review",
+                                                  "Software version · parameter file · protein database를 보존",
+                                                  "Tool 이름보다 input scale·search setting·FDR level을 함께 기록"
+                                              ]
+                                          ]
+                                      ],
+                             "related":  [
+                                             "database-search",
+                                             "dda-dia",
+                                             "proteomics-databases"
+                                         ]
+                         },
+    "proteomics-databases":  {
+                                 "title":  "Databases \u0026 repositories",
+                                 "aliases":  [
+                                                 "UniProt",
+                                                 "PRIDE",
+                                                 "ProteomeXchange",
+                                                 "MassIVE",
+                                                 "protein database"
+                                             ],
+                                 "section":  "analysis",
+                                 "summary":  "Protein sequence·annotation과 public mass spectrometry dataset을 제공하는 reference resources",
+                                 "body":  [
+                                              [
+                                                  "Sequence \u0026 annotation",
+                                                  [
+                                                      "UniProtKB: protein sequence · function · isoform · evidence",
+                                                      "Reviewed Swiss-Prot와 unreviewed TrEMBL record를 구분",
+                                                      "Search database에는 species · contaminants · decoy strategy를 명시"
+                                                  ]
+                                              ],
+                                              [
+                                                  "Public repositories",
+                                                  [
+                                                      "PRIDE: proteomics identification과 raw data repository",
+                                                      "ProteomeXchange: PRIDE · MassIVE 등 repository consortium",
+                                                      "Dataset accession으로 publication과 raw / processed file 연결"
+                                                  ]
+                                              ],
+                                              [
+                                                  "Reuse checklist",
+                                                  [
+                                                      "Instrument method · sample metadata · processing software 확인",
+                                                      "Raw data 재분석 시 database와 parameter version 기록",
+                                                      "Public identification result와 자체 pipeline result를 구분"
+                                                  ]
+                                              ]
+                                          ],
+                                 "related":  [
+                                                 "database-search",
+                                                 "proteomics-tools"
+                                             ]
+                             },
+    "platform-overview":  {
+                              "title":  "MS-based vs affinity-based",
+                              "aliases":  [
+                                              "platform comparison",
+                                              "mass spectrometry",
+                                              "affinity proteomics"
+                                          ],
+                              "section":  "platform",
+                              "summary":  "Proteomics signal을 만드는 두 measurement principle: peptide ion detection과 binding-derived proxy",
+                              "body":  [
+                                           [
+                                               "MS-based",
+                                               [
+                                                   "Protein을 주로 peptide로 분해한 뒤 m/z와 fragment spectrum을 측정",
+                                                   "Sequence evidence에 기반해 protein을 identify하고 abundance를 quantify",
+                                                   "Tissue·cell의 deep discovery와 PTM·isoform 관련 evidence에 강함"
+                                               ]
+                                           ],
+                                           [
+                                               "Affinity-based",
+                                               [
+                                                   "Antibody 또는 aptamer가 target에 결합한 결과를 proxy signal로 변환",
+                                                   "Predefined panel을 small sample volume과 high throughput으로 측정",
+                                                   "Plasma와 population-scale study에 적합"
+                                               ]
+                                           ],
+                                           [
+                                               "선택 기준",
+                                               [
+                                                   "새로운 peptide·PTM discovery가 핵심이면 MS-based",
+                                                   "많은 plasma sample을 동일 panel로 비교하면 affinity-based",
+                                                   "두 플랫폼의 numeric value와 coverage는 직접 호환되지 않음"
+                                               ]
+                                           ]
+                                       ],
+                              "related":  [
+                                              "ms-based",
+                                              "affinity-based",
+                                              "somascan",
+                                              "olink"
+                                          ]
+                          },
+    "ms-based":  {
+                     "title":  "MS-based proteomics",
+                     "aliases":  [
+                                     "mass spectrometry proteomics",
+                                     "bottom-up proteomics",
+                                     "MS proteomics"
+                                 ],
+                     "section":  "platform",
+                     "summary":  "Peptide ion과 fragment spectrum을 이용해 protein identity와 abundance를 추론하는 방식",
+                     "body":  [
+                                  [
+                                      "측정 원리",
+                                      [
+                                          "Protein extraction 후 주로 trypsin digestion으로 peptide 생성",
+                                          "LC로 peptide를 분리하고 ESI로 ionization",
+                                          "MS1 precursor와 MS2 fragment signal을 기록"
+                                      ]
+                                  ],
+                                  [
+                                      "강점",
+                                      [
+                                          "Predefined binder 없이 broad discovery 가능",
+                                          "Peptide sequence와 site-level PTM evidence를 제공",
+                                          "Tissue·cell proteome의 깊은 profiling에 적합"
+                                      ]
+                                  ],
+                                  [
+                                      "제약",
+                                      [
+                                          "Sample preparation과 instrument acquisition이 복잡",
+                                          "Low-abundance plasma protein의 dynamic range가 어려움",
+                                          "Affinity panel보다 throughput과 소량 sample multiplexing이 제한될 수 있음"
+                                      ]
+                                  ]
+                              ],
+                     "related":  [
+                                     "lc-ms",
+                                     "dda-dia",
+                                     "database-search",
+                                     "quantification"
+                                 ]
+                 },
+    "affinity-based":  {
+                           "title":  "Affinity-based proteomics",
+                           "aliases":  [
+                                           "affinity proteomics",
+                                           "binder-based assay",
+                                           "protein panel"
+                                       ],
+                           "section":  "platform",
+                           "summary":  "Target-specific antibody 또는 aptamer binding을 nucleic-acid·fluorescence signal로 읽는 방식",
+                           "body":  [
+                                        [
+                                            "측정 원리",
+                                            [
+                                                "미리 정한 target마다 binding reagent를 사용",
+                                                "Protein binding event를 amplification 가능한 proxy signal로 변환",
+                                                "결과는 direct sequence measurement가 아니라 relative binding signal"
+                                            ]
+                                        ],
+                                        [
+                                            "강점",
+                                            [
+                                                "High throughput과 small sample volume",
+                                                "Low-abundance plasma protein에 높은 sensitivity",
+                                                "동일 panel로 large cohort를 비교하기 쉬움"
+                                            ]
+                                        ],
+                                        [
+                                            "해석 경계",
+                                            [
+                                                "Panel에 포함되지 않은 protein은 측정하지 못함",
+                                                "Specificity·cross-reactivity·epitope effect가 결과에 직접 영향",
+                                                "Isoform·PTM·fragment를 직접 구분하기 어려움"
+                                            ]
+                                        ]
+                                    ],
+                           "related":  [
+                                           "platform-overview",
+                                           "somascan",
+                                           "olink",
+                                           "specificity-epitope"
+                                       ]
+                       },
+    "somascan":  {
+                     "title":  "SomaScan",
+                     "aliases":  [
+                                     "SomaScan",
+                                     "SOMAmer",
+                                     "aptamer proteomics"
+                                 ],
+                     "section":  "platform",
+                     "summary":  "Modified aptamer인 SOMAmer를 binding reagent로 사용하는 affinity-based proteomics platform",
+                     "body":  [
+                                  [
+                                      "Binder",
+                                      [
+                                          "SOMAmer는 target protein에 결합하도록 선택된 modified aptamer",
+                                          "Protein 자체를 sequencing하는 방식이 아님",
+                                          "Binding된 nucleic-acid reagent의 signal이 protein abundance proxy가 됨"
+                                      ]
+                                  ],
+                                  [
+                                      "Use",
+                                      [
+                                          "Small plasma volume에서 많은 predefined target을 병렬 측정",
+                                          "Large cohort와 pQTL study에 사용",
+                                          "출력값은 platform-specific relative signal로 해석"
+                                      ]
+                                  ],
+                                  [
+                                      "주의",
+                                      [
+                                          "Aptamer specificity와 cross-reactivity 확인 필요",
+                                          "Protein-altering variant가 binding affinity를 바꿀 수 있음",
+                                          "Isoform·PTM·fragment identity는 direct sequence evidence가 아님"
+                                      ]
+                                  ]
+                              ],
+                     "related":  [
+                                     "affinity-based",
+                                     "olink",
+                                     "specificity-epitope",
+                                     "pqtl-proteomics"
+                                 ]
+                 },
+    "olink":  {
+                  "title":  "Olink PEA",
+                  "aliases":  [
+                                  "Olink",
+                                  "PEA",
+                                  "proximity extension assay"
+                              ],
+                  "section":  "platform",
+                  "summary":  "Paired antibody와 DNA reporter proximity를 이용하는 affinity-based proteomics platform",
+                  "body":  [
+                               [
+                                   "PEA",
+                                   [
+                                       "같은 target의 서로 다른 epitope를 인식하는 antibody pair 사용",
+                                       "두 antibody가 가까워지면 연결된 DNA oligo가 reporter를 형성",
+                                       "Reporter amplification으로 binding event를 quantify"
+                                   ]
+                               ],
+                               [
+                                   "Readout",
+                                   [
+                                       "Olink Explore는 DNA reporter를 NGS로 readout",
+                                       "일부 Olink product는 qPCR 기반 readout 사용",
+                                       "NGS가 읽는 것은 protein sequence가 아니라 DNA reporter"
+                                   ]
+                               ],
+                               [
+                                   "해석",
+                                   [
+                                       "Predefined panel 기반의 relative protein signal",
+                                       "High throughput plasma profiling과 population study에 적합",
+                                       "Antibody specificity·epitope effect·batch control 확인 필요"
+                                   ]
+                               ]
+                           ],
+                  "related":  [
+                                  "affinity-based",
+                                  "somascan",
+                                  "affinity-readout",
+                                  "specificity-epitope"
+                              ]
+              },
+    "affinity-readout":  {
+                             "title":  "Affinity signal \u0026 readout",
+                             "aliases":  [
+                                             "proxy signal",
+                                             "DNA barcode",
+                                             "NGS readout"
+                                         ],
+                             "section":  "affinity",
+                             "summary":  "Protein binding event를 nucleic-acid reporter 또는 assay-specific signal로 바꾸어 읽는 단계",
+                             "body":  [
+                                          [
+                                              "무엇을 읽는가",
+                                              [
+                                                  "Instrument가 protein sequence를 직접 읽는 것이 아님",
+                                                  "Binder가 target에 결합했다는 사건을 proxy signal로 변환",
+                                                  "Signal intensity는 assay-defined relative abundance를 반영"
+                                              ]
+                                          ],
+                                          [
+                                              "NGS의 역할",
+                                              [
+                                                  "Olink Explore에서는 DNA reporter count를 NGS로 측정",
+                                                  "NGS는 signal amplification과 multiplexed counting의 readout",
+                                                  "따라서 NGS-based readout과 sequencing-based proteomics는 같은 뜻이 아님"
+                                              ]
+                                          ],
+                                          [
+                                              "비교할 때",
+                                              [
+                                                  "같은 protein 이름이어도 platform별 binder와 scale이 다름",
+                                                  "Raw value를 MS intensity나 다른 affinity platform 값과 직접 합치지 않음",
+                                                  "Platform·panel·assay version을 metadata로 보존"
+                                              ]
+                                          ]
+                                      ],
+                             "related":  [
+                                             "olink",
+                                             "somascan",
+                                             "affinity-qc",
+                                             "platform-overview"
+                                         ]
+                         },
+    "specificity-epitope":  {
+                                "title":  "Specificity \u0026 epitope effect",
+                                "aliases":  [
+                                                "specificity",
+                                                "cross-reactivity",
+                                                "epitope effect"
+                                            ],
+                                "section":  "affinity",
+                                "summary":  "Affinity signal이 실제 protein abundance 외에 binder-target interaction의 영향을 받는 문제",
+                                "body":  [
+                                             [
+                                                 "Specificity",
+                                                 [
+                                                     "Binder가 intended target 외 homolog 또는 다른 protein에 결합할 수 있음",
+                                                     "Cross-reactivity는 signal을 실제 abundance와 다르게 만듦",
+                                                     "Target annotation만으로 specificity가 보장되지는 않음"
+                                                 ]
+                                             ],
+                                             [
+                                                 "Epitope effect",
+                                                 [
+                                                     "Protein-altering variant가 binder가 인식하는 site를 변화시킬 수 있음",
+                                                     "Binding affinity 변화가 abundance 변화처럼 관측될 수 있음",
+                                                     "특히 cis-pQTL 해석에서 biological abundance와 assay artifact를 구분"
+                                                 ]
+                                             ],
+                                             [
+                                                 "검증",
+                                                 [
+                                                     "다른 binder 또는 orthogonal platform에서 방향 확인",
+                                                     "cis-pQTL·MS·immunoassay evidence를 함께 검토",
+                                                     "Platform 간 불일치는 제거 대상이 아니라 확인해야 할 measurement difference"
+                                                 ]
+                                             ]
+                                         ],
+                                "related":  [
+                                                "somascan",
+                                                "olink",
+                                                "pqtl-proteomics",
+                                                "platform-overview"
+                                            ]
+                            },
+    "affinity-qc":  {
+                        "title":  "Affinity normalization \u0026 QC",
+                        "aliases":  [
+                                        "plate normalization",
+                                        "assay QC",
+                                        "batch control"
+                                    ],
+                        "section":  "affinity",
+                        "summary":  "Assay control과 metadata를 이용해 plate·run·batch variation을 점검하고 sample signal을 비교 가능하게 만드는 단계",
+                        "body":  [
+                                     [
+                                         "QC 대상",
+                                         [
+                                             "Internal control·sample control·detection limit 확인",
+                                             "Plate·run·operator·storage time과 signal association 확인",
+                                             "Outlier sample과 failed assay를 predefined rule로 판정"
+                                         ]
+                                     ],
+                                     [
+                                         "Normalization",
+                                         [
+                                             "Vendor-defined within-plate와 between-plate adjustment 확인",
+                                             "Cohort-level scaling은 biological group과 batch confounding을 먼저 점검",
+                                             "Normalized value도 assay-specific relative scale"
+                                         ]
+                                     ],
+                                     [
+                                         "보고",
+                                         [
+                                             "Platform·panel·assay version과 QC rule 기록",
+                                             "Excluded sample·assay와 이유를 보존",
+                                             "Batch correction 전후 biological signal이 지워지지 않았는지 확인"
+                                         ]
+                                     ]
+                                 ],
+                        "related":  [
+                                        "affinity-readout",
+                                        "specificity-epitope",
+                                        "plasma-proteomics",
+                                        "differential-proteomics"
+                                    ]
+                    },
+    "plasma-proteomics":  {
+                              "title":  "Population-scale plasma proteomics",
+                              "aliases":  [
+                                              "plasma proteomics",
+                                              "population proteomics",
+                                              "large cohort"
+                                          ],
+                              "section":  "affinity",
+                              "summary":  "Small plasma volume과 high-throughput panel을 이용해 large cohort의 protein signal을 비교하는 연구",
+                              "body":  [
+                                           [
+                                               "왜 plasma인가",
+                                               [
+                                                   "Blood에서 반복 채취와 large cohort collection이 비교적 쉬움",
+                                                   "Circulating protein은 systemic state와 tissue-derived signal을 함께 반영",
+                                                   "넓은 concentration dynamic range가 measurement challenge"
+                                               ]
+                                           ],
+                                           [
+                                               "Affinity platform",
+                                               [
+                                                   "Olink와 SomaScan은 predefined panel을 많은 sample에 적용",
+                                                   "Low sample volume과 multiplexing이 population scale에 유리",
+                                                   "Panel coverage와 binder specificity가 관측 범위를 결정"
+                                               ]
+                                           ],
+                                           [
+                                               "해석",
+                                               [
+                                                   "Plasma signal이 source tissue expression과 동일하지 않음",
+                                                   "Cohort·storage·plate metadata를 model에 포함",
+                                                   "Association은 causal mechanism 또는 clinical utility와 동일하지 않음"
+                                               ]
+                                           ]
+                                       ],
+                              "related":  [
+                                              "affinity-based",
+                                              "affinity-qc",
+                                              "pqtl-proteomics",
+                                              "specificity-epitope"
+                                          ]
+                          },
+    "pqtl-proteomics":  {
+                            "title":  "pQTL \u0026 proteomics",
+                            "aliases":  [
+                                            "pQTL",
+                                            "protein quantitative trait locus",
+                                            "plasma pQTL"
+                                        ],
+                            "section":  "affinity",
+                            "summary":  "Genetic variant와 protein signal의 association을 연결해 regulation과 disease mechanism을 탐색하는 분석",
+                            "body":  [
+                                         [
+                                             "pQTL",
+                                             [
+                                                 "Protein level 또는 assay signal과 연관된 genetic variant",
+                                                 "Protein gene 주변은 cis-pQTL, 다른 genomic region은 trans-pQTL로 구분",
+                                                 "MS·Olink·SomaScan 모두 pQTL mapping에 사용 가능"
+                                             ]
+                                         ],
+                                         [
+                                             "활용",
+                                             [
+                                                 "Disease GWAS와 colocalization하여 shared genetic signal 평가",
+                                                 "Mendelian randomization으로 causal direction을 탐색",
+                                                 "Drug target과 biomarker candidate prioritization에 활용"
+                                             ]
+                                         ],
+                                         [
+                                             "함정",
+                                             [
+                                                 "Affinity platform의 epitope effect가 apparent cis-pQTL을 만들 수 있음",
+                                                 "Pleiotropy와 LD 때문에 association만으로 mechanism 확정 불가",
+                                                 "Orthogonal assay와 genetic evidence를 함께 확인"
+                                             ]
+                                         ]
+                                     ],
+                            "related":  [
+                                            "plasma-proteomics",
+                                            "specificity-epitope",
+                                            "somascan",
+                                            "olink"
+                                        ]
+                        }
+}
+
+    ;
+    const localSourceGroups = [
+      { ids: ["platform-overview", "ms-based", "affinity-based", "somascan", "olink", "affinity-readout", "specificity-epitope", "plasma-proteomics"], label: "Lab Wiki · proteomics-platforms", href: "../../../syntheses/proteomics-platforms.md" },
+      { ids: ["sample-prep", "digestion", "lc-ms", "dda-dia", "database-search", "quantification", "differential-proteomics", "ptm", "proteomics-tools"], label: "Lab Wiki · ms-proteomics-pipeline", href: "../../../syntheses/ms-proteomics-pipeline.md" },
+      { ids: ["pqtl-proteomics", "plasma-proteomics", "specificity-epitope"], label: "Lab Wiki · pqtl-proteomics", href: "../../../concepts/pqtl-proteomics.md" }
+    ];
+    const sourceLinks = {
+  "proteome": [
+    [
+      "HUPO",
+      "https://www.hupo.org/"
+    ],
+    [
+      "Proteomics Standards Initiative",
+      "https://www.psidev.info/"
+    ]
+  ],
+  "protein-peptide": [
+    [
+      "UniProt",
+      "https://www.uniprot.org/"
+    ],
+    [
+      "Proteomics Standards Initiative",
+      "https://www.psidev.info/"
+    ]
+  ],
+  "sample-prep": [
+    [
+      "HUPO",
+      "https://www.hupo.org/"
+    ]
+  ],
+  "digestion": [
+    [
+      "UniProt PeptideCutter",
+      "https://web.expasy.org/peptide_cutter/"
+    ]
+  ],
+  "labeling": [
+    [
+      "MaxQuant",
+      "https://www.maxquant.org/"
+    ],
+    [
+      "Proteomics Standards Initiative",
+      "https://www.psidev.info/"
+    ]
+  ],
+  "lc-ms": [
+    [
+      "Proteomics Standards Initiative",
+      "https://www.psidev.info/"
+    ]
+  ],
+  "ms1-ms2": [
+    [
+      "Proteomics Standards Initiative",
+      "https://www.psidev.info/"
+    ]
+  ],
+  "dda-dia": [
+    [
+      "DIA-NN",
+      "https://github.com/vdemichev/DiaNN"
+    ],
+    [
+      "Skyline",
+      "https://skyline.ms/"
+    ]
+  ],
+  "database-search": [
+    [
+      "FragPipe / MSFragger",
+      "https://fragpipe.nesvilab.org/"
+    ],
+    [
+      "MaxQuant",
+      "https://www.maxquant.org/"
+    ]
+  ],
+  "spectral-library": [
+    [
+      "NIST Peptide Libraries",
+      "https://peptide.nist.gov/"
+    ],
+    [
+      "DIA-NN",
+      "https://github.com/vdemichev/DiaNN"
+    ]
+  ],
+  "quantification": [
+    [
+      "MaxQuant",
+      "https://www.maxquant.org/"
+    ],
+    [
+      "Skyline",
+      "https://skyline.ms/"
+    ]
+  ],
+  "protein-inference": [
+    [
+      "Proteomics Standards Initiative",
+      "https://www.psidev.info/"
+    ]
+  ],
+  "psm-fdr": [
+    [
+      "Proteomics Standards Initiative",
+      "https://www.psidev.info/"
+    ]
+  ],
+  "normalization-qc": [
+    [
+      "MultiQC",
+      "https://docs.seqera.io/multiqc/"
+    ],
+    [
+      "MaxQuant",
+      "https://www.maxquant.org/"
+    ]
+  ],
+  "missing-values": [
+    [
+      "Proteomics Standards Initiative",
+      "https://www.psidev.info/"
+    ]
+  ],
+  "differential-proteomics": [
+    [
+      "Bioconductor limma",
+      "https://bioconductor.org/packages/release/bioc/html/limma.html"
+    ]
+  ],
+  "ptm": [
+    [
+      "UniProt PTM annotation",
+      "https://www.uniprot.org/help/post-translational_modification"
+    ],
+    [
+      "Proteomics Standards Initiative",
+      "https://www.psidev.info/"
+    ]
+  ],
+  "proteomics-enrichment": [
+    [
+      "Gene Ontology enrichment",
+      "https://geneontology.org/docs/go-enrichment-analysis/"
+    ],
+    [
+      "STRING",
+      "https://string-db.org/"
+    ]
+  ],
+  "proteomics-tools": [
+    [
+      "MaxQuant",
+      "https://www.maxquant.org/"
+    ],
+    [
+      "FragPipe",
+      "https://fragpipe.nesvilab.org/"
+    ],
+    [
+      "DIA-NN",
+      "https://github.com/vdemichev/DiaNN"
+    ],
+    [
+      "Skyline",
+      "https://skyline.ms/"
+    ]
+  ],
+  "proteomics-databases": [
+    [
+      "UniProt",
+      "https://www.uniprot.org/"
+    ],
+    [
+      "PRIDE",
+      "https://www.ebi.ac.uk/pride/"
+    ],
+    [
+      "ProteomeXchange",
+      "https://www.proteomexchange.org/"
+    ]
+  ]
+};
+
+    const officialSupplementLinks = {
+      "somascan": [["Official supplement · SomaLogic SomaScan Platform", "https://somalogic.com/somascan-platform/"]],
+      "olink": [["Official supplement · Olink PEA", "https://olink.com/technology/what-is-pea"]],
+      "affinity-readout": [["Official supplement · Olink PEA and NGS readout", "https://olink.com/technology/what-is-pea"]],
+      "affinity-qc": [["Official supplement · Olink data normalization and QC", "https://olink.com/resources-support/document-download-center/"]],
+      "proteomics-databases": [["Official supplement · PRIDE Archive", "https://www.ebi.ac.uk/pride/archive/"]]
+    };
+    const glossaryTerms = {
+    "proteomics": {
+        "key": "proteomics",
+        "definition": "Protein을 large scale로 identify·quantify·characterize하는 field."
+    },
+    "proteome": {
+        "key": "proteome",
+        "definition": "특정 sample·condition·time에서 존재하는 전체 protein set."
+    },
+    "protein": {
+        "key": "protein",
+        "definition": "Amino-acid chain이 folding·modification을 거쳐 기능하는 biological molecule."
+    },
+    "peptide": {
+        "key": "peptide",
+        "definition": "Protein digestion으로 생성되는 짧은 amino-acid sequence."
+    },
+    "proteoform": {
+        "key": "proteoform",
+        "definition": "Sequence variant와 PTM을 포함한 하나의 molecular protein form."
+    },
+    "digestion": {
+        "key": "digestion",
+        "definition": "Protease를 이용해 protein을 peptide로 절단하는 과정."
+    },
+    "trypsin": {
+        "key": "trypsin",
+        "definition": "Lys/Arg 뒤를 주로 절단하는 proteomics의 대표적 protease."
+    },
+    "lc-ms/ms": {
+        "key": "lcms",
+        "definition": "Liquid chromatography와 tandem mass spectrometry를 결합한 분석."
+    },
+    "m/z": {
+        "key": "mz",
+        "definition": "Ion의 mass-to-charge ratio."
+    },
+    "ms1": {
+        "key": "ms1",
+        "definition": "Fragmentation 전 precursor ion의 m/z와 intensity spectrum."
+    },
+    "ms2": {
+        "key": "ms2",
+        "definition": "Selected precursor를 fragment한 product-ion spectrum."
+    },
+    "dda": {
+        "key": "dda",
+        "definition": "Selected precursor subset을 순차적으로 fragment하는 acquisition."
+    },
+    "dia": {
+        "key": "dia",
+        "definition": "넓은 m/z window의 모든 ion을 반복적으로 fragment하는 acquisition."
+    },
+    "psm": {
+        "key": "psm",
+        "definition": "Experimental MS/MS spectrum과 peptide sequence의 match."
+    },
+    "fdr": {
+        "key": "fdr",
+        "definition": "Accepted identification 중 expected false discovery proportion."
+    },
+    "spectral library": {
+        "key": "library",
+        "definition": "Known peptide의 fragment pattern과 retention information collection."
+    },
+    "protein inference": {
+        "key": "inference",
+        "definition": "Observed peptide evidence로 source protein을 결정하는 과정."
+    },
+    "lfq": {
+        "key": "lfq",
+        "definition": "Label-free quantification; labeling 없이 MS signal로 sample abundance를 비교."
+    },
+    "tmt": {
+        "key": "tmt",
+        "definition": "Isobaric tag를 이용해 여러 sample을 multiplex하는 quantification."
+    },
+    "ptm": {
+        "key": "ptm",
+        "definition": "Translation 이후 protein에 추가되는 chemical modification."
+    }
+};
+    const glossaryPattern = /(^|[^A-Za-z0-9])(spectral library|protein inference|LC-MS\/MS|proteomics|proteoform|digestion|trypsin|proteome|protein|peptide|m\/z|MS1|MS2|DDA|DIA|PSM|FDR|LFQ|TMT|PTM)(?=$|[^A-Za-z0-9])/gi;
+
+    function createAnnotator() {
+      const seen = new Set();
+      return function (text) {
+        return esc(text).replace(glossaryPattern, function (match, prefix, term) {
+          const item = glossaryTerms[term.toLowerCase()];
+          if (!item || seen.has(item.key)) return match;
+          seen.add(item.key);
+          return prefix + '<span class="glossary-term" tabindex="0" data-definition="' + esc(item.definition) + '">' + esc(term) + '</span>';
+        });
+      };
+    }
+
+    const app = document.getElementById("app");
+    const topSearch = document.getElementById("topSearch");
+    let activeFilter = "all";
+
+    function esc(value) {
+      return String(value).replace(/[&<>'"]/g, function (c) {
+        return {"&":"&amp;", "<":"&lt;", ">":"&gt;", "'":"&#39;", '"':"&quot;"}[c];
+      });
+    }
+
+    function route(hash) {
+      window.location.hash = hash;
+    }
+
+    function categoryCards() {
+      return Object.keys(sections).map(function (key) {
+        const s = sections[key];
+        return '<button class="category-card" style="--accent:' + s.accent + '" data-section="' + key + '">' +
+          '<span class="category-number">' + s.number + ' · ' + s.english + '</span>' +
+          '<h3>' + s.title + '</h3><p>' + s.summary + '</p>' +
+          '<span class="card-route">질문으로 살펴보기 →</span></button>';
+      }).join("");
+    }
+
+    function renderHome() {
+      document.title = "Proteomics";
+      app.innerHTML = '<section class="hero"><div class="container">' +
+        '<p class="eyebrow">Proteomics knowledge base</p><h1>Proteomics</h1>' +
+        '<p class="hero-copy">Measurement Platforms · MS-based · Affinity-based · Analysis</p>' +
+        '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="Proteomics 통합 검색" placeholder="Search: peptide, DDA, FDR, protein inference"><span class="search-icon">⌕</span></form>' +
+        '<p class="search-hint">Korean / English / acronym</p></div></section>' +
+        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>질문을 따라 큰 구조부터 살펴보세요.</p></div>' +
+        '<div class="category-grid">' + categoryCards() + '</div></div></section>';
+      document.getElementById("heroSearchForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const q = document.getElementById("heroSearch").value.trim();
+        if (q) route("search/" + encodeURIComponent(q));
+      });
+      window.scrollTo(0, 0);
+    }
+
+    function renderSection(key) {
+      const s = sections[key];
+      if (!s) return renderHome();
+      document.title = s.title + " · Proteomics";
+      const annotateOnce = createAnnotator();
+      const groups = s.groups.map(function (group, i) {
+        const items = group.items.map(function (item) {
+          const hasPage = Boolean(item[0] && articles[item[0]]);
+          return '<div class="concept-row"><strong>' + annotateOnce(item[1]) + '</strong><p>' + annotateOnce(item[2]) + '</p>' +
+            (hasPage ? '<button data-article="' + item[0] + '">읽기 →</button>' : '<span class="map-label">개념 지도</span>') + '</div>';
+        }).join("");
+        return '<section class="question-block"><div class="question-head"><small>QUESTION ' + String(i + 1).padStart(2, "0") + '</small>' +
+          '<h2>' + annotateOnce(group.q) + '</h2><p>' + annotateOnce(group.note) + '</p></div><div>' + items + '</div></section>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb" aria-label="현재 위치"><button data-route="home">홈</button><span>›</span>' + s.title + '</nav>' +
+        '<header class="page-header" style="border-top:4px solid ' + s.accent + '"><p class="eyebrow">' + s.number + ' · ' + s.english + '</p><h1>' + s.title + '</h1><p class="lead">' + s.summary + '</p></header>' +
+        '<div class="question-list">' + groups + '</div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function articleText(a) {
+      const bodyText = a.body.map(function (b) { return [b[0]].concat(Array.isArray(b[1]) ? b[1] : [b[1]]).join(" "); });
+      return [a.title, a.aliases.join(" "), a.summary].concat(bodyText).join(" ").toLowerCase();
+    }
+
+    function highlight(text, query) {
+      if (!query) return esc(text);
+      const safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return esc(text).replace(new RegExp("(" + safe + ")", "ig"), "<mark>$1</mark>");
+    }
+
+    function searchArticles(query, filter) {
+      const q = query.trim().toLowerCase();
+      if (!q) return [];
+      return Object.keys(articles).map(function (id) {
+        const a = articles[id];
+        if (filter !== "all" && a.section !== filter) return null;
+        const hay = articleText(a);
+        const pos = hay.indexOf(q);
+        if (pos < 0) return null;
+        const titleHit = a.title.toLowerCase().includes(q) ? 3 : 0;
+        const aliasHit = a.aliases.join(" ").toLowerCase().includes(q) ? 2 : 0;
+        return { id: id, article: a, score: titleHit + aliasHit + 1 };
+      }).filter(Boolean).sort(function (a, b) { return b.score - a.score || a.article.title.localeCompare(b.article.title); });
+    }
+
+    function renderSearch(query) {
+      document.title = '"' + query + '" 검색 · Proteomics';
+      const filterButtons = ['<button class="filter-btn ' + (activeFilter === "all" ? "active" : "") + '" data-filter="all">전체</button>'].concat(
+        Object.keys(sections).map(function (key) { return '<button class="filter-btn ' + (activeFilter === key ? "active" : "") + '" data-filter="' + key + '">' + sections[key].title + '</button>'; })
+      ).join("");
+      const found = searchArticles(query, activeFilter);
+      const cards = found.length ? found.map(function (r) {
+        const s = sections[r.article.section];
+        return '<button class="result-card" data-article="' + r.id + '"><span class="result-path">' + s.title + ' › 문서</span>' +
+          '<h2>' + highlight(r.article.title, query) + '</h2><p>' + highlight(r.article.summary, query) + '</p></button>';
+      }).join("") : '<div class="empty"><strong>No results</strong><br>Try: English / Korean / acronym</div>';
+      app.innerHTML = '<div class="container search-page"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span>검색</nav>' +
+        '<header class="page-header"><p class="eyebrow">Search</p><h1>“' + esc(query) + '”</h1></header>' +
+        '<div class="search-summary"><p>Public pages · <strong>' + found.length + '</strong></p><div class="filters">' + filterButtons + '</div></div>' +
+        '<div class="results">' + cards + '</div></div>';
+      topSearch.value = query;
+      window.scrollTo(0, 0);
+    }
+
+    function getSources(id) {
+      const local = localSourceGroups.filter(function (group) { return group.ids.includes(id); }).map(function (group) { return [group.label, group.href]; });
+      const official = (sourceLinks[id] || []).map(function (source) { return [source[0].startsWith("Official supplement ·") ? source[0] : "Official supplement · " + source[0], source[1]]; });
+      return local.concat(official, officialSupplementLinks[id] || []);
+    }
+
+    function renderArticle(id) {
+      const a = articles[id];
+      if (!a) return renderHome();
+      const s = sections[a.section];
+      const annotateOnce = createAnnotator();
+      document.title = a.title + " · Proteomics";
+      const body = a.body.map(function (part) {
+        const points = Array.isArray(part[1]) ? part[1] : part[1].replace(/\.\s+/g, ".||| ").split("|||").filter(Boolean);
+        return '<section><h2>' + part[0] + '</h2><ul class="fact-list">' + points.map(function (point) { return "<li>" + annotateOnce(point.trim()) + "</li>"; }).join("") + "</ul></section>";
+      }).join("");
+      const related = a.related.filter(function (rid) { return articles[rid]; }).map(function (rid) {
+        return '<button data-article="' + rid + '">' + articles[rid].title + ' →</button>';
+      }).join("");
+      const sources = getSources(id).map(function (source) {
+        return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
+        '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
+        '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
+        '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
+        '<div class="aside-box source-box"><h3>Sources · provenance</h3><div class="source-list">' + sources + '</div></div>' +
+        '<div class="policy-note">Public concepts · Standard methods<br>Excluded: Project · Hypothesis · Internal result</div></aside></div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function handleRoute() {
+      const raw = window.location.hash.replace(/^#/, "");
+      const parts = raw.split("/");
+      if (!raw || raw === "home") return renderHome();
+      if (parts[0] === "section") return renderSection(parts[1]);
+      if (parts[0] === "article") return renderArticle(parts[1]);
+      if (parts[0] === "search") return renderSearch(decodeURIComponent(parts.slice(1).join("/")));
+      renderHome();
+    }
+
+    document.addEventListener("click", function (e) {
+      const home = e.target.closest("[data-route='home']");
+      const section = e.target.closest("[data-section]");
+      const article = e.target.closest("[data-article]");
+      const filter = e.target.closest("[data-filter]");
+      if (home) route("home");
+      else if (article) route("article/" + article.dataset.article);
+      else if (section) route("section/" + section.dataset.section);
+      else if (filter) { activeFilter = filter.dataset.filter; const q = decodeURIComponent(window.location.hash.split("/").slice(1).join("/")); renderSearch(q); }
+    });
+
+    document.getElementById("topSearchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const q = topSearch.value.trim();
+      if (q) { activeFilter = "all"; route("search/" + encodeURIComponent(q)); }
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+        e.preventDefault(); topSearch.focus();
+      }
+    });
+    window.addEventListener("hashchange", handleRoute);
+    handleRoute();
+  </script>
+</body>
+</html>
