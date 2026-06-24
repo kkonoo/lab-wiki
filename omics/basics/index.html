@@ -312,7 +312,7 @@
 
   <footer>
     <div class="container">
-      <span>Omics Basics · Public knowledge · Standard methods · Updated 2026-06-23</span>
+      <span>Omics Basics · Public knowledge · Standard methods · Updated 2026-06-24</span>
       <span>Excluded: Project · Hypothesis · Internal result</span>
     </div>
   </footer>
@@ -526,784 +526,776 @@
 };
 
     const articles = {
+    "omics-modality":  {
+                           "title":  "Omics \u0026 modality",
+                           "aliases":  [
+                                           "omics",
+                                           "modality",
+                                           "multi-omics"
+                                       ],
+                           "section":  "measurement",
+                           "summary":  "특정 biological layer를 genome scale로 측정하고 해석하는 접근",
+                           "body":  [
+                                        [
+                                            "Omics",
+                                            [
+                                                "Genome-wide 또는 system-wide scale에서 많은 biological entities를 동시에 측정",
+                                                "한두 개 marker가 아니라 전체 pattern과 coordinated change를 분석",
+                                                "Measurement technology와 computational analysis가 함께 정의하는 data domain"
+                                            ]
+                                        ],
+                                        [
+                                            "Major modalities",
+                                            [
+                                                "Genomics: DNA sequence와 genetic variation",
+                                                "Transcriptomics / epigenomics: RNA abundance 또는 chromatin state",
+                                                "Proteomics / metabolomics: protein과 small-molecule abundance"
+                                            ]
+                                        ],
+                                        [
+                                            "Interpretation",
+                                            [
+                                                "서로 다른 modality는 biological layer와 measurement scale이 다름",
+                                                "같은 sample에서 얻어도 feature ID와 noise structure가 다름",
+                                                "Multi-omics는 단순 concatenation이 아니라 layer 간 relationship을 분석"
+                                            ]
+                                        ]
+                                    ],
+                           "related":  [
+                                           "assay-platform",
+                                           "feature-identifier",
+                                           "data-matrix"
+                                       ]
+                       },
+    "assay-platform":  {
+                           "title":  "Assay \u0026 platform",
+                           "aliases":  [
+                                           "assay",
+                                           "platform",
+                                           "library preparation"
+                                       ],
+                           "section":  "measurement",
+                           "summary":  "Biological property를 measurable signal로 변환하는 experimental procedure와 instrument",
+                           "body":  [
+                                        [
+                                            "Assay",
+                                            [
+                                                "무엇을 capture·label·amplify·detect할지 정하는 experimental procedure",
+                                                "예: RNA-seq · ATAC-seq · mass spectrometry",
+                                                "Assay chemistry가 관측 가능한 feature와 bias를 결정"
+                                            ]
+                                        ],
+                                        [
+                                            "Platform",
+                                            [
+                                                "Signal을 실제로 read하는 instrument와 technology",
+                                                "Read length · depth · sensitivity · dynamic range가 platform별로 다름",
+                                                "같은 assay도 platform과 protocol version에 따라 data property가 달라질 수 있음"
+                                            ]
+                                        ],
+                                        [
+                                            "Record together",
+                                            [
+                                                "Assay name · protocol · kit · platform · software version",
+                                                "Input amount · sequencing depth · run date · operator",
+                                                "Batch effect 해석을 위해 metadata로 보존"
+                                            ]
+                                        ]
+                                    ],
+                           "related":  [
+                                           "omics-modality",
+                                           "sample-unit",
+                                           "metadata"
+                                       ]
+                       },
+    "sample-unit":  {
+                        "title":  "Sample \u0026 experimental unit",
+                        "aliases":  [
+                                        "sample",
+                                        "experimental unit",
+                                        "specimen",
+                                        "aliquot"
+                                    ],
+                        "section":  "measurement",
+                        "summary":  "측정에 투입된 material과 실제 independent comparison을 이루는 biological unit",
+                        "body":  [
+                                     [
+                                         "Three levels",
+                                         [
+                                             "Biological unit: donor · animal · tissue 등 independent source",
+                                             "Sample: assay에 투입된 material",
+                                             "Aliquot / library: 같은 sample에서 분리되거나 제작된 technical unit"
+                                         ]
+                                     ],
+                                     [
+                                         "Experimental unit",
+                                         [
+                                             "Treatment가 independently assigned되는 최소 단위",
+                                             "Statistical replicate 수는 experimental unit 기준",
+                                             "Cell 수나 read 수가 많아도 donor가 하나면 biological n은 1일 수 있음"
+                                         ]
+                                     ],
+                                     [
+                                         "Checklist",
+                                         [
+                                             "Sample ID와 donor / subject ID를 분리해 기록",
+                                             "Repeated measure · paired design · nested structure 표시",
+                                             "Pseudoreplication을 피하려면 analysis unit을 design과 맞춤"
+                                         ]
+                                     ]
+                                 ],
+                        "related":  [
+                                        "replicates",
+                                        "metadata",
+                                        "experimental-design"
+                                    ]
+                    },
+    "replicates":  {
+                       "title":  "Biological \u0026 technical replicate",
+                       "aliases":  [
+                                       "biological replicate",
+                                       "technical replicate",
+                                       "replicate",
+                                       "pseudoreplication"
+                                   ],
+                       "section":  "measurement",
+                       "summary":  "Biological variation과 measurement variation을 구분하기 위한 반복 측정",
+                       "body":  [
+                                    [
+                                        "Biological replicate",
+                                        [
+                                            "Independent donor · animal · culture 등에서 얻은 sample",
+                                            "Population 또는 biological variability를 반영",
+                                            "Inference 범위를 결정하는 핵심 n"
+                                        ]
+                                    ],
+                                    [
+                                        "Technical replicate",
+                                        [
+                                            "같은 biological material의 library · run · measurement 반복",
+                                            "Assay precision과 technical variability 평가",
+                                            "Independent biological evidence로 count하지 않음"
+                                        ]
+                                    ],
+                                    [
+                                        "Analysis",
+                                        [
+                                            "Technical replicate를 merge할지 model에 포함할지 사전 결정",
+                                            "Paired / repeated design에서는 replicate identity를 보존",
+                                            "Cell·read를 replicate처럼 취급하면 uncertainty가 과소 추정될 수 있음"
+                                        ]
+                                    ]
+                                ],
+                       "related":  [
+                                       "sample-unit",
+                                       "experimental-design",
+                                       "batch-effect"
+                                   ]
+                   },
+    "feature-identifier":  {
+                               "title":  "Feature \u0026 identifier",
+                               "aliases":  [
+                                               "feature",
+                                               "feature ID",
+                                               "gene ID",
+                                               "identifier"
+                                           ],
+                               "section":  "measurement",
+                               "summary":  "Omics matrix의 row를 이루는 gene·peak·protein·metabolite 등의 측정 단위",
+                               "body":  [
+                                            [
+                                                "Feature",
+                                                [
+                                                    "Transcriptomics: gene 또는 transcript",
+                                                    "Epigenomics: genomic peak · region · CpG",
+                                                    "Proteomics / metabolomics: protein · peptide · compound"
+                                                ]
+                                            ],
+                                            [
+                                                "Identifier",
+                                                [
+                                                    "Gene symbol만으로는 version과 species가 불명확할 수 있음",
+                                                    "Stable ID 예: Ensembl gene ID · UniProt accession · metabolite database ID",
+                                                    "Annotation version이 바뀌면 one-to-many 또는 retired ID가 생길 수 있음"
+                                                ]
+                                            ],
+                                            [
+                                                "Checklist",
+                                                [
+                                                    "Feature type과 ID namespace를 명시",
+                                                    "Species · genome build · annotation release 기록",
+                                                    "ID conversion 과정에서 unmatched / duplicate feature 수 확인"
+                                                ]
+                                            ]
+                                        ],
+                               "related":  [
+                                               "omics-modality",
+                                               "data-matrix",
+                                               "metadata"
+                                           ]
+                           },
+    "data-matrix":  {
+                        "title":  "Data matrix",
+                        "aliases":  [
+                                        "data matrix",
+                                        "count matrix",
+                                        "expression matrix",
+                                        "feature matrix"
+                                    ],
+                        "section":  "data",
+                        "summary":  "Rows에 feature, columns에 sample 또는 cell을 두는 Omics의 기본 data structure",
+                        "body":  [
+                                     [
+                                         "Axes",
+                                         [
+                                             "Row: gene · peak · protein · metabolite 같은 feature",
+                                             "Column: sample · cell · spot 같은 observation",
+                                             "Cell value: count · intensity · abundance · score"
+                                         ]
+                                     ],
+                                     [
+                                         "Dimensions",
+                                         [
+                                             "Bulk data: 보통 feature × sample",
+                                             "Single-cell / spatial data: feature × cell 또는 spot으로 매우 큼",
+                                             "Orientation은 file과 software마다 반대일 수 있어 확인 필요"
+                                         ]
+                                     ],
+                                     [
+                                         "Integrity",
+                                         [
+                                             "Matrix column ID와 sample metadata ID가 정확히 match해야 함",
+                                             "Duplicate feature와 duplicate sample ID 확인",
+                                             "Raw · normalized · scaled matrix를 같은 이름으로 덮어쓰지 않음"
+                                         ]
+                                     ]
+                                 ],
+                        "related":  [
+                                        "feature-identifier",
+                                        "count-abundance",
+                                        "metadata"
+                                    ]
+                    },
+    "count-abundance":  {
+                            "title":  "Count \u0026 abundance",
+                            "aliases":  [
+                                            "count",
+                                            "raw count",
+                                            "abundance",
+                                            "intensity",
+                                            "TPM"
+                                        ],
+                            "section":  "data",
+                            "summary":  "Assay signal을 feature별 numeric value로 표현한 measurement scale",
+                            "body":  [
+                                         [
+                                             "Count data",
+                                             [
+                                                 "Sequencing read 또는 molecule이 feature에 assign된 integer value",
+                                                 "Library size와 composition에 직접 영향받음",
+                                                 "Negative binomial 등 count-aware model에 사용"
+                                             ]
+                                         ],
+                                         [
+                                             "Continuous abundance",
+                                             [
+                                                 "Mass spectrometry intensity · normalized expression · proportion 등",
+                                                 "Dynamic range와 lower detection limit가 assay마다 다름",
+                                                 "Log transform 전 zero와 negative value 처리 확인"
+                                             ]
+                                         ],
+                                         [
+                                             "Do not mix",
+                                             [
+                                                 "Raw count · TPM/CPM · normalized count는 의미가 다름",
+                                                 "Method가 요구하는 input scale을 확인",
+                                                 "Figure용 transformed value와 statistical test input을 구분"
+                                             ]
+                                         ]
+                                     ],
+                            "related":  [
+                                            "data-matrix",
+                                            "normalization",
+                                            "transformation-scaling"
+                                        ]
+                        },
+    "metadata":  {
+                     "title":  "Metadata",
+                     "aliases":  [
+                                     "metadata",
+                                     "sample sheet",
+                                     "feature annotation",
+                                     "data dictionary"
+                                 ],
+                     "section":  "data",
+                     "summary":  "Omics value가 만들어진 biological·technical context를 설명하는 data",
+                     "body":  [
+                                  [
+                                      "Sample metadata",
+                                      [
+                                          "Condition · time point · tissue · cell type · donor",
+                                          "Batch · run · plate · library preparation · platform",
+                                          "Age · sex · treatment 같은 analysis covariate"
+                                      ]
+                                  ],
+                                  [
+                                      "Feature metadata",
+                                      [
+                                          "Feature ID · symbol · genomic position · annotation type",
+                                          "Species · genome build · database release",
+                                          "Protein / metabolite mapping과 ambiguity"
+                                      ]
+                                  ],
+                                  [
+                                      "Quality rules",
+                                      [
+                                          "Machine-readable category와 missing-value code 사용",
+                                          "Sample ID를 matrix column과 일대일로 연결",
+                                          "Free-text note와 analysis-ready variable을 분리"
+                                      ]
+                                  ]
+                              ],
+                     "related":  [
+                                     "sample-unit",
+                                     "data-matrix",
+                                     "experimental-design"
+                                 ]
+                 },
+    "missingness-sparsity":  {
+                                 "title":  "Missingness \u0026 sparsity",
+                                 "aliases":  [
+                                                 "missingness",
+                                                 "missing value",
+                                                 "sparsity",
+                                                 "zero inflation",
+                                                 "dropout"
+                                             ],
+                                 "section":  "data",
+                                 "summary":  "관측되지 않은 값, true zero와 assay detection limit를 구분하는 문제",
+                                 "body":  [
+                                              [
+                                                  "Different meanings",
+                                                  [
+                                                      "Missing: 측정 또는 기록 자체가 없음",
+                                                      "Zero: 측정 결과가 실제 0으로 기록됨",
+                                                      "Below detection / dropout: 존재할 수 있지만 assay가 signal을 잡지 못함"
+                                                  ]
+                                              ],
+                                              [
+                                                  "Why sparse",
+                                                  [
+                                                      "Single-cell count matrix는 많은 gene–cell entry가 zero",
+                                                      "Proteomics / metabolomics는 lower detection limit 때문에 missing value 발생",
+                                                      "Filtering과 imputation strategy는 mechanism에 따라 달라야 함"
+                                                  ]
+                                              ],
+                                              [
+                                                  "Checklist",
+                                                  [
+                                                      "0을 NA로 또는 NA를 0으로 무조건 변환하지 않음",
+                                                      "Missingness가 condition·batch와 연관되는지 확인",
+                                                      "Method가 zero와 missing value를 어떻게 처리하는지 확인"
+                                                  ]
+                                              ]
+                                          ],
+                                 "related":  [
+                                                 "data-matrix",
+                                                 "quality-control",
+                                                 "normalization"
+                                             ]
+                             },
+    "quality-control":  {
+                            "title":  "Quality control",
+                            "aliases":  [
+                                            "quality control",
+                                            "QC",
+                                            "quality metric",
+                                            "outlier"
+                                        ],
+                            "section":  "preprocess",
+                            "summary":  "Low-quality sample·feature와 technical artifact를 analysis 전에 확인하는 과정",
+                            "body":  [
+                                         [
+                                             "Sample-level QC",
+                                             [
+                                                 "Total signal · library size · detected feature 수",
+                                                 "Mapping rate · duplication · contamination 등 assay-specific metric",
+                                                 "PCA / correlation에서 isolated sample과 batch pattern"
+                                             ]
+                                         ],
+                                         [
+                                             "Feature-level QC",
+                                             [
+                                                 "Extremely low abundance 또는 low detection frequency",
+                                                 "Unreliable identifier · ambiguous mapping · control feature",
+                                                 "Assay-specific background와 detection threshold"
+                                             ]
+                                         ],
+                                         [
+                                             "Principles",
+                                             [
+                                                 "Threshold를 result에 맞춰 사후 변경하지 않음",
+                                                 "Filter 전후 sample·feature 수와 reason 기록",
+                                                 "Outlier 제거보다 먼저 metadata·label·technical failure 확인"
+                                             ]
+                                         ]
+                                     ],
+                            "related":  [
+                                            "metadata",
+                                            "normalization",
+                                            "exploratory-visualization"
+                                        ]
+                        },
+    "normalization":  {
+                          "title":  "Normalization",
+                          "aliases":  [
+                                          "normalization",
+                                          "size factor",
+                                          "library size normalization"
+                                      ],
+                          "section":  "preprocess",
+                          "summary":  "Sample 간 technical scale과 composition 차이를 조정해 비교 가능하게 만드는 과정",
+                          "body":  [
+                                       [
+                                           "Why needed",
+                                           [
+                                               "Sequencing depth · total ion current · loading amount가 sample마다 다름",
+                                               "Raw value 차이가 biology보다 measurement scale을 반영할 수 있음",
+                                               "Normalization target은 assay와 downstream model에 따라 다름"
+                                           ]
+                                       ],
+                                       [
+                                           "Common ideas",
+                                           [
+                                               "Global scaling: total count 또는 size factor 조정",
+                                               "Composition-aware method: 일부 highly abundant feature의 영향 완화",
+                                               "Reference / control 기반 normalization: spike-in·housekeeping·internal standard"
+                                           ]
+                                       ],
+                                       [
+                                           "Interpretation",
+                                           [
+                                               "Normalization은 batch correction이나 biological adjustment와 다름",
+                                               "모든 feature의 total abundance가 실제로 달라지는 design에서는 global assumption 주의",
+                                               "Method 이름·parameter·input scale을 기록"
+                                           ]
+                                       ]
+                                   ],
+                          "related":  [
+                                          "count-abundance",
+                                          "transformation-scaling",
+                                          "batch-effect"
+                                      ]
+                      },
+    "transformation-scaling":  {
+                                   "title":  "Transformation \u0026 scaling",
+                                   "aliases":  [
+                                                   "transformation",
+                                                   "log transformation",
+                                                   "variance stabilization",
+                                                   "scaling",
+                                                   "z-score"
+                                               ],
+                                   "section":  "preprocess",
+                                   "summary":  "Value distribution과 feature scale을 downstream analysis에 맞게 바꾸는 과정",
+                                   "body":  [
+                                                [
+                                                    "Transformation",
+                                                    [
+                                                        "Log transform: large value range를 압축",
+                                                        "Variance-stabilizing transform: mean–variance relationship 완화",
+                                                        "Pseudocount 선택은 low value와 zero 해석에 영향"
+                                                    ]
+                                                ],
+                                                [
+                                                    "Scaling",
+                                                    [
+                                                        "Centering: feature mean을 0으로 이동",
+                                                        "Standardization: standard deviation으로 나눠 comparable scale 생성",
+                                                        "Z-score는 relative pattern을 보여주지만 original abundance를 보존하지 않음"
+                                                    ]
+                                                ],
+                                                [
+                                                    "Use",
+                                                    [
+                                                        "PCA·clustering·heatmap은 transformed/scaled data를 자주 사용",
+                                                        "Differential model은 raw count를 직접 요구할 수 있음",
+                                                        "Visualization matrix와 statistical-test input을 구분"
+                                                    ]
+                                                ]
+                                            ],
+                                   "related":  [
+                                                   "normalization",
+                                                   "exploratory-visualization",
+                                                   "differential-analysis"
+                                               ]
+                               },
+    "batch-effect":  {
+                         "title":  "Batch effect",
+                         "aliases":  [
+                                         "batch effect",
+                                         "batch correction",
+                                         "integration",
+                                         "confounding"
+                                     ],
+                         "section":  "preprocess",
+                         "summary":  "Biology와 무관하게 processing batch에 따라 생기는 systematic technical variation",
+                         "body":  [
+                                      [
+                                          "Sources",
+                                          [
+                                              "Library preparation date · reagent lot · plate · run · operator",
+                                              "Sample storage · processing time · instrument drift",
+                                              "Site 또는 cohort 차이가 biology와 함께 섞일 수 있음"
+                                          ]
+                                      ],
+                                      [
+                                          "Diagnosis",
+                                          [
+                                              "PCA / clustering에서 batch별 separation 확인",
+                                              "Known biological group과 batch의 contingency table 확인",
+                                              "QC metric과 feature-level effect의 batch association 확인"
+                                          ]
+                                      ],
+                                      [
+                                          "Handling",
+                                          [
+                                              "가장 좋은 대응은 balanced experimental design과 randomization",
+                                              "Statistical model에 batch covariate 포함",
+                                              "Correction / integration 후 biological signal 보존과 over-correction 점검"
+                                          ]
+                                      ]
+                                  ],
+                         "related":  [
+                                         "experimental-design",
+                                         "quality-control",
+                                         "exploratory-visualization"
+                                     ]
+                     },
+    "experimental-design":  {
+                                "title":  "Experimental design \u0026 contrast",
+                                "aliases":  [
+                                                "experimental design",
+                                                "design matrix",
+                                                "contrast",
+                                                "covariate",
+                                                "paired design"
+                                            ],
+                                "section":  "analysis",
+                                "summary":  "Research question과 sample structure를 statistical model의 comparison으로 표현",
+                                "body":  [
+                                             [
+                                                 "Design matrix",
+                                                 [
+                                                     "Row는 sample, column은 condition·batch·covariate",
+                                                     "Paired / repeated sample은 donor identity 또는 block을 model",
+                                                     "Biological replicate 수가 estimable effect와 uncertainty를 결정"
+                                                 ]
+                                             ],
+                                             [
+                                                 "Contrast",
+                                                 [
+                                                     "Model coefficient의 어떤 combination을 test할지 정의",
+                                                     "예: treatment vs control · interaction · time trend",
+                                                     "Reference level과 sign convention에 따라 effect direction이 달라짐"
+                                                 ]
+                                             ],
+                                             [
+                                                 "Before testing",
+                                                 [
+                                                     "Condition과 batch가 완전히 confounded되면 분리 추정 불가",
+                                                     "Metadata category · missingness · replicate balance 확인",
+                                                     "Primary comparison과 covariate를 result 확인 전에 고정"
+                                                 ]
+                                             ]
+                                         ],
+                                "related":  [
+                                                "sample-unit",
+                                                "replicates",
+                                                "differential-analysis",
+                                                "batch-effect"
+                                            ]
+                            },
+    "differential-analysis":  {
+                                  "title":  "Differential analysis",
+                                  "aliases":  [
+                                                  "differential analysis",
+                                                  "differential expression",
+                                                  "DEG",
+                                                  "fold change"
+                                              ],
+                                  "section":  "analysis",
+                                  "summary":  "Condition에 따라 abundance가 systematic하게 달라지는 feature를 찾는 analysis",
+                                  "body":  [
+                                               [
+                                                   "Model",
+                                                   [
+                                                       "Feature별로 count 또는 transformed abundance를 outcome으로 model",
+                                                       "Condition effect와 batch·donor 같은 covariate를 함께 추정",
+                                                       "Assay distribution에 맞는 linear · count · hurdle model 선택"
+                                                   ]
+                                               ],
+                                               [
+                                                   "Outputs",
+                                                   [
+                                                       "Effect size: log fold change 또는 group difference",
+                                                       "Uncertainty: standard error · confidence interval",
+                                                       "Evidence: p-value와 multiple-testing adjusted value"
+                                                   ]
+                                               ],
+                                               [
+                                                   "Interpretation",
+                                                   [
+                                                       "Statistical significance와 biological importance를 구분",
+                                                       "Low count·small n에서는 effect estimate가 불안정",
+                                                       "Feature list뿐 아니라 direction·magnitude·sample pattern을 함께 확인"
+                                                   ]
+                                               ]
+                                           ],
+                                  "related":  [
+                                                  "experimental-design",
+                                                  "multiple-testing",
+                                                  "enrichment",
+                                                  "transformation-scaling"
+                                              ]
+                              },
+    "multiple-testing":  {
+                             "title":  "Multiple testing \u0026 FDR",
+                             "aliases":  [
+                                             "multiple testing",
+                                             "FDR",
+                                             "false discovery rate",
+                                             "adjusted p-value",
+                                             "q-value"
+                                         ],
+                             "section":  "analysis",
+                             "summary":  "많은 feature를 동시에 test할 때 false positive를 관리하는 error-control framework",
+                             "body":  [
+                                          [
+                                              "The problem",
+                                              [
+                                                  "Feature 수가 많으면 nominal p \u003c 0.05 result가 우연히 다수 발생",
+                                                  "Omics에서는 수천–수백만 hypothesis를 동시에 test",
+                                                  "Raw p-value만으로 significant feature를 선택하면 false discovery 증가"
+                                              ]
+                                          ],
+                                          [
+                                              "FDR",
+                                              [
+                                                  "False discovery rate: selected result 중 expected false-positive proportion",
+                                                  "Benjamini–Hochberg adjusted p-value를 흔히 사용",
+                                                  "FDR 0.05는 각 feature가 5% 확률로 false라는 의미가 아님"
+                                              ]
+                                          ],
+                                          [
+                                              "Reporting",
+                                              [
+                                                  "Test한 feature universe와 filtering rule 명시",
+                                                  "Raw p-value · adjusted p-value · effect size를 함께 제공",
+                                                  "Threshold 바로 위아래보다 전체 evidence와 independent validation을 고려"
+                                              ]
+                                          ]
+                                      ],
+                             "related":  [
+                                             "differential-analysis",
+                                             "enrichment"
+                                         ]
+                         },
+    "enrichment":  {
+                       "title":  "Enrichment analysis",
+                       "aliases":  [
+                                       "enrichment analysis",
+                                       "pathway analysis",
+                                       "gene set enrichment",
+                                       "over-representation analysis"
+                                   ],
+                       "section":  "analysis",
+                       "summary":  "Feature-level result를 pathway·ontology·gene set 단위로 요약하는 analysis",
+                       "body":  [
+                                    [
+                                        "Approaches",
+                                        [
+                                            "Over-representation: selected list에서 set member가 과다한지 test",
+                                            "Rank-based enrichment: 전체 ranked feature list를 사용",
+                                            "Topology-aware method: pathway structure와 direction을 추가로 활용"
+                                        ]
+                                    ],
+                                    [
+                                        "Inputs",
+                                        [
+                                            "Feature identifier와 species가 database와 일치해야 함",
+                                            "Background universe는 실제로 test 가능한 feature로 설정",
+                                            "Gene set database와 release version 기록"
+                                        ]
+                                    ],
+                                    [
+                                        "Interpretation",
+                                        [
+                                            "Related pathway는 overlapping genes 때문에 함께 significant할 수 있음",
+                                            "Large / small gene set과 annotation bias에 주의",
+                                            "Enrichment는 mechanism proof가 아니라 result organization과 hypothesis summary"
+                                        ]
+                                    ]
+                                ],
+                       "related":  [
+                                       "differential-analysis",
+                                       "multiple-testing",
+                                       "feature-identifier"
+                                   ]
+                   },
+    "exploratory-visualization":  {
+                                      "title":  "Exploratory visualization",
+                                      "aliases":  [
+                                                      "PCA",
+                                                      "heatmap",
+                                                      "boxplot",
+                                                      "density plot",
+                                                      "exploratory analysis"
+                                                  ],
+                                      "section":  "analysis",
+                                      "summary":  "Distribution·sample relationship·dominant variation을 model fitting 전후에 확인하는 시각화",
+                                      "body":  [
+                                                   [
+                                                       "Distribution",
+                                                       [
+                                                           "Library size · total signal · detected feature 수",
+                                                           "Density / boxplot로 scale과 outlier 확인",
+                                                           "Raw와 normalized distribution을 비교"
+                                                       ]
+                                                   ],
+                                                   [
+                                                       "Sample relationship",
+                                                       [
+                                                           "PCA: high-dimensional variation의 dominant axes 요약",
+                                                           "Correlation heatmap / clustering: sample similarity 확인",
+                                                           "Color와 shape에 condition·batch·donor metadata를 함께 표시"
+                                                       ]
+                                                   ],
+                                                   [
+                                                       "Limits",
+                                                       [
+                                                           "PCA / UMAP separation 자체가 statistical significance를 의미하지 않음",
+                                                           "Scaling과 feature selection에 따라 plot이 달라짐",
+                                                           "Exploratory pattern을 confirmatory test와 구분"
+                                                       ]
+                                                   ]
+                                               ],
+                                      "related":  [
+                                                      "quality-control",
+                                                      "batch-effect",
+                                                      "data-matrix"
+                                                  ]
+                                  }
+}
 
-  "omics-modality": {
-    "title": "Omics & modality",
-    "aliases": [
-      "omics",
-      "modality",
-      "multi-omics"
-    ],
-    "section": "measurement",
-    "summary": "특정 biological layer를 genome scale로 측정하고 해석하는 접근",
-    "body": [
-      [
-        "Omics",
-        [
-          "Genome-wide 또는 system-wide scale에서 많은 biological entities를 동시에 측정",
-          "한두 개 marker가 아니라 전체 pattern과 coordinated change를 분석",
-          "Measurement technology와 computational analysis가 함께 정의하는 data domain"
-        ]
-      ],
-      [
-        "Major modalities",
-        [
-          "Genomics: DNA sequence와 genetic variation",
-          "Transcriptomics / epigenomics: RNA abundance 또는 chromatin state",
-          "Proteomics / metabolomics: protein과 small-molecule abundance"
-        ]
-      ],
-      [
-        "Interpretation",
-        [
-          "서로 다른 modality는 biological layer와 measurement scale이 다름",
-          "같은 sample에서 얻어도 feature ID와 noise structure가 다름",
-          "Multi-omics는 단순 concatenation이 아니라 layer 간 relationship을 분석"
-        ]
-      ]
-    ],
-    "related": [
-      "assay-platform",
-      "feature-identifier",
-      "data-matrix"
-    ]
-  },
-  "assay-platform": {
-    "title": "Assay & platform",
-    "aliases": [
-      "assay",
-      "platform",
-      "library preparation"
-    ],
-    "section": "measurement",
-    "summary": "Biological property를 measurable signal로 변환하는 experimental procedure와 instrument",
-    "body": [
-      [
-        "Assay",
-        [
-          "무엇을 capture·label·amplify·detect할지 정하는 experimental procedure",
-          "예: RNA-seq · ATAC-seq · mass spectrometry",
-          "Assay chemistry가 관측 가능한 feature와 bias를 결정"
-        ]
-      ],
-      [
-        "Platform",
-        [
-          "Signal을 실제로 read하는 instrument와 technology",
-          "Read length · depth · sensitivity · dynamic range가 platform별로 다름",
-          "같은 assay도 platform과 protocol version에 따라 data property가 달라질 수 있음"
-        ]
-      ],
-      [
-        "Record together",
-        [
-          "Assay name · protocol · kit · platform · software version",
-          "Input amount · sequencing depth · run date · operator",
-          "Batch effect 해석을 위해 metadata로 보존"
-        ]
-      ]
-    ],
-    "related": [
-      "omics-modality",
-      "sample-unit",
-      "metadata"
-    ]
-  },
-  "sample-unit": {
-    "title": "Sample & experimental unit",
-    "aliases": [
-      "sample",
-      "experimental unit",
-      "specimen",
-      "aliquot"
-    ],
-    "section": "measurement",
-    "summary": "측정에 투입된 material과 실제 independent comparison을 이루는 biological unit",
-    "body": [
-      [
-        "Three levels",
-        [
-          "Biological unit: donor · animal · tissue 등 independent source",
-          "Sample: assay에 투입된 material",
-          "Aliquot / library: 같은 sample에서 분리되거나 제작된 technical unit"
-        ]
-      ],
-      [
-        "Experimental unit",
-        [
-          "Treatment가 independently assigned되는 최소 단위",
-          "Statistical replicate 수는 experimental unit 기준",
-          "Cell 수나 read 수가 많아도 donor가 하나면 biological n은 1일 수 있음"
-        ]
-      ],
-      [
-        "Checklist",
-        [
-          "Sample ID와 donor / subject ID를 분리해 기록",
-          "Repeated measure · paired design · nested structure 표시",
-          "Pseudoreplication을 피하려면 analysis unit을 design과 맞춤"
-        ]
-      ]
-    ],
-    "related": [
-      "replicates",
-      "metadata",
-      "experimental-design"
-    ]
-  },
-  "replicates": {
-    "title": "Biological & technical replicate",
-    "aliases": [
-      "biological replicate",
-      "technical replicate",
-      "replicate",
-      "pseudoreplication"
-    ],
-    "section": "measurement",
-    "summary": "Biological variation과 measurement variation을 구분하기 위한 반복 측정",
-    "body": [
-      [
-        "Biological replicate",
-        [
-          "Independent donor · animal · culture 등에서 얻은 sample",
-          "Population 또는 biological variability를 반영",
-          "Inference 범위를 결정하는 핵심 n"
-        ]
-      ],
-      [
-        "Technical replicate",
-        [
-          "같은 biological material의 library · run · measurement 반복",
-          "Assay precision과 technical variability 평가",
-          "Independent biological evidence로 count하지 않음"
-        ]
-      ],
-      [
-        "Analysis",
-        [
-          "Technical replicate를 merge할지 model에 포함할지 사전 결정",
-          "Paired / repeated design에서는 replicate identity를 보존",
-          "Cell·read를 replicate처럼 취급하면 uncertainty가 과소 추정될 수 있음"
-        ]
-      ]
-    ],
-    "related": [
-      "sample-unit",
-      "experimental-design",
-      "batch-effect"
-    ]
-  }
-
-
-,
-
-  "feature-identifier": {
-    "title": "Feature & identifier",
-    "aliases": [
-      "feature",
-      "feature ID",
-      "gene ID",
-      "identifier"
-    ],
-    "section": "measurement",
-    "summary": "Omics matrix의 row를 이루는 gene·peak·protein·metabolite 등의 측정 단위",
-    "body": [
-      [
-        "Feature",
-        [
-          "Transcriptomics: gene 또는 transcript",
-          "Epigenomics: genomic peak · region · CpG",
-          "Proteomics / metabolomics: protein · peptide · compound"
-        ]
-      ],
-      [
-        "Identifier",
-        [
-          "Gene symbol만으로는 version과 species가 불명확할 수 있음",
-          "Stable ID 예: Ensembl gene ID · UniProt accession · metabolite database ID",
-          "Annotation version이 바뀌면 one-to-many 또는 retired ID가 생길 수 있음"
-        ]
-      ],
-      [
-        "Checklist",
-        [
-          "Feature type과 ID namespace를 명시",
-          "Species · genome build · annotation release 기록",
-          "ID conversion 과정에서 unmatched / duplicate feature 수 확인"
-        ]
-      ]
-    ],
-    "related": [
-      "omics-modality",
-      "data-matrix",
-      "metadata"
-    ]
-  },
-  "data-matrix": {
-    "title": "Data matrix",
-    "aliases": [
-      "data matrix",
-      "count matrix",
-      "expression matrix",
-      "feature matrix"
-    ],
-    "section": "data",
-    "summary": "Rows에 feature, columns에 sample 또는 cell을 두는 Omics의 기본 data structure",
-    "body": [
-      [
-        "Axes",
-        [
-          "Row: gene · peak · protein · metabolite 같은 feature",
-          "Column: sample · cell · spot 같은 observation",
-          "Cell value: count · intensity · abundance · score"
-        ]
-      ],
-      [
-        "Dimensions",
-        [
-          "Bulk data: 보통 feature × sample",
-          "Single-cell / spatial data: feature × cell 또는 spot으로 매우 큼",
-          "Orientation은 file과 software마다 반대일 수 있어 확인 필요"
-        ]
-      ],
-      [
-        "Integrity",
-        [
-          "Matrix column ID와 sample metadata ID가 정확히 match해야 함",
-          "Duplicate feature와 duplicate sample ID 확인",
-          "Raw · normalized · scaled matrix를 같은 이름으로 덮어쓰지 않음"
-        ]
-      ]
-    ],
-    "related": [
-      "feature-identifier",
-      "count-abundance",
-      "metadata"
-    ]
-  },
-  "count-abundance": {
-    "title": "Count & abundance",
-    "aliases": [
-      "count",
-      "raw count",
-      "abundance",
-      "intensity",
-      "TPM"
-    ],
-    "section": "data",
-    "summary": "Assay signal을 feature별 numeric value로 표현한 measurement scale",
-    "body": [
-      [
-        "Count data",
-        [
-          "Sequencing read 또는 molecule이 feature에 assign된 integer value",
-          "Library size와 composition에 직접 영향받음",
-          "Negative binomial 등 count-aware model에 사용"
-        ]
-      ],
-      [
-        "Continuous abundance",
-        [
-          "Mass spectrometry intensity · normalized expression · proportion 등",
-          "Dynamic range와 lower detection limit가 assay마다 다름",
-          "Log transform 전 zero와 negative value 처리 확인"
-        ]
-      ],
-      [
-        "Do not mix",
-        [
-          "Raw count · TPM/CPM · normalized count는 의미가 다름",
-          "Method가 요구하는 input scale을 확인",
-          "Figure용 transformed value와 statistical test input을 구분"
-        ]
-      ]
-    ],
-    "related": [
-      "data-matrix",
-      "normalization",
-      "transformation-scaling"
-    ]
-  },
-  "metadata": {
-    "title": "Metadata",
-    "aliases": [
-      "metadata",
-      "sample sheet",
-      "feature annotation",
-      "data dictionary"
-    ],
-    "section": "data",
-    "summary": "Omics value가 만들어진 biological·technical context를 설명하는 data",
-    "body": [
-      [
-        "Sample metadata",
-        [
-          "Condition · time point · tissue · cell type · donor",
-          "Batch · run · plate · library preparation · platform",
-          "Age · sex · treatment 같은 analysis covariate"
-        ]
-      ],
-      [
-        "Feature metadata",
-        [
-          "Feature ID · symbol · genomic position · annotation type",
-          "Species · genome build · database release",
-          "Protein / metabolite mapping과 ambiguity"
-        ]
-      ],
-      [
-        "Quality rules",
-        [
-          "Machine-readable category와 missing-value code 사용",
-          "Sample ID를 matrix column과 일대일로 연결",
-          "Free-text note와 analysis-ready variable을 분리"
-        ]
-      ]
-    ],
-    "related": [
-      "sample-unit",
-      "data-matrix",
-      "experimental-design"
-    ]
-  }
-
-,
-
-  "missingness-sparsity": {
-    "title": "Missingness & sparsity",
-    "aliases": [
-      "missingness",
-      "missing value",
-      "sparsity",
-      "zero inflation",
-      "dropout"
-    ],
-    "section": "data",
-    "summary": "관측되지 않은 값, true zero와 assay detection limit를 구분하는 문제",
-    "body": [
-      [
-        "Different meanings",
-        [
-          "Missing: 측정 또는 기록 자체가 없음",
-          "Zero: 측정 결과가 실제 0으로 기록됨",
-          "Below detection / dropout: 존재할 수 있지만 assay가 signal을 잡지 못함"
-        ]
-      ],
-      [
-        "Why sparse",
-        [
-          "Single-cell count matrix는 많은 gene–cell entry가 zero",
-          "Proteomics / metabolomics는 lower detection limit 때문에 missing value 발생",
-          "Filtering과 imputation strategy는 mechanism에 따라 달라야 함"
-        ]
-      ],
-      [
-        "Checklist",
-        [
-          "0을 NA로 또는 NA를 0으로 무조건 변환하지 않음",
-          "Missingness가 condition·batch와 연관되는지 확인",
-          "Method가 zero와 missing value를 어떻게 처리하는지 확인"
-        ]
-      ]
-    ],
-    "related": [
-      "data-matrix",
-      "quality-control",
-      "normalization"
-    ]
-  },
-  "quality-control": {
-    "title": "Quality control",
-    "aliases": [
-      "quality control",
-      "QC",
-      "quality metric",
-      "outlier"
-    ],
-    "section": "preprocess",
-    "summary": "Low-quality sample·feature와 technical artifact를 analysis 전에 확인하는 과정",
-    "body": [
-      [
-        "Sample-level QC",
-        [
-          "Total signal · library size · detected feature 수",
-          "Mapping rate · duplication · contamination 등 assay-specific metric",
-          "PCA / correlation에서 isolated sample과 batch pattern"
-        ]
-      ],
-      [
-        "Feature-level QC",
-        [
-          "Extremely low abundance 또는 low detection frequency",
-          "Unreliable identifier · ambiguous mapping · control feature",
-          "Assay-specific background와 detection threshold"
-        ]
-      ],
-      [
-        "Principles",
-        [
-          "Threshold를 result에 맞춰 사후 변경하지 않음",
-          "Filter 전후 sample·feature 수와 reason 기록",
-          "Outlier 제거보다 먼저 metadata·label·technical failure 확인"
-        ]
-      ]
-    ],
-    "related": [
-      "metadata",
-      "normalization",
-      "exploratory-visualization"
-    ]
-  },
-  "normalization": {
-    "title": "Normalization",
-    "aliases": [
-      "normalization",
-      "size factor",
-      "library size normalization"
-    ],
-    "section": "preprocess",
-    "summary": "Sample 간 technical scale과 composition 차이를 조정해 비교 가능하게 만드는 과정",
-    "body": [
-      [
-        "Why needed",
-        [
-          "Sequencing depth · total ion current · loading amount가 sample마다 다름",
-          "Raw value 차이가 biology보다 measurement scale을 반영할 수 있음",
-          "Normalization target은 assay와 downstream model에 따라 다름"
-        ]
-      ],
-      [
-        "Common ideas",
-        [
-          "Global scaling: total count 또는 size factor 조정",
-          "Composition-aware method: 일부 highly abundant feature의 영향 완화",
-          "Reference / control 기반 normalization: spike-in·housekeeping·internal standard"
-        ]
-      ],
-      [
-        "Interpretation",
-        [
-          "Normalization은 batch correction이나 biological adjustment와 다름",
-          "모든 feature의 total abundance가 실제로 달라지는 design에서는 global assumption 주의",
-          "Method 이름·parameter·input scale을 기록"
-        ]
-      ]
-    ],
-    "related": [
-      "count-abundance",
-      "transformation-scaling",
-      "batch-effect"
-    ]
-  },
-  "transformation-scaling": {
-    "title": "Transformation & scaling",
-    "aliases": [
-      "transformation",
-      "log transformation",
-      "variance stabilization",
-      "scaling",
-      "z-score"
-    ],
-    "section": "preprocess",
-    "summary": "Value distribution과 feature scale을 downstream analysis에 맞게 바꾸는 과정",
-    "body": [
-      [
-        "Transformation",
-        [
-          "Log transform: large value range를 압축",
-          "Variance-stabilizing transform: mean–variance relationship 완화",
-          "Pseudocount 선택은 low value와 zero 해석에 영향"
-        ]
-      ],
-      [
-        "Scaling",
-        [
-          "Centering: feature mean을 0으로 이동",
-          "Standardization: standard deviation으로 나눠 comparable scale 생성",
-          "Z-score는 relative pattern을 보여주지만 original abundance를 보존하지 않음"
-        ]
-      ],
-      [
-        "Use",
-        [
-          "PCA·clustering·heatmap은 transformed/scaled data를 자주 사용",
-          "Differential model은 raw count를 직접 요구할 수 있음",
-          "Visualization matrix와 statistical-test input을 구분"
-        ]
-      ]
-    ],
-    "related": [
-      "normalization",
-      "exploratory-visualization",
-      "differential-analysis"
-    ]
-  }
-
-,
-
-  "batch-effect": {
-    "title": "Batch effect",
-    "aliases": [
-      "batch effect",
-      "batch correction",
-      "integration",
-      "confounding"
-    ],
-    "section": "preprocess",
-    "summary": "Biology와 무관하게 processing batch에 따라 생기는 systematic technical variation",
-    "body": [
-      [
-        "Sources",
-        [
-          "Library preparation date · reagent lot · plate · run · operator",
-          "Sample storage · processing time · instrument drift",
-          "Site 또는 cohort 차이가 biology와 함께 섞일 수 있음"
-        ]
-      ],
-      [
-        "Diagnosis",
-        [
-          "PCA / clustering에서 batch별 separation 확인",
-          "Known biological group과 batch의 contingency table 확인",
-          "QC metric과 feature-level effect의 batch association 확인"
-        ]
-      ],
-      [
-        "Handling",
-        [
-          "가장 좋은 대응은 balanced experimental design과 randomization",
-          "Statistical model에 batch covariate 포함",
-          "Correction / integration 후 biological signal 보존과 over-correction 점검"
-        ]
-      ]
-    ],
-    "related": [
-      "experimental-design",
-      "quality-control",
-      "exploratory-visualization"
-    ]
-  },
-  "experimental-design": {
-    "title": "Experimental design & contrast",
-    "aliases": [
-      "experimental design",
-      "design matrix",
-      "contrast",
-      "covariate",
-      "paired design"
-    ],
-    "section": "analysis",
-    "summary": "Research question과 sample structure를 statistical model의 comparison으로 표현",
-    "body": [
-      [
-        "Design matrix",
-        [
-          "Row는 sample, column은 condition·batch·covariate",
-          "Paired / repeated sample은 donor identity 또는 block을 model",
-          "Biological replicate 수가 estimable effect와 uncertainty를 결정"
-        ]
-      ],
-      [
-        "Contrast",
-        [
-          "Model coefficient의 어떤 combination을 test할지 정의",
-          "예: treatment vs control · interaction · time trend",
-          "Reference level과 sign convention에 따라 effect direction이 달라짐"
-        ]
-      ],
-      [
-        "Before testing",
-        [
-          "Condition과 batch가 완전히 confounded되면 분리 추정 불가",
-          "Metadata category · missingness · replicate balance 확인",
-          "Primary comparison과 covariate를 result 확인 전에 고정"
-        ]
-      ]
-    ],
-    "related": [
-      "sample-unit",
-      "replicates",
-      "differential-analysis",
-      "batch-effect"
-    ]
-  },
-  "differential-analysis": {
-    "title": "Differential analysis",
-    "aliases": [
-      "differential analysis",
-      "differential expression",
-      "DEG",
-      "fold change"
-    ],
-    "section": "analysis",
-    "summary": "Condition에 따라 abundance가 systematic하게 달라지는 feature를 찾는 analysis",
-    "body": [
-      [
-        "Model",
-        [
-          "Feature별로 count 또는 transformed abundance를 outcome으로 model",
-          "Condition effect와 batch·donor 같은 covariate를 함께 추정",
-          "Assay distribution에 맞는 linear · count · hurdle model 선택"
-        ]
-      ],
-      [
-        "Outputs",
-        [
-          "Effect size: log fold change 또는 group difference",
-          "Uncertainty: standard error · confidence interval",
-          "Evidence: p-value와 multiple-testing adjusted value"
-        ]
-      ],
-      [
-        "Interpretation",
-        [
-          "Statistical significance와 biological importance를 구분",
-          "Low count·small n에서는 effect estimate가 불안정",
-          "Feature list뿐 아니라 direction·magnitude·sample pattern을 함께 확인"
-        ]
-      ]
-    ],
-    "related": [
-      "experimental-design",
-      "multiple-testing",
-      "enrichment",
-      "transformation-scaling"
-    ]
-  }
-
-,
-
-  "multiple-testing": {
-    "title": "Multiple testing & FDR",
-    "aliases": [
-      "multiple testing",
-      "FDR",
-      "false discovery rate",
-      "adjusted p-value",
-      "q-value"
-    ],
-    "section": "analysis",
-    "summary": "많은 feature를 동시에 test할 때 false positive를 관리하는 error-control framework",
-    "body": [
-      [
-        "The problem",
-        [
-          "Feature 수가 많으면 nominal p < 0.05 result가 우연히 다수 발생",
-          "Omics에서는 수천–수백만 hypothesis를 동시에 test",
-          "Raw p-value만으로 significant feature를 선택하면 false discovery 증가"
-        ]
-      ],
-      [
-        "FDR",
-        [
-          "False discovery rate: selected result 중 expected false-positive proportion",
-          "Benjamini–Hochberg adjusted p-value를 흔히 사용",
-          "FDR 0.05는 각 feature가 5% 확률로 false라는 의미가 아님"
-        ]
-      ],
-      [
-        "Reporting",
-        [
-          "Test한 feature universe와 filtering rule 명시",
-          "Raw p-value · adjusted p-value · effect size를 함께 제공",
-          "Threshold 바로 위아래보다 전체 evidence와 independent validation을 고려"
-        ]
-      ]
-    ],
-    "related": [
-      "differential-analysis",
-      "effect-size",
-      "enrichment"
-    ]
-  },
-  "enrichment": {
-    "title": "Enrichment analysis",
-    "aliases": [
-      "enrichment analysis",
-      "pathway analysis",
-      "gene set enrichment",
-      "over-representation analysis"
-    ],
-    "section": "analysis",
-    "summary": "Feature-level result를 pathway·ontology·gene set 단위로 요약하는 analysis",
-    "body": [
-      [
-        "Approaches",
-        [
-          "Over-representation: selected list에서 set member가 과다한지 test",
-          "Rank-based enrichment: 전체 ranked feature list를 사용",
-          "Topology-aware method: pathway structure와 direction을 추가로 활용"
-        ]
-      ],
-      [
-        "Inputs",
-        [
-          "Feature identifier와 species가 database와 일치해야 함",
-          "Background universe는 실제로 test 가능한 feature로 설정",
-          "Gene set database와 release version 기록"
-        ]
-      ],
-      [
-        "Interpretation",
-        [
-          "Related pathway는 overlapping genes 때문에 함께 significant할 수 있음",
-          "Large / small gene set과 annotation bias에 주의",
-          "Enrichment는 mechanism proof가 아니라 result organization과 hypothesis summary"
-        ]
-      ]
-    ],
-    "related": [
-      "differential-analysis",
-      "multiple-testing",
-      "feature-identifier"
-    ]
-  },
-  "exploratory-visualization": {
-    "title": "Exploratory visualization",
-    "aliases": [
-      "PCA",
-      "heatmap",
-      "boxplot",
-      "density plot",
-      "exploratory analysis"
-    ],
-    "section": "analysis",
-    "summary": "Distribution·sample relationship·dominant variation을 model fitting 전후에 확인하는 시각화",
-    "body": [
-      [
-        "Distribution",
-        [
-          "Library size · total signal · detected feature 수",
-          "Density / boxplot로 scale과 outlier 확인",
-          "Raw와 normalized distribution을 비교"
-        ]
-      ],
-      [
-        "Sample relationship",
-        [
-          "PCA: high-dimensional variation의 dominant axes 요약",
-          "Correlation heatmap / clustering: sample similarity 확인",
-          "Color와 shape에 condition·batch·donor metadata를 함께 표시"
-        ]
-      ],
-      [
-        "Limits",
-        [
-          "PCA / UMAP separation 자체가 statistical significance를 의미하지 않음",
-          "Scaling과 feature selection에 따라 plot이 달라짐",
-          "Exploratory pattern을 confirmatory test와 구분"
-        ]
-      ]
-    ],
-    "related": [
-      "quality-control",
-      "batch-effect",
-      "data-matrix"
-    ]
-  }
-
-    };
-
+    ;
+    const localSourceGroups = [
+      { ids: ["replicates", "quality-control", "experimental-design"], label: "Lab Wiki · bulk-rnaseq-pipeline", href: "../../../syntheses/bulk-rnaseq-pipeline.md" },
+      { ids: ["normalization"], label: "Lab Wiki · rnaseq-normalization", href: "../../../concepts/rnaseq-normalization.md" },
+      { ids: ["batch-effect"], label: "Lab Wiki · batch-integration", href: "../../../concepts/batch-integration.md" },
+      { ids: ["count-abundance", "differential-analysis", "multiple-testing"], label: "Lab Wiki · count-based-deg", href: "../../../concepts/count-based-deg.md" },
+      { ids: ["enrichment"], label: "Lab Wiki · gene-set-enrichment", href: "../../../concepts/gene-set-enrichment.md" }
+    ];
     const sourceLinks = {
   "omics-modality": [
     [
@@ -1617,6 +1609,12 @@
       window.scrollTo(0, 0);
     }
 
+    function getSources(id) {
+      const local = localSourceGroups.filter(function (group) { return group.ids.includes(id); }).map(function (group) { return [group.label, group.href]; });
+      const official = (sourceLinks[id] || []).map(function (source) { return [source[0].startsWith("Official supplement ·") ? source[0] : "Official supplement · " + source[0], source[1]]; });
+      return local.concat(official);
+    }
+
     function renderArticle(id) {
       const a = articles[id];
       if (!a) return renderHome();
@@ -1630,14 +1628,14 @@
       const related = a.related.filter(function (rid) { return articles[rid]; }).map(function (rid) {
         return '<button data-article="' + rid + '">' + articles[rid].title + ' →</button>';
       }).join("");
-      const sources = (sourceLinks[id] || []).map(function (source) {
+      const sources = getSources(id).map(function (source) {
         return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
       }).join("");
       app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
         '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
-        '<div class="aside-box source-box"><h3>Sources</h3><div class="source-list">' + sources + '</div></div>' +
+        '<div class="aside-box source-box"><h3>Sources · provenance</h3><div class="source-list">' + sources + '</div></div>' +
         '<div class="policy-note">Public concepts · Standard methods<br>Excluded: Project · Hypothesis · Internal result</div></aside></div></div>';
       window.scrollTo(0, 0);
     }
