@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Omics 공통 개념을 질문으로 탐색하는 Lab Wiki">
-  <title>Omics Basics · Lab Wiki</title>
+  <meta name="description" content="Omics 공통 개념을 질문으로 탐색하는 HaLab Wiki">
+  <title>Omics Basics · HaLab Wiki</title>
   <style>
     :root {
       --ink: #18211b;
@@ -63,7 +63,7 @@
     .brand span { color: var(--green); }
     .brand-group { display: flex; align-items: center; white-space: nowrap; }
     .brand-home { text-decoration: none; }
-    .brand-domain { margin-left: 6px; }
+    .brand-domain { margin-left: 6px; text-decoration: none; }
     .top-search {
       flex: 1;
       max-width: 560px;
@@ -300,7 +300,7 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand-group"><a class="brand brand-home" href="../../index.html">Lab Wiki</a><button class="brand brand-domain" type="button" data-route="home"><span>/ Omics Basics</span></button></div>
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../index.html"><span>/ Omics</span></a><button class="brand brand-domain" type="button" data-route="home"><span>/ Omics Basics</span></button></div>
       <form class="top-search" id="topSearchForm" role="search">
         <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
         <span class="keycap">/</span>
@@ -311,10 +311,7 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container">
-      <span>Omics Basics · Public knowledge · Standard methods · Updated 2026-06-24</span>
-      <span>Excluded: Project · Hypothesis · Internal result</span>
-    </div>
+    <div class="container"><span>Updated 2026-06-24</span></div>
   </footer>
 
   <script>
@@ -1175,7 +1172,7 @@
                                               "The problem",
                                               [
                                                   "Feature 수가 많으면 nominal p \u003c 0.05 result가 우연히 다수 발생",
-                                                  "Omics에서는 수천–수백만 hypothesis를 동시에 test",
+                                                  "Omics에서는 수천–수백만 feature를 동시에 test",
                                                   "Raw p-value만으로 significant feature를 선택하면 false discovery 증가"
                                               ]
                                           ],
@@ -1233,7 +1230,7 @@
                                         [
                                             "Related pathway는 overlapping genes 때문에 함께 significant할 수 있음",
                                             "Large / small gene set과 annotation bias에 주의",
-                                            "Enrichment는 mechanism proof가 아니라 result organization과 hypothesis summary"
+                                            "Enrichment는 mechanism proof가 아니라 result organization과 result summary"
                                         ]
                                     ]
                                 ],
@@ -1289,13 +1286,7 @@
 }
 
     ;
-    const localSourceGroups = [
-      { ids: ["replicates", "quality-control", "experimental-design"], label: "Lab Wiki · bulk-rnaseq-pipeline", href: "../../../syntheses/bulk-rnaseq-pipeline.md" },
-      { ids: ["normalization"], label: "Lab Wiki · rnaseq-normalization", href: "../../../concepts/rnaseq-normalization.md" },
-      { ids: ["batch-effect"], label: "Lab Wiki · batch-integration", href: "../../../concepts/batch-integration.md" },
-      { ids: ["count-abundance", "differential-analysis", "multiple-testing"], label: "Lab Wiki · count-based-deg", href: "../../../concepts/count-based-deg.md" },
-      { ids: ["enrichment"], label: "Lab Wiki · gene-set-enrichment", href: "../../../concepts/gene-set-enrichment.md" }
-    ];
+
     const sourceLinks = {
   "omics-modality": [
     [
@@ -1530,7 +1521,7 @@
     function renderHome() {
       document.title = "Omics Basics";
       app.innerHTML = '<section class="hero"><div class="container">' +
-        '<p class="eyebrow">Omics foundation</p><h1>Omics Basics</h1>' +
+        '<p class="eyebrow">Omics basics</p><h1>Omics Basics</h1>' +
         '<p class="hero-copy">Measurement · Data Structure · Preprocessing · Analysis</p>' +
         '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="Omics Basics 통합 검색" placeholder="Search: sample, normalization, batch effect"><span class="search-icon">⌕</span></form>' +
         '<p class="search-hint">Korean / English / acronym</p></div></section>' +
@@ -1610,9 +1601,7 @@
     }
 
     function getSources(id) {
-      const local = localSourceGroups.filter(function (group) { return group.ids.includes(id); }).map(function (group) { return [group.label, group.href]; });
-      const official = (sourceLinks[id] || []).map(function (source) { return [source[0].startsWith("Official supplement ·") ? source[0] : "Official supplement · " + source[0], source[1]]; });
-      return local.concat(official);
+      return sourceLinks[id] || [];
     }
 
     function renderArticle(id) {
@@ -1635,8 +1624,8 @@
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
         '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
-        '<div class="aside-box source-box"><h3>Sources · provenance</h3><div class="source-list">' + sources + '</div></div>' +
-        '<div class="policy-note">Public concepts · Standard methods<br>Excluded: Project · Hypothesis · Internal result</div></aside></div></div>';
+        (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        '</aside></div></div>';
       window.scrollTo(0, 0);
     }
 

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Metagenomics를 측정·프로파일링·통계·도구의 질문으로 탐색하는 Lab Wiki">
-  <title>Metagenomics · Lab Wiki</title>
+  <meta name="description" content="Metagenomics를 측정·프로파일링·통계·도구의 질문으로 탐색하는 HaLab Wiki">
+  <title>Metagenomics · HaLab Wiki</title>
   <style>
     :root {
       --ink: #18211b;
@@ -63,7 +63,7 @@
     .brand span { color: var(--green); }
     .brand-group { display: flex; align-items: center; white-space: nowrap; }
     .brand-home { text-decoration: none; }
-    .brand-domain { margin-left: 6px; }
+    .brand-domain { margin-left: 6px; text-decoration: none; }
     .top-search {
       flex: 1;
       max-width: 560px;
@@ -300,7 +300,7 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand-group"><a class="brand brand-home" href="../../index.html">Lab Wiki</a><button class="brand brand-domain" type="button" data-route="home"><span>/ Metagenomics</span></button></div>
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../index.html"><span>/ Omics</span></a><button class="brand brand-domain" type="button" data-route="home"><span>/ Metagenomics</span></button></div>
       <form class="top-search" id="topSearchForm" role="search">
         <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
         <span class="keycap">/</span>
@@ -311,10 +311,7 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container">
-      <span>Metagenomics · Public knowledge · Standard methods · Updated 2026-06-24</span>
-      <span>Excluded: Project · Hypothesis · Internal result</span>
-    </div>
+    <div class="container"><span>Updated 2026-06-24</span></div>
   </footer>
 
   <script>
@@ -1270,42 +1267,19 @@
 }
 
     ;
-    const localSourceGroups = [
-      { ids: ["microbiome-metagenomics", "amplicon-shotgun", "amplicon-16s", "shotgun-metagenomics", "contamination-host-dna"], label: "Lab Wiki · amplicon-vs-shotgun-profiling", href: "../../../syntheses/amplicon-vs-shotgun-profiling.md" },
-      { ids: ["amplicon-shotgun", "contamination-host-dna"], label: "Lab Wiki · amplicon-vs-shotgun", href: "../../../concepts/amplicon-vs-shotgun.md" },
-      { ids: ["sample-metadata", "contamination-host-dna", "reference-atlases"], label: "Lab Wiki · HMP", href: "../../../entities/hmp.md" },
-      { ids: ["feature-table", "asv-otu", "taxonomic-profiling"], label: "Lab Wiki · taxonomic-profiling", href: "../../../concepts/taxonomic-profiling.md" },
-      { ids: ["amplicon-16s", "asv-otu", "dada2"], label: "Lab Wiki · DADA2", href: "../../../entities/dada2.md" },
-      { ids: ["kraken-bracken"], label: "Lab Wiki · Kraken 2", href: "../../../entities/kraken2.md" },
-      { ids: ["kraken-bracken"], label: "Lab Wiki · Bracken", href: "../../../entities/bracken.md" },
-      { ids: ["metaphlan"], label: "Lab Wiki · MetaPhlAn", href: "../../../entities/metaphlan.md" },
-      { ids: ["functional-humann"], label: "Lab Wiki · functional-profiling", href: "../../../concepts/functional-profiling.md" },
-      { ids: ["functional-humann"], label: "Lab Wiki · HUMAnN", href: "../../../entities/humann.md" },
-      { ids: ["strain-profiling"], label: "Lab Wiki · strain-level-profiling", href: "../../../concepts/strain-level-profiling.md" },
-      { ids: ["compositionality", "differential-abundance"], label: "Lab Wiki · compositional-data-analysis", href: "../../../concepts/compositional-data-analysis.md" },
-      { ids: ["alpha-diversity"], label: "Lab Wiki · alpha-diversity", href: "../../../concepts/alpha-diversity.md" },
-      { ids: ["beta-diversity", "permanova-permdisp"], label: "Lab Wiki · beta-diversity", href: "../../../concepts/beta-diversity.md" },
-      { ids: ["unifrac"], label: "Lab Wiki · UniFrac", href: "../../../entities/unifrac.md" },
-      { ids: ["permanova-permdisp"], label: "Lab Wiki · PERMANOVA", href: "../../../entities/permanova.md" },
-      { ids: ["permanova-permdisp"], label: "Lab Wiki · PERMDISP", href: "../../../entities/permdisp.md" },
-      { ids: ["differential-abundance"], label: "Lab Wiki · differential-abundance", href: "../../../concepts/differential-abundance.md" },
-      { ids: ["qiime2", "sample-metadata"], label: "Lab Wiki · QIIME 2", href: "../../../entities/qiime2.md" },
-      { ids: ["biobakery"], label: "Lab Wiki · bioBakery", href: "../../../entities/biobakery.md" },
-      { ids: ["reference-atlases"], label: "Lab Wiki · microbiome-reference-atlases", href: "../../../syntheses/microbiome-reference-atlases.md" },
-      { ids: ["reference-atlases"], label: "Lab Wiki · gene-catalogue", href: "../../../concepts/gene-catalogue.md" }
-    ];
+
     const sourceLinks = {};
     const officialSupplementLinks = {
-      "qiime2": [["Official supplement · QIIME 2 documentation", "https://docs.qiime2.org/"]],
-      "dada2": [["Official supplement · DADA2 documentation", "https://benjjneb.github.io/dada2/"]],
+      "qiime2": [["QIIME 2 documentation", "https://docs.qiime2.org/"]],
+      "dada2": [["DADA2 documentation", "https://benjjneb.github.io/dada2/"]],
       "kraken-bracken": [
-        ["Official supplement · Kraken 2 repository", "https://github.com/DerrickWood/kraken2"],
-        ["Official supplement · Bracken repository", "https://github.com/jenniferlu717/Bracken"]
+        ["Kraken 2 repository", "https://github.com/DerrickWood/kraken2"],
+        ["Bracken repository", "https://github.com/jenniferlu717/Bracken"]
       ],
-      "metaphlan": [["Official supplement · MetaPhlAn repository", "https://github.com/biobakery/MetaPhlAn"]],
-      "functional-humann": [["Official supplement · HUMAnN repository", "https://github.com/biobakery/humann"]],
-      "strain-profiling": [["Official supplement · MetaPhlAn / StrainPhlAn repository", "https://github.com/biobakery/MetaPhlAn"]],
-      "biobakery": [["Official supplement · bioBakery organization", "https://github.com/biobakery"]]
+      "metaphlan": [["MetaPhlAn repository", "https://github.com/biobakery/MetaPhlAn"]],
+      "functional-humann": [["HUMAnN repository", "https://github.com/biobakery/humann"]],
+      "strain-profiling": [["MetaPhlAn / StrainPhlAn repository", "https://github.com/biobakery/MetaPhlAn"]],
+      "biobakery": [["bioBakery organization", "https://github.com/biobakery"]]
     };
 
     const glossaryTerms = {
@@ -1455,8 +1429,7 @@
     }
 
     function getSources(id) {
-      const local = localSourceGroups.filter(function (group) { return group.ids.includes(id); }).map(function (group) { return [group.label, group.href]; });
-      return local.concat(officialSupplementLinks[id] || []);
+      return (sourceLinks[id] || []).concat(officialSupplementLinks[id] || []);
     }
 
     function renderArticle(id) {
@@ -1479,8 +1452,8 @@
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
         '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
-        '<div class="aside-box source-box"><h3>Sources · provenance</h3><div class="source-list">' + sources + '</div></div>' +
-        '<div class="policy-note">Public concepts · Standard methods<br>Excluded: Project · Hypothesis · Internal result</div></aside></div></div>';
+        (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        '</aside></div></div>';
       window.scrollTo(0, 0);
     }
 

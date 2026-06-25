@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bulk Transcriptomics를 측정·정량·차등발현·해석의 질문으로 탐색하는 HaLab Wiki">
+  <title>Transcriptomics · HaLab Wiki</title>
+  <style>
+    :root {
+      --ink: #18211b;
+      --muted: #667168;
+      --paper: #f7f7f2;
+      --surface: #ffffff;
+      --line: #d8ddd7;
+      --green: #1f5d43;
+      --green-soft: #e7f0ea;
+      --blue: #315d78;
+      --rust: #94553b;
+      --gold: #936f21;
+      --shadow: 0 14px 35px rgba(24, 33, 27, .07);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    button, input { font: inherit; }
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 247, 242, .94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .topbar-inner {
+      width: min(1180px, calc(100% - 40px));
+      min-height: 64px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .brand {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--ink);
+      cursor: pointer;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.18rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .brand span { color: var(--green); }
+    .brand-group { display: flex; align-items: center; white-space: nowrap; }
+    .brand-home { text-decoration: none; }
+    .brand-domain { margin-left: 6px; text-decoration: none; }
+    .top-search {
+      flex: 1;
+      max-width: 560px;
+      margin-left: auto;
+      position: relative;
+    }
+    .top-search input {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      padding: 0 44px 0 14px;
+      color: var(--ink);
+      outline: none;
+    }
+    .top-search input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+    .keycap {
+      position: absolute;
+      right: 10px;
+      top: 9px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--muted);
+      background: var(--paper);
+      padding: 1px 6px;
+      font-size: .75rem;
+    }
+
+    main { min-height: calc(100vh - 140px); }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+
+    .hero {
+      padding: 78px 0 52px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(rgba(31, 93, 67, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 93, 67, .035) 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { font-family: Georgia, "Noto Serif KR", serif; line-height: 1.25; }
+    .hero h1 { margin: 0; font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: -.045em; }
+    .hero-copy { margin: 16px auto 26px; max-width: 650px; color: var(--muted); font-size: 1.04rem; }
+    .hero-search { width: min(720px, calc(100% - 32px)); margin: 0 auto; position: relative; }
+    .hero-search input {
+      width: 100%;
+      height: 62px;
+      border: 1px solid #bac6bd;
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 0 58px 0 20px;
+      color: var(--ink);
+      font-size: 1.03rem;
+      outline: none;
+    }
+    .hero-search input:focus { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft), var(--shadow); }
+    .search-icon { position: absolute; right: 20px; top: 18px; color: var(--green); font-size: 1.3rem; }
+    .search-hint { margin: 11px 0 0; color: var(--muted); font-size: .82rem; }
+
+    .browse { padding: 58px 0 76px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    .section-heading h2 { margin: 0; font-size: 1.65rem; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .category-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .category-card {
+      position: relative;
+      min-height: 235px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 26px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .category-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .category-card:focus-visible { outline: 3px solid var(--green-soft); outline-offset: 2px; }
+    .category-number { color: var(--accent); font-family: Georgia, serif; font-size: .95rem; font-weight: 700; }
+    .category-card h3 { margin: 12px 0 10px; font-size: 1.65rem; }
+    .category-card p { margin: 0 0 25px; max-width: 520px; color: var(--muted); }
+    .card-route { position: absolute; left: 26px; bottom: 23px; color: var(--accent); font-size: .86rem; font-weight: 750; }
+
+    .breadcrumb { padding: 30px 0 18px; color: var(--muted); font-size: .84rem; }
+    .breadcrumb button { border: 0; padding: 0; background: none; color: var(--green); cursor: pointer; }
+    .breadcrumb span { margin: 0 8px; color: #9ca49e; }
+    .page-header { padding: 18px 0 36px; border-bottom: 1px solid var(--line); }
+    .page-header h1 { margin: 7px 0 12px; font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.035em; }
+    .page-header .lead { margin: 0; max-width: 740px; color: var(--muted); font-size: 1.04rem; }
+    .question-list { padding: 42px 0 72px; display: grid; gap: 16px; }
+    .question-block { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: visible; }
+    .question-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); }
+    .question-head small { color: var(--green); font-weight: 800; }
+    .question-head h2 { margin: 5px 0 7px; font-size: 1.35rem; }
+    .question-head p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .concept-row { display: grid; grid-template-columns: 1.2fr 2fr auto; align-items: center; gap: 18px; padding: 17px 24px; border-top: 1px solid #edf0ec; }
+    .concept-row:first-child { border-top: 0; }
+    .concept-row strong { font-size: .95rem; }
+    .concept-row p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .concept-row button { border: 0; background: none; color: var(--green); font-weight: 750; cursor: pointer; padding: 5px; }
+    .concept-row .map-label { color: #8b948d; font-size: .78rem; white-space: nowrap; }
+
+    .search-page { padding-bottom: 72px; }
+    .search-summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 10px 0 22px; }
+    .search-summary p { margin: 0; color: var(--muted); }
+    .filters { display: flex; flex-wrap: wrap; gap: 7px; }
+    .filter-btn { border: 1px solid var(--line); border-radius: 999px; background: var(--surface); padding: 6px 12px; color: var(--muted); cursor: pointer; font-size: .8rem; }
+    .filter-btn.active { border-color: var(--green); background: var(--green-soft); color: var(--green); font-weight: 750; }
+    .results { display: grid; gap: 12px; }
+    .result-card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 20px 22px; cursor: pointer; text-align: left; }
+    .result-card:hover { border-color: #93aa9a; box-shadow: 0 7px 20px rgba(24, 33, 27, .05); }
+    .result-path { color: var(--green); font-size: .76rem; font-weight: 750; }
+    .result-card h2 { margin: 4px 0 6px; font-size: 1.25rem; }
+    .result-card p { margin: 0; color: var(--muted); font-size: .9rem; }
+    mark { background: #fff0ad; color: inherit; padding: 0 2px; }
+    .empty { border: 1px dashed #b8c0ba; border-radius: var(--radius); padding: 48px 24px; text-align: center; color: var(--muted); }
+
+    .article-layout { display: grid; grid-template-columns: minmax(0, 740px) 260px; gap: 64px; padding: 12px 0 80px; align-items: start; }
+    .article { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(25px, 5vw, 52px); }
+    .article h1 { margin: 6px 0 5px; font-size: clamp(2.1rem, 5vw, 3.5rem); letter-spacing: -.03em; }
+    .aliases { margin: 0 0 26px; color: var(--muted); font-size: .83rem; }
+    .definition { margin: 0 0 34px; padding: 18px 20px; border-left: 4px solid var(--green); background: var(--green-soft); font-size: 1.03rem; }
+    .article h2 { margin: 34px 0 12px; padding-bottom: 7px; border-bottom: 1px solid var(--line); font-size: 1.32rem; }
+    .article p { margin: 0 0 15px; }
+    .article ul { margin: 0 0 18px; padding-left: 22px; }
+    .article li { margin: 6px 0; }
+    .fact-list {
+      display: grid;
+      gap: 9px;
+      margin: 0 0 18px;
+      padding-left: 20px;
+      color: #37423a;
+    }
+    .fact-list li { padding-left: 4px; }
+    .fact-list li::marker { color: var(--green); }
+    .term-link { border: 0; border-bottom: 1px solid #8aa897; background: none; padding: 0; color: var(--green); cursor: pointer; font-weight: 700; }
+    .glossary-term {
+      position: relative;
+      border-bottom: 1px dotted var(--green);
+      color: #174b37;
+      cursor: help;
+      outline: none;
+    }
+    .glossary-term::after {
+      content: attr(data-definition);
+      position: absolute;
+      z-index: 40;
+      left: 0;
+      bottom: calc(100% + 8px);
+      width: max-content;
+      max-width: min(320px, calc(100vw - 40px));
+      padding: 10px 12px;
+      border-radius: 7px;
+      background: #17221b;
+      color: #f8faf8;
+      box-shadow: 0 10px 28px rgba(10, 20, 14, .24);
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      font-size: .78rem;
+      font-weight: 500;
+      line-height: 1.55;
+      letter-spacing: 0;
+      white-space: normal;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(4px);
+      transition: opacity .14s ease, transform .14s ease, visibility .14s ease;
+      pointer-events: none;
+    }
+    .glossary-term:hover::after,
+    .glossary-term:focus::after {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .glossary-term:focus { border-bottom-style: solid; }
+    .tooltip-hint {
+      margin: -15px 0 25px;
+      color: var(--muted);
+      font-size: .76rem;
+    }
+    .aside { position: sticky; top: 88px; }
+    .aside-box { border-top: 3px solid var(--green); background: var(--surface); padding: 18px; box-shadow: 0 8px 24px rgba(24,33,27,.05); }
+    .aside-box h3 { margin: 0 0 12px; font-size: 1rem; }
+    .related-list { display: grid; gap: 9px; }
+    .related-list button { border: 0; background: none; padding: 0; text-align: left; color: var(--green); cursor: pointer; font-size: .87rem; }
+    .source-box { margin-top: 16px; border-top-color: var(--blue); }
+    .source-list { display: grid; gap: 9px; }
+    .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
+    .source-list a:hover { text-decoration: underline; }
+    .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
+
+    footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
+    footer .container { display: flex; justify-content: space-between; gap: 20px; }
+
+    @media (max-width: 820px) {
+      .topbar-inner { width: min(100% - 24px, 1180px); gap: 12px; }
+      .brand { font-size: 1rem; }
+      .keycap { display: none; }
+      .container { width: min(100% - 28px, 1120px); }
+      .hero { padding-top: 54px; }
+      .category-grid { grid-template-columns: 1fr; }
+      .category-card { min-height: 215px; }
+      .concept-row { grid-template-columns: 1fr auto; }
+      .concept-row p { grid-column: 1 / -1; grid-row: 2; }
+      .article-layout { grid-template-columns: 1fr; gap: 20px; }
+      .aside { position: static; }
+      .search-summary { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 520px) {
+      .topbar-inner { min-height: 58px; }
+      .brand-domain { display: none; }
+      .top-search input { height: 38px; }
+      .hero h1 { font-size: 2.55rem; }
+      .hero-search input { height: 56px; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .category-card { padding: 21px; }
+      .card-route { left: 21px; }
+      .question-head, .concept-row { padding-left: 18px; padding-right: 18px; }
+      .article { border-left: 0; border-right: 0; border-radius: 0; margin-left: -14px; margin-right: -14px; }
+      footer .container { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../index.html"><span>/ Omics</span></a><button class="brand brand-domain" type="button" data-route="home"><span>/ Transcriptomics</span></button></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer>
+    <div class="container"><span>Updated 2026-06-24</span></div>
+  </footer>
+
+  <script>
+    const sections = {
+      "measurement": {
+        "number": "01", "title": "Measurement & Study Design", "english": "WHAT IS MEASURED",
+        "accent": "#8b4f3a", "summary": "Transcriptome · Bulk RNA-seq · Library · Replicate · Batch",
+        "groups": [
+          {"q":"RNA-seq은 무엇을 측정하는가?","note":"RNA molecules → cDNA library → sequencing reads","items":[
+            ["transcriptome-rnaseq","RNA-seq & transcriptome","Sample에 존재하는 RNA를 digital count로 읽는 방법"],
+            ["bulk-scope","Bulk RNA-seq의 범위","여러 cell의 평균 signal을 측정"]
+          ]},
+          {"q":"Gene과 transcript는 어떻게 다른가?","note":"Gene locus → alternative transcripts → isoforms","items":[
+            ["gene-transcript-isoform","Gene · transcript · isoform","같은 gene에서 여러 transcript가 생성될 수 있음"]
+          ]},
+          {"q":"어떤 library를 만들 것인가?","note":"RNA selection · strand information · read layout","items":[
+            ["library-selection","Poly(A) selection vs total RNA","포착할 RNA 종류에 따라 library strategy 선택"],
+            ["stranded-paired-end","Strandedness & paired-end","방향성과 fragment 양끝 정보의 의미"]
+          ]},
+          {"q":"좋은 실험 설계는 무엇을 먼저 챙기는가?","note":"Biological replication before extra depth","items":[
+            ["replicates-batch","Replicates & batch","Biological replicate와 batch 구조를 설계 단계에서 정의"]
+          ]}
+        ]
+      },
+      "quantification": {
+        "number": "02", "title": "Alignment & Quantification", "english": "FROM READS TO EXPRESSION",
+        "accent": "#526b7a", "summary": "Read QC · Reference · Spliced alignment · Count · Transcript abundance",
+        "groups": [
+          {"q":"정량 전에 무엇을 확인하는가?","note":"Read quality and reference compatibility","items":[
+            ["read-qc","Read QC","Base quality·adapter·duplication·library 이상을 확인"],
+            ["reference-annotation","Reference & annotation","Genome build와 GTF/GFF version을 일치"]
+          ]},
+          {"q":"Read를 genome에 정렬할 때 무엇이 다른가?","note":"Exon junctions require splice-aware mapping","items":[
+            ["spliced-alignment","Spliced alignment","Intron을 건너는 read를 exon junction에 정렬"],
+            ["star-hisat2","STAR & HISAT2","속도·memory·workflow 목적에 따라 aligner 선택"]
+          ]},
+          {"q":"Expression은 어떻게 숫자로 바꾸는가?","note":"Aligned reads or transcript-level estimates","items":[
+            ["featurecounts","featureCounts","Alignment에서 gene-level integer count 생성"],
+            ["salmon-kallisto-tximport","Salmon · kallisto · tximport","Transcript 정량 후 gene-level 분석으로 연결"]
+          ]}
+        ]
+      },
+      "de": {
+        "number": "03", "title": "Normalization & Differential Expression", "english": "HOW SAMPLES ARE COMPARED",
+        "accent": "#6f6948", "summary": "Count matrix · TPM/CPM · TMM · Median-of-ratios · Design · DE",
+        "groups": [
+          {"q":"분석의 입력 table은 무엇인가?","note":"Feature × sample matrix plus sample metadata","items":[
+            ["count-matrix","Count matrix","Gene 또는 transcript를 row로 갖는 sample matrix"],
+            ["tpm-cpm","TPM · CPM · raw count","표현 단위마다 적합한 비교 목적이 다름"]
+          ]},
+          {"q":"Sample 간 차이는 어떻게 보정하는가?","note":"Library size and composition bias","items":[
+            ["normalization","Between-sample normalization","TMM 또는 median-of-ratios로 sample을 비교 가능하게 만듦"]
+          ]},
+          {"q":"비교 질문은 어떻게 model로 옮기는가?","note":"Metadata → design matrix → contrast","items":[
+            ["design-contrast","Design & contrast","Condition·covariate·batch를 model에 명시"],
+            ["differential-expression","Differential expression","Effect size와 uncertainty를 gene별로 평가"],
+            ["deseq2-edger-limma","DESeq2 · edgeR · limma-voom","Count 또는 precision-weighted model로 DE 수행"]
+          ]}
+        ]
+      },
+      "interpretation": {
+        "number": "04", "title": "Interpretation & Resources", "english": "HOW RESULTS ARE CHECKED AND INTERPRETED",
+        "accent": "#694f63", "summary": "PCA · Sample QC · ORA · GSEA · Deconvolution · Repositories",
+        "groups": [
+          {"q":"Sample 구조와 이상치는 어떻게 확인하는가?","note":"Global expression pattern before gene-level claims","items":[
+            ["pca-sample-qc","PCA & sample-level QC","Condition·batch·outlier가 전체 variation에 미치는 영향 확인"]
+          ]},
+          {"q":"Gene list를 biological function으로 어떻게 요약하는가?","note":"Cutoff-based list or ranked statistics","items":[
+            ["gene-set-enrichment","Gene set enrichment","Gene-level 결과를 pathway와 functional term으로 압축"],
+            ["ora-vs-gsea","ORA vs GSEA","선택된 gene list와 전체 ranked list의 차이"]
+          ]},
+          {"q":"Bulk signal의 cell composition은 어떻게 다루는가?","note":"Mixed tissue can reflect both proportion and within-cell changes","items":[
+            ["cell-type-deconvolution","Cell-type deconvolution","Reference를 이용해 cell-type proportion 또는 signal을 추정"]
+          ]},
+          {"q":"Public expression data는 어디서 찾는가?","note":"Study metadata and processed/raw expression data","items":[
+            ["expression-repositories","GEO & Expression Atlas","공개 transcriptomics dataset과 expression profile 탐색"]
+          ]}
+        ]
+      }
+    };
+
+    const articleRows = [
+      ["transcriptome-rnaseq","RNA-seq & transcriptome",["RNA sequencing","bulk RNA-seq","transcriptome sequencing"],"measurement",
+        "Sample의 RNA를 cDNA로 바꾸어 sequencing하고 transcript abundance와 구조를 digital read로 측정하는 방법",
+        [["측정 대상",["Transcriptome은 특정 cell·tissue·condition에서 발현되는 RNA의 전체 집합","Read 수는 transcript abundance를 반영하는 관측값","Gene expression과 splice junction·isoform 정보를 함께 얻을 수 있음"]],
+         ["Bulk의 의미",["여러 cell에서 나온 RNA를 섞어 sample-level 평균 signal을 측정","Cell composition과 cell 내부 expression 변화가 함께 반영","Single-cell·spatial transcriptomics는 별도 knowledge domain에서 다룸"]],
+         ["주요 결과",["Gene 또는 transcript abundance matrix","Sample 간 differential expression","Pathway와 biological process 수준의 해석"]]],
+        ["bulk-scope","gene-transcript-isoform","count-matrix"]],
+
+      ["bulk-scope","Bulk RNA-seq의 범위",["bulk transcriptomics","pooled RNA-seq","population-average expression"],"measurement",
+        "분리하지 않은 다수의 cell에서 얻은 RNA를 합쳐 sample 단위의 평균 expression을 측정",
+        [["무엇이 보이는가",["Tissue 또는 cell population 전체의 안정적인 expression profile","충분한 read와 replicate가 있으면 condition 간 작은 차이도 비교 가능","대규모 cohort에 적용하기 쉬움"]],
+         ["무엇이 섞이는가",["Cell-type proportion 차이와 cell-intrinsic regulation이 같은 signal에 공존","Rare cell의 signal은 평균에서 약해질 수 있음","Interpretation 시 tissue composition을 함께 고려"]],
+         ["범위 구분",["Bulk Transcriptomics는 sample-level expression 비교에 초점","Single-cell Genomics는 cell별 heterogeneity와 state를 다룸","Spatial Transcriptomics는 위치 정보를 보존한 채 expression을 측정"]]],
+        ["transcriptome-rnaseq","replicates-batch","cell-type-deconvolution"]],
+
+      ["gene-transcript-isoform","Gene · transcript · isoform",["gene-level","transcript-level","alternative isoform"],"measurement",
+        "Gene은 genomic locus이고 transcript 또는 isoform은 그 locus에서 실제로 생성된 RNA sequence",
+        [["관계",["하나의 gene에서 alternative promoter·splicing·polyadenylation으로 여러 transcript 생성 가능","Transcript마다 exon 조합과 길이가 다를 수 있음","Gene-level count는 여러 transcript signal을 합친 값"]],
+         ["분석 단위",["Gene-level은 DE와 pathway analysis에서 가장 흔함","Transcript-level은 isoform switching과 splicing 질문에 적합","질문에 맞춰 annotation과 quantification unit을 먼저 결정"]],
+         ["주의",["짧은 read는 유사 isoform 사이에서 모호하게 mapping될 수 있음","Annotation version에 따라 transcript 정의가 달라짐","Gene abundance 변화와 isoform proportion 변화는 다른 현상"]]],
+        ["reference-annotation","featurecounts","salmon-kallisto-tximport"]],
+
+      ["library-selection","Poly(A) selection vs total RNA",["polyA selection","rRNA depletion","total RNA-seq"],"measurement",
+        "Library preparation에서 어떤 RNA population을 sequencing 대상으로 남길지 결정하는 선택",
+        [["Poly(A) selection",["Poly(A) tail을 가진 mature mRNA를 주로 포착","Coding transcript 분석에 효율적","Degraded RNA와 non-polyadenylated RNA에는 제약"]],
+         ["Total RNA",["rRNA depletion 후 coding·non-coding RNA를 폭넓게 측정","Pre-mRNA와 일부 non-coding RNA가 포함될 수 있음","Library composition과 required depth가 달라짐"]],
+         ["선택 기준",["Biological question과 sample quality에 맞춤","Condition 간 동일한 protocol 유지","Protocol 차이는 biological group과 confounded되지 않게 설계"]]],
+        ["transcriptome-rnaseq","stranded-paired-end","replicates-batch"]],
+
+      ["stranded-paired-end","Strandedness & paired-end",["strand-specific RNA-seq","paired-end reads","read layout"],"measurement",
+        "Stranded library는 RNA의 전사 방향을 보존하고 paired-end는 한 fragment의 양끝을 읽음",
+        [["Strandedness",["Overlapping antisense gene을 구분하는 데 도움","Library protocol에 따라 forward 또는 reverse convention이 다름","Counting 단계에서 잘못 지정하면 count가 크게 감소할 수 있음"]],
+         ["Paired-end",["Fragment length와 양끝 정보를 이용해 mapping ambiguity를 줄임","Splice junction과 isoform 해석에 유리","Gene-level 단순 정량에서는 목적과 비용에 따라 single-end도 가능"]],
+         ["기록",["Read length·layout·strandedness를 metadata로 보존","Aligner와 counter에 동일한 library setting 전달","샘플 간 protocol을 일관되게 유지"]]],
+        ["library-selection","read-qc","featurecounts"]],
+
+      ["replicates-batch","Replicates & batch",["biological replicate","technical replicate","batch effect"],"measurement",
+        "Biological replicate로 population variation을 추정하고 batch가 condition과 섞이지 않도록 설계",
+        [["Replicate",["Biological replicate는 서로 독립적인 biological unit","Technical replicate는 측정 반복이며 biological n을 늘리지 않음","일반적으로 extra depth보다 biological replicate 증가가 DE power에 더 중요"]],
+         ["Batch",["Extraction date·library plate·sequencing run 등이 systematic variation을 만들 수 있음","각 condition을 여러 batch에 분산하고 randomize","Batch와 condition이 완전히 겹치면 model로 분리하기 어려움"]],
+         ["Metadata",["Sample ID·condition·covariate·batch를 명시","Paired 또는 repeated design은 subject ID를 보존","분석 전 comparison과 exclusion rule을 정의"]]],
+        ["design-contrast","pca-sample-qc","differential-expression"]],
+
+      ["read-qc","Read QC",["sequence QC","FastQC","MultiQC"],"quantification",
+        "Alignment 전에 raw read의 base quality·adapter·GC pattern·duplication 등 technical signal을 확인",
+        [["확인 항목",["Per-base quality와 read length distribution","Adapter contamination과 overrepresented sequence","GC content·duplication·sequence composition의 sample 간 차이"]],
+         ["해석",["QC warning은 즉시 sample 폐기를 뜻하지 않음","RNA-seq의 biological composition 때문에 일부 metric은 예상과 다를 수 있음","모든 sample을 함께 비교해 outlier와 batch pattern을 확인"]],
+         ["다음 단계",["필요한 경우 adapter trimming 또는 low-quality base 처리","변경 전후 QC를 기록","Alignment rate와 gene assignment rate까지 함께 평가"]]],
+        ["spliced-alignment","pca-sample-qc","reference-annotation"]],
+
+      ["reference-annotation","Reference & annotation",["genome build","GTF","GFF","gene annotation"],"quantification",
+        "Read mapping과 feature assignment에 사용하는 genome sequence와 gene model의 version",
+        [["일치",["Genome FASTA와 GTF/GFF는 같은 assembly와 naming convention 사용","chr1과 1 같은 chromosome naming mismatch를 확인","Annotation release를 분석 기록에 남김"]],
+         ["영향",["Gene·transcript 정의와 exon boundary가 count에 직접 영향","Novel junction 탐색과 known transcript quantification의 범위가 달라짐","서로 다른 release의 결과는 feature ID를 맞춘 뒤 비교"]],
+         ["선택",["Human은 목적에 맞는 GRCh37 또는 GRCh38 build 선택","Gene-level 분석에는 consistent gene annotation 사용","Transcript-level 분석은 isoform completeness가 중요"]]],
+        ["gene-transcript-isoform","spliced-alignment","featurecounts"]],
+
+      ["spliced-alignment","Spliced alignment",["splice-aware alignment","RNA-seq mapping","junction alignment"],"quantification",
+        "RNA-seq read가 intron을 건너 서로 다른 exon에 걸쳐 mapping될 수 있도록 하는 genome alignment",
+        [["필요성",["Mature RNA에는 intron이 제거되어 genome과 연속적으로 대응하지 않음","Exon-exon junction read를 일반 DNA aligner로 처리하기 어려움","Splice-aware aligner는 큰 genomic gap을 junction으로 모델링"]],
+         ["결과",["Coordinate-sorted BAM과 splice junction 정보","Gene count·coverage track·variant 또는 fusion 분석의 입력","Alignment rate와 uniquely mapped read 비율을 QC에 사용"]],
+         ["선택",["Novel junction·genome coordinate가 필요하면 alignment route가 유용","Expression 정량만 빠르게 수행하면 transcriptome-based method도 가능","Reference annotation과 read layout을 정확히 지정"]]],
+        ["star-hisat2","featurecounts","salmon-kallisto-tximport"]],
+
+      ["star-hisat2","STAR & HISAT2",["STAR aligner","HISAT2","splice-aware aligner"],"quantification",
+        "RNA-seq read를 genome에 splice-aware 방식으로 정렬하는 대표 aligner",
+        [["STAR",["높은 처리 속도와 splice junction discovery에 강점","Genome index가 크고 memory 사용량이 높은 편","대규모 bulk RNA-seq pipeline에서 널리 사용"]],
+         ["HISAT2",["Hierarchical index로 memory 사용량이 낮음","Spliced alignment와 graph-aware option 지원","제한된 memory 환경에서 유용"]],
+         ["선택 기준",["속도·memory·downstream 목적을 함께 고려","동일 cohort에는 같은 version과 parameter 적용","Mapping QC와 gene assignment 결과까지 비교"]]],
+        ["spliced-alignment","featurecounts","reference-annotation"]],
+
+      ["featurecounts","featureCounts",["Subread featureCounts","read summarization","gene count"],"quantification",
+        "Aligned read 또는 fragment를 annotation의 gene·exon feature에 배정해 integer count matrix를 만드는 도구",
+        [["입력과 출력",["Coordinate-aligned BAM/SAM과 GTF/GFF를 입력","Gene 또는 exon별 integer count 출력","Sample별 count를 결합해 feature × sample matrix 구성"]],
+         ["핵심 설정",["Strandedness와 paired-end counting을 library에 맞춤","Multi-mapping·overlap read 처리 rule을 명시","Gene ID attribute와 feature type을 확인"]],
+         ["사용",["Raw integer count는 edgeR·DESeq2 입력에 적합","TPM을 DE model의 raw count 대신 사용하지 않음","Assignment rate를 alignment QC와 함께 확인"]]],
+        ["spliced-alignment","count-matrix","deseq2-edger-limma"]],
+
+      ["salmon-kallisto-tximport","Salmon · kallisto · tximport",["transcript quantification","pseudoalignment","quasi-mapping","tximport"],"quantification",
+        "Transcriptome에 read를 빠르게 배정해 transcript abundance를 추정하고 gene-level DE 입력으로 연결하는 workflow",
+        [["Salmon과 kallisto",["Full genome alignment 없이 compatible transcript를 빠르게 탐색","Ambiguous read를 statistical model로 transcript 사이에 배분","Estimated count와 TPM을 transcript 단위로 출력"]],
+         ["tximport",["Transcript-level estimate를 gene-level로 aggregation","Transcript length 차이를 반영할 수 있는 offset 또는 scaled count 제공","DESeq2·edgeR·limma-voom workflow에 연결"]],
+         ["선택",["빠른 expression quantification이 주목적이면 효율적","Novel junction·genome-coordinate 분석에는 spliced alignment가 적합","Transcriptome index와 annotation version을 일치"]]],
+        ["gene-transcript-isoform","count-matrix","deseq2-edger-limma"]],
+
+      ["count-matrix","Count matrix",["expression matrix","gene count table","feature by sample"],"de",
+        "Row는 gene 또는 transcript, column은 sample, cell은 관측 또는 추정 count인 분석 입력 table",
+        [["구조",["Feature ID는 annotation과 연결","Column 이름은 sample metadata와 정확히 대응","Integer count 또는 length-aware estimated count 사용"]],
+         ["검사",["Library size와 detected feature 수를 sample별 확인","극저발현 feature는 사전 filter 가능","NA·duplicate ID·metadata mismatch를 점검"]],
+         ["용도",["Normalization과 differential expression의 입력","Exploratory transformation 후 PCA·clustering 수행","TPM matrix와 raw count matrix의 목적을 구분"]]],
+        ["tpm-cpm","normalization","design-contrast"]],
+
+      ["tpm-cpm","TPM · CPM · raw count",["TPM","CPM","RPKM","FPKM","raw count"],"de",
+        "RNA-seq abundance 표현 방식으로, 단위마다 길이·library size 보정과 사용 목적이 다름",
+        [["Raw count",["Read 또는 fragment assignment의 원래 scale","Count-based DE model이 분산을 추정하는 핵심 입력","Sample 간 직접 비교 전 normalization 필요"]],
+         ["CPM과 TPM",["CPM은 library size를 기준으로 million 단위 환산","TPM은 transcript length와 library composition을 보정해 sample 내 abundance 비교에 유용","RPKM/FPKM도 길이와 depth를 보정하지만 합의 scale이 TPM과 다름"]],
+         ["원칙",["DESeq2·edgeR에는 TPM을 raw count 대신 넣지 않음","Expression visualization과 abundance reporting에는 목적에 맞는 scale 사용","Within-sample과 between-sample normalization을 구분"]]],
+        ["count-matrix","normalization","differential-expression"]],
+
+      ["normalization","Between-sample normalization",["TMM","median-of-ratios","size factor","composition bias"],"de",
+        "Library size와 highly expressed feature가 만드는 composition bias를 보정해 sample 간 count를 비교 가능하게 만드는 단계",
+        [["문제",["Total read 수가 다르면 같은 abundance도 count가 다름","일부 매우 높은 gene이 전체 library proportion을 바꿈","Total-count scaling만으로는 composition bias를 제거하지 못할 수 있음"]],
+         ["방법",["edgeR의 TMM은 reference 대비 log-fold change를 trim해 scaling factor 추정","DESeq2의 median-of-ratios는 gene별 geometric mean 대비 ratio의 median 사용","대부분 gene이 크게 변하지 않는다는 가정에 의존"]],
+         ["사용",["Normalization factor는 DE model 내부에서 count mean scale을 조정","Normalized value와 transformed value를 구분","Global RNA output 변화가 질문이면 spike-in 같은 외부 기준을 별도 고려"]]],
+        ["tpm-cpm","deseq2-edger-limma","differential-expression"]],
+
+      ["design-contrast","Design & contrast",["design matrix","contrast","covariate","paired design"],"de",
+        "Sample metadata를 statistical model의 predictor로 표현하고 실제 비교할 coefficient 조합을 지정",
+        [["Design",["Condition·batch·sex·age 등 필요한 covariate 포함","Paired sample은 subject effect를 model에 반영","Confounded variable은 통계 model만으로 분리할 수 없음"]],
+         ["Contrast",["Treatment vs control처럼 관심 비교를 명시","다요인 design에서는 main effect와 interaction을 구분","Coefficient direction을 확인해 log fold change 부호를 해석"]],
+         ["검사",["각 group의 replicate 수와 missing combination 확인","Design matrix rank deficiency를 점검","Analysis question을 contrast 문장으로 먼저 작성"]]],
+        ["replicates-batch","differential-expression","deseq2-edger-limma"]],
+
+      ["differential-expression","Differential expression",["DE","differential gene expression","log fold change","FDR"],"de",
+        "Condition과 covariate를 고려해 gene별 expression 차이의 effect size와 uncertainty를 추정하는 분석",
+        [["모델",["RNA-seq count는 평균이 커질수록 variance가 변하는 discrete data","Negative binomial model이 biological overdispersion을 다룸","Gene 간 정보를 공유해 dispersion 또는 effect를 안정화"]],
+         ["결과",["Log fold change는 변화 방향과 크기","P-value는 null model 아래의 evidence","FDR은 다수 gene 검정에서 expected false discovery proportion을 조절"]],
+         ["해석",["Statistical significance와 biological importance를 구분","Effect size·uncertainty·expression level을 함께 확인","Batch·outlier·cell composition이 결과를 설명하는지 점검"]]],
+        ["design-contrast","deseq2-edger-limma","gene-set-enrichment"]],
+
+      ["deseq2-edger-limma","DESeq2 · edgeR · limma-voom",["DESeq2","edgeR","limma","voom"],"de",
+        "Bulk RNA-seq differential expression에 널리 쓰이는 count 또는 mean-variance modeling framework",
+        [["DESeq2",["Negative binomial GLM과 median-of-ratios normalization","Dispersion과 log fold change shrinkage 제공","복잡한 design과 contrast 지원"]],
+         ["edgeR",["Negative binomial GLM과 empirical Bayes dispersion estimation","TMM normalization 사용","작은 sample에서도 gene 간 정보 공유"]],
+         ["limma-voom",["Count의 mean-variance relation을 precision weight로 추정","Weighted linear model과 empirical Bayes 사용","복잡한 design과 large study에 유연"]]],
+        ["normalization","design-contrast","differential-expression"]],
+
+      ["pca-sample-qc","PCA & sample-level QC",["principal component analysis","sample clustering","outlier detection"],"interpretation",
+        "많은 gene의 expression variation을 소수의 axis로 요약해 sample 관계·batch·outlier를 확인",
+        [["입력",["Raw count가 아니라 variance-stabilized 또는 log-like transformed expression 사용","Low-count noise를 줄인 matrix가 유리","PCA용 transformation과 DE용 count model을 구분"]],
+         ["확인",["PC plot에 condition·batch·sex·library metric을 표시","Unexpected cluster와 sample swap 가능성 확인","한 sample이 전체 result를 지배하는지 점검"]],
+         ["해석",["PC separation은 원인을 자동으로 증명하지 않음","Loading gene과 metadata association을 함께 확인","QC 결과에 따라 model covariate 또는 sample annotation 재검토"]]],
+        ["replicates-batch","count-matrix","design-contrast"]],
+
+      ["gene-set-enrichment","Gene set enrichment",["pathway analysis","functional enrichment","GO enrichment"],"interpretation",
+        "Gene-level differential expression 결과를 predefined gene set과 비교해 pathway·function 단위로 요약",
+        [["목적",["긴 gene list를 biological process로 압축","서로 작은 변화가 같은 pathway에 모이는지 탐색","GO·Reactome·KEGG·MSigDB 같은 gene set 사용"]],
+         ["입력",["Significant gene list를 쓰는 ORA","모든 gene의 ranked statistic을 쓰는 GSEA/FCS","Gene ID와 species·database version을 일치"]],
+         ["해석",["Overlapping gene set 때문에 결과가 중복될 수 있음","Gene set size와 background universe가 결과에 영향","Enrichment는 pathway activation이나 causality를 자동으로 의미하지 않음"]]],
+        ["ora-vs-gsea","differential-expression","expression-repositories"]],
+
+      ["ora-vs-gsea","ORA vs GSEA",["over-representation analysis","GSEA","FCS","ranked gene list"],"interpretation",
+        "ORA는 선택된 gene list의 과대표현을, GSEA는 전체 ranked list에서 gene set의 분포를 평가",
+        [["ORA",["DE cutoff를 통과한 gene list와 background universe 필요","Hypergeometric 또는 Fisher exact test 사용","간단하지만 cutoff 선택에 민감"]],
+         ["GSEA",["모든 gene을 signed statistic으로 rank","Gene set member가 rank 상단 또는 하단에 모이는지 평가","Cutoff 아래의 일관된 약한 signal도 포착 가능"]],
+         ["선택",["명확한 selected list 해석에는 ORA","Genome-wide coordinated shift에는 GSEA","Multiple testing과 gene set redundancy를 함께 관리"]]],
+        ["gene-set-enrichment","differential-expression","deseq2-edger-limma"]],
+
+      ["cell-type-deconvolution","Cell-type deconvolution",["bulk deconvolution","cell proportion estimation","mixed tissue"],"interpretation",
+        "혼합 tissue의 bulk expression에서 reference profile을 이용해 cell-type proportion 또는 cell-type-specific signal을 추정",
+        [["왜 필요한가",["Bulk expression은 cell composition과 cell 내부 regulation을 함께 반영","질환·노화·조직 sampling이 cell proportion을 바꿀 수 있음","Composition 차이를 gene regulation으로 오해하지 않도록 도움"]],
+         ["접근",["Reference-based method는 purified 또는 single-cell expression signature 사용","주로 cell-type proportion을 추정","일부 method는 sample별 cell-type-specific expression까지 추정"]],
+         ["주의",["Reference의 cell-type definition과 tissue·platform 적합성이 중요","Rare cell type과 유사한 cell state는 구분이 어려울 수 있음","Deconvolution estimate는 관측값이 아니라 model-based inference"]]],
+        ["bulk-scope","pca-sample-qc","differential-expression"]],
+
+      ["expression-repositories","GEO & Expression Atlas",["Gene Expression Omnibus","Expression Atlas","public transcriptomics data"],"interpretation",
+        "Public transcriptomics study의 metadata·raw 또는 processed data와 gene expression profile을 탐색하는 repository",
+        [["GEO",["NCBI의 functional genomics data repository","Study·sample·platform record와 processed file 제공","Accession과 sample metadata를 함께 확인"]],
+         ["Expression Atlas",["EBI가 curated expression과 differential expression view 제공","Gene·organism·tissue·condition 중심으로 검색","Baseline과 differential expression study를 구분"]],
+         ["재사용",["Original publication과 experimental design을 먼저 확인","Genome build·annotation·processing method를 기록","Different study를 결합할 때 batch와 protocol 차이를 고려"]]],
+        ["gene-set-enrichment","reference-annotation","replicates-batch"]]
+    ];
+
+    const articles = Object.fromEntries(articleRows.map(function (row) {
+      return [row[0], {title: row[1], aliases: row[2], section: row[3], summary: row[4], body: row[5], related: row[6]}];
+    }));
+
+    const sourceLinks = {};
+    const officialSupplementLinks = {
+      "read-qc": [
+        ["FastQC official page", "https://www.bioinformatics.babraham.ac.uk/projects/fastqc/"],
+        ["MultiQC documentation", "https://docs.seqera.io/multiqc/"]
+      ],
+      "star-hisat2": [
+        ["STAR repository", "https://github.com/alexdobin/STAR"],
+        ["HISAT2 official page", "https://daehwankimlab.github.io/hisat2/"]
+      ],
+      "featurecounts": [["Subread / featureCounts official page", "https://subread.sourceforge.net/"]],
+      "salmon-kallisto-tximport": [
+        ["Salmon documentation", "https://salmon.readthedocs.io/"],
+        ["kallisto official page", "https://github.com/pachterlab/kallisto"],
+        ["tximport Bioconductor page", "https://bioconductor.org/packages/tximport/"]
+      ],
+      "deseq2-edger-limma": [
+        ["DESeq2 Bioconductor page", "https://bioconductor.org/packages/DESeq2/"],
+        ["edgeR Bioconductor page", "https://bioconductor.org/packages/edgeR/"],
+        ["limma Bioconductor page", "https://bioconductor.org/packages/limma/"]
+      ],
+      "gene-set-enrichment": [
+        ["GSEA / MSigDB", "https://www.gsea-msigdb.org/gsea/index.jsp"],
+        ["clusterProfiler Bioconductor page", "https://bioconductor.org/packages/clusterProfiler/"]
+      ],
+      "ora-vs-gsea": [["fgsea Bioconductor page", "https://bioconductor.org/packages/fgsea/"]],
+      "expression-repositories": [
+        ["NCBI Gene Expression Omnibus", "https://www.ncbi.nlm.nih.gov/geo/"],
+        ["EMBL-EBI Expression Atlas", "https://www.ebi.ac.uk/gxa/home"]
+      ]
+    };
+
+    const glossaryTerms = {
+      "transcriptome": {key:"transcriptome",definition:"특정 cell·tissue·condition에서 발현되는 RNA의 전체 집합."},
+      "bulk rna-seq": {key:"bulk",definition:"여러 cell의 RNA를 합쳐 sample-level 평균 expression을 측정하는 RNA-seq."},
+      "transcript": {key:"transcript",definition:"Gene locus에서 전사되어 만들어진 RNA sequence."},
+      "isoform": {key:"isoform",definition:"같은 gene에서 서로 다른 exon 조합 등으로 생성된 transcript variant."},
+      "strandedness": {key:"strandedness",definition:"Read가 원래 전사된 RNA strand 방향을 보존하는 library 정보."},
+      "splice junction": {key:"junction",definition:"RNA splicing 후 서로 이어진 exon 경계."},
+      "count matrix": {key:"countmatrix",definition:"Feature를 row, sample을 column으로 갖는 expression count table."},
+      "tpm": {key:"tpm",definition:"Transcript length와 library size를 보정한 within-sample abundance scale."},
+      "cpm": {key:"cpm",definition:"Library의 백만 read당 feature count로 환산한 scale."},
+      "tmm": {key:"tmm",definition:"Composition bias를 줄이는 edgeR의 between-sample normalization."},
+      "median-of-ratios": {key:"mor",definition:"Gene별 reference 대비 ratio의 median으로 size factor를 추정하는 방법."},
+      "negative binomial": {key:"nb",definition:"RNA-seq count의 평균-분산 관계와 overdispersion을 다루는 distribution."},
+      "log fold change": {key:"lfc",definition:"두 condition의 expression ratio를 log scale로 표현한 effect size."},
+      "fdr": {key:"fdr",definition:"선택된 결과 중 기대되는 false discovery 비율을 조절하는 기준."},
+      "pca": {key:"pca",definition:"고차원 variation을 서로 직교하는 소수의 principal component로 요약하는 방법."},
+      "deconvolution": {key:"deconv",definition:"혼합 sample signal을 구성 요소의 proportion 또는 component signal로 분해하는 추정."}
+    };
+    const glossaryPattern = /(^|[^A-Za-z0-9])(median-of-ratios|negative binomial|log fold change|splice junction|bulk RNA-seq|count matrix|transcriptome|strandedness|transcript|isoform|deconvolution|TPM|CPM|TMM|FDR|PCA)(?=$|[^A-Za-z0-9])/gi;
+
+    function createAnnotator() {
+      const seen = new Set();
+      return function (text) {
+        return esc(text).replace(glossaryPattern, function (match, prefix, term) {
+          const item = glossaryTerms[term.toLowerCase()];
+          if (!item || seen.has(item.key)) return match;
+          seen.add(item.key);
+          return prefix + '<span class="glossary-term" tabindex="0" data-definition="' + esc(item.definition) + '">' + esc(term) + '</span>';
+        });
+      };
+    }
+
+    const app = document.getElementById("app");
+    const topSearch = document.getElementById("topSearch");
+    let activeFilter = "all";
+
+    function esc(value) {
+      return String(value).replace(/[&<>'"]/g, function (c) {
+        return {"&":"&amp;", "<":"&lt;", ">":"&gt;", "'":"&#39;", '"':"&quot;"}[c];
+      });
+    }
+
+    function route(hash) {
+      window.location.hash = hash;
+    }
+
+    function categoryCards() {
+      return Object.keys(sections).map(function (key) {
+        const s = sections[key];
+        return '<button class="category-card" style="--accent:' + s.accent + '" data-section="' + key + '">' +
+          '<span class="category-number">' + s.number + ' · ' + s.english + '</span>' +
+          '<h3>' + s.title + '</h3><p>' + s.summary + '</p>' +
+          '<span class="card-route">질문으로 살펴보기 →</span></button>';
+      }).join("");
+    }
+
+    function renderHome() {
+      document.title = "Transcriptomics";
+      app.innerHTML = '<section class="hero"><div class="container">' +
+        '<p class="eyebrow">Transcriptomics knowledge base</p><h1>Transcriptomics</h1>' +
+        '<p class="hero-copy">Bulk RNA-seq · Quantification · Differential Expression · Interpretation</p>' +
+        '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="Transcriptomics 통합 검색" placeholder="Search: RNA-seq, STAR, TPM, DESeq2"><span class="search-icon">⌕</span></form>' +
+        '<p class="search-hint">Korean / English / acronym</p></div></section>' +
+        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>질문을 따라 큰 구조부터 살펴보세요.</p></div>' +
+        '<div class="category-grid">' + categoryCards() + '</div></div></section>';
+      document.getElementById("heroSearchForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const q = document.getElementById("heroSearch").value.trim();
+        if (q) route("search/" + encodeURIComponent(q));
+      });
+      window.scrollTo(0, 0);
+    }
+
+    function renderSection(key) {
+      const s = sections[key];
+      if (!s) return renderHome();
+      document.title = s.title + " · Transcriptomics";
+      const annotateOnce = createAnnotator();
+      const groups = s.groups.map(function (group, i) {
+        const items = group.items.map(function (item) {
+          const hasPage = Boolean(item[0] && articles[item[0]]);
+          return '<div class="concept-row"><strong>' + annotateOnce(item[1]) + '</strong><p>' + annotateOnce(item[2]) + '</p>' +
+            (hasPage ? '<button data-article="' + item[0] + '">읽기 →</button>' : '<span class="map-label">개념 지도</span>') + '</div>';
+        }).join("");
+        return '<section class="question-block"><div class="question-head"><small>QUESTION ' + String(i + 1).padStart(2, "0") + '</small>' +
+          '<h2>' + annotateOnce(group.q) + '</h2><p>' + annotateOnce(group.note) + '</p></div><div>' + items + '</div></section>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb" aria-label="현재 위치"><button data-route="home">홈</button><span>›</span>' + s.title + '</nav>' +
+        '<header class="page-header" style="border-top:4px solid ' + s.accent + '"><p class="eyebrow">' + s.number + ' · ' + s.english + '</p><h1>' + s.title + '</h1><p class="lead">' + s.summary + '</p></header>' +
+        '<div class="question-list">' + groups + '</div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function articleText(a) {
+      const bodyText = a.body.map(function (b) { return [b[0]].concat(Array.isArray(b[1]) ? b[1] : [b[1]]).join(" "); });
+      return [a.title, a.aliases.join(" "), a.summary].concat(bodyText).join(" ").toLowerCase();
+    }
+
+    function highlight(text, query) {
+      if (!query) return esc(text);
+      const safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return esc(text).replace(new RegExp("(" + safe + ")", "ig"), "<mark>$1</mark>");
+    }
+
+    function searchArticles(query, filter) {
+      const q = query.trim().toLowerCase();
+      if (!q) return [];
+      return Object.keys(articles).map(function (id) {
+        const a = articles[id];
+        if (filter !== "all" && a.section !== filter) return null;
+        const hay = articleText(a);
+        const pos = hay.indexOf(q);
+        if (pos < 0) return null;
+        const titleHit = a.title.toLowerCase().includes(q) ? 3 : 0;
+        const aliasHit = a.aliases.join(" ").toLowerCase().includes(q) ? 2 : 0;
+        return { id: id, article: a, score: titleHit + aliasHit + 1 };
+      }).filter(Boolean).sort(function (a, b) { return b.score - a.score || a.article.title.localeCompare(b.article.title); });
+    }
+
+    function renderSearch(query) {
+      document.title = '"' + query + '" 검색 · Transcriptomics';
+      const filterButtons = ['<button class="filter-btn ' + (activeFilter === "all" ? "active" : "") + '" data-filter="all">전체</button>'].concat(
+        Object.keys(sections).map(function (key) { return '<button class="filter-btn ' + (activeFilter === key ? "active" : "") + '" data-filter="' + key + '">' + sections[key].title + '</button>'; })
+      ).join("");
+      const found = searchArticles(query, activeFilter);
+      const cards = found.length ? found.map(function (r) {
+        const s = sections[r.article.section];
+        return '<button class="result-card" data-article="' + r.id + '"><span class="result-path">' + s.title + ' › 문서</span>' +
+          '<h2>' + highlight(r.article.title, query) + '</h2><p>' + highlight(r.article.summary, query) + '</p></button>';
+      }).join("") : '<div class="empty"><strong>No results</strong><br>Try: English / Korean / acronym</div>';
+      app.innerHTML = '<div class="container search-page"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span>검색</nav>' +
+        '<header class="page-header"><p class="eyebrow">Search</p><h1>“' + esc(query) + '”</h1></header>' +
+        '<div class="search-summary"><p>Public pages · <strong>' + found.length + '</strong></p><div class="filters">' + filterButtons + '</div></div>' +
+        '<div class="results">' + cards + '</div></div>';
+      topSearch.value = query;
+      window.scrollTo(0, 0);
+    }
+
+    function getSources(id) {
+      return (sourceLinks[id] || []).concat(officialSupplementLinks[id] || []);
+    }
+
+    function renderArticle(id) {
+      const a = articles[id];
+      if (!a) return renderHome();
+      const s = sections[a.section];
+      const annotateOnce = createAnnotator();
+      document.title = a.title + " · Transcriptomics";
+      const body = a.body.map(function (part) {
+        const points = Array.isArray(part[1]) ? part[1] : part[1].replace(/\.\s+/g, ".||| ").split("|||").filter(Boolean);
+        return '<section><h2>' + part[0] + '</h2><ul class="fact-list">' + points.map(function (point) { return "<li>" + annotateOnce(point.trim()) + "</li>"; }).join("") + "</ul></section>";
+      }).join("");
+      const related = a.related.filter(function (rid) { return articles[rid]; }).map(function (rid) {
+        return '<button data-article="' + rid + '">' + articles[rid].title + ' →</button>';
+      }).join("");
+      const sources = getSources(id).map(function (source) {
+        return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
+        '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
+        '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
+        '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
+        (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        '</aside></div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function handleRoute() {
+      const raw = window.location.hash.replace(/^#/, "");
+      const parts = raw.split("/");
+      if (!raw || raw === "home") return renderHome();
+      if (parts[0] === "section") return renderSection(parts[1]);
+      if (parts[0] === "article") return renderArticle(parts[1]);
+      if (parts[0] === "search") return renderSearch(decodeURIComponent(parts.slice(1).join("/")));
+      renderHome();
+    }
+
+    document.addEventListener("click", function (e) {
+      const home = e.target.closest("[data-route='home']");
+      const section = e.target.closest("[data-section]");
+      const article = e.target.closest("[data-article]");
+      const filter = e.target.closest("[data-filter]");
+      if (home) route("home");
+      else if (article) route("article/" + article.dataset.article);
+      else if (section) route("section/" + section.dataset.section);
+      else if (filter) { activeFilter = filter.dataset.filter; const q = decodeURIComponent(window.location.hash.split("/").slice(1).join("/")); renderSearch(q); }
+    });
+
+    document.getElementById("topSearchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const q = topSearch.value.trim();
+      if (q) { activeFilter = "all"; route("search/" + encodeURIComponent(q)); }
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+        e.preventDefault(); topSearch.focus();
+      }
+    });
+    window.addEventListener("hashchange", handleRoute);
+    handleRoute();
+  </script>
+</body>
+</html>

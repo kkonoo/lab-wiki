@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Single-cell Transcriptomics를 측정·QC·통계·Spatial의 질문으로 탐색하는 HaLab Wiki">
+  <title>Single-cell Transcriptomics · HaLab Wiki</title>
+  <style>
+    :root {
+      --ink: #18211b;
+      --muted: #667168;
+      --paper: #f7f7f2;
+      --surface: #ffffff;
+      --line: #d8ddd7;
+      --green: #1f5d43;
+      --green-soft: #e7f0ea;
+      --blue: #315d78;
+      --rust: #94553b;
+      --gold: #936f21;
+      --shadow: 0 14px 35px rgba(24, 33, 27, .07);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    button, input { font: inherit; }
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 247, 242, .94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .topbar-inner {
+      width: min(1180px, calc(100% - 40px));
+      min-height: 64px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .brand {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--ink);
+      cursor: pointer;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.18rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .brand span { color: var(--green); }
+    .brand-group { display: flex; align-items: center; white-space: nowrap; }
+    .brand-home { text-decoration: none; }
+    .brand-domain { margin-left: 6px; text-decoration: none; }
+    .top-search {
+      flex: 1;
+      max-width: 560px;
+      margin-left: auto;
+      position: relative;
+    }
+    .top-search input {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      padding: 0 44px 0 14px;
+      color: var(--ink);
+      outline: none;
+    }
+    .top-search input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+    .keycap {
+      position: absolute;
+      right: 10px;
+      top: 9px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--muted);
+      background: var(--paper);
+      padding: 1px 6px;
+      font-size: .75rem;
+    }
+
+    main { min-height: calc(100vh - 140px); }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+
+    .hero {
+      padding: 78px 0 52px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(rgba(31, 93, 67, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 93, 67, .035) 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { font-family: Georgia, "Noto Serif KR", serif; line-height: 1.25; }
+    .hero h1 { margin: 0; font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: -.045em; }
+    .hero-copy { margin: 16px auto 26px; max-width: 650px; color: var(--muted); font-size: 1.04rem; }
+    .hero-search { width: min(720px, calc(100% - 32px)); margin: 0 auto; position: relative; }
+    .hero-search input {
+      width: 100%;
+      height: 62px;
+      border: 1px solid #bac6bd;
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 0 58px 0 20px;
+      color: var(--ink);
+      font-size: 1.03rem;
+      outline: none;
+    }
+    .hero-search input:focus { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft), var(--shadow); }
+    .search-icon { position: absolute; right: 20px; top: 18px; color: var(--green); font-size: 1.3rem; }
+    .search-hint { margin: 11px 0 0; color: var(--muted); font-size: .82rem; }
+
+    .browse { padding: 58px 0 76px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    .section-heading h2 { margin: 0; font-size: 1.65rem; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .category-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .category-card {
+      position: relative;
+      min-height: 235px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 26px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .category-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .category-card:focus-visible { outline: 3px solid var(--green-soft); outline-offset: 2px; }
+    .category-number { color: var(--accent); font-family: Georgia, serif; font-size: .95rem; font-weight: 700; }
+    .category-card h3 { margin: 12px 0 10px; font-size: 1.65rem; }
+    .category-card p { margin: 0 0 25px; max-width: 520px; color: var(--muted); }
+    .card-route { position: absolute; left: 26px; bottom: 23px; color: var(--accent); font-size: .86rem; font-weight: 750; }
+
+    .breadcrumb { padding: 30px 0 18px; color: var(--muted); font-size: .84rem; }
+    .breadcrumb button { border: 0; padding: 0; background: none; color: var(--green); cursor: pointer; }
+    .breadcrumb span { margin: 0 8px; color: #9ca49e; }
+    .page-header { padding: 18px 0 36px; border-bottom: 1px solid var(--line); }
+    .page-header h1 { margin: 7px 0 12px; font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.035em; }
+    .page-header .lead { margin: 0; max-width: 740px; color: var(--muted); font-size: 1.04rem; }
+    .question-list { padding: 42px 0 72px; display: grid; gap: 16px; }
+    .question-block { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: visible; }
+    .question-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); }
+    .question-head small { color: var(--green); font-weight: 800; }
+    .question-head h2 { margin: 5px 0 7px; font-size: 1.35rem; }
+    .question-head p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .concept-row { display: grid; grid-template-columns: 1.2fr 2fr auto; align-items: center; gap: 18px; padding: 17px 24px; border-top: 1px solid #edf0ec; }
+    .concept-row:first-child { border-top: 0; }
+    .concept-row strong { font-size: .95rem; }
+    .concept-row p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .concept-row button { border: 0; background: none; color: var(--green); font-weight: 750; cursor: pointer; padding: 5px; }
+    .concept-row .map-label { color: #8b948d; font-size: .78rem; white-space: nowrap; }
+
+    .search-page { padding-bottom: 72px; }
+    .search-summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 10px 0 22px; }
+    .search-summary p { margin: 0; color: var(--muted); }
+    .filters { display: flex; flex-wrap: wrap; gap: 7px; }
+    .filter-btn { border: 1px solid var(--line); border-radius: 999px; background: var(--surface); padding: 6px 12px; color: var(--muted); cursor: pointer; font-size: .8rem; }
+    .filter-btn.active { border-color: var(--green); background: var(--green-soft); color: var(--green); font-weight: 750; }
+    .results { display: grid; gap: 12px; }
+    .result-card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 20px 22px; cursor: pointer; text-align: left; }
+    .result-card:hover { border-color: #93aa9a; box-shadow: 0 7px 20px rgba(24, 33, 27, .05); }
+    .result-path { color: var(--green); font-size: .76rem; font-weight: 750; }
+    .result-card h2 { margin: 4px 0 6px; font-size: 1.25rem; }
+    .result-card p { margin: 0; color: var(--muted); font-size: .9rem; }
+    mark { background: #fff0ad; color: inherit; padding: 0 2px; }
+    .empty { border: 1px dashed #b8c0ba; border-radius: var(--radius); padding: 48px 24px; text-align: center; color: var(--muted); }
+
+    .article-layout { display: grid; grid-template-columns: minmax(0, 740px) 260px; gap: 64px; padding: 12px 0 80px; align-items: start; }
+    .article { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(25px, 5vw, 52px); }
+    .article h1 { margin: 6px 0 5px; font-size: clamp(2.1rem, 5vw, 3.5rem); letter-spacing: -.03em; }
+    .aliases { margin: 0 0 26px; color: var(--muted); font-size: .83rem; }
+    .definition { margin: 0 0 34px; padding: 18px 20px; border-left: 4px solid var(--green); background: var(--green-soft); font-size: 1.03rem; }
+    .article h2 { margin: 34px 0 12px; padding-bottom: 7px; border-bottom: 1px solid var(--line); font-size: 1.32rem; }
+    .article p { margin: 0 0 15px; }
+    .article ul { margin: 0 0 18px; padding-left: 22px; }
+    .article li { margin: 6px 0; }
+    .fact-list {
+      display: grid;
+      gap: 9px;
+      margin: 0 0 18px;
+      padding-left: 20px;
+      color: #37423a;
+    }
+    .fact-list li { padding-left: 4px; }
+    .fact-list li::marker { color: var(--green); }
+    .term-link { border: 0; border-bottom: 1px solid #8aa897; background: none; padding: 0; color: var(--green); cursor: pointer; font-weight: 700; }
+    .glossary-term {
+      position: relative;
+      border-bottom: 1px dotted var(--green);
+      color: #174b37;
+      cursor: help;
+      outline: none;
+    }
+    .glossary-term::after {
+      content: attr(data-definition);
+      position: absolute;
+      z-index: 40;
+      left: 0;
+      bottom: calc(100% + 8px);
+      width: max-content;
+      max-width: min(320px, calc(100vw - 40px));
+      padding: 10px 12px;
+      border-radius: 7px;
+      background: #17221b;
+      color: #f8faf8;
+      box-shadow: 0 10px 28px rgba(10, 20, 14, .24);
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      font-size: .78rem;
+      font-weight: 500;
+      line-height: 1.55;
+      letter-spacing: 0;
+      white-space: normal;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(4px);
+      transition: opacity .14s ease, transform .14s ease, visibility .14s ease;
+      pointer-events: none;
+    }
+    .glossary-term:hover::after,
+    .glossary-term:focus::after {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .glossary-term:focus { border-bottom-style: solid; }
+    .tooltip-hint {
+      margin: -15px 0 25px;
+      color: var(--muted);
+      font-size: .76rem;
+    }
+    .aside { position: sticky; top: 88px; }
+    .aside-box { border-top: 3px solid var(--green); background: var(--surface); padding: 18px; box-shadow: 0 8px 24px rgba(24,33,27,.05); }
+    .aside-box h3 { margin: 0 0 12px; font-size: 1rem; }
+    .related-list { display: grid; gap: 9px; }
+    .related-list button { border: 0; background: none; padding: 0; text-align: left; color: var(--green); cursor: pointer; font-size: .87rem; }
+    .source-box { margin-top: 16px; border-top-color: var(--blue); }
+    .source-list { display: grid; gap: 9px; }
+    .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
+    .source-list a:hover { text-decoration: underline; }
+    .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
+
+    footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
+    footer .container { display: flex; justify-content: space-between; gap: 20px; }
+
+    @media (max-width: 820px) {
+      .topbar-inner { width: min(100% - 24px, 1180px); gap: 12px; }
+      .brand { font-size: 1rem; }
+      .keycap { display: none; }
+      .container { width: min(100% - 28px, 1120px); }
+      .hero { padding-top: 54px; }
+      .category-grid { grid-template-columns: 1fr; }
+      .category-card { min-height: 215px; }
+      .concept-row { grid-template-columns: 1fr auto; }
+      .concept-row p { grid-column: 1 / -1; grid-row: 2; }
+      .article-layout { grid-template-columns: 1fr; gap: 20px; }
+      .aside { position: static; }
+      .search-summary { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 520px) {
+      .topbar-inner { min-height: 58px; }
+      .brand-domain { display: none; }
+      .top-search input { height: 38px; }
+      .hero h1 { font-size: 2.55rem; }
+      .hero-search input { height: 56px; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .category-card { padding: 21px; }
+      .card-route { left: 21px; }
+      .question-head, .concept-row { padding-left: 18px; padding-right: 18px; }
+      .article { border-left: 0; border-right: 0; border-radius: 0; margin-left: -14px; margin-right: -14px; }
+      footer .container { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../index.html"><span>/ Single-cell Genomics</span></a><button class="brand brand-domain" type="button" data-route="home"><span>/ Transcriptomics</span></button></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer>
+    <div class="container"><span>Updated 2026-06-24</span></div>
+  </footer>
+
+  <script>
+    const sections = {
+      "measurement":{"number":"01","title":"Measurement & Data","english":"WHAT IS A CELL-LEVEL MEASUREMENT","accent":"#2f6a4f","summary":"scRNA-seq · snRNA-seq · Droplet · Barcode · UMI · Cell calling","groups":[
+        {"q":"Cell과 nucleus 중 무엇을 측정하는가?","note":"Whole cell vs isolated nucleus","items":[
+          ["scrna-snrna","scRNA-seq & snRNA-seq","Cell 또는 nucleus별 transcriptome을 분리해 측정"],
+          ["droplet-plate","Droplet vs plate","Throughput·coverage·sample 조건에 따라 protocol 선택"]
+        ]},
+        {"q":"Read는 어떻게 원래 cell과 molecule로 돌아가는가?","note":"Cell barcode + UMI + gene assignment","items":[
+          ["barcode-umi","Cell barcode & UMI","Read의 cell origin과 original molecule을 구분"],
+          ["quantification-cell-calling","Quantification & cell calling","Read에서 유효 cell × gene count matrix 생성"],
+          ["cell-gene-matrix","Cell × gene matrix","Sparse count matrix와 cell/gene metadata"]
+        ]}
+      ]},
+      "core":{"number":"02","title":"QC & Core Analysis","english":"FROM COUNTS TO CELL TYPES","accent":"#526b7a","summary":"QC · Ambient RNA · Doublet · Normalization · Integration · Clustering · Annotation","groups":[
+        {"q":"어떤 barcode를 진짜 cell로 남기는가?","note":"Quality metrics before clustering","items":[
+          ["qc-metrics","Cell-level QC","Gene·UMI·mitochondrial fraction과 sample pattern 확인"],
+          ["ambient-doublets","Ambient RNA & doublets","Soup contamination과 mixed-cell barcode를 탐지"]
+        ]},
+        {"q":"Cell 간 기술적 차이는 어떻게 줄이는가?","note":"Depth correction and batch harmonization","items":[
+          ["normalization-hvg","Normalization & HVG","Depth를 보정하고 informative gene을 선택"],
+          ["batch-integration","Batch integration","Batch를 줄이되 biological variation을 보존"]
+        ]},
+        {"q":"Cell type은 어떻게 정의하는가?","note":"Representation → graph → cluster → label","items":[
+          ["reduction-clustering","Dimension reduction & clustering","PCA·kNN graph·Leiden/Louvain으로 구조 탐색"],
+          ["cell-type-annotation","Cell type annotation","Marker gene과 reference label transfer로 cluster에 이름 붙이기"]
+        ]}
+      ]},
+      "downstream":{"number":"03","title":"Statistical Downstream","english":"WHAT COMPARISON IS BEING TESTED","accent":"#8a6e24","summary":"Pseudobulk · Differential abundance · Trajectory · RNA velocity · Cell-cell communication","groups":[
+        {"q":"Condition 차이는 cell별로 바로 검정해도 되는가?","note":"Sample-level replication matters","items":[
+          ["single-cell-de","Single-cell differential expression","Cell-level test와 pseudobulk test의 차이"],
+          ["differential-abundance","Differential abundance","Condition별 cell-type proportion 변화를 검정"]
+        ]},
+        {"q":"Cell state 변화의 방향과 경로는 어떻게 읽는가?","note":"Ordering and dynamics","items":[
+          ["trajectory-velocity","Trajectory & RNA velocity","Pseudotime과 spliced/unspliced RNA로 state transition 추정"],
+          ["cell-cell-communication","Cell-cell communication","Ligand-receptor expression으로 cell 간 signaling 후보 추정"]
+        ]}
+      ]},
+      "tools":{"number":"04","title":"Tools & Workflows","english":"WHICH TOOL IS USED WHERE","accent":"#694f63","summary":"Cell Ranger · STARsolo · alevin-fry · kb-python · Seurat · Scanpy · scvi-tools","groups":[
+        {"q":"Raw read에서 count matrix까지는 무엇을 쓰는가?","note":"Barcode/UMI processing and count generation","items":[
+          ["preprocessing-tools","Preprocessing tools","Cell Ranger·STARsolo·alevin-fry·kb-python으로 count matrix 생성"],
+          ["quantification-cell-calling","Quantification & cell calling","Count generation output과 cell calling QC를 함께 확인"]
+        ]},
+        {"q":"Count matrix 이후의 기본 분석 환경은 무엇인가?","note":"R and Python single-cell ecosystem","items":[
+          ["seurat-scanpy","Seurat & Scanpy","R과 Python의 대표 single-cell analysis framework"],
+          ["batch-integration","Batch integration tools","Harmony·scVI처럼 dataset alignment를 위한 tool 선택"],
+          ["cell-type-annotation","Annotation tools","SingleR·CellTypist처럼 reference 기반 label transfer 사용"]
+        ]},
+        {"q":"특정 문제별 tool은 어디에 붙는가?","note":"QC, dynamics, interaction tools are task-specific","items":[
+          ["ambient-doublets","Ambient RNA & doublet tools","SoupX·CellBender·DoubletFinder·scDblFinder"],
+          ["trajectory-velocity","Trajectory / RNA velocity tools","Monocle3·scVelo처럼 state transition 질문에 사용"],
+          ["cell-cell-communication","Communication tools","CellChat·CellPhoneDB처럼 ligand-receptor 후보 탐색"]
+        ]}
+      ]},
+      "spatial":{"number":"05","title":"Spatial Transcriptomics","english":"WHERE CELLS ARE IN TISSUE","accent":"#315d78","summary":"Imaging · Sequencing · Resolution · Spatial domain · SVG · Deconvolution · Neighborhood","groups":[
+        {"q":"Expression과 tissue location은 어떻게 함께 측정하는가?","note":"Targeted imaging vs transcriptome-wide sequencing","items":[
+          ["spatial-transcriptomics","Spatial Transcriptomics","좌표를 보존한 expression measurement"],
+          ["spatial-platforms","Imaging vs sequencing platforms","Resolution과 transcriptome breadth의 trade-off"],
+          ["spatial-resolution-tradeoff","Resolution vs gene breadth","단일세포 해상도와 transcriptome-wide 측정 범위의 균형"]
+        ]},
+        {"q":"Spatial data에서만 생기는 분석 질문은 무엇인가?","note":"Coordinate-aware analysis","items":[
+          ["spatial-analysis","Spatial data analysis","Domain·SVG·deconvolution·neighborhood 분석의 전체 지도"],
+          ["spatial-domain-svg","Spatial domain & SVG","조직 영역과 coordinate-dependent gene expression 탐색"],
+          ["spatial-neighborhood","Spatial neighborhood","Cell type 위치와 local microenvironment를 함께 해석"]
+        ]},
+        {"q":"scRNA reference와 spatial data는 어떻게 연결하는가?","note":"Mapping and deconvolution","items":[
+          ["spatial-deconvolution-mapping","Deconvolution & mapping","Mixed spot을 cell-type abundance로 풀거나 scRNA taxonomy를 공간에 매핑"],
+          ["cell-cell-communication","Spatial cell-cell communication","공간 근접 정보를 ligand-receptor 후보 해석에 보조 evidence로 사용"]
+        ]}
+      ]}
+    };
+    const articleRows = [
+      ["scrna-snrna","scRNA-seq & snRNA-seq",["single-cell RNA-seq","single-nucleus RNA-seq","scRNA-seq","snRNA-seq"],"measurement",
+       "개별 cell 또는 nucleus의 transcriptome을 분리해 cell-type과 cell-state heterogeneity를 측정",
+       [["측정",["scRNA-seq은 dissociated whole cell의 cytoplasmic·nuclear RNA를 포착","snRNA-seq은 isolated nucleus의 nuclear RNA를 측정","둘 다 barcode별 gene count를 만들어 bulk 평균을 cell 단위로 분해"]],
+        ["선택",["Fresh tissue와 cell recovery가 좋으면 scRNA-seq 사용 가능","Frozen·archived tissue와 해리가 어려운 조직은 snRNA-seq이 유리","snRNA-seq은 intronic read와 nuclear-enriched transcript 비율이 높음"]]],
+       ["droplet-plate","barcode-umi","cell-gene-matrix"]],
+
+      ["droplet-plate","Droplet vs plate",["droplet-based","plate-based","10x Chromium","Smart-seq"],"measurement",
+       "Cell을 분리하고 library를 만드는 방식으로 throughput과 per-cell coverage의 균형이 다름",
+       [["Droplet",["수천~수십만 cell을 barcode bead와 함께 droplet에 분리","3′ 또는 5′ end counting과 UMI를 주로 사용","High throughput cell atlas와 population composition에 적합"]],
+        ["Plate",["Cell을 well별로 분리해 full-length 또는 높은 coverage 확보 가능","처리 cell 수는 적고 cost per cell이 높음","Isoform·allele·rare cell의 깊은 profiling에 유리"]]],
+       ["scrna-snrna","barcode-umi","quantification-cell-calling"]],
+
+      ["barcode-umi","Cell barcode & UMI",["cell barcode","unique molecular identifier","UMI","sample barcode"],"measurement",
+       "Cell barcode는 read의 cell origin을, UMI는 PCR 이전의 original RNA molecule을 구분",
+       [["구성",["Sample index는 sequencing library 또는 sample을 구분","Cell barcode는 droplet·well 단위 cell identity를 표시","UMI는 같은 transcript에서 나온 PCR duplicate를 collapse"]],
+        ["해석",["Barcode error correction 후 valid barcode를 결정","Gene·cell barcode·UMI 조합을 deduplicate해 count 생성","UMI count는 read count보다 molecule abundance에 가까운 값"]]],
+       ["quantification-cell-calling","cell-gene-matrix","preprocessing-tools"]],
+
+      ["quantification-cell-calling","Quantification & cell calling",["cell calling","barcode rank","UMI counting","count generation"],"measurement",
+       "Raw read에서 barcode·UMI를 처리하고 gene에 배정한 뒤 empty droplet과 real cell을 구분",
+       [["Pipeline",["Barcode/UMI parsing과 error correction","Genome 또는 transcriptome mapping 후 gene assignment","UMI deduplication과 cell calling으로 count matrix 생성"]],
+        ["Cell calling",["Barcode별 total UMI의 rank와 background distribution을 이용","Empty droplet에도 ambient RNA count가 존재할 수 있음","Cell calling 결과는 후속 QC와 함께 재검토"]]],
+       ["barcode-umi","cell-gene-matrix","qc-metrics"]],
+
+      ["cell-gene-matrix","Cell × gene matrix",["gene expression matrix","sparse matrix","AnnData","Seurat object"],"measurement",
+       "Row 또는 column에 cell과 gene을 두고 UMI count와 metadata를 함께 저장하는 sparse data structure",
+       [["구성",["Count layer는 raw UMI count를 보존","Cell metadata에는 sample·donor·batch·QC·annotation 기록","Gene metadata에는 gene ID·symbol·feature type 기록"]],
+        ["사용",["Normalization·dimension reduction·clustering의 입력","Raw count와 transformed value를 별도 layer로 관리","Cell barcode는 sample prefix와 함께 unique하게 유지"]]],
+       ["quantification-cell-calling","normalization-hvg","seurat-scanpy"]],
+
+      ["qc-metrics","Cell-level QC",["quality control","mitochondrial fraction","nGene","nUMI"],"core",
+       "Low-quality cell과 technical artifact를 제거하기 위해 cell별 library size·detected gene·mitochondrial fraction을 평가",
+       [["주요 metric",["Total UMI/read와 detected gene 수","Mitochondrial 또는 ribosomal transcript fraction","Sample별 metric distribution과 extreme outlier"]],
+        ["원칙",["고정 cutoff보다 tissue·protocol·sample 분포를 함께 확인","Low RNA cell type을 일괄 제거하지 않도록 biology 고려","QC는 clustering 전에 수행하고 filtering 기준을 기록"]]],
+       ["ambient-doublets","quantification-cell-calling","normalization-hvg"]],
+
+      ["ambient-doublets","Ambient RNA & doublets",["ambient RNA","soup","doublet","multiplet"],"core",
+       "Cell-free RNA contamination과 둘 이상의 cell이 같은 barcode에 잡힌 혼합 transcriptome을 탐지·보정",
+       [["Ambient RNA",["Lysed cell의 RNA가 empty droplet과 real cell에 섞임","Abundant marker가 관계없는 cell type에서 약하게 관측될 수 있음","SoupX·CellBender 등으로 background profile을 모델링"]],
+        ["Doublet",["서로 다른 cell type marker가 한 barcode에 함께 나타남","Loading concentration이 높을수록 expected doublet rate 증가","DoubletFinder·scDblFinder 등과 cluster/marker 검토를 함께 사용"]]],
+       ["qc-metrics","cell-type-annotation","preprocessing-tools"]],
+
+      ["normalization-hvg","Normalization & HVG",["log normalization","sctransform","highly variable genes","HVG"],"core",
+       "Cell별 sequencing depth를 보정하고 biological structure를 잘 나타내는 variable gene을 선택",
+       [["Normalization",["Library-size scaling 후 log1p transformation이 단순한 기본값","sctransform은 count mean-variance relation을 Pearson residual로 안정화","Raw count는 downstream count model을 위해 별도 보존"]],
+        ["HVG",["Technical noise 대비 cell 간 variation이 큰 gene 선택","Dimension reduction과 integration의 feature space를 제한","HVG 선택은 clustering과 integration 결과에 영향을 줌"]]],
+       ["reduction-clustering","batch-integration","cell-gene-matrix"]],
+
+      ["batch-integration","Batch integration",["data integration","batch correction","Harmony","scVI","anchors"],"core",
+       "Sample·run·protocol 차이를 줄이면서 condition·cell-state variation을 보존하는 harmonization 단계",
+       [["접근",["Harmony는 low-dimensional embedding을 반복 보정","Seurat anchors는 유사 cell pair를 이용해 dataset을 연결","scVI/scANVI는 probabilistic latent model로 batch와 biological state를 분리"]],
+        ["검사",["Batch mixing만 높다고 좋은 integration은 아님","Known cell type 보존과 condition-specific state 유지 확인","Biological group과 batch가 confounded되면 계산으로 완전 분리 불가"]]],
+       ["normalization-hvg","reduction-clustering","cell-type-annotation"]],
+
+      ["reduction-clustering","Dimension reduction & clustering",["PCA","kNN graph","UMAP","Leiden","Louvain"],"core",
+       "고차원 expression을 low-dimensional representation과 neighbor graph로 바꾸고 유사한 cell을 group화",
+       [["Workflow",["HVG expression에서 PCA로 주요 variation axis 계산","PCA space에서 k-nearest-neighbor graph 구성","Leiden 또는 Louvain community detection으로 cluster 정의"]],
+        ["Visualization",["UMAP/t-SNE는 neighborhood를 2D로 표현","2D distance와 cluster boundary를 정량적 증거로 과해석하지 않음","Resolution parameter와 feature choice에 따라 cluster 수가 달라짐"]]],
+       ["normalization-hvg","batch-integration","cell-type-annotation"]],
+
+      ["cell-type-annotation","Cell-type annotation",["cell annotation","marker genes","reference mapping","SingleR","CellTypist"],"core",
+       "Cluster 또는 cell의 expression pattern을 marker와 reference atlas에 비교해 biological label을 부여",
+       [["접근",["Canonical marker의 조합과 negative marker를 수동 확인","SingleR·CellTypist·scANVI 등 reference-based classifier 사용","Reference mapping과 cluster-level inspection을 함께 수행"]],
+        ["검증",["한 개 marker가 아닌 여러 gene program으로 판단","Doublet·low-quality cluster를 cell type으로 오인하지 않음","Unknown 또는 intermediate state를 억지로 기존 label에 넣지 않음"]]],
+       ["reduction-clustering","ambient-doublets","donor-replicate"]],
+
+      ["donor-replicate","Donor as replicate",["biological replicate","pseudoreplication","sample-level inference","pseudobulk"],"downstream",
+       "Single-cell study의 biological sample은 cell이 아니라 donor 또는 독립 sample이며 cell은 그 안에 nested됨",
+       [["핵심",["수천 cell이 있어도 donor가 3명이면 biological n은 3","Cell을 독립 replicate로 취급하면 variance를 과소평가","Condition comparison은 donor/sample variation을 반영"]],
+        ["실무",["Cell type별 donor pseudobulk count를 만들 수 있음","Mixed model은 donor random effect로 within-donor correlation을 처리","DE와 DA 모두 sample metadata와 replicate balance를 확인"]]],
+       ["single-cell-de","differential-abundance","cell-gene-matrix"]],
+
+      ["single-cell-de","Single-cell differential expression",["single-cell DE","pseudobulk DE","MAST","differential state"],"downstream",
+       "같은 cell type 또는 state 안에서 condition에 따른 gene expression 차이를 평가",
+       [["Pseudobulk",["Donor × cell type별 raw count를 합산","Bulk RNA-seq DE framework로 replicate variation 모델링","여러 donor가 있는 condition comparison의 안전한 기본값"]],
+        ["Cell-level",["MAST는 expression detection과 positive expression을 나누는 hurdle model","Mixed model로 donor correlation을 반영할 수 있음","Effect size·FDR·donor consistency를 함께 확인"]]],
+       ["donor-replicate","differential-abundance","trajectory-velocity"]],
+
+      ["differential-abundance","Differential abundance",["cell composition","DA","Milo","scCODA"],"downstream",
+       "Condition에 따라 cell type·cluster·neighborhood의 proportion이 달라지는지 sample 단위로 평가",
+       [["대상",["Discrete cell-type proportion 비교","Graph neighborhood의 local abundance change","Rare state의 expansion 또는 depletion 탐색"]],
+        ["분석",["Cell count는 sample total에 묶인 compositional data","scCODA는 reference-based compositional model 사용","Milo는 kNN neighborhood 단위 differential abundance를 평가"]]],
+       ["donor-replicate","cell-type-annotation","single-cell-de"]],
+
+      ["trajectory-velocity","Trajectory & RNA velocity",["trajectory inference","pseudotime","RNA velocity","Monocle 3","scVelo"],"downstream",
+       "Cell population의 continuous progression과 state transition direction을 low-dimensional manifold에서 추론",
+       [["Trajectory",["Pseudotime은 selected root에서 cell state의 상대적 진행 순서","Expected topology에 맞는 method와 root choice가 중요","Monocle·Slingshot·PAGA 등 graph/curve 접근 사용"]],
+        ["RNA velocity",["Spliced·unspliced RNA의 kinetics로 short-term direction 추정","scVelo는 dynamical model을 제공","Observed lineage tracing이 아니라 model-based inference"]]],
+       ["reduction-clustering","quantification-cell-calling","cell-cell-communication"]],
+
+      ["cell-cell-communication","Cell-cell communication",["ligand-receptor","CellChat","CellPhoneDB","intercellular signaling"],"downstream",
+       "Cell-type별 ligand와 receptor expression 및 prior database를 이용해 signaling interaction 후보를 추론",
+       [["입력과 결과",["Annotated cell type과 expression matrix 필요","Ligand-receptor pair별 sender·receiver score 계산","Pathway 또는 network 수준 interaction을 요약"]],
+        ["해석",["RNA expression은 protein binding과 signaling의 간접 evidence","Database와 scoring method에 따라 결과가 달라짐","Spatial proximity·protein assay·perturbation으로 교차 확인"]]],
+       ["cell-type-annotation","spatial-analysis","trajectory-velocity"]],
+
+      ["spatial-transcriptomics","Spatial Transcriptomics",["spatial RNA","spatially resolved transcriptomics","SRT"],"spatial",
+       "Tissue coordinate를 보존하면서 location별 gene expression을 측정해 cell type과 tissue architecture를 연결",
+       [["데이터",["Expression matrix에 spot 또는 cell coordinate가 결합","Histology image 또는 segmentation information을 함께 사용할 수 있음","Dissociated scRNA가 잃는 neighborhood와 layer 구조를 보존"]],
+        ["질문",["Spatial domain과 tissue boundary 탐색","Spatially variable gene과 niche-specific state 검출","Cell type의 위치와 local interaction 분석"]]],
+       ["spatial-platforms","spatial-analysis","cell-type-annotation"]],
+
+      ["spatial-platforms","Imaging vs sequencing platforms",["MERFISH","seqFISH","Visium","Slide-seq","Stereo-seq"],"spatial",
+       "Spatial Transcriptomics는 imaging-based와 sequencing-based 계열로 나뉘며 resolution과 gene breadth가 다름",
+       [["Imaging-based",["MERFISH·seqFISH 등은 RNA molecule을 in situ imaging","단일세포·subcellular resolution 가능","Targeted gene panel과 imaging cycle 설계가 필요"]],
+        ["Sequencing-based",["Visium·Slide-seq·Stereo-seq 등은 spatial barcode로 RNA를 capture","Transcriptome-wide measurement에 유리","Spot 또는 bead size에 따라 여러 cell이 섞일 수 있음"]]],
+       ["spatial-transcriptomics","spatial-analysis","cell-gene-matrix"]],
+
+      ["spatial-analysis","Spatial data analysis",["spatial domain","SVG","deconvolution","cell2location","Squidpy"],"spatial",
+       "일반 scRNA workflow에 coordinate와 neighborhood를 이용한 domain·SVG·deconvolution 분석을 추가",
+       [["핵심 작업",["Spatial domain은 인접 location의 expression·image pattern으로 tissue region을 찾음","Spatially variable gene은 coordinate-dependent expression을 검정","Spot deconvolution은 scRNA reference로 cell-type mixture를 추정"]],
+        ["도구",["Squidpy·Giotto는 spatial graph와 image analysis framework","SpaGCN·BANKSY는 spatial domain 탐색","cell2location은 reference-based cell-type abundance를 추정"]]],
+       ["spatial-transcriptomics","spatial-platforms","cell-cell-communication"]],
+
+      ["spatial-resolution-tradeoff","Resolution vs gene breadth",["resolution","gene breadth","targeted imaging","transcriptome-wide"],"spatial",
+       "Spatial platform은 single-cell/subcellular resolution과 transcriptome-wide breadth 사이의 trade-off를 가짐",
+       [["핵심",["Imaging-based method는 높은 spatial resolution을 제공하지만 보통 targeted gene panel을 설계해야 함","Sequencing-based capture는 transcriptome-wide 측정에 유리하지만 spot 또는 bead 단위에서 여러 cell signal이 섞일 수 있음","질문이 cell boundary인지, tissue-wide expression landscape인지에 따라 platform 선택이 달라짐"]],
+        ["읽는 법",["Platform 이름보다 먼저 resolution, gene breadth, tissue coverage, reference 필요성을 확인","Spot-level data는 cell-type composition 추정이 downstream 결론에 큰 영향을 줌"]]],
+       ["spatial-platforms","spatial-deconvolution-mapping","spatial-analysis"]],
+
+      ["spatial-domain-svg","Spatial domain & SVG",["spatial domain","SVG","spatially variable gene","SpaGCN","BANKSY","SPARK-X"],"spatial",
+       "Spatial domain은 공간적으로 일관된 tissue region이고, SVG는 위치에 따라 발현이 달라지는 gene",
+       [["Spatial domain",["Expression, coordinate, histology pattern을 함께 사용해 tissue region을 찾음","Layer, niche, lesion boundary처럼 조직 구조를 요약하는 데 쓰임","Domain 결과는 graph 구성과 resolution에 영향을 받으므로 marker와 image context를 함께 확인"]],
+        ["SVG",["Spatially variable gene은 coordinate-dependent expression pattern을 검정","Domain marker와 달리 연속적인 spatial gradient나 local pattern도 포착할 수 있음","SPARK-X, Moran's I, Squidpy/Giotto 계열 분석이 여기에 연결됨"]]],
+       ["spatial-analysis","spatial-resolution-tradeoff","spatial-neighborhood"]],
+
+      ["spatial-deconvolution-mapping","Deconvolution & mapping",["spot deconvolution","cell2location","RCTD","mapping","label transfer"],"spatial",
+       "Spatial spot이나 imaging cell을 scRNA reference와 연결해 cell-type identity와 abundance를 공간에 배치",
+       [["Deconvolution",["Visium 같은 spot-based platform은 spot 안에 여러 cell type이 섞일 수 있음","scRNA reference를 이용해 spot별 cell-type abundance 또는 proportion을 추정","cell2location, RCTD, SPOTlight, stereoscope 같은 tool이 이 계열"]],
+        ["Mapping",["Imaging-based single-cell data에는 scRNA taxonomy를 label transfer할 수 있음","Reference의 cell type definition과 spatial platform의 gene coverage가 결과에 영향을 줌"]]],
+       ["spatial-transcriptomics","spatial-platforms","cell-type-annotation"]],
+
+      ["spatial-neighborhood","Spatial neighborhood",["niche","microenvironment","neighborhood","cell-cell interaction"],"spatial",
+       "Spatial neighborhood 분석은 어떤 cell type이 어디에 모이고 누구와 가까운지 해석하는 작업",
+       [["무엇을 보나",["Cell type의 local enrichment, co-localization, tissue boundary 주변의 state change를 확인","Spatial coordinate가 있으므로 dissociated scRNA-seq보다 neighborhood와 niche 질문을 직접 다룰 수 있음","Ligand-receptor 분석은 proximity 정보를 더해 후보 interaction을 좁히는 데 사용"]],
+        ["주의",["가까이 있다는 것은 interaction의 evidence가 될 수 있지만, 실제 signaling을 단독으로 증명하지는 않음","Protein-level assay나 perturbation data가 있으면 해석이 더 강해짐"]]],
+       ["spatial-analysis","cell-cell-communication","spatial-domain-svg"]],
+      ["seurat-scanpy","Seurat & Scanpy",["Seurat","Scanpy","single-cell framework","AnnData"],"tools",
+       "Preprocessing부터 clustering·annotation·integration까지 연결하는 R과 Python의 대표 single-cell framework",
+       [["Seurat",["R 기반 object와 workflow","Normalization·PCA·graph clustering·UMAP·integration·WNN 지원","Signac과 연결해 scATAC·multiome 분석 확장"]],
+        ["Scanpy",["Python 기반 AnnData ecosystem","QC·normalization·neighbor graph·Leiden·UMAP 지원","scvi-tools·Squidpy·muon과 연결"]]],
+       ["cell-gene-matrix","normalization-hvg","preprocessing-tools"]],
+
+      ["preprocessing-tools","Preprocessing tools",["Cell Ranger","STARsolo","alevin-fry","kb-python"],"tools",
+       "Barcode·UMI 처리, mapping 또는 lightweight quantification, cell calling을 수행해 count matrix를 생성",
+       [["도구",["Cell Ranger는 10x library의 표준 preprocessing pipeline","STARsolo는 STAR genome alignment 안에서 droplet scRNA 처리를 수행","alevin-fry와 kb-python은 빠른 transcriptome-based quantification workflow"]],
+        ["선택",["Protocol chemistry와 barcode whitelist 지원 확인","Genome·transcriptome annotation version을 일치","Count matrix뿐 아니라 mapping·cell calling QC report도 보존"]]],
+       ["barcode-umi","quantification-cell-calling","seurat-scanpy"]]
+    ];
+
+    const articles = Object.fromEntries(articleRows.map(function (row) {
+      return [row[0], {title:row[1],aliases:row[2],section:row[3],summary:row[4],body:row[5],related:row[6]}];
+    }));
+
+    const sourceLinks = {};
+    const officialSupplementLinks = {
+      "ambient-doublets":[
+        ["SoupX repository","https://github.com/constantAmateur/SoupX"],
+        ["CellBender documentation","https://cellbender.readthedocs.io/"],
+        ["DoubletFinder repository","https://github.com/chris-mcginnis-ucsf/DoubletFinder"],
+        ["scDblFinder Bioconductor page","https://bioconductor.org/packages/scDblFinder/"]
+      ],
+      "batch-integration":[
+        ["Harmony repository","https://github.com/immunogenomics/harmony"],
+        ["scvi-tools documentation","https://docs.scvi-tools.org/"]
+      ],
+      "cell-type-annotation":[
+        ["SingleR Bioconductor page","https://bioconductor.org/packages/SingleR/"],
+        ["CellTypist documentation","https://celltypist.readthedocs.io/"]
+      ],
+      "single-cell-de":[["MAST Bioconductor page","https://bioconductor.org/packages/MAST/"]],
+      "differential-abundance":[
+        ["Milo documentation","https://marionilab.github.io/miloR/"],
+        ["scCODA documentation","https://sccoda.readthedocs.io/"]
+      ],
+      "trajectory-velocity":[
+        ["Monocle 3 documentation","https://cole-trapnell-lab.github.io/monocle3/"],
+        ["scVelo documentation","https://scvelo.readthedocs.io/"]
+      ],
+      "cell-cell-communication":[
+        ["CellChat repository","https://github.com/jinworks/CellChat"],
+        ["CellPhoneDB documentation","https://cellphonedb.readthedocs.io/"]
+      ],
+      "spatial-analysis":[
+        ["Squidpy documentation","https://squidpy.readthedocs.io/"],
+        ["Giotto documentation","https://giottosuite.readthedocs.io/"],
+        ["cell2location documentation","https://cell2location.readthedocs.io/"]
+      ],
+      "spatial-domain-svg":[
+        ["Squidpy documentation","https://squidpy.readthedocs.io/"],
+        ["Giotto documentation","https://giottosuite.readthedocs.io/"],
+        ["BANKSY documentation","https://prabhakarlab.github.io/Banksy/"],
+        ["SPARK-X repository","https://github.com/xzhoulab/SPARK"]
+      ],
+      "spatial-deconvolution-mapping":[
+        ["cell2location documentation","https://cell2location.readthedocs.io/"],
+        ["RCTD / spacexr repository","https://github.com/dmcable/spacexr"]
+      ],      "seurat-scanpy":[
+        ["Seurat official site","https://satijalab.org/seurat/"],
+        ["Scanpy documentation","https://scanpy.readthedocs.io/"]
+      ],
+      "preprocessing-tools":[
+        ["Cell Ranger documentation","https://www.10xgenomics.com/support/software/cell-ranger"],
+        ["STAR repository","https://github.com/alexdobin/STAR"],
+        ["alevin-fry documentation","https://alevin-fry.readthedocs.io/"],
+        ["kb-python documentation","https://kb-python.readthedocs.io/"]
+      ]
+    };
+
+    const glossaryTerms = {
+      "cell barcode":{key:"barcode",definition:"Read가 어느 cell 또는 droplet에서 왔는지 나타내는 sequence tag."},
+      "umi":{key:"umi",definition:"PCR 이전의 original molecule을 구분하는 unique molecular identifier."},
+      "ambient rna":{key:"ambient",definition:"Lysed cell에서 나와 droplet background에 섞인 cell-free RNA."},
+      "doublet":{key:"doublet",definition:"둘 이상의 cell이 하나의 barcode로 측정된 mixed profile."},
+      "hvg":{key:"hvg",definition:"Technical noise 대비 cell 간 variation이 큰 highly variable gene."},
+      "pseudobulk":{key:"pseudobulk",definition:"같은 donor와 cell type의 count를 합쳐 sample-level matrix로 만든 값."},
+      "pseudotime":{key:"pseudotime",definition:"Cell state의 상대적 progression order를 나타내는 inferred coordinate."},
+      "spatial domain":{key:"domain",definition:"인접 location의 expression 또는 image pattern으로 정의한 tissue region."},
+      "deconvolution":{key:"deconv",definition:"Mixed spot signal에서 cell-type proportion 또는 abundance를 추정하는 분석."},
+      "knn":{key:"knn",definition:"Feature space에서 각 cell의 가까운 이웃을 연결한 k-nearest-neighbor graph."}
+    };
+    const glossaryPattern = /(^|[^A-Za-z0-9])(spatial domain|cell barcode|ambient RNA|deconvolution|pseudobulk|pseudotime|doublet|HVG|UMI|kNN)(?=$|[^A-Za-z0-9])/gi;
+
+    function createAnnotator() {
+      const seen = new Set();
+      return function (text) {
+        return esc(text).replace(glossaryPattern, function (match, prefix, term) {
+          const item = glossaryTerms[term.toLowerCase()];
+          if (!item || seen.has(item.key)) return match;
+          seen.add(item.key);
+          return prefix + '<span class="glossary-term" tabindex="0" data-definition="' + esc(item.definition) + '">' + esc(term) + '</span>';
+        });
+      };
+    }
+
+    const app = document.getElementById("app");
+    const topSearch = document.getElementById("topSearch");
+    let activeFilter = "all";
+
+    function esc(value) {
+      return String(value).replace(/[&<>'"]/g, function (c) {
+        return {"&":"&amp;", "<":"&lt;", ">":"&gt;", "'":"&#39;", '"':"&quot;"}[c];
+      });
+    }
+
+    function route(hash) {
+      window.location.hash = hash;
+    }
+
+    function categoryCards() {
+      return Object.keys(sections).map(function (key) {
+        const s = sections[key];
+        return '<button class="category-card" style="--accent:' + s.accent + '" data-section="' + key + '">' +
+          '<span class="category-number">' + s.number + ' · ' + s.english + '</span>' +
+          '<h3>' + s.title + '</h3><p>' + s.summary + '</p>' +
+          '<span class="card-route">질문으로 살펴보기 →</span></button>';
+      }).join("");
+    }
+
+    function renderHome() {
+      document.title = "Single-cell Transcriptomics";
+      app.innerHTML = '<section class="hero"><div class="container">' +
+        '<p class="eyebrow">Single-cell Transcriptomics knowledge base</p><h1>Single-cell Transcriptomics</h1>' +
+        '<p class="hero-copy">sc/snRNA-seq · Tools · Downstream · Spatial Transcriptomics</p>' +
+        '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="Single-cell Transcriptomics 통합 검색" placeholder="Search: UMI, doublet, pseudobulk, spatial, Seurat"><span class="search-icon">⌕</span></form>' +
+        '<p class="search-hint">Korean / English / acronym</p></div></section>' +
+        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>질문을 따라 큰 구조부터 살펴보세요.</p></div>' +
+        '<div class="category-grid">' + categoryCards() + '</div></div></section>';
+      document.getElementById("heroSearchForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const q = document.getElementById("heroSearch").value.trim();
+        if (q) route("search/" + encodeURIComponent(q));
+      });
+      window.scrollTo(0, 0);
+    }
+
+    function renderSection(key) {
+      const s = sections[key];
+      if (!s) return renderHome();
+      document.title = s.title + " · Single-cell Transcriptomics";
+      const annotateOnce = createAnnotator();
+      const groups = s.groups.map(function (group, i) {
+        const items = group.items.map(function (item) {
+          const hasPage = Boolean(item[0] && articles[item[0]]);
+          return '<div class="concept-row"><strong>' + annotateOnce(item[1]) + '</strong><p>' + annotateOnce(item[2]) + '</p>' +
+            (hasPage ? '<button data-article="' + item[0] + '">읽기 →</button>' : '<span class="map-label">개념 지도</span>') + '</div>';
+        }).join("");
+        return '<section class="question-block"><div class="question-head"><small>QUESTION ' + String(i + 1).padStart(2, "0") + '</small>' +
+          '<h2>' + annotateOnce(group.q) + '</h2><p>' + annotateOnce(group.note) + '</p></div><div>' + items + '</div></section>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb" aria-label="현재 위치"><button data-route="home">홈</button><span>›</span>' + s.title + '</nav>' +
+        '<header class="page-header" style="border-top:4px solid ' + s.accent + '"><p class="eyebrow">' + s.number + ' · ' + s.english + '</p><h1>' + s.title + '</h1><p class="lead">' + s.summary + '</p></header>' +
+        '<div class="question-list">' + groups + '</div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function articleText(a) {
+      const bodyText = a.body.map(function (b) { return [b[0]].concat(Array.isArray(b[1]) ? b[1] : [b[1]]).join(" "); });
+      return [a.title, a.aliases.join(" "), a.summary].concat(bodyText).join(" ").toLowerCase();
+    }
+
+    function highlight(text, query) {
+      if (!query) return esc(text);
+      const safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return esc(text).replace(new RegExp("(" + safe + ")", "ig"), "<mark>$1</mark>");
+    }
+
+    function searchArticles(query, filter) {
+      const q = query.trim().toLowerCase();
+      if (!q) return [];
+      return Object.keys(articles).map(function (id) {
+        const a = articles[id];
+        if (filter !== "all" && a.section !== filter) return null;
+        const hay = articleText(a);
+        const pos = hay.indexOf(q);
+        if (pos < 0) return null;
+        const titleHit = a.title.toLowerCase().includes(q) ? 3 : 0;
+        const aliasHit = a.aliases.join(" ").toLowerCase().includes(q) ? 2 : 0;
+        return { id: id, article: a, score: titleHit + aliasHit + 1 };
+      }).filter(Boolean).sort(function (a, b) { return b.score - a.score || a.article.title.localeCompare(b.article.title); });
+    }
+
+    function renderSearch(query) {
+      document.title = '"' + query + '" 검색 · Single-cell Transcriptomics';
+      const filterButtons = ['<button class="filter-btn ' + (activeFilter === "all" ? "active" : "") + '" data-filter="all">전체</button>'].concat(
+        Object.keys(sections).map(function (key) { return '<button class="filter-btn ' + (activeFilter === key ? "active" : "") + '" data-filter="' + key + '">' + sections[key].title + '</button>'; })
+      ).join("");
+      const found = searchArticles(query, activeFilter);
+      const cards = found.length ? found.map(function (r) {
+        const s = sections[r.article.section];
+        return '<button class="result-card" data-article="' + r.id + '"><span class="result-path">' + s.title + ' › 문서</span>' +
+          '<h2>' + highlight(r.article.title, query) + '</h2><p>' + highlight(r.article.summary, query) + '</p></button>';
+      }).join("") : '<div class="empty"><strong>No results</strong><br>Try: English / Korean / acronym</div>';
+      app.innerHTML = '<div class="container search-page"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span>검색</nav>' +
+        '<header class="page-header"><p class="eyebrow">Search</p><h1>“' + esc(query) + '”</h1></header>' +
+        '<div class="search-summary"><p>Public pages · <strong>' + found.length + '</strong></p><div class="filters">' + filterButtons + '</div></div>' +
+        '<div class="results">' + cards + '</div></div>';
+      topSearch.value = query;
+      window.scrollTo(0, 0);
+    }
+
+    function getSources(id) {
+      return (sourceLinks[id] || []).concat(officialSupplementLinks[id] || []);
+    }
+
+    function renderArticle(id) {
+      const a = articles[id];
+      if (!a) return renderHome();
+      const s = sections[a.section];
+      const annotateOnce = createAnnotator();
+      document.title = a.title + " · Single-cell Transcriptomics";
+      const body = a.body.map(function (part) {
+        const points = Array.isArray(part[1]) ? part[1] : part[1].replace(/\.\s+/g, ".||| ").split("|||").filter(Boolean);
+        return '<section><h2>' + part[0] + '</h2><ul class="fact-list">' + points.map(function (point) { return "<li>" + annotateOnce(point.trim()) + "</li>"; }).join("") + "</ul></section>";
+      }).join("");
+      const related = a.related.filter(function (rid) { return articles[rid]; }).map(function (rid) {
+        return '<button data-article="' + rid + '">' + articles[rid].title + ' →</button>';
+      }).join("");
+      const sources = getSources(id).map(function (source) {
+        return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
+        '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
+        '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
+        '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
+        (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        '</aside></div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function handleRoute() {
+      const raw = window.location.hash.replace(/^#/, "");
+      const parts = raw.split("/");
+      if (!raw || raw === "home") return renderHome();
+      if (parts[0] === "section") return renderSection(parts[1]);
+      if (parts[0] === "article") return renderArticle(parts[1]);
+      if (parts[0] === "search") return renderSearch(decodeURIComponent(parts.slice(1).join("/")));
+      renderHome();
+    }
+
+    document.addEventListener("click", function (e) {
+      const home = e.target.closest("[data-route='home']");
+      const section = e.target.closest("[data-section]");
+      const article = e.target.closest("[data-article]");
+      const filter = e.target.closest("[data-filter]");
+      if (home) route("home");
+      else if (article) route("article/" + article.dataset.article);
+      else if (section) route("section/" + section.dataset.section);
+      else if (filter) { activeFilter = filter.dataset.filter; const q = decodeURIComponent(window.location.hash.split("/").slice(1).join("/")); renderSearch(q); }
+    });
+
+    document.getElementById("topSearchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const q = topSearch.value.trim();
+      if (q) { activeFilter = "all"; route("search/" + encodeURIComponent(q)); }
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+        e.preventDefault(); topSearch.focus();
+      }
+    });
+    window.addEventListener("hashchange", handleRoute);
+    handleRoute();
+  </script>
+</body>
+</html>
