@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Multi-omics Integration을 modality·anchor·tool·해석 질문으로 탐색하는 HaLab Wiki">
-  <title>Multi-omics Integration · HaLab Wiki</title>
+  <meta name="description" content="알츠하이머병(AD)을 유전·microglia 원인과 amyloid 치료 논쟁의 질문으로 탐색하는 HaLab Wiki">
+  <title>Alzheimer's (AD) · HaLab Wiki</title>
   <style>
     :root {
       --ink: #18211b;
@@ -12,8 +12,8 @@
       --paper: #f7f7f2;
       --surface: #ffffff;
       --line: #d8ddd7;
-      --green: #1f5d43;
-      --green-soft: #e7f0ea;
+      --green: #6f3a55;
+      --green-soft: #f3e7ee;
       --blue: #315d78;
       --rust: #94553b;
       --gold: #936f21;
@@ -101,8 +101,8 @@
       text-align: center;
       border-bottom: 1px solid var(--line);
       background:
-        linear-gradient(rgba(31, 93, 67, .035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(31, 93, 67, .035) 1px, transparent 1px);
+        linear-gradient(rgba(111, 58, 85, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(111, 58, 85, .035) 1px, transparent 1px);
       background-size: 34px 34px;
     }
     .eyebrow {
@@ -120,7 +120,7 @@
     .hero-search input {
       width: 100%;
       height: 62px;
-      border: 1px solid #bac6bd;
+      border: 1px solid #c6b3bd;
       border-radius: 8px;
       background: var(--surface);
       box-shadow: var(--shadow);
@@ -184,12 +184,12 @@
     .filter-btn.active { border-color: var(--green); background: var(--green-soft); color: var(--green); font-weight: 750; }
     .results { display: grid; gap: 12px; }
     .result-card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 20px 22px; cursor: pointer; text-align: left; }
-    .result-card:hover { border-color: #93aa9a; box-shadow: 0 7px 20px rgba(24, 33, 27, .05); }
+    .result-card:hover { border-color: #b39aa6; box-shadow: 0 7px 20px rgba(24, 33, 27, .05); }
     .result-path { color: var(--green); font-size: .76rem; font-weight: 750; }
     .result-card h2 { margin: 4px 0 6px; font-size: 1.25rem; }
     .result-card p { margin: 0; color: var(--muted); font-size: .9rem; }
     mark { background: #fff0ad; color: inherit; padding: 0 2px; }
-    .empty { border: 1px dashed #b8c0ba; border-radius: var(--radius); padding: 48px 24px; text-align: center; color: var(--muted); }
+    .empty { border: 1px dashed #c0b0b8; border-radius: var(--radius); padding: 48px 24px; text-align: center; color: var(--muted); }
 
     .article-layout { display: grid; grid-template-columns: minmax(0, 740px) 260px; gap: 64px; padding: 12px 0 80px; align-items: start; }
     .article { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(25px, 5vw, 52px); }
@@ -209,11 +209,11 @@
     }
     .fact-list li { padding-left: 4px; }
     .fact-list li::marker { color: var(--green); }
-    .term-link { border: 0; border-bottom: 1px solid #8aa897; background: none; padding: 0; color: var(--green); cursor: pointer; font-weight: 700; }
+    .term-link { border: 0; border-bottom: 1px solid #b08aa0; background: none; padding: 0; color: var(--green); cursor: pointer; font-weight: 700; }
     .glossary-term {
       position: relative;
       border-bottom: 1px dotted var(--green);
-      color: #174b37;
+      color: #5a2d44;
       cursor: help;
       outline: none;
     }
@@ -300,7 +300,7 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand-group"><a class="brand brand-home" href="../index.html">HaLab Wiki</a><button class="brand brand-domain" type="button" data-route="home"><span>/ Multi-omics Integration</span></button></div>
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Neuro</span></a><button class="brand brand-domain" type="button" data-route="home"><span>/ AD</span></button></div>
       <form class="top-search" id="topSearchForm" role="search">
         <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
         <span class="keycap">/</span>
@@ -316,67 +316,78 @@
 
   <script>
     const sections = {
-      "measurement":{"number":"01","title":"Measurement & Data Structure","english":"WHAT IS CONNECTED","accent":"#8b4f3a","summary":"Modality · Paired multiome · Unpaired data · Cell barcode · Missing blocks","groups":[
-        {"q":"Multi-omics는 무엇을 함께 보려는가?","note":"RNA · ATAC · protein · methylation as different molecular layers","items":[["multiomics","Multi-omics integration","서로 다른 molecular modality를 shared biological state로 연결"],["modality","Molecular modality","RNA·chromatin·protein·methylation처럼 서로 다른 feature space"]]},
-        {"q":"같은 cell에서 측정했는지가 왜 중요한가?","note":"Paired vs unpaired measurement","items":[["paired-multiome","Paired multiome","같은 cell barcode로 여러 modality가 직접 연결된 데이터"],["unpaired-integration","Unpaired integration","서로 다른 cell 집합의 modality를 computationally 맞추는 문제"]]}
+      "cause":{"number":"01","title":"원인 — 유전과 microglia","english":"GENETICS CONVERGES ON MICROGLIA","accent":"#6f3a55","summary":"APOE · 75 GWAS loci · microglia enrichment · 진단 바이오마커","groups":[
+        {"q":"AD 위험은 유전적으로 어디서 오는가?","note":"APOE가 최강 단일 인자, 75개 loci가 면역·microglia를 가리킴","items":[
+          ["ad-genetics","AD 유전 구조 — APOE & 75 loci","heritability 60–80%, Bellenguez 2022가 42개 신규 loci를 추가"],
+          ["ad-microglia","Microglia로의 수렴","단일세포 발현 enrichment가 microglia에서만 유의"]
+        ]}
       ]},
-      "taxonomy":{"number":"02","title":"Integration Taxonomy","english":"WHAT ANCHOR LINKS DATASETS","accent":"#526b7a","summary":"Horizontal · Vertical · Diagonal · Mosaic · Bridge","groups":[
-        {"q":"데이터는 어떤 anchor로 이어지는가?","note":"Feature, cell, or neither","items":[["anchor-taxonomy","Horizontal · vertical · diagonal","공통 feature, 공통 cell, anchor 없음으로 통합 문제를 구분"],["horizontal-integration","Horizontal integration","같은 modality의 batch나 study를 공통 feature로 연결"],["vertical-integration","Vertical integration","같은 cell을 anchor로 서로 다른 modality를 연결"]]},
-        {"q":"일부 cell만 multiome이면 어떻게 되는가?","note":"Incomplete block design","items":[["mosaic-integration","Mosaic integration","일부 modality 조합만 있는 missing-block 데이터를 통합"],["bridge-integration","Bridge integration","소수 paired multimodal cell을 bridge로 단일-modality dataset을 연결"]]}
+      "symptom":{"number":"02","title":"증상·진단 — 임상 양상","english":"SIGNS AND DIAGNOSIS","accent":"#315d78","summary":"점진적 기억상실 · 인지·기능 저하 · MCI→치매 · ATN 진단","groups":[
+        {"q":"AD는 어떤 증상으로 나타나고 어떻게 진단하나?","note":"기억에서 시작해 인지 전반으로 — 진단은 biology 기반으로 이동","items":[
+          ["ad-clinical","AD 증상과 진단","최근 기억 저하로 시작, ATN 바이오마커로 생물학적 확진"]
+        ]}
       ]},
-      "methods":{"number":"03","title":"Methods & Tools","english":"WHICH METHOD FITS THE DESIGN","accent":"#6f6948","summary":"MOFA+ · WNN · totalVI · MUON · GLUE · Seurat Bridge","groups":[
-        {"q":"Paired multiome은 어떤 방법으로 통합하는가?","note":"Global latent factors and multimodal neighbor graph","items":[["mofa","MOFA+","여러 modality의 shared/specific variation을 latent factor로 분해"],["wnn","WNN / Seurat","Cell마다 modality별 정보량을 가중해 multimodal neighbor graph 구성"],["totalvi","totalVI","RNA+protein CITE-seq를 probabilistic latent space로 통합"]]},
-        {"q":"Framework와 unmatched 도구는 어디에 쓰는가?","note":"Data container and graph-linked embedding","items":[["muon","MUON / MuData","AnnData 기반 multi-omics container와 workflow framework"],["glue","GLUE","Unmatched scRNA/scATAC를 graph-linked VAE로 shared embedding에 연결"]]}
-      ]},
-      "interpretation":{"number":"04","title":"Interpretation & Downstream","english":"WHAT CAN BE CLAIMED","accent":"#694f63","summary":"Cell state · Modality weight · Regulatory link · Transfer learning · Multiscale","groups":[
-        {"q":"통합 결과는 무엇을 말해주는가?","note":"Shared cell state vs modality-specific signal","items":[["shared-cell-state","Shared cell state","여러 modality가 함께 설명하는 cell identity와 state"],["modality-specific-signal","Modality-specific signal","한 modality에서만 강하게 보이는 chromatin priming·protein marker 같은 신호"]]},
-        {"q":"어떤 downstream 질문으로 이어지는가?","note":"Regulation, transfer, atlas, patient-level summary","items":[["regulatory-linking","Regulatory linking","ATAC peak, motif, gene expression을 연결해 CRE-gene 관계 탐색"],["transfer-learning","Transfer learning","Reference atlas의 representation을 query dataset에 전이"],["multiscale-integration","Multiscale integration","Cell-level representation을 sample·patient-level phenotype과 연결"]]}
+      "treatment":{"number":"03","title":"치료 — amyloid 가설과 항체","english":"DOES CLEARING AMYLOID HELP","accent":"#1f5d43","summary":"anti-amyloid 항체 · 바이오마커 변화 vs 임상 이득","groups":[
+        {"q":"Amyloid를 제거하면 증상이 나아지는가?","note":"바이오마커 변화와 임상 이득은 다른 질문","items":[
+          ["ad-amyloid-debate","Amyloid 가설과 치료 논쟁","항체 치료가 amyloid는 줄이지만 인지 이득은 여전히 모호"]
+        ]}
       ]}
     };
+    const articleRows = [
+      ["ad-genetics","AD 유전 구조 — APOE & 75 loci",["Alzheimer disease","AD GWAS","APOE","Bellenguez"],"cause",
+       "AD는 heritability 60–80%의 다유전자성 질환으로, APOE가 최강 단일 인자이고 2022년 GWAS가 75개 위험 loci를 지목했다",
+       [["유전 구조",["heritability 60–80%, APOE가 단연 최강 단일 인자","Bellenguez 2022: 2단계 메타분석(111,326 AD/proxy + 677,663 대조)으로 75 loci(42 신규) 발굴","amyloid/tau·endocytosis 경로에 더해 microglia/면역 활성화(TREM2, PLCG2, ABCA7) 강조"]],
+        ["진단·바이오마커",["ATN(amyloid/tau/neurodegeneration) 프레임으로 진단이 생물학적으로 재정의됨","혈장 p-tau181/217·Aβ42/40·NfL로 비침습 조기진단 가능","APOE 외 83변이 GRS가 발병·진행과 연관되나 European 전용이라 비유럽 집단 전이성 미검증"]]],
+       ["ad-microglia","ad-amyloid-debate","neuro-celltype-mapping"]],
 
-    const articles = {
-      "multiomics":{"title":"Multi-omics integration","aliases":["multiomics","multimodal integration","multi-omics"],"section":"measurement","summary":"서로 다른 molecular modality에서 온 측정을 shared biological state로 합치는 계산 단계","body":[["핵심",["RNA·ATAC·protein·methylation은 서로 다른 feature space를 가짐","integration은 이 feature space들을 하나의 cell state·sample state 표현으로 연결","batch integration이 같은 modality를 맞추는 문제라면, multi-omics integration은 서로 다른 종류의 feature를 연결"]],["읽는 법",["먼저 paired인지 unpaired인지 확인","anchor 종류에 따라 쓸 수 있는 method와 해석 강도가 달라짐"]]],"related":["modality","anchor-taxonomy","paired-multiome"]},
-      "modality":{"title":"Molecular modality","aliases":["modality","omics layer","molecular layer"],"section":"measurement","summary":"RNA, chromatin accessibility, protein, methylation처럼 서로 다른 molecular measurement layer","body":[["예시",["RNA는 gene expression state를 측정","ATAC은 chromatin accessibility와 regulatory element 후보를 측정","protein/ADT는 surface marker·functional protein signal을 보강","methylation은 epigenetic state·cell identity를 다른 축에서 포착"]],["주의",["각 modality는 scale·sparsity·noise structure가 다름","통합 전 modality별 QC·normalization을 따로 확인"]]],"related":["multiomics","paired-multiome"]},
-      "paired-multiome":{"title":"Paired multiome","aliases":["paired data","joint multiome","single-cell multiome"],"section":"measurement","summary":"같은 cell 또는 nucleus에서 둘 이상의 molecular modality를 동시에 측정한 데이터","body":[["구조",["같은 cell barcode가 RNA+ATAC·RNA+protein처럼 여러 modality를 직접 연결","대표 조합은 RNA+ATAC·RNA+protein·RNA+methylation","같은 cell anchor가 있어 vertical integration 문제로 다룸"]],["장점",["분리 후 computational matching의 가정을 줄임","한 cell에서 chromatin state와 expression output의 불일치도 관찰 가능","cell type annotation과 regulatory interpretation을 함께 강화"]]],"related":["vertical-integration","mofa","wnn"]},
-      "unpaired-integration":{"title":"Unpaired integration","aliases":["unmatched integration","diagonal integration"],"section":"measurement","summary":"서로 다른 cell 집합에서 측정한 modality를 computationally align하는 통합 문제","body":[["상황",["scRNA와 scATAC가 같은 tissue에서 나왔어도 같은 cell은 아닐 수 있음","cell도 feature도 직접 공유하지 않으면 diagonal integration에 가까움","gene activity·prior graph·known regulatory relationship 같은 보조 anchor를 사용"]],["해석",["matched cell evidence보다 해석 강도는 낮게 둠","cell type 수준 alignment와 feature-level regulatory claim을 구분"]]],"related":["anchor-taxonomy","glue","mosaic-integration"]},
-      "anchor-taxonomy":{"title":"Horizontal · vertical · diagonal","aliases":["anchor taxonomy","horizontal integration","vertical integration","diagonal integration"],"section":"taxonomy","summary":"Integration task를 공통 feature, 공통 cell, 또는 anchor 없음으로 구분하는 taxonomy","body":[["Horizontal",["공통 feature를 anchor로 같은 modality의 dataset을 결합","single-cell atlas batch integration이 대표 예"]],["Vertical",["같은 cell을 anchor로 서로 다른 modality feature를 연결","paired multiome 분석이 여기에 해당"]],["Diagonal",["cell도 feature도 직접 공유하지 않는 어려운 통합","prior knowledge와 latent embedding이 더 중요해짐"]]],"related":["horizontal-integration","vertical-integration","unpaired-integration"]},
-      "horizontal-integration":{"title":"Horizontal integration","aliases":["batch integration","data harmonization"],"section":"taxonomy","summary":"공통 feature를 anchor로 같은 modality의 batch, sample, study를 shared space로 합치는 통합","body":[["용도",["같은 RNA feature를 가진 여러 scRNA dataset을 결합","technical batch는 줄이고 biological cell type·state는 보존하는 것이 목표"]],["도구",["Harmony·scVI/scANVI·Scanorama·Seurat anchor 계열이 자주 쓰임","multi-omics taxonomy에서는 같은 anchor 틀의 한 갈래로 이해"]]],"related":["anchor-taxonomy","mosaic-integration"]},
-      "vertical-integration":{"title":"Vertical integration","aliases":["paired integration","same-cell anchor"],"section":"taxonomy","summary":"같은 cell을 anchor로 RNA, ATAC, protein 등 비중첩 feature space를 연결하는 통합","body":[["입력",["paired multiome처럼 cell barcode가 modality 사이를 직접 연결","feature는 다르지만 observation unit은 같은 cell"]],["방법",["global method는 shared latent factor·joint embedding을 생성","local method는 enhancer-gene·TF-gene 같은 feature-feature 관계를 분석"]]],"related":["paired-multiome","mofa","regulatory-linking"]},
-      "mosaic-integration":{"title":"Mosaic integration","aliases":["mosaic data","missing block integration"],"section":"taxonomy","summary":"일부 cell 또는 dataset에만 특정 modality가 있는 missing-block 구조를 통합하는 문제","body":[["상황",["모든 cell에서 모든 modality를 측정하기 어려워 atlas는 incomplete block 구조가 되기 쉬움","어떤 pair는 cell anchor, 어떤 pair는 feature anchor, 어떤 pair는 anchor가 없음"]],["접근",["horizontal·vertical·diagonal integration을 순차적으로 혼합","bridge integration은 소수 paired multimodal data로 unpaired dataset을 연결"]]],"related":["bridge-integration","anchor-taxonomy","glue"]},
-      "bridge-integration":{"title":"Bridge integration","aliases":["bridge dataset","Seurat bridge"],"section":"taxonomy","summary":"소수 paired multimodal cell을 bridge로 삼아 서로 다른 single-modality dataset을 연결하는 접근","body":[["아이디어",["bridge dataset은 modality 간 관계를 관찰한 작은 paired reference","RNA-only·ATAC-only dataset을 bridge를 통해 shared representation으로 매핑"]],["해석",["bridge가 query cell state를 잘 대표하는지 확인","cell type transfer와 modality mapping을 같은 주장으로 섞지 않음"]]],"related":["mosaic-integration","wnn","glue"]},
-      "mofa":{"title":"MOFA+","aliases":["MOFA","Multi-Omics Factor Analysis","latent factor"],"section":"methods","summary":"Paired multi-omics 데이터를 shared/specific latent factor로 분해하는 Bayesian factor analysis framework","body":[["원리",["PCA를 multi-view data로 확장한 것으로 볼 수 있음","각 factor가 modality 간 shared variation과 modality-specific variation을 설명","linear model이라 factor 해석이 비교적 직관적"]],["사용",["sample group·modality·feature loading을 함께 보며 biological driver를 탐색","nonlinear relationship은 다른 방법과 비교해 해석"]]],"related":["vertical-integration","muon","shared-cell-state"]},
-      "wnn":{"title":"WNN / Seurat","aliases":["weighted nearest neighbor","Seurat WNN","multimodal neighbor graph"],"section":"methods","summary":"Cell마다 modality별 정보량을 학습해 weighted multimodal neighbor graph를 만드는 Seurat 통합 방법","body":[["원리",["각 cell에서 RNA가 더 설명적인지 protein/ATAC이 더 설명적인지 가중","weighted neighbor graph를 만들어 clustering·UMAP·annotation에 사용"]],["사용",["RNA+protein CITE-seq·RNA+ATAC multiome에서 cell state resolution을 높이는 데 사용","modality weight는 어떤 signal이 cell identity를 설명하는지 보는 단서"]]],"related":["paired-multiome","modality-specific-signal","bridge-integration"]},
-      "totalvi":{"title":"totalVI","aliases":["totalVI","CITE-seq integration","RNA protein VAE"],"section":"methods","summary":"RNA와 protein ADT를 함께 모델링하는 probabilistic deep generative model","body":[["입력",["CITE-seq처럼 RNA count와 antibody-derived tag protein signal을 함께 사용","protein background와 batch effect를 모델 안에서 처리"]],["해석",["joint latent space는 RNA와 protein signal을 함께 반영","probabilistic model이므로 uncertainty와 denoised estimate를 구분해 해석"]]],"related":["wnn","paired-multiome"]},
-      "muon":{"title":"MUON / MuData","aliases":["MUON","MuData","multi-omics container"],"section":"methods","summary":"Modality별 AnnData를 묶어 multi-omics workflow를 관리하는 framework와 data standard","body":[["역할",["단일 통합 알고리즘이라기보다 data container·workflow interface","RNA·ATAC·protein 같은 modality별 object를 함께 저장·처리"]],["사용",["MOFA·WNN·SNF 같은 통합 방법을 workflow 안에서 호출","Python/scverse 생태계의 multi-omics 분석에 적합"]]],"related":["mofa","multiomics"]},
-      "glue":{"title":"GLUE","aliases":["graph-linked unified embedding","unmatched integration"],"section":"methods","summary":"Unmatched single-cell multi-omics를 prior graph와 variational autoencoder로 shared embedding에 연결하는 도구","body":[["문제",["같은 cell에서 측정하지 않은 scRNA·scATAC를 함께 해석하려는 상황에 사용","gene·peak·regulatory graph 같은 prior relation을 활용"]],["출력",["shared embedding을 만들고 modality 간 regulatory relationship 해석을 보조","paired multiome용 MOFA/WNN과는 문제 설정이 다름"]]],"related":["unpaired-integration","mosaic-integration","regulatory-linking"]},
-      "shared-cell-state":{"title":"Shared cell state","aliases":["joint latent space","shared embedding","cell state"],"section":"interpretation","summary":"여러 modality가 함께 설명하는 cell identity와 biological state의 통합 표현","body":[["의미",["RNA·ATAC·protein이 모두 cell type·activation state를 지지할 수 있음","shared embedding은 clustering·annotation·trajectory에 사용"]],["주의",["shared representation이 모든 modality-specific signal을 보존한다는 뜻은 아님","integration 결과와 원래 modality별 signal을 함께 확인"]]],"related":["modality-specific-signal","mofa","wnn"]},
-      "modality-specific-signal":{"title":"Modality-specific signal","aliases":["modality weight","specific factor","chromatin priming"],"section":"interpretation","summary":"Shared state로 합쳐지지 않고 특정 modality에서 더 강하게 보이는 biological signal","body":[["예시",["chromatin accessibility가 expression보다 먼저 변하는 chromatin priming이 있을 수 있음","surface protein marker가 RNA보다 cell subtype을 더 잘 구분할 수 있음","MOFA factor·WNN modality weight가 이런 차이를 드러낼 수 있음"]],["해석",["specific signal은 noise일 수도 중요한 biology일 수도 있음","원래 modality의 QC와 feature-level evidence를 재확인"]]],"related":["shared-cell-state","regulatory-linking","wnn"]},
-      "regulatory-linking":{"title":"Regulatory linking","aliases":["enhancer gene link","peak-gene linkage","GRN"],"section":"interpretation","summary":"ATAC peak, TF motif, gene expression을 연결해 cis-regulatory element와 target gene 관계를 탐색하는 downstream 분석","body":[["입력",["chromatin accessibility·TF motif·nearby gene expression을 함께 분석","paired RNA+ATAC이면 같은 cell state 안에서 association을 더 직접적으로 관찰 가능"]],["해석",["peak-gene association은 regulatory candidate map","perturbation·motif evidence·external annotation과 함께 해석 강도를 높임"]]],"related":["vertical-integration","glue","modality-specific-signal"]},
-      "transfer-learning":{"title":"Transfer learning","aliases":["reference mapping","label transfer","query mapping"],"section":"interpretation","summary":"Reference atlas에서 배운 representation, label, embedding을 query dataset에 전이하는 접근","body":[["용도",["큰 reference atlas에 작은 query를 mapping","cell label transfer·denoising·joint embedding에 사용"]],["해석",["reference와 query의 tissue·protocol·modality 차이를 확인","transferred label은 reference의 coverage 안에서 해석"]]],"related":["bridge-integration","shared-cell-state"]},
-      "multiscale-integration":{"title":"Multiscale integration","aliases":["cell to patient","sample-level integration","patient anchor"],"section":"interpretation","summary":"Cell-level multi-omics representation을 sample 또는 patient-level phenotype과 연결하는 분석 관점","body":[["아이디어",["cell state proportion·latent factor·pathway score를 individual-level feature로 요약","그 요약을 phenotype·disease group·clinical variable과 연결"]],["해석",["cell-level pattern과 patient-level association을 구분","sample composition과 covariate를 함께 확인"]]],"related":["shared-cell-state","transfer-learning"]}
-    };
+      ["ad-microglia","Microglia로의 수렴",["microglia","TREM2","single-cell enrichment","Mathys"],"cause",
+       "단일세포 발현 enrichment 분석에서 AD 유전 위험은 microglia에서만 유의하게 모이며, 세포유형별로 반대 방향 반응도 나타난다",
+       [["수렴의 증거",["단일세포 발현 enrichment에서 microglia만 유의(P=1.7×10⁻⁸)","Mathys 2019(snRNA-seq)가 AD 반응이 강하게 cell-type-specific임을 입증","같은 APOE도 microglia에서는 증가, astrocyte에서는 감소 — 세포유형별 반대 방향"]],
+        ["2024년 보강",["cell-type caQTL fine-mapping에서 non-neuron(microglia 포함) 변이가 AD에 가장 강하게 enrich","methylomics deconvolution은 고령자 endothelial(신경혈관) 분율 증가가 APOE에 필적하는 효과를 보고 — microglia 외 혈관 축 시사"]]],
+       ["ad-genetics","neuro-celltype-mapping","neuro-mia"]],
+
+      ["ad-amyloid-debate","Amyloid 가설과 치료 논쟁",["amyloid cascade","anti-amyloid antibody","aducanumab","donanemab"],"treatment",
+       "amyloid 제거 항체 치료가 임상에 진척을 보였지만, amyloid 바이오마커 변화가 실제 인지 이득으로 이어지는지는 여전히 불확실하다",
+       [["근거와 한계",["amyloid 제거를 표적으로 하는 anti-amyloid 항체(aducanumab·donanemab 등)가 바이오마커상 amyloid를 줄임","임상적 인지 이득으로의 연결은 모호/contested로 평가됨","APP·PSEN 유전 근거는 amyloid cascade 자체를 강하게 지지"]],
+        ["해석 원칙",["바이오마커 변화 ≠ 임상 효과 — 두 결과를 동일시하지 않는다","혈관 위험 요인은 amyloid/tau 경로를 거치지 않고도 기여할 수 있다는 보고와 상충 소지"]]],
+       ["ad-genetics","ad-microglia"]],
+
+      ["ad-clinical","AD 증상과 진단",["Alzheimer symptoms","dementia","MCI","MMSE","ATN biomarker"],"symptom",
+       "AD는 최근 기억의 저하로 시작해 언어·시공간·실행기능과 일상생활 능력으로 번지며, 임상 인지평가와 ATN 바이오마커로 진단한다",
+       [["증상의 진행",["초기: 최근 일·대화를 잊는 episodic memory 저하 — 같은 질문 반복, 약속·물건 위치를 놓침","중기: 언어(단어 찾기)·시공간·판단력 저하로 일상생활 수행(ADL)이 어려워짐","후기: 성격·행동 변화(초조·배회·환각)와 보행·삼킴 장애","경과는 MCI(경도인지장애) → mild → moderate → severe dementia로 이어지는 연속 스펙트럼"]],
+        ["진단",["임상 면담 + 인지검사(MMSE·MoCA)로 치매 단계와 영역별 결손을 평가","구조 MRI로 해마 위축을 확인하고 혈관성·정상압수두증 등 다른 원인을 배제","ATN(amyloid·tau·neurodegeneration) 바이오마커 — amyloid PET·CSF·혈장 p-tau217로 생물학적 확진","진단의 축이 증상 관찰에서 biology 측정으로 이동하는 중"]]],
+       ["ad-genetics","ad-amyloid-debate","ad-microglia"]]
+    ];
+
+    const articles = Object.fromEntries(articleRows.map(function (row) {
+      return [row[0], {title:row[1],aliases:row[2],section:row[3],summary:row[4],body:row[5],related:row[6]}];
+    }));
 
     const sourceLinks = {};
     const officialSupplementLinks = {
-      "mofa":[["MOFA+ documentation","https://biofam.github.io/MOFA2/"]],
-      "wnn":[["Seurat weighted nearest neighbor analysis","https://satijalab.org/seurat/articles/weighted_nearest_neighbor_analysis"]],
-      "totalvi":[["totalVI documentation","https://docs.scvi-tools.org/en/stable/user_guide/models/totalvi.html"]],
-      "muon":[["MUON documentation","https://muon.readthedocs.io/"]],
-      "glue":[["GLUE documentation","https://scglue.readthedocs.io/"]]
+      "ad-clinical":[
+        ["NIA — Alzheimer's Disease: Symptoms and Diagnosis","https://www.nia.nih.gov/health/alzheimers-symptoms-and-diagnosis"]
+      ],
+      "ad-genetics":[
+        ["NIA — Alzheimer's Disease Genetics Fact Sheet","https://www.nia.nih.gov/health/alzheimers-causes-and-risk-factors/alzheimers-disease-genetics-fact-sheet"]
+      ],
+      "ad-amyloid-debate":[
+        ["NIA — How Is Alzheimer's Disease Treated?","https://www.nia.nih.gov/health/alzheimers-treatment/how-alzheimers-disease-treated"]
+      ]
     };
+
     const glossaryTerms = {
-      "multi-omics": { key: "multiomics", definition: "여러 molecular modality를 함께 측정하거나 통합해 biological state를 해석하는 접근." },
-      "modality": { key: "modality", definition: "RNA, ATAC, protein처럼 서로 다른 measurement layer." },
-      "paired": { key: "paired", definition: "같은 cell 또는 nucleus에서 여러 modality가 직접 연결된 상태." },
-      "unpaired": { key: "unpaired", definition: "서로 다른 cell 집합에서 나온 modality를 계산으로 맞추는 상태." },
-      "anchor": { key: "anchor", definition: "Dataset 또는 modality를 연결하는 공유 단위. feature, cell, bridge 등이 될 수 있음." },
-      "horizontal": { key: "horizontal", definition: "공통 feature를 anchor로 같은 modality dataset을 통합하는 방식." },
-      "vertical": { key: "vertical", definition: "같은 cell을 anchor로 서로 다른 modality를 통합하는 방식." },
-      "diagonal": { key: "diagonal", definition: "Cell도 feature도 직접 공유하지 않는 통합 시나리오." },
-      "mosaic": { key: "mosaic", definition: "일부 modality 조합만 존재하는 missing-block multi-omics 구조." },
-      "latent factor": { key: "latent-factor", definition: "여러 feature의 공변동을 압축한 숨은 축." }
+      "apoe":{key:"apoe",definition:"Apolipoprotein E. AD의 최강 단일 유전 위험인자(ε4 대립유전자)."},
+      "microglia":{key:"microglia",definition:"뇌의 상주 면역세포. 시냅스 가지치기·청소를 담당하며 AD·SCZ 위험이 수렴하는 세포."},
+      "gwas":{key:"gwas",definition:"Genome-wide association study. 흔한 변이와 질환의 연관을 전 게놈에서 찾는 분석."},
+      "scqtl":{key:"scqtl",definition:"단일세포 해상도에서 측정한 quantitative trait locus. bulk 분석이 놓치는 세포유형 특이 신호를 잡아냄."},
+      "mci":{key:"mci",definition:"Mild cognitive impairment. 정상 노화와 치매 사이의 경도 인지저하 단계."},
+      "atn":{key:"atn",definition:"Amyloid·Tau·Neurodegeneration. AD를 바이오마커로 정의하는 생물학적 진단 프레임."},
+      "mmse":{key:"mmse",definition:"Mini-Mental State Examination. 인지 선별 검사(30점 만점)."},
+      "moca":{key:"moca",definition:"Montreal Cognitive Assessment. 경도 인지저하에 더 민감한 인지 선별검사."}
     };
-    const glossaryPattern = /(^|[^A-Za-z0-9])(multi-omics|multimodal integration|latent factor|bridge integration|transfer learning|modality-specific|shared embedding|horizontal|vertical|diagonal|mosaic|paired|unpaired|anchor|modality|MOFA\+|MOFA|WNN|Seurat|totalVI|MUON|MuData|GLUE|ATAC|RNA)(?=$|[^A-Za-z0-9])/gi;
+    const glossaryPattern = /(^|[^A-Za-z0-9])(APOE|microglia|GWAS|scQTL|ATN|MMSE|MoCA|MCI)(?=$|[^A-Za-z0-9])/gi;
+
     function createAnnotator() {
       const seen = new Set();
       return function (text) {
@@ -414,13 +425,13 @@
     }
 
     function renderHome() {
-      document.title = "Multi-omics Integration";
+      document.title = "Alzheimer's (AD)";
       app.innerHTML = '<section class="hero"><div class="container">' +
-        '<p class="eyebrow">Omics integration map</p><h1>Multi-omics Integration</h1>' +
-        '<p class="hero-copy">Paired · Unpaired · Mosaic · Latent factors · Bridge integration</p>' +
-        '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="Multi-omics Integration 통합 검색" placeholder="Search: paired, MOFA, WNN, GLUE, mosaic"><span class="search-icon">⌕</span></form>' +
+        '<p class="eyebrow">Neuro disease knowledge base</p><h1>Alzheimer\'s (AD)</h1>' +
+        '<p class="hero-copy">원인(APOE·75 loci·microglia 수렴) · 치료(amyloid 항체 논쟁)</p>' +
+        '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="AD 통합 검색" placeholder="Search: APOE, microglia, amyloid, TREM2"><span class="search-icon">⌕</span></form>' +
         '<p class="search-hint">Korean / English / acronym</p></div></section>' +
-        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>질문을 따라 큰 구조부터 살펴보세요.</p></div>' +
+        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>원인에서 치료까지 질문을 따라가 보세요.</p></div>' +
         '<div class="category-grid">' + categoryCards() + '</div></div></section>';
       document.getElementById("heroSearchForm").addEventListener("submit", function (e) {
         e.preventDefault();
@@ -433,7 +444,7 @@
     function renderSection(key) {
       const s = sections[key];
       if (!s) return renderHome();
-      document.title = s.title + " · Multi-omics Integration";
+      document.title = s.title + " · AD";
       const annotateOnce = createAnnotator();
       const groups = s.groups.map(function (group, i) {
         const items = group.items.map(function (item) {
@@ -477,7 +488,7 @@
     }
 
     function renderSearch(query) {
-      document.title = '"' + query + '" 검색 · Multi-omics Integration';
+      document.title = '"' + query + '" 검색 · AD';
       const filterButtons = ['<button class="filter-btn ' + (activeFilter === "all" ? "active" : "") + '" data-filter="all">전체</button>'].concat(
         Object.keys(sections).map(function (key) { return '<button class="filter-btn ' + (activeFilter === key ? "active" : "") + '" data-filter="' + key + '">' + sections[key].title + '</button>'; })
       ).join("");
@@ -504,7 +515,7 @@
       if (!a) return renderHome();
       const s = sections[a.section];
       const annotateOnce = createAnnotator();
-      document.title = a.title + " · Multi-omics Integration";
+      document.title = a.title + " · AD";
       const body = a.body.map(function (part) {
         const points = Array.isArray(part[1]) ? part[1] : part[1].replace(/\.\s+/g, ".||| ").split("|||").filter(Boolean);
         return '<section><h2>' + part[0] + '</h2><ul class="fact-list">' + points.map(function (point) { return "<li>" + annotateOnce(point.trim()) + "</li>"; }).join("") + "</ul></section>";
