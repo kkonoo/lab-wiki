@@ -263,6 +263,10 @@
     .source-list { display: grid; gap: 9px; }
     .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
     .source-list a:hover { text-decoration: underline; }
+    .paper-box { margin-top: 16px; border-top-color: var(--rust); }
+    .paper-list { display: grid; gap: 9px; }
+    .paper-list a { color: var(--rust); font-size: .82rem; line-height: 1.45; text-decoration: none; }
+    .paper-list a:hover { text-decoration: underline; }
     .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
 
     footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
@@ -2016,6 +2020,124 @@
   ]
 };
 
+    const paperLinks = {
+  "variant": [
+    ["1000 Genomes Project Consortium, 2015, Nature", "https://doi.org/10.1038/nature15393"],
+    ["Karczewski et al., 2020, Nature", "https://doi.org/10.1038/s41586-020-2308-7"]
+  ],
+  "haplotype": [
+    ["International HapMap Consortium, 2005, Nature", "https://doi.org/10.1038/nature04226"]
+  ],
+  "maf": [
+    ["Karczewski et al., 2020, Nature", "https://doi.org/10.1038/s41586-020-2308-7"]
+  ],
+  "ancestry": [
+    ["Price et al., 2006, Nat Genet", "https://doi.org/10.1038/ng1847"],
+    ["Gurdasani et al., 2019, Nat Rev Genet", "https://doi.org/10.1038/s41576-019-0144-0"]
+  ],
+  "genotyping": [
+    ["DePristo et al., 2011, Nat Genet", "https://doi.org/10.1038/ng.806"],
+    ["Poplin et al., 2018, Nat Biotechnol", "https://doi.org/10.1038/nbt.4235"]
+  ],
+  "imputation": [
+    ["Das et al., 2016, Nat Genet", "https://doi.org/10.1038/ng.3656"],
+    ["McCarthy et al., 2016, Nat Genet", "https://doi.org/10.1038/ng.3643"]
+  ],
+  "ld": [
+    ["International HapMap Consortium, 2005, Nature", "https://doi.org/10.1038/nature04226"]
+  ],
+  "gwas": [
+    ["Tam et al., 2019, Nat Rev Genet", "https://doi.org/10.1038/s41576-019-0127-1"],
+    ["Bycroft et al., 2018, Nature", "https://doi.org/10.1038/s41586-018-0579-z"]
+  ],
+  "phenotype": [
+    ["Bush & Moore, 2016, Nat Rev Genet", "https://doi.org/10.1038/nrg.2015.36"]
+  ],
+  "qc": [
+    ["Price et al., 2006, Nat Genet", "https://doi.org/10.1038/ng1847"],
+    ["Purcell et al., 2007, Am J Hum Genet", "https://doi.org/10.1086/519795"]
+  ],
+  "covariates": [
+    ["Price et al., 2006, Nat Genet", "https://doi.org/10.1038/ng1847"]
+  ],
+  "association-model": [
+    ["Loh et al., 2015, Nat Genet", "https://doi.org/10.1038/ng.3190"],
+    ["Zhou et al., 2018, Nat Genet", "https://doi.org/10.1038/s41588-018-0184-y"],
+    ["Mbatchou et al., 2021, Nat Genet", "https://doi.org/10.1038/s41588-021-00870-7"]
+  ],
+  "significance": [
+    ["Sham & Purcell, 2014, Nat Rev Genet", "https://doi.org/10.1038/nrg3706"]
+  ],
+  "qq-plot": [
+    ["Bulik-Sullivan et al., 2015, Nat Genet", "https://doi.org/10.1038/ng.3211"]
+  ],
+  "sumstats": [
+    ["Pasaniuc & Price, 2016, Nat Rev Genet", "https://doi.org/10.1038/nrg.2016.142"]
+  ],
+  "locus-lead": [
+    ["Schaid et al., 2018, Nat Rev Genet", "https://doi.org/10.1038/s41576-018-0016-z"]
+  ],
+  "conditional": [
+    ["Schaid et al., 2018, Nat Rev Genet", "https://doi.org/10.1038/s41576-018-0016-z"]
+  ],
+  "fine-mapping": [
+    ["Benner et al., 2016, Bioinformatics", "https://doi.org/10.1093/bioinformatics/btw018"],
+    ["Wang et al., 2020, J R Stat Soc B", "https://doi.org/10.1111/rssb.12388"],
+    ["Schaid et al., 2018, Nat Rev Genet", "https://doi.org/10.1038/s41576-018-0016-z"]
+  ],
+  "functional-annotation": [
+    ["Finucane et al., 2015, Nat Genet", "https://doi.org/10.1038/ng.3404"],
+    ["Aherrahrou et al., 2024, FEBS Lett", "https://doi.org/10.1002/1873-3468.14884"]
+  ],
+  "variant-to-gene": [
+    ["Jagadeesh et al., 2022, Nat Genet", "https://doi.org/10.1038/s41588-022-01187-9"],
+    ["Aherrahrou et al., 2024, FEBS Lett", "https://doi.org/10.1002/1873-3468.14884"]
+  ],
+  "coloc": [
+    ["Giambartolomei et al., 2014, PLoS Genet", "https://doi.org/10.1371/journal.pgen.1004383"],
+    ["Wallace, 2021, PLoS Genet", "https://doi.org/10.1371/journal.pgen.1009440"],
+    ["Foley et al., 2021, Nat Commun", "https://doi.org/10.1038/s41467-020-20885-8"]
+  ],
+  "twas": [
+    ["Gamazon et al., 2015, Nat Genet", "https://doi.org/10.1038/ng.3367"],
+    ["Gusev et al., 2016, Nat Genet", "https://doi.org/10.1038/ng.3506"],
+    ["Fryett et al., 2018, Eur J Hum Genet", "https://doi.org/10.1038/s41431-018-0176-5"],
+    ["Chan et al., 2024, Brief Bioinform", "https://doi.org/10.1093/bib/bbae549"]
+  ],
+  "mr": [
+    ["Zhu et al., 2016, Nat Genet", "https://doi.org/10.1038/ng.3538"],
+    ["Hemani et al., 2018, eLife", "https://doi.org/10.7554/eLife.34408"],
+    ["Verbanck et al., 2018, Nat Genet", "https://doi.org/10.1038/s41588-018-0099-7"]
+  ],
+  "genetic-correlation": [
+    ["van Rheenen et al., 2019, Nat Rev Genet", "https://doi.org/10.1038/s41576-019-0137-z"],
+    ["Bulik-Sullivan et al., 2015, Nat Genet", "https://doi.org/10.1038/ng.3211"]
+  ],
+  "prs": [
+    ["Ge et al., 2019, Nat Commun", "https://doi.org/10.1038/s41467-019-09718-5"],
+    ["Privé et al., 2020, Bioinformatics", "https://doi.org/10.1093/bioinformatics/btaa1029"],
+    ["Kachuri et al., 2024, Nat Rev Genet", "https://doi.org/10.1038/s41576-023-00637-2"]
+  ],
+  "plink": [
+    ["Purcell et al., 2007, Am J Hum Genet", "https://doi.org/10.1086/519795"],
+    ["Chang et al., 2015, GigaScience", "https://doi.org/10.1186/s13742-015-0047-8"]
+  ],
+  "opengwas": [
+    ["Hemani et al., 2018, eLife", "https://doi.org/10.7554/eLife.34408"]
+  ],
+  "1000-genomes": [
+    ["1000 Genomes Project Consortium, 2015, Nature", "https://doi.org/10.1038/nature15393"],
+    ["1000 Genomes Project Consortium, 2012, Nature", "https://doi.org/10.1038/nature11632"]
+  ],
+  "gtex": [
+    ["GTEx Consortium, 2020, Science", "https://doi.org/10.1126/science.aaz1776"],
+    ["Kerimov et al., 2021, Nat Genet", "https://doi.org/10.1038/s41588-021-00924-w"]
+  ],
+  "annotation-resources": [
+    ["Finucane et al., 2015, Nat Genet", "https://doi.org/10.1038/ng.3404"]
+  ]
+};
+
     const glossaryTerms = {
       "genetic variant": { key: "variant", definition: "Reference sequence와 다른 DNA position 또는 sequence." },
       "variant": { key: "variant", definition: "Reference sequence와 다른 DNA position 또는 sequence." },
@@ -2173,11 +2295,15 @@
       const sources = (sourceLinks[id] || []).map(function (source) {
         return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
       }).join("");
+      const papers = (paperLinks[id] || []).map(function (paper) {
+        return '<a href="' + esc(paper[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(paper[0]) + ' ↗</a>';
+      }).join("");
       app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
         '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
         (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        (papers ? '<div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">' + papers + '</div></div>' : '') +
         '</aside></div></div>';
       window.scrollTo(0, 0);
     }

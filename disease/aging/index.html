@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="노화(aging)를 측정(epigenetic clock)·기전(senescence)·유전(lifespan)·가역성(reprogramming) 질문으로 탐색하는 HaLab Wiki">
+  <title>Aging · HaLab Wiki</title>
+  <style>
+    :root {
+      --ink: #18211b;
+      --muted: #667168;
+      --paper: #f7f7f2;
+      --surface: #ffffff;
+      --line: #d8ddd7;
+      --green: #6f3a55;
+      --green-soft: #f3e7ee;
+      --blue: #315d78;
+      --rust: #94553b;
+      --gold: #936f21;
+      --shadow: 0 14px 35px rgba(24, 33, 27, .07);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    button, input { font: inherit; }
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 247, 242, .94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .topbar-inner {
+      width: min(1180px, calc(100% - 40px));
+      min-height: 64px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .brand {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--ink);
+      cursor: pointer;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.18rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .brand span { color: var(--green); }
+    .brand-group { display: flex; align-items: center; white-space: nowrap; }
+    .brand-home { text-decoration: none; }
+    .brand-domain { margin-left: 6px; text-decoration: none; }
+    .top-search {
+      flex: 1;
+      max-width: 560px;
+      margin-left: auto;
+      position: relative;
+    }
+    .top-search input {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      padding: 0 44px 0 14px;
+      color: var(--ink);
+      outline: none;
+    }
+    .top-search input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+    .keycap {
+      position: absolute;
+      right: 10px;
+      top: 9px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--muted);
+      background: var(--paper);
+      padding: 1px 6px;
+      font-size: .75rem;
+    }
+
+    main { min-height: calc(100vh - 140px); }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+
+    .hero {
+      padding: 78px 0 52px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(rgba(111, 58, 85, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(111, 58, 85, .035) 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { font-family: Georgia, "Noto Serif KR", serif; line-height: 1.25; }
+    .hero h1 { margin: 0; font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: -.045em; }
+    .hero-copy { margin: 16px auto 26px; max-width: 650px; color: var(--muted); font-size: 1.04rem; }
+    .hero-search { width: min(720px, calc(100% - 32px)); margin: 0 auto; position: relative; }
+    .hero-search input {
+      width: 100%;
+      height: 62px;
+      border: 1px solid #c6b3bd;
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 0 58px 0 20px;
+      color: var(--ink);
+      font-size: 1.03rem;
+      outline: none;
+    }
+    .hero-search input:focus { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft), var(--shadow); }
+    .search-icon { position: absolute; right: 20px; top: 18px; color: var(--green); font-size: 1.3rem; }
+    .search-hint { margin: 11px 0 0; color: var(--muted); font-size: .82rem; }
+
+    .browse { padding: 58px 0 76px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+    .section-heading h2 { margin: 0; font-size: 1.65rem; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .category-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .category-card {
+      position: relative;
+      min-height: 235px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 26px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .category-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .category-card:focus-visible { outline: 3px solid var(--green-soft); outline-offset: 2px; }
+    .category-number { color: var(--accent); font-family: Georgia, serif; font-size: .95rem; font-weight: 700; }
+    .category-card h3 { margin: 12px 0 10px; font-size: 1.65rem; }
+    .category-card p { margin: 0 0 25px; max-width: 520px; color: var(--muted); }
+    .card-route { position: absolute; left: 26px; bottom: 23px; color: var(--accent); font-size: .86rem; font-weight: 750; }
+
+    .breadcrumb { padding: 30px 0 18px; color: var(--muted); font-size: .84rem; }
+    .breadcrumb button { border: 0; padding: 0; background: none; color: var(--green); cursor: pointer; }
+    .breadcrumb span { margin: 0 8px; color: #9ca49e; }
+    .page-header { padding: 18px 0 36px; border-bottom: 1px solid var(--line); }
+    .page-header h1 { margin: 7px 0 12px; font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.035em; }
+    .page-header .lead { margin: 0; max-width: 740px; color: var(--muted); font-size: 1.04rem; }
+    .question-list { padding: 42px 0 72px; display: grid; gap: 16px; }
+    .question-block { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: visible; }
+    .question-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); }
+    .question-head small { color: var(--green); font-weight: 800; }
+    .question-head h2 { margin: 5px 0 7px; font-size: 1.35rem; }
+    .question-head p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .concept-row { display: grid; grid-template-columns: 1.2fr 2fr auto; align-items: center; gap: 18px; padding: 17px 24px; border-top: 1px solid #edf0ec; }
+    .concept-row:first-child { border-top: 0; }
+    .concept-row strong { font-size: .95rem; }
+    .concept-row p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .concept-row button { border: 0; background: none; color: var(--green); font-weight: 750; cursor: pointer; padding: 5px; }
+    .concept-row .map-label { color: #8b948d; font-size: .78rem; white-space: nowrap; }
+
+    .search-page { padding-bottom: 72px; }
+    .search-summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 10px 0 22px; }
+    .search-summary p { margin: 0; color: var(--muted); }
+    .filters { display: flex; flex-wrap: wrap; gap: 7px; }
+    .filter-btn { border: 1px solid var(--line); border-radius: 999px; background: var(--surface); padding: 6px 12px; color: var(--muted); cursor: pointer; font-size: .8rem; }
+    .filter-btn.active { border-color: var(--green); background: var(--green-soft); color: var(--green); font-weight: 750; }
+    .results { display: grid; gap: 12px; }
+    .result-card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 20px 22px; cursor: pointer; text-align: left; }
+    .result-card:hover { border-color: #b39aa6; box-shadow: 0 7px 20px rgba(24, 33, 27, .05); }
+    .result-path { color: var(--green); font-size: .76rem; font-weight: 750; }
+    .result-card h2 { margin: 4px 0 6px; font-size: 1.25rem; }
+    .result-card p { margin: 0; color: var(--muted); font-size: .9rem; }
+    mark { background: #fff0ad; color: inherit; padding: 0 2px; }
+    .empty { border: 1px dashed #c0b0b8; border-radius: var(--radius); padding: 48px 24px; text-align: center; color: var(--muted); }
+
+    .article-layout { display: grid; grid-template-columns: minmax(0, 740px) 260px; gap: 64px; padding: 12px 0 80px; align-items: start; }
+    .article { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(25px, 5vw, 52px); }
+    .article h1 { margin: 6px 0 5px; font-size: clamp(2.1rem, 5vw, 3.5rem); letter-spacing: -.03em; }
+    .aliases { margin: 0 0 26px; color: var(--muted); font-size: .83rem; }
+    .definition { margin: 0 0 34px; padding: 18px 20px; border-left: 4px solid var(--green); background: var(--green-soft); font-size: 1.03rem; }
+    .article h2 { margin: 34px 0 12px; padding-bottom: 7px; border-bottom: 1px solid var(--line); font-size: 1.32rem; }
+    .article p { margin: 0 0 15px; }
+    .article ul { margin: 0 0 18px; padding-left: 22px; }
+    .article li { margin: 6px 0; }
+    .fact-list {
+      display: grid;
+      gap: 9px;
+      margin: 0 0 18px;
+      padding-left: 20px;
+      color: #37423a;
+    }
+    .fact-list li { padding-left: 4px; }
+    .fact-list li::marker { color: var(--green); }
+    .term-link { border: 0; border-bottom: 1px solid #b08aa0; background: none; padding: 0; color: var(--green); cursor: pointer; font-weight: 700; }
+    .glossary-term {
+      position: relative;
+      border-bottom: 1px dotted var(--green);
+      color: #5a2d44;
+      cursor: help;
+      outline: none;
+    }
+    .glossary-term::after {
+      content: attr(data-definition);
+      position: absolute;
+      z-index: 40;
+      left: 0;
+      bottom: calc(100% + 8px);
+      width: max-content;
+      max-width: min(320px, calc(100vw - 40px));
+      padding: 10px 12px;
+      border-radius: 7px;
+      background: #17221b;
+      color: #f8faf8;
+      box-shadow: 0 10px 28px rgba(10, 20, 14, .24);
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      font-size: .78rem;
+      font-weight: 500;
+      line-height: 1.55;
+      letter-spacing: 0;
+      white-space: normal;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(4px);
+      transition: opacity .14s ease, transform .14s ease, visibility .14s ease;
+      pointer-events: none;
+    }
+    .glossary-term:hover::after,
+    .glossary-term:focus::after {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .glossary-term:focus { border-bottom-style: solid; }
+    .tooltip-hint {
+      margin: -15px 0 25px;
+      color: var(--muted);
+      font-size: .76rem;
+    }
+    .aside { position: sticky; top: 88px; }
+    .aside-box { border-top: 3px solid var(--green); background: var(--surface); padding: 18px; box-shadow: 0 8px 24px rgba(24,33,27,.05); }
+    .aside-box h3 { margin: 0 0 12px; font-size: 1rem; }
+    .related-list { display: grid; gap: 9px; }
+    .related-list button { border: 0; background: none; padding: 0; text-align: left; color: var(--green); cursor: pointer; font-size: .87rem; }
+    .source-box { margin-top: 16px; border-top-color: var(--blue); }
+    .source-list { display: grid; gap: 9px; }
+    .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
+    .source-list a:hover { text-decoration: underline; }
+    .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
+
+    footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
+    footer .container { display: flex; justify-content: space-between; gap: 20px; }
+
+    @media (max-width: 820px) {
+      .topbar-inner { width: min(100% - 24px, 1180px); gap: 12px; }
+      .brand { font-size: 1rem; }
+      .keycap { display: none; }
+      .container { width: min(100% - 28px, 1120px); }
+      .hero { padding-top: 54px; }
+      .category-grid { grid-template-columns: 1fr; }
+      .category-card { min-height: 215px; }
+      .concept-row { grid-template-columns: 1fr auto; }
+      .concept-row p { grid-column: 1 / -1; grid-row: 2; }
+      .article-layout { grid-template-columns: 1fr; gap: 20px; }
+      .aside { position: static; }
+      .search-summary { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 520px) {
+      .topbar-inner { min-height: 58px; }
+      .brand-domain { display: none; }
+      .top-search input { height: 38px; }
+      .hero h1 { font-size: 2.55rem; }
+      .hero-search input { height: 56px; }
+      .section-heading { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .category-card { padding: 21px; }
+      .card-route { left: 21px; }
+      .question-head, .concept-row { padding-left: 18px; padding-right: 18px; }
+      .article { border-left: 0; border-right: 0; border-radius: 0; margin-left: -14px; margin-right: -14px; }
+      footer .container { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../index.html"><span>/ Human diseases</span></a><button class="brand brand-domain" type="button" data-route="home"><span>/ Aging</span></button></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer>
+    <div class="container"><span>Updated 2026-06-24</span></div>
+  </footer>
+
+  <script>
+    const sections = {
+      "mechanism":{"number":"01","title":"기전 — 왜 늙는가","english":"WHY WE AGE","accent":"#6f3a55","summary":"cellular senescence · SASP · 단일세포 노화 아틀라스 · lifespan·APOE·telomere 유전","groups":[
+        {"q":"어떤 세포 변화가 노화를 매개하나?","note":"senescence 축적·SASP가 조직 재생 저해, 만성 노화질환 유발","items":[
+          ["aging-senescence","Cellular senescence & SASP","영구 증식정지 세포가 SASP와 함께 쌓여 조직 재생을 저해"],
+          ["aging-atlas","단일세포 노화 아틀라스","Tabula Muris Senis가 노화를 세포타입 해상도로 분해"]
+        ]},
+        {"q":"노화와 수명은 유전적으로 어디서 오나?","note":"lifespan·telomere 같은 proxy로 측정 — APOE가 최강 단일 인자","items":[
+          ["aging-genetics","노화 유전학 (Aging genetics)","lifespan h²·APOE·telomere — 여러 노화질병에 공통작용하는 좌위 탐색"]
+        ]}
+      ]},
+      "measure":{"number":"02","title":"측정·진단 — 노화 시계","english":"HOW WE MEASURE BIOLOGICAL AGE","accent":"#315d78","summary":"DNAm age · epigenetic clock · age acceleration · 세대별 clock","groups":[
+        {"q":"노화를 분자 수준에서 어떻게 측정·진단하나?","note":"DNA methylation 기반 epigenetic clock이 생물학적 나이 추정","items":[
+          ["aging-clock","Epigenetic clock (DNAm age)","특정 CpG의 methylation으로 나이를 예측 — age acceleration이 노화 속도 지표"]
+        ]}
+      ]},
+      "intervention":{"number":"03","title":"개입·가역성 — 늦추거나 되돌리기","english":"CAN WE SLOW OR REVERSE IT","accent":"#1f5d43","summary":"partial reprogramming (OSKM) · senolytic · senomorphic · geroscience","groups":[
+        {"q":"노화는 늦추거나 되돌릴 수 있나?","note":"부분 reprogramming·노화세포 제거가 노화 일부를 되돌림","items":[
+          ["aging-reversibility","노화의 가역성","Yamanaka 인자 부분 발현·senolytic이 노화 표지를 지움"]
+        ]}
+      ]}
+    };
+    const articleRows = [
+      ["aging-clock","Epigenetic clock (DNAm age)",["epigenetic clock","DNAm age","Horvath clock","age acceleration"],"measure",
+       "특정 CpG 집합의 DNA methylation으로 나이를 예측하는 모델로, 예측 나이와 실제 나이의 차이(age acceleration)가 생물학적 노화 속도의 biomarker가 된다",
+       [["시계의 원리",["chronological age(달력 나이)는 노화의 불완전한 지표 — DNAm age가 조직 전반서 나이를 정확히 추정(Horvath & Raj 2018)","Horvath multi-tissue clock(2013): 353개 CpG, 거의 모든 조직·세포 적용 — ESC/iPSC서 ~0, cell passage 상관, chimpanzee 적용","age acceleration = 예측 나이 − 실제 나이; 양수면 노화 가속 — 질병·사망 위험과 연관, 고유전율","대부분 Infinium methylation array로 학습·적용 — 저비용·표준화가 대규모 clock 연구 견인"]],
+        ["세대별 clock",["1세대: chronological age 학습(Horvath·Hannum) — 달력 나이 추정","2세대: phenotype/mortality 학습(PhenoAge·GrimAge) — 건강·사망 예측력↑","변화율형: DunedinPACE — 노화 진행 '속도' 측정","목적(나이 추정 vs 건강·사망 예측)에 맞는 세대 선택"]],
+        ["해석 — marker인가 driver인가",["강력한 노화 biomarker — 단 그 자체로 인과 증명은 아님","age acceleration이 사망·질병 예측·개입 반응 → 인과 과정 반영 시사(clock theory of ageing)","clock CpG 변화의 분자 기전 미해명; 1·2세대 clock은 측정 대상이 다름","해석 시 cell-type 조성·플랫폼·집단(ancestry) 보정 필요"]]],
+       ["aging-senescence","aging-genetics","aging-reversibility"]],
+
+      ["aging-senescence","Cellular senescence & SASP",["cellular senescence","SASP","p16","CDKN2A","senescent cell"],"mechanism",
+       "스트레스에 반응해 세포가 영구적으로 증식을 멈추는 상태로, 죽지 않고 SASP를 분비하며 조직에 쌓여 재생을 저해하고 만성 노화질환을 일으킨다",
+       [["무엇인가",["senescence = 영구적·비가역적 증식정지 — 죽지 않고 대사 활성 유지","Hayflick & Moorhead(1961): 정상 fibroblast 유한 분열능(replicative senescence)으로 최초 기술","유발: telomere 기능부전(replicative)·oncogene 활성(OIS)·지속 DNA damage·대사 스트레스","표지: p16INK4A(CDKN2A)·p21·SA-β-gal — 단일 보편 마커 부재로 복수 마커 병행"]],
+        ["SASP — 세포 밖으로 퍼지는 영향",["SASP(senescence-associated secretory phenotype): 노화세포가 분비하는 cytokine·chemokine·protease","세포-외재적 염증·조직재생 저해·주변 세포 노화 전파","→ cell-intrinsic 증식정지의 영향을 조직 수준으로 증폭"]],
+        ["양면성 — 종양 억제 vs 노화 촉진",["보호: 손상·전암세포 증식 차단으로 종양 억제","해로움: 노화세포 축적·SASP가 조직 기능저하·만성 노화질환·개체 노화 촉진","노화 조직서 p16⁺ 증가 — Tabula Muris Senis: Cdkn2a⁺ 비율 노령서 약 2배↑","노화 hallmark이자 cancer hallmark(Hanahan 2022)"]]],
+       ["aging-atlas","aging-reversibility","aging-clock"]],
+
+      ["aging-atlas","단일세포 노화 아틀라스",["Tabula Muris Senis","aging cell atlas","single-cell aging","SenNet"],"mechanism",
+       "단일세포 기술이 노화를 세포타입 해상도로 분해해, 노화 변화를 세포 내 발현 변화와 세포 조성 변화 두 축으로 나눠 보여준다",
+       [["노화를 세포 단위로 보다",["Tabula Muris Senis(2020): mouse 23개 조직 생애주기 단일세포 아틀라스","노화 변화를 (a) 세포 내 발현 변화 + (b) 세포 조성(비율) 변화로 분해","예: Cdkn2a/p16⁺ 비율 노령 조직서 약 2배↑","bulk 평균에 묻히는 세포타입별 노화 신호 분리"]],
+        ["사람으로 확장",["Tabula Muris Senis는 mouse 기반 — 인간 노화 atlas·종간 보존성 규명 진행 중","NIH SenNet(Cellular Senescence Network): 사람·모델동물 조직 노화세포를 단일세포 해상도로 지도화하는 공개 atlas"]]],
+       ["aging-senescence","aging-clock","aging-reversibility"]],
+
+      ["aging-genetics","노화 유전학 (Aging genetics)",["aging genetics","lifespan GWAS","longevity","telomere","APOE"],"mechanism",
+       "노화의 유전적 기여를 lifespan·parental age at death·telomere length 같은 proxy로 측정하고, 여러 노화질병에 공통작용하는 좌위를 찾는 분야다",
+       [["무엇을·왜 측정하나",["노화 자체는 측정 난해 → lifespan·parental age at death·healthspan·telomere length proxy(Melzer 2020)","노화 = 다수 질병 공통 위험요인 → 노화 음의 효과 좌위는 다질병 동시 예방 표적"]],
+        ["주요 발견",["Heritability: longevity h² twin 20–30% vs family-tree ~16%(assortative mating 보정 시 더↓) — 친족구조 민감","최대효과 변이: APOE ε4(parental lifespan −1.06년/allele)·CHRNA3(흡연)·LPA·CDKN2B-AS1","Multi-trait loci: 다수 노화질병 공통작용 — APOE·LPA·LDLR·CDKN2A/B","genetic correlation: CAD·osteoarthritis·T2DM·stroke가 longevity와 40–60% 음의 rg","장수 좌위: FOXO3A(극단 장수)·SH2B3"]],
+        ["Telomere와 geroscience",["telomere length 고유전율(34–82%); 효과 방향 질병별 반전 — 긴 telomere가 CAD↓·암↑(antagonistic pleiotropy)","geroscience: dietary restriction·mTOR/rapamycin·senolytics가 동물 수명↑, 인간 효능 미검증"]]],
+       ["aging-clock","aging-senescence","aging-reversibility"]],
+
+      ["aging-reversibility","노화의 가역성 — reprogramming과 senolytic",["partial reprogramming","OSKM","Yamanaka factors","senolytic","senomorphic"],"intervention",
+       "노화는 부분적으로 되돌릴 수 있다 — Yamanaka 인자의 일시적·부분 발현이 노화 표지를 지우고, 노화세포를 제거·억제하는 약물이 노화 표현형을 개선한다",
+       [["부분 reprogramming (OSKM)",["Yamanaka 인자(OSKM) 일시적·부분 발현 → 노화 표지(H3K9me3·DNAme·핵막) 제거","progeria mouse 수명↑·노령 조직 재생 개선(Ocampo 2016)","후성유전 정보 복원으로 노화 일부 가역 — 세포 정체성 유지, '나이'만 되감기","안전성: 지속·과도 발현은 teratoma·정체성 상실 위험 — 치료 창(dosage·일시성)이 관건"]],
+        ["senolytic · senomorphic",["senolytic: 노화세포 선택 제거 → 노화 표현형 개선","senomorphic: SASP 억제로 해로운 신호 저감","관건: 표적 특이성·장기 안전성·노화세포 동정 보편 마커"]],
+        ["의미",["clock이 가리키는 후성유전·노화세포 변화 일부는 marker가 아니라 인과 조작 가능","→ 노화 일부는 고정 운명이 아닌 개입 가능 과정"]]],
+       ["aging-clock","aging-senescence","aging-genetics"]]
+    ];
+
+    const articles = Object.fromEntries(articleRows.map(function (row) {
+      return [row[0], {title:row[1],aliases:row[2],section:row[3],summary:row[4],body:row[5],related:row[6]}];
+    }));
+
+    const sourceLinks = {};
+    const officialSupplementLinks = {
+      "aging-clock":[
+        ["NIA — Division of Aging Biology","https://www.nia.nih.gov/research/dab"]
+      ],
+      "aging-senescence":[
+        ["NIH Common Fund — Cellular Senescence Network (SenNet)","https://commonfund.nih.gov/senescence"]
+      ],
+      "aging-atlas":[
+        ["SenNet — Cellular Senescence Network consortium","https://sennetconsortium.org/"]
+      ],
+      "aging-genetics":[
+        ["GWAS Catalog (EMBL-EBI)","https://www.ebi.ac.uk/gwas/"]
+      ],
+      "aging-reversibility":[
+        ["NIA — Division of Aging Biology","https://www.nia.nih.gov/research/dab"]
+      ]
+    };
+
+    const glossaryTerms = {
+      "senescence":{key:"senescence",definition:"세포가 스트레스에 반응해 들어가는 영구적 증식정지 상태. 죽지 않고 SASP를 분비하며 조직에 축적된다."},
+      "sasp":{key:"sasp",definition:"Senescence-Associated Secretory Phenotype. 노화세포가 분비하는 cytokine·protease 등 — 염증을 일으키고 노화를 주변에 전파한다."},
+      "telomere":{key:"telomere",definition:"염색체 말단의 반복 서열. 분열마다 짧아지며 기능부전이 replicative senescence를 유발한다."},
+      "apoe":{key:"apoe",definition:"Apolipoprotein E. 노화·수명에 가장 큰 효과를 가진 단일 유전 변이(ε4 대립유전자)."},
+      "gwas":{key:"gwas",definition:"Genome-wide association study. 흔한 변이와 형질의 연관을 전 게놈에서 찾는 분석."},
+      "heritability":{key:"heritability",definition:"형질 변이 중 유전으로 설명되는 비율(h²). 추정은 친족구조·집단에 민감하다."},
+      "senolytic":{key:"senolytic",definition:"노화세포를 선택적으로 제거하는 약물. SASP를 억제하는 전략은 senomorphic."},
+      "reprogramming":{key:"reprogramming",definition:"분화된 세포를 더 어린/만능 상태로 되돌리는 것. Yamanaka 인자(OSKM)의 부분 발현이 노화 표지를 지운다."},
+      "oskm":{key:"oskm",definition:"Oct4·Sox2·Klf4·c-Myc — 세포를 만능상태로 되돌리는 Yamanaka 4인자."},
+      "cpg":{key:"cpg",definition:"DNA에서 C 다음 G가 오는 자리. 이곳의 methylation 패턴이 epigenetic clock의 입력이 된다."},
+      "dnam":{key:"dnam",definition:"DNA methylation. CpG에 붙는 메틸기 — 나이에 따라 변해 DNAm age 예측에 쓰인다."},
+      "geroscience":{key:"geroscience",definition:"노화 자체를 표적으로 여러 질병을 한꺼번에 늦추려는 연구 분야."}
+    };
+    const glossaryPattern = /(^|[^A-Za-z0-9])(senescence|SASP|telomere|APOE|GWAS|heritability|senolytic|reprogramming|OSKM|CpG|DNAm|geroscience)(?=$|[^A-Za-z0-9])/gi;
+
+    function createAnnotator() {
+      const seen = new Set();
+      return function (text) {
+        return esc(text).replace(glossaryPattern, function (match, prefix, term) {
+          const item = glossaryTerms[term.toLowerCase()];
+          if (!item || seen.has(item.key)) return match;
+          seen.add(item.key);
+          return prefix + '<span class="glossary-term" tabindex="0" data-definition="' + esc(item.definition) + '">' + esc(term) + '</span>';
+        });
+      };
+    }
+
+    const app = document.getElementById("app");
+    const topSearch = document.getElementById("topSearch");
+    let activeFilter = "all";
+
+    function esc(value) {
+      return String(value).replace(/[&<>'"]/g, function (c) {
+        return {"&":"&amp;", "<":"&lt;", ">":"&gt;", "'":"&#39;", '"':"&quot;"}[c];
+      });
+    }
+
+    function route(hash) {
+      window.location.hash = hash;
+    }
+
+    function categoryCards() {
+      return Object.keys(sections).map(function (key) {
+        const s = sections[key];
+        return '<button class="category-card" style="--accent:' + s.accent + '" data-section="' + key + '">' +
+          '<span class="category-number">' + s.number + ' · ' + s.english + '</span>' +
+          '<h3>' + s.title + '</h3><p>' + s.summary + '</p>' +
+          '<span class="card-route">질문으로 살펴보기 →</span></button>';
+      }).join("");
+    }
+
+    function renderHome() {
+      document.title = "Aging · HaLab Wiki";
+      app.innerHTML = '<section class="hero"><div class="container">' +
+        '<p class="eyebrow">Aging biology knowledge base</p><h1>Aging</h1>' +
+        '<p class="hero-copy">기전(senescence·세포 아틀라스·유전) · 측정·진단(epigenetic clock) · 개입·가역성(reprogramming·senolytic)</p>' +
+        '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="Aging 통합 검색" placeholder="Search: senescence, clock, APOE, telomere, reprogramming"><span class="search-icon">⌕</span></form>' +
+        '<p class="search-hint">Korean / English / acronym</p></div></section>' +
+        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>기전(왜 늙나) → 측정·진단(어떻게 정량) → 개입·가역성(늦추거나 되돌리기) 흐름을 따라가 보세요.</p></div>' +
+        '<div class="category-grid">' + categoryCards() + '</div></div></section>';
+      document.getElementById("heroSearchForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const q = document.getElementById("heroSearch").value.trim();
+        if (q) route("search/" + encodeURIComponent(q));
+      });
+      window.scrollTo(0, 0);
+    }
+
+    function renderSection(key) {
+      const s = sections[key];
+      if (!s) return renderHome();
+      document.title = s.title + " · Aging";
+      const annotateOnce = createAnnotator();
+      const groups = s.groups.map(function (group, i) {
+        const items = group.items.map(function (item) {
+          const hasPage = Boolean(item[0] && articles[item[0]]);
+          return '<div class="concept-row"><strong>' + annotateOnce(item[1]) + '</strong><p>' + annotateOnce(item[2]) + '</p>' +
+            (hasPage ? '<button data-article="' + item[0] + '">읽기 →</button>' : '<span class="map-label">개념 지도</span>') + '</div>';
+        }).join("");
+        return '<section class="question-block"><div class="question-head"><small>QUESTION ' + String(i + 1).padStart(2, "0") + '</small>' +
+          '<h2>' + annotateOnce(group.q) + '</h2><p>' + annotateOnce(group.note) + '</p></div><div>' + items + '</div></section>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb" aria-label="현재 위치"><button data-route="home">홈</button><span>›</span>' + s.title + '</nav>' +
+        '<header class="page-header" style="border-top:4px solid ' + s.accent + '"><p class="eyebrow">' + s.number + ' · ' + s.english + '</p><h1>' + s.title + '</h1><p class="lead">' + s.summary + '</p></header>' +
+        '<div class="question-list">' + groups + '</div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function articleText(a) {
+      const bodyText = a.body.map(function (b) { return [b[0]].concat(Array.isArray(b[1]) ? b[1] : [b[1]]).join(" "); });
+      return [a.title, a.aliases.join(" "), a.summary].concat(bodyText).join(" ").toLowerCase();
+    }
+
+    function highlight(text, query) {
+      if (!query) return esc(text);
+      const safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return esc(text).replace(new RegExp("(" + safe + ")", "ig"), "<mark>$1</mark>");
+    }
+
+    function searchArticles(query, filter) {
+      const q = query.trim().toLowerCase();
+      if (!q) return [];
+      return Object.keys(articles).map(function (id) {
+        const a = articles[id];
+        if (filter !== "all" && a.section !== filter) return null;
+        const hay = articleText(a);
+        const pos = hay.indexOf(q);
+        if (pos < 0) return null;
+        const titleHit = a.title.toLowerCase().includes(q) ? 3 : 0;
+        const aliasHit = a.aliases.join(" ").toLowerCase().includes(q) ? 2 : 0;
+        return { id: id, article: a, score: titleHit + aliasHit + 1 };
+      }).filter(Boolean).sort(function (a, b) { return b.score - a.score || a.article.title.localeCompare(b.article.title); });
+    }
+
+    function renderSearch(query) {
+      document.title = '"' + query + '" 검색 · Aging';
+      const filterButtons = ['<button class="filter-btn ' + (activeFilter === "all" ? "active" : "") + '" data-filter="all">전체</button>'].concat(
+        Object.keys(sections).map(function (key) { return '<button class="filter-btn ' + (activeFilter === key ? "active" : "") + '" data-filter="' + key + '">' + sections[key].title + '</button>'; })
+      ).join("");
+      const found = searchArticles(query, activeFilter);
+      const cards = found.length ? found.map(function (r) {
+        const s = sections[r.article.section];
+        return '<button class="result-card" data-article="' + r.id + '"><span class="result-path">' + s.title + ' › 문서</span>' +
+          '<h2>' + highlight(r.article.title, query) + '</h2><p>' + highlight(r.article.summary, query) + '</p></button>';
+      }).join("") : '<div class="empty"><strong>No results</strong><br>Try: English / Korean / acronym</div>';
+      app.innerHTML = '<div class="container search-page"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span>검색</nav>' +
+        '<header class="page-header"><p class="eyebrow">Search</p><h1>“' + esc(query) + '”</h1></header>' +
+        '<div class="search-summary"><p>Public pages · <strong>' + found.length + '</strong></p><div class="filters">' + filterButtons + '</div></div>' +
+        '<div class="results">' + cards + '</div></div>';
+      topSearch.value = query;
+      window.scrollTo(0, 0);
+    }
+
+    function getSources(id) {
+      return (sourceLinks[id] || []).concat(officialSupplementLinks[id] || []);
+    }
+
+    function renderArticle(id) {
+      const a = articles[id];
+      if (!a) return renderHome();
+      const s = sections[a.section];
+      const annotateOnce = createAnnotator();
+      document.title = a.title + " · Aging";
+      const body = a.body.map(function (part) {
+        const points = Array.isArray(part[1]) ? part[1] : part[1].replace(/\.\s+/g, ".||| ").split("|||").filter(Boolean);
+        return '<section><h2>' + part[0] + '</h2><ul class="fact-list">' + points.map(function (point) { return "<li>" + annotateOnce(point.trim()) + "</li>"; }).join("") + "</ul></section>";
+      }).join("");
+      const related = a.related.filter(function (rid) { return articles[rid]; }).map(function (rid) {
+        return '<button data-article="' + rid + '">' + articles[rid].title + ' →</button>';
+      }).join("");
+      const sources = getSources(id).map(function (source) {
+        return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
+        '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
+        '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
+        '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
+        (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        '</aside></div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function handleRoute() {
+      const raw = window.location.hash.replace(/^#/, "");
+      const parts = raw.split("/");
+      if (!raw || raw === "home") return renderHome();
+      if (parts[0] === "section") return renderSection(parts[1]);
+      if (parts[0] === "article") return renderArticle(parts[1]);
+      if (parts[0] === "search") return renderSearch(decodeURIComponent(parts.slice(1).join("/")));
+      renderHome();
+    }
+
+    document.addEventListener("click", function (e) {
+      const home = e.target.closest("[data-route='home']");
+      const section = e.target.closest("[data-section]");
+      const article = e.target.closest("[data-article]");
+      const filter = e.target.closest("[data-filter]");
+      if (home) route("home");
+      else if (article) route("article/" + article.dataset.article);
+      else if (section) route("section/" + section.dataset.section);
+      else if (filter) { activeFilter = filter.dataset.filter; const q = decodeURIComponent(window.location.hash.split("/").slice(1).join("/")); renderSearch(q); }
+    });
+
+    document.getElementById("topSearchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const q = topSearch.value.trim();
+      if (q) { activeFilter = "all"; route("search/" + encodeURIComponent(q)); }
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+        e.preventDefault(); topSearch.focus();
+      }
+    });
+    window.addEventListener("hashchange", handleRoute);
+    handleRoute();
+  </script>
+</body>
+</html>
