@@ -263,6 +263,10 @@
     .source-list { display: grid; gap: 9px; }
     .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
     .source-list a:hover { text-decoration: underline; }
+    .paper-box { margin-top: 16px; border-top-color: var(--rust); }
+    .paper-list { display: grid; gap: 9px; }
+    .paper-list a { color: var(--rust); font-size: .82rem; line-height: 1.45; text-decoration: none; }
+    .paper-list a:hover { text-decoration: underline; }
     .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
 
     footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
@@ -1671,8 +1675,84 @@
       window.scrollTo(0, 0);
     }
 
+    const paperLinks = {
+  "proteome": [
+    ["Kim et al., 2014, Nature", "https://doi.org/10.1038/nature13302"]
+  ],
+  "lc-ms": [
+    ["Fenn et al., 1989, Science", "https://doi.org/10.1126/science.2675315"]
+  ],
+  "ms-based": [
+    ["Fenn et al., 1989, Science", "https://doi.org/10.1126/science.2675315"],
+    ["Cox & Mann, 2008, Nat Biotechnol", "https://doi.org/10.1038/nbt.1511"]
+  ],
+  "dda-dia": [
+    ["Cox & Mann, 2008, Nat Biotechnol", "https://doi.org/10.1038/nbt.1511"],
+    ["Bruderer et al., 2015, Mol Cell Proteomics", "https://doi.org/10.1074/mcp.M114.044305"],
+    ["Demichev et al., 2020, Nat Methods", "https://doi.org/10.1038/s41592-019-0638-x"]
+  ],
+  "database-search": [
+    ["Cox & Mann, 2008, Nat Biotechnol", "https://doi.org/10.1038/nbt.1511"]
+  ],
+  "quantification": [
+    ["Ong et al., 2002, Mol Cell Proteomics", "https://doi.org/10.1074/mcp.M200025-MCP200"],
+    ["Gerber et al., 2003, PNAS", "https://doi.org/10.1073/pnas.0832254100"],
+    ["Chen et al., 2021, Genomics Proteomics Bioinformatics", "https://doi.org/10.1016/j.gpb.2021.08.012"]
+  ],
+  "differential-proteomics": [
+    ["Choi et al., 2014, Bioinformatics", "https://doi.org/10.1093/bioinformatics/btu305"],
+    ["Fröhlich et al., 2022, Nat Commun", "https://doi.org/10.1038/s41467-022-30094-0"]
+  ],
+  "proteomics-enrichment": [
+    ["Tyanova et al., 2016, Nat Methods", "https://doi.org/10.1038/nmeth.3901"]
+  ],
+  "proteomics-tools": [
+    ["Cox & Mann, 2008, Nat Biotechnol", "https://doi.org/10.1038/nbt.1511"],
+    ["Demichev et al., 2020, Nat Methods", "https://doi.org/10.1038/s41592-019-0638-x"],
+    ["MacLean et al., 2010, Bioinformatics", "https://doi.org/10.1093/bioinformatics/btq054"]
+  ],
+  "proteomics-databases": [
+    ["Kim et al., 2014, Nature", "https://doi.org/10.1038/nature13302"]
+  ],
+  "platform-overview": [
+    ["Katz et al., 2022, Sci Adv", "https://doi.org/10.1126/sciadv.abm5164"]
+  ],
+  "affinity-based": [
+    ["Gold et al., 2010, Nat Precedings", "https://hdl.handle.net/10101/npre.2010.4538.1"],
+    ["Assarsson et al., 2014, PLOS ONE", "https://doi.org/10.1371/journal.pone.0095192"]
+  ],
+  "somascan": [
+    ["Gold et al., 2010, Nat Precedings", "https://hdl.handle.net/10101/npre.2010.4538.1"]
+  ],
+  "olink": [
+    ["Assarsson et al., 2014, PLOS ONE", "https://doi.org/10.1371/journal.pone.0095192"]
+  ],
+  "affinity-readout": [
+    ["Gold et al., 2010, Nat Precedings", "https://hdl.handle.net/10101/npre.2010.4538.1"],
+    ["Assarsson et al., 2014, PLOS ONE", "https://doi.org/10.1371/journal.pone.0095192"]
+  ],
+  "specificity-epitope": [
+    ["Katz et al., 2022, Sci Adv", "https://doi.org/10.1126/sciadv.abm5164"]
+  ],
+  "affinity-qc": [
+    ["Katz et al., 2022, Sci Adv", "https://doi.org/10.1126/sciadv.abm5164"]
+  ],
+  "plasma-proteomics": [
+    ["Sun et al., 2018, Nature", "https://doi.org/10.1038/s41586-018-0175-2"],
+    ["Sun et al., 2023, Nature", "https://doi.org/10.1038/s41586-023-06592-6"]
+  ],
+  "pqtl-proteomics": [
+    ["Sun et al., 2018, Nature", "https://doi.org/10.1038/s41586-018-0175-2"],
+    ["Sun et al., 2023, Nature", "https://doi.org/10.1038/s41586-023-06592-6"],
+    ["Suhre et al., 2021, Nat Rev Genet", "https://doi.org/10.1038/s41576-020-0268-2"]
+  ]
+};
+
     function getSources(id) {
       return (sourceLinks[id] || []).concat(officialSupplementLinks[id] || []);
+    }
+    function getPapers(id) {
+      return paperLinks[id] || [];
     }
 
     function renderArticle(id) {
@@ -1691,11 +1771,15 @@
       const sources = getSources(id).map(function (source) {
         return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
       }).join("");
+      const papers = getPapers(id).map(function (paper) {
+        return '<a href="' + esc(paper[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(paper[0]) + ' ↗</a>';
+      }).join("");
       app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
         '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
         (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        (papers ? '<div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">' + papers + '</div></div>' : '') +
         '</aside></div></div>';
       window.scrollTo(0, 0);
     }

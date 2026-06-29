@@ -263,6 +263,10 @@
     .source-list { display: grid; gap: 9px; }
     .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
     .source-list a:hover { text-decoration: underline; }
+    .paper-box { margin-top: 16px; border-top-color: var(--rust); }
+    .paper-list { display: grid; gap: 9px; }
+    .paper-list a { color: var(--rust); font-size: .82rem; line-height: 1.45; text-decoration: none; }
+    .paper-list a:hover { text-decoration: underline; }
     .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
 
     footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
@@ -1428,8 +1432,75 @@
       window.scrollTo(0, 0);
     }
 
+    const paperLinks = {
+  "microbiome-metagenomics": [
+    ["Quince et al., 2017, Nat Biotechnol", "https://doi.org/10.1038/nbt.3935"],
+    ["Human Microbiome Project Consortium, 2012, Nature", "https://doi.org/10.1038/nature11234"]
+  ],
+  "amplicon-shotgun": [
+    ["Quince et al., 2017, Nat Biotechnol", "https://doi.org/10.1038/nbt.3935"]
+  ],
+  "amplicon-16s": [
+    ["Callahan et al., 2016, Nat Methods", "https://doi.org/10.1038/nmeth.3869"],
+    ["Bolyen et al., 2019, Nat Biotechnol", "https://doi.org/10.1038/s41587-019-0209-9"]
+  ],
+  "shotgun-metagenomics": [
+    ["Quince et al., 2017, Nat Biotechnol", "https://doi.org/10.1038/nbt.3935"],
+    ["Wood et al., 2019, Genome Biol", "https://doi.org/10.1186/s13059-019-1891-0"]
+  ],
+  "asv-otu": [
+    ["Callahan et al., 2016, Nat Methods", "https://doi.org/10.1038/nmeth.3869"]
+  ],
+  "taxonomic-profiling": [
+    ["Wood et al., 2019, Genome Biol", "https://doi.org/10.1186/s13059-019-1891-0"],
+    ["Blanco-Míguez et al., 2023, Nat Biotechnol", "https://doi.org/10.1038/s41587-023-01688-w"]
+  ],
+  "kraken-bracken": [
+    ["Wood et al., 2019, Genome Biol", "https://doi.org/10.1186/s13059-019-1891-0"],
+    ["Lu et al., 2017, PeerJ Comput Sci", "https://doi.org/10.7717/peerj-cs.104"]
+  ],
+  "metaphlan": [
+    ["Blanco-Míguez et al., 2023, Nat Biotechnol", "https://doi.org/10.1038/s41587-023-01688-w"],
+    ["Beghini et al., 2021, eLife", "https://doi.org/10.7554/eLife.65088"]
+  ],
+  "functional-humann": [
+    ["Beghini et al., 2021, eLife", "https://doi.org/10.7554/eLife.65088"]
+  ],
+  "strain-profiling": [
+    ["Blanco-Míguez et al., 2023, Nat Biotechnol", "https://doi.org/10.1038/s41587-023-01688-w"],
+    ["Beghini et al., 2021, eLife", "https://doi.org/10.7554/eLife.65088"]
+  ],
+  "compositionality": [
+    ["Fernandes et al., 2014, Microbiome", "https://doi.org/10.1186/2049-2618-2-15"],
+    ["Lin & Peddada, 2020, Nat Commun", "https://doi.org/10.1038/s41467-020-17041-7"]
+  ],
+  "differential-abundance": [
+    ["Nearing et al., 2022, Nat Commun", "https://doi.org/10.1038/s41467-022-28034-z"],
+    ["Lin & Peddada, 2020, Nat Commun", "https://doi.org/10.1038/s41467-020-17041-7"],
+    ["Fernandes et al., 2014, Microbiome", "https://doi.org/10.1186/2049-2618-2-15"],
+    ["Segata et al., 2011, Genome Biol", "https://doi.org/10.1186/gb-2011-12-6-r60"]
+  ],
+  "qiime2": [
+    ["Bolyen et al., 2019, Nat Biotechnol", "https://doi.org/10.1038/s41587-019-0209-9"]
+  ],
+  "dada2": [
+    ["Callahan et al., 2016, Nat Methods", "https://doi.org/10.1038/nmeth.3869"]
+  ],
+  "biobakery": [
+    ["Beghini et al., 2021, eLife", "https://doi.org/10.7554/eLife.65088"],
+    ["Blanco-Míguez et al., 2023, Nat Biotechnol", "https://doi.org/10.1038/s41587-023-01688-w"]
+  ],
+  "reference-atlases": [
+    ["Qin et al., 2010, Nature", "https://doi.org/10.1038/nature08821"],
+    ["Human Microbiome Project Consortium, 2012, Nature", "https://doi.org/10.1038/nature11234"]
+  ]
+};
+
     function getSources(id) {
       return (sourceLinks[id] || []).concat(officialSupplementLinks[id] || []);
+    }
+    function getPapers(id) {
+      return paperLinks[id] || [];
     }
 
     function renderArticle(id) {
@@ -1448,11 +1519,15 @@
       const sources = getSources(id).map(function (source) {
         return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
       }).join("");
+      const papers = getPapers(id).map(function (paper) {
+        return '<a href="' + esc(paper[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(paper[0]) + ' ↗</a>';
+      }).join("");
       app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
         '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
         (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        (papers ? '<div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">' + papers + '</div></div>' : '') +
         '</aside></div></div>';
       window.scrollTo(0, 0);
     }
