@@ -263,6 +263,10 @@
     .source-list { display: grid; gap: 9px; }
     .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
     .source-list a:hover { text-decoration: underline; }
+    .paper-box { margin-top: 16px; border-top-color: var(--rust); }
+    .paper-list { display: grid; gap: 9px; }
+    .paper-list a { color: var(--rust); font-size: .82rem; line-height: 1.45; text-decoration: none; }
+    .paper-list a:hover { text-decoration: underline; }
     .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
 
     footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
@@ -632,8 +636,84 @@
       window.scrollTo(0, 0);
     }
 
+    const paperLinks = {
+  "single-cell-epigenomics": [
+    ["Preissl et al., 2022, Nat Rev Genet", "https://doi.org/10.1038/s41576-022-00509-1"],
+    ["Carter & Zhao, 2020, Nat Rev Genet", "https://doi.org/10.1038/s41576-020-00300-0"]
+  ],
+  "scatac-snatac": [
+    ["Buenrostro et al., 2015, Nature", "https://doi.org/10.1038/nature14590"],
+    ["Cusanovich et al., 2015, Science", "https://doi.org/10.1126/science.aab1601"],
+    ["Preissl et al., 2018, Nat Neurosci", "https://doi.org/10.1038/s41593-018-0079-3"]
+  ],
+  "tagmentation-fragments": [
+    ["Buenrostro et al., 2015, Nature", "https://doi.org/10.1038/nature14590"],
+    ["Martens et al., 2024, Nat Methods", "https://doi.org/10.1038/s41592-023-02112-6"]
+  ],
+  "single-cell-methylome": [
+    ["Luo et al., 2017, Science", "https://doi.org/10.1126/science.aan3351"],
+    ["Luo et al., 2018, Nat Commun", "https://doi.org/10.1038/s41467-018-06355-2"],
+    ["Iqbal & Zhou, 2023, Genomics Proteomics Bioinformatics", "https://doi.org/10.1016/j.gpb.2022.05.007"]
+  ],
+  "other-epigenomic-assays": [
+    ["Preissl et al., 2022, Nat Rev Genet", "https://doi.org/10.1038/s41576-022-00509-1"]
+  ],
+  "peak-pseudobulk": [
+    ["Gaulton et al., 2023, Nat Rev Genet", "https://doi.org/10.1038/s41576-023-00598-6"]
+  ],
+  "feature-matrices": [
+    ["Chen et al., 2019, Genome Biol", "https://doi.org/10.1186/s13059-019-1854-5"]
+  ],
+  "dimension-reduction": [
+    ["Bravo González-Blas et al., 2019, Nat Methods", "https://doi.org/10.1038/s41592-019-0367-1"],
+    ["Fang et al., 2021, Nat Commun", "https://doi.org/10.1038/s41467-021-21583-9"],
+    ["Chen et al., 2019, Genome Biol", "https://doi.org/10.1186/s13059-019-1854-5"]
+  ],
+  "cell-annotation": [
+    ["Granja et al., 2021, Nat Genet", "https://doi.org/10.1038/s41588-021-00790-6"],
+    ["Stuart et al., 2021, Nat Methods", "https://doi.org/10.1038/s41592-021-01282-5"]
+  ],
+  "motif-activity": [
+    ["Schep et al., 2017, Nat Methods", "https://doi.org/10.1038/nmeth.4401"]
+  ],
+  "ccre-mapping": [
+    ["Gaulton et al., 2023, Nat Rev Genet", "https://doi.org/10.1038/s41576-023-00598-6"],
+    ["Preissl et al., 2022, Nat Rev Genet", "https://doi.org/10.1038/s41576-022-00509-1"]
+  ],
+  "differential-accessibility": [
+    ["Ashuach et al., 2022, Cell Rep Methods", "https://doi.org/10.1016/j.crmeth.2022.100182"],
+    ["Martens et al., 2024, Nat Methods", "https://doi.org/10.1038/s41592-023-02112-6"]
+  ],
+  "methylation-analysis": [
+    ["Iqbal & Zhou, 2023, Genomics Proteomics Bioinformatics", "https://doi.org/10.1016/j.gpb.2022.05.007"],
+    ["Danese et al., 2021, Nat Commun", "https://doi.org/10.1038/s41467-021-25131-3"]
+  ],
+  "gene-activity-linkage": [
+    ["Gaulton et al., 2023, Nat Rev Genet", "https://doi.org/10.1038/s41576-023-00598-6"]
+  ],
+  "archr-signac": [
+    ["Granja et al., 2021, Nat Genet", "https://doi.org/10.1038/s41588-021-00790-6"],
+    ["Stuart et al., 2021, Nat Methods", "https://doi.org/10.1038/s41592-021-01282-5"]
+  ],
+  "snapatac-cistopic-episcanpy": [
+    ["Fang et al., 2021, Nat Commun", "https://doi.org/10.1038/s41467-021-21583-9"],
+    ["Bravo González-Blas et al., 2019, Nat Methods", "https://doi.org/10.1038/s41592-019-0367-1"],
+    ["Danese et al., 2021, Nat Commun", "https://doi.org/10.1038/s41467-021-25131-3"]
+  ],
+  "chromvar-cicero": [
+    ["Schep et al., 2017, Nat Methods", "https://doi.org/10.1038/nmeth.4401"]
+  ],
+  "reference-atlases": [
+    ["Liu et al., 2021, Nature", "https://doi.org/10.1038/s41586-020-03182-8"],
+    ["Trevino et al., 2021, Cell", "https://doi.org/10.1016/j.cell.2021.07.039"]
+  ]
+};
+
     function getSources(id) {
       return (sourceLinks[id] || []).concat(officialSupplementLinks[id] || []);
+    }
+    function getPapers(id) {
+      return paperLinks[id] || [];
     }
 
     function renderArticle(id) {
@@ -652,11 +732,15 @@
       const sources = getSources(id).map(function (source) {
         return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
       }).join("");
+      const papers = getPapers(id).map(function (paper) {
+        return '<a href="' + esc(paper[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(paper[0]) + ' ↗</a>';
+      }).join("");
       app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
         '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
         (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        (papers ? '<div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">' + papers + '</div></div>' : '') +
         '</aside></div></div>';
       window.scrollTo(0, 0);
     }

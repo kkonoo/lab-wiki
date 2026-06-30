@@ -263,6 +263,10 @@
     .source-list { display: grid; gap: 9px; }
     .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
     .source-list a:hover { text-decoration: underline; }
+    .paper-box { margin-top: 16px; border-top-color: var(--rust); }
+    .paper-list { display: grid; gap: 9px; }
+    .paper-list a { color: var(--rust); font-size: .82rem; line-height: 1.45; text-decoration: none; }
+    .paper-list a:hover { text-decoration: underline; }
     .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
 
     footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
@@ -513,8 +517,42 @@
       window.scrollTo(0, 0);
     }
 
+    const paperLinks = {
+  "cause": [
+    ["Marx et al., 2023, Nat Rev Dis Primers", "https://doi.org/10.1038/s41572-023-00454-1"],
+    ["Maletic et al., 2007, Int J Clin Pract", "https://doi.org/10.1111/j.1742-1241.2007.01602.x"]
+  ],
+  "symptom": [
+    ["Marx et al., 2023, Nat Rev Dis Primers", "https://doi.org/10.1038/s41572-023-00454-1"]
+  ],
+  "treatment": [
+    ["Sanacora et al., 2021, Nat Rev Neurosci", "https://doi.org/10.1038/s41583-021-00540-x"],
+    ["Duman et al., 2019, Mol Psychiatry", "https://doi.org/10.1038/s41380-019-0400-x"]
+  ],
+  "gwas": [
+    ["Howard et al., 2019, Nat Neurosci", "https://doi.org/10.1038/s41593-018-0326-7"],
+    ["Marx et al., 2023, Nat Rev Dis Primers", "https://doi.org/10.1038/s41572-023-00454-1"]
+  ],
+  "ketamine": [
+    ["Duman et al., 2019, Mol Psychiatry", "https://doi.org/10.1038/s41380-019-0400-x"],
+    ["Sanacora et al., 2021, Nat Rev Neurosci", "https://doi.org/10.1038/s41583-021-00540-x"],
+    ["Liao & Kwan, 2025, Nat Rev Neurosci", "https://doi.org/10.1038/s41583-024-00876-0"]
+  ],
+  "ampa": [
+    ["Duman et al., 2019, Mol Psychiatry", "https://doi.org/10.1038/s41380-019-0400-x"],
+    ["Sanacora et al., 2021, Nat Rev Neurosci", "https://doi.org/10.1038/s41583-021-00540-x"]
+  ],
+  "microglia": [
+    ["Wohleb et al., 2016, Nat Rev Neurosci", "https://doi.org/10.1038/nrn.2016.69"],
+    ["Chan et al., 2023, Nat Rev Neurosci", "https://doi.org/10.1038/s41583-023-00729-2"]
+  ]
+};
+
     function getSources(id) {
       return (sourceLinks[id] || []).concat(officialSupplementLinks[id] || []);
+    }
+    function getPapers(id) {
+      return paperLinks[id] || [];
     }
 
     function renderArticle(id) {
@@ -533,11 +571,15 @@
       const sources = getSources(id).map(function (source) {
         return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
       }).join("");
+      const papers = getPapers(id).map(function (paper) {
+        return '<a href="' + esc(paper[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(paper[0]) + ' ↗</a>';
+      }).join("");
       app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
         '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
         (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        (papers ? '<div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">' + papers + '</div></div>' : '') +
         '</aside></div></div>';
       window.scrollTo(0, 0);
     }

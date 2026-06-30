@@ -263,6 +263,10 @@
     .source-list { display: grid; gap: 9px; }
     .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
     .source-list a:hover { text-decoration: underline; }
+    .paper-box { margin-top: 16px; border-top-color: var(--rust); }
+    .paper-list { display: grid; gap: 9px; }
+    .paper-list a { color: var(--rust); font-size: .82rem; line-height: 1.45; text-decoration: none; }
+    .paper-list a:hover { text-decoration: underline; }
     .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
 
     footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
@@ -726,8 +730,114 @@
       window.scrollTo(0, 0);
     }
 
+    const paperLinks = {
+  "scrna-snrna": [
+    ["Tang et al., 2009, Nat Methods", "https://doi.org/10.1038/nmeth.1315"],
+    ["Habib et al., 2017, Nat Methods", "https://doi.org/10.1038/nmeth.4407"]
+  ],
+  "droplet-plate": [
+    ["Macosko et al., 2015, Cell", "https://doi.org/10.1016/j.cell.2015.05.002"],
+    ["Picelli et al., 2013, Nat Methods", "https://doi.org/10.1038/nmeth.2639"]
+  ],
+  "barcode-umi": [
+    ["Zheng et al., 2017, Nat Commun", "https://doi.org/10.1038/ncomms14049"],
+    ["Macosko et al., 2015, Cell", "https://doi.org/10.1016/j.cell.2015.05.002"]
+  ],
+  "quantification-cell-calling": [
+    ["Zheng et al., 2017, Nat Commun", "https://doi.org/10.1038/ncomms14049"],
+    ["Kaminow et al., 2021, bioRxiv", "https://doi.org/10.1101/2021.05.05.442755"]
+  ],
+  "cell-gene-matrix": [
+    ["Wolf et al., 2018, Genome Biol", "https://doi.org/10.1186/s13059-017-1382-0"]
+  ],
+  "ambient-doublets": [
+    ["Young & Behjati, 2020, GigaScience", "https://doi.org/10.1093/gigascience/giaa151"],
+    ["McGinnis et al., 2019, Cell Syst", "https://doi.org/10.1016/j.cels.2019.03.003"],
+    ["Xi & Li, 2021, Cell Syst", "https://doi.org/10.1016/j.cels.2020.11.008"]
+  ],
+  "normalization-hvg": [
+    ["Hafemeister & Satija, 2019, Genome Biol", "https://doi.org/10.1186/s13059-019-1874-1"],
+    ["Ahlmann-Eltze & Huber, 2023, Nat Methods", "https://doi.org/10.1038/s41592-023-01814-1"]
+  ],
+  "batch-integration": [
+    ["Lopez et al., 2018, Nat Methods", "https://doi.org/10.1038/s41592-018-0229-2"],
+    ["Korsunsky et al., 2019, Nat Methods", "https://doi.org/10.1038/s41592-019-0619-0"],
+    ["Luecken et al., 2022, Nat Methods", "https://doi.org/10.1038/s41592-021-01336-8"]
+  ],
+  "reduction-clustering": [
+    ["Duò et al., 2018, F1000Research", "https://doi.org/10.12688/f1000research.15666.3"],
+    ["Wolf et al., 2018, Genome Biol", "https://doi.org/10.1186/s13059-017-1382-0"]
+  ],
+  "cell-type-annotation": [
+    ["Aran et al., 2019, Nat Immunol", "https://doi.org/10.1038/s41590-018-0276-y"],
+    ["Domínguez Conde et al., 2022, Science", "https://doi.org/10.1126/science.abl5197"],
+    ["Abdelaal et al., 2019, Genome Biol", "https://doi.org/10.1186/s13059-019-1795-z"]
+  ],
+  "donor-replicate": [
+    ["Squair et al., 2021, Nat Commun", "https://doi.org/10.1038/s41467-021-25960-2"]
+  ],
+  "single-cell-de": [
+    ["Finak et al., 2015, Genome Biol", "https://doi.org/10.1186/s13059-015-0844-5"],
+    ["Squair et al., 2021, Nat Commun", "https://doi.org/10.1038/s41467-021-25960-2"]
+  ],
+  "differential-abundance": [
+    ["Büttner et al., 2021, Nat Commun", "https://doi.org/10.1038/s41467-021-27150-6"],
+    ["Dann et al., 2022, Nat Biotechnol", "https://doi.org/10.1038/s41587-021-01033-z"]
+  ],
+  "trajectory-velocity": [
+    ["Cao et al., 2019, Nature", "https://doi.org/10.1038/s41586-019-0969-x"],
+    ["Bergen et al., 2020, Nat Biotechnol", "https://doi.org/10.1038/s41587-020-0591-3"],
+    ["Saelens et al., 2019, Nat Biotechnol", "https://doi.org/10.1038/s41587-019-0071-9"]
+  ],
+  "cell-cell-communication": [
+    ["Jin et al., 2021, Nat Commun", "https://doi.org/10.1038/s41467-021-21246-9"],
+    ["Dimitrov et al., 2022, Nat Commun", "https://doi.org/10.1038/s41467-022-30755-0"]
+  ],
+  "spatial-transcriptomics": [
+    ["Ståhl et al., 2016, Science", "https://doi.org/10.1126/science.aaf2403"],
+    ["Marx, 2021, Nat Methods", "https://doi.org/10.1038/s41592-020-01033-y"]
+  ],
+  "spatial-platforms": [
+    ["Chen et al., 2015, Science", "https://doi.org/10.1126/science.aaa6090"],
+    ["Ståhl et al., 2016, Science", "https://doi.org/10.1126/science.aaf2403"],
+    ["Rodriques et al., 2019, Science", "https://doi.org/10.1126/science.aaw1219"]
+  ],
+  "spatial-analysis": [
+    ["Palla et al., 2022, Nat Methods", "https://doi.org/10.1038/s41592-021-01358-2"],
+    ["Dries et al., 2021, Genome Biol", "https://doi.org/10.1186/s13059-021-02286-2"]
+  ],
+  "spatial-resolution-tradeoff": [
+    ["Longo et al., 2021, Nat Rev Genet", "https://doi.org/10.1038/s41576-021-00370-8"],
+    ["Marx, 2021, Nat Methods", "https://doi.org/10.1038/s41592-020-01033-y"]
+  ],
+  "spatial-domain-svg": [
+    ["Hu et al., 2021, Nat Methods", "https://doi.org/10.1038/s41592-021-01255-8"],
+    ["Zhu & Sun, 2021, Genome Biol", "https://doi.org/10.1186/s13059-021-02404-0"],
+    ["Singhal et al., 2024, Nat Genet", "https://doi.org/10.1038/s41588-024-01664-3"]
+  ],
+  "spatial-deconvolution-mapping": [
+    ["Kleshchevnikov et al., 2022, Nat Biotechnol", "https://doi.org/10.1038/s41587-021-01139-4"]
+  ],
+  "spatial-neighborhood": [
+    ["Browaeys et al., 2020, Nat Methods", "https://doi.org/10.1038/s41592-019-0667-5"],
+    ["Mason et al., 2024, Genome Biol", "https://doi.org/10.1186/s13059-023-03159-6"],
+    ["Palla et al., 2022, Nat Methods", "https://doi.org/10.1038/s41592-021-01358-2"]
+  ],
+  "seurat-scanpy": [
+    ["Wolf et al., 2018, Genome Biol", "https://doi.org/10.1186/s13059-017-1382-0"],
+    ["Hao et al., 2024, Nat Biotechnol", "https://doi.org/10.1038/s41587-023-01767-y"]
+  ],
+  "preprocessing-tools": [
+    ["Germain et al., 2020, Genome Biol", "https://doi.org/10.1186/s13059-020-02136-7"],
+    ["Kaminow et al., 2021, bioRxiv", "https://doi.org/10.1101/2021.05.05.442755"]
+  ]
+};
+
     function getSources(id) {
       return (sourceLinks[id] || []).concat(officialSupplementLinks[id] || []);
+    }
+    function getPapers(id) {
+      return paperLinks[id] || [];
     }
 
     function renderArticle(id) {
@@ -746,11 +856,15 @@
       const sources = getSources(id).map(function (source) {
         return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
       }).join("");
+      const papers = getPapers(id).map(function (paper) {
+        return '<a href="' + esc(paper[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(paper[0]) + ' ↗</a>';
+      }).join("");
       app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
         '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
         (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        (papers ? '<div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">' + papers + '</div></div>' : '') +
         '</aside></div></div>';
       window.scrollTo(0, 0);
     }

@@ -263,6 +263,10 @@
     .source-list { display: grid; gap: 9px; }
     .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
     .source-list a:hover { text-decoration: underline; }
+    .paper-box { margin-top: 16px; border-top-color: var(--rust); }
+    .paper-list { display: grid; gap: 9px; }
+    .paper-list a { color: var(--rust); font-size: .82rem; line-height: 1.45; text-decoration: none; }
+    .paper-list a:hover { text-decoration: underline; }
     .policy-note { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
 
     footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
@@ -495,8 +499,78 @@
       window.scrollTo(0, 0);
     }
 
+    const paperLinks = {
+  "multiomics": [
+    ["Vandereyken et al., 2023, Nat Rev Genet", "https://doi.org/10.1038/s41576-023-00580-2"],
+    ["Baysoy et al., 2023, Nat Rev Mol Cell Biol", "https://doi.org/10.1038/s41580-023-00615-w"]
+  ],
+  "modality": [
+    ["Vandereyken et al., 2023, Nat Rev Genet", "https://doi.org/10.1038/s41576-023-00580-2"],
+    ["Baysoy et al., 2023, Nat Rev Mol Cell Biol", "https://doi.org/10.1038/s41580-023-00615-w"]
+  ],
+  "paired-multiome": [
+    ["Chen et al., 2019, Nat Biotechnol", "https://doi.org/10.1038/s41587-019-0290-0"],
+    ["Ma et al., 2020, Cell", "https://doi.org/10.1016/j.cell.2020.09.056"]
+  ],
+  "unpaired-integration": [
+    ["Argelaguet et al., 2021, Nat Biotechnol", "https://doi.org/10.1038/s41587-021-00895-7"],
+    ["Baysoy et al., 2023, Nat Rev Mol Cell Biol", "https://doi.org/10.1038/s41580-023-00615-w"]
+  ],
+  "anchor-taxonomy": [
+    ["Argelaguet et al., 2021, Nat Biotechnol", "https://doi.org/10.1038/s41587-021-00895-7"]
+  ],
+  "horizontal-integration": [
+    ["Argelaguet et al., 2021, Nat Biotechnol", "https://doi.org/10.1038/s41587-021-00895-7"]
+  ],
+  "vertical-integration": [
+    ["Argelaguet et al., 2020, Genome Biol", "https://doi.org/10.1186/s13059-020-02015-1"],
+    ["Argelaguet et al., 2021, Nat Biotechnol", "https://doi.org/10.1038/s41587-021-00895-7"]
+  ],
+  "mosaic-integration": [
+    ["Hao et al., 2024, Nat Biotechnol", "https://doi.org/10.1038/s41587-023-01767-y"],
+    ["Argelaguet et al., 2021, Nat Biotechnol", "https://doi.org/10.1038/s41587-021-00895-7"]
+  ],
+  "bridge-integration": [
+    ["Hao et al., 2024, Nat Biotechnol", "https://doi.org/10.1038/s41587-023-01767-y"]
+  ],
+  "mofa": [
+    ["Argelaguet et al., 2020, Genome Biol", "https://doi.org/10.1186/s13059-020-02015-1"]
+  ],
+  "wnn": [
+    ["Hao et al., 2021, Cell", "https://doi.org/10.1016/j.cell.2021.04.048"]
+  ],
+  "totalvi": [
+    ["Gayoso et al., 2021, Nat Methods", "https://doi.org/10.1038/s41592-020-01050-x"]
+  ],
+  "muon": [
+    ["Bredikhin et al., 2022, Genome Biol", "https://doi.org/10.1186/s13059-021-02577-8"]
+  ],
+  "shared-cell-state": [
+    ["Argelaguet et al., 2020, Genome Biol", "https://doi.org/10.1186/s13059-020-02015-1"],
+    ["Hao et al., 2021, Cell", "https://doi.org/10.1016/j.cell.2021.04.048"]
+  ],
+  "modality-specific-signal": [
+    ["Argelaguet et al., 2020, Genome Biol", "https://doi.org/10.1186/s13059-020-02015-1"]
+  ],
+  "regulatory-linking": [
+    ["Badia-i-Mompel et al., 2023, Nat Rev Genet", "https://doi.org/10.1038/s41576-023-00618-5"],
+    ["Ma et al., 2020, Cell", "https://doi.org/10.1016/j.cell.2020.09.056"]
+  ],
+  "transfer-learning": [
+    ["Hao et al., 2024, Nat Biotechnol", "https://doi.org/10.1038/s41587-023-01767-y"],
+    ["Hao et al., 2021, Cell", "https://doi.org/10.1016/j.cell.2021.04.048"]
+  ],
+  "multiscale-integration": [
+    ["Argelaguet et al., 2021, Nat Biotechnol", "https://doi.org/10.1038/s41587-021-00895-7"],
+    ["Fischer et al., 2025, Nat Rev Genet", "https://doi.org/10.1038/s41576-025-00821-6"]
+  ]
+};
+
     function getSources(id) {
       return (sourceLinks[id] || []).concat(officialSupplementLinks[id] || []);
+    }
+    function getPapers(id) {
+      return paperLinks[id] || [];
     }
 
     function renderArticle(id) {
@@ -515,11 +589,15 @@
       const sources = getSources(id).map(function (source) {
         return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
       }).join("");
+      const papers = getPapers(id).map(function (paper) {
+        return '<a href="' + esc(paper[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(paper[0]) + ' ↗</a>';
+      }).join("");
       app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
         '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
         (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        (papers ? '<div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">' + papers + '</div></div>' : '') +
         '</aside></div></div>';
       window.scrollTo(0, 0);
     }
