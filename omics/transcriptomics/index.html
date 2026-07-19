@@ -378,7 +378,7 @@
       },
       "interpretation": {
         "number": "04", "title": "Interpretation & Resources", "english": "HOW RESULTS ARE CHECKED AND INTERPRETED",
-        "accent": "#694f63", "summary": "PCA · Sample QC · ORA · GSEA · Deconvolution · Repositories",
+        "accent": "#694f63", "summary": "PCA · Sample QC · ORA · GSEA · Co-expression module · Deconvolution · Repositories",
         "groups": [
           {"q":"Sample 구조와 이상치는 어떻게 확인하는가?","note":"Global expression pattern before gene-level claims","items":[
             ["pca-sample-qc","PCA & sample-level QC","Condition·batch·outlier가 전체 variation에 미치는 영향 확인"]
@@ -386,6 +386,10 @@
           {"q":"Gene list를 biological function으로 어떻게 요약하는가?","note":"Cutoff-based list or ranked statistics","items":[
             ["gene-set-enrichment","Gene set enrichment","Gene-level 결과를 pathway와 functional term으로 압축"],
             ["ora-vs-gsea","ORA vs GSEA","선택된 gene list와 전체 ranked list의 차이"]
+          ]},
+          {"q":"함께 움직이는 gene 묶음은 어떻게 찾는가?","note":"Correlation across samples → module → trait association","items":[
+            ["co-expression-module","Co-expression module (WGCNA)","Sample 간 상관으로 함께 움직이는 gene 묶음을 찾음"],
+            ["module-trait","Module eigengene & trait 연관","Module을 대표값으로 요약해 sample trait과 비교"]
           ]},
           {"q":"Bulk signal의 cell composition은 어떻게 다루는가?","note":"Mixed tissue can reflect both proportion and within-cell changes","items":[
             ["cell-type-deconvolution","Cell-type deconvolution","Reference를 이용해 cell-type proportion 또는 signal을 추정"]
@@ -536,7 +540,7 @@
         [["목적",["긴 gene list를 biological process로 압축","서로 작은 변화가 같은 pathway에 모이는지 탐색","GO·Reactome·KEGG·MSigDB 같은 gene set 사용"]],
          ["입력",["Significant gene list를 쓰는 ORA","모든 gene의 ranked statistic을 쓰는 GSEA/FCS","Gene ID와 species·database version을 일치"]],
          ["해석",["Overlapping gene set 때문에 결과가 중복될 수 있음","Gene set size와 background universe가 결과에 영향","Enrichment는 pathway activation이나 causality를 자동으로 의미하지 않음"]]],
-        ["ora-vs-gsea","differential-expression","expression-repositories"]],
+        ["ora-vs-gsea","co-expression-module","differential-expression","expression-repositories"]],
 
       ["ora-vs-gsea","ORA vs GSEA",["over-representation analysis","GSEA","FCS","ranked gene list"],"interpretation",
         "ORA는 선택된 gene list의 과대표현을, GSEA는 전체 ranked list에서 gene set의 분포를 평가",
@@ -550,7 +554,22 @@
         [["왜 필요한가",["Bulk expression은 cell composition과 cell 내부 regulation을 함께 반영","질환·노화·조직 sampling이 cell proportion을 바꿀 수 있음","Composition 차이를 gene regulation으로 오해하지 않도록 도움"]],
          ["접근",["Reference-based method는 purified 또는 single-cell expression signature 사용","주로 cell-type proportion을 추정","일부 method는 sample별 cell-type-specific expression까지 추정"]],
          ["주의",["Reference의 cell-type definition과 tissue·platform 적합성이 중요","Rare cell type과 유사한 cell state는 구분이 어려울 수 있음","Deconvolution estimate는 관측값이 아니라 model-based inference"]]],
-        ["bulk-scope","pca-sample-qc","differential-expression"]],
+        ["bulk-scope","pca-sample-qc","differential-expression","co-expression-module"]],
+
+      ["co-expression-module","Co-expression module (WGCNA)",["WGCNA","gene co-expression network","gene module","hdWGCNA"],"interpretation",
+        "Sample 간 expression 상관을 network로 보고 함께 움직이는 gene 묶음(module)을 찾아, 개별 gene 대신 module 단위로 결과를 요약하는 방법",
+        [["기본 발상",["Differential expression은 gene을 하나씩 비교하지만 co-expression은 gene 사이의 상관 구조를 봄","여러 sample에서 함께 오르내리는 gene을 하나의 module로 묶음","Module은 사전에 정의된 gene set이 아니라 데이터에서 유도된 묶음"]],
+         ["구성 절차",["Gene 사이 correlation을 계산하고 soft-thresholding으로 weighted network를 구성","Topological overlap 기반 clustering으로 module을 검출","Module마다 eigengene·hub gene·module membership 값을 계산"]],
+         ["실무 주의",["Soft power·minimum module size·merge threshold 선택이 module 경계를 바꿈","Sample 수가 적으면 correlation 추정이 불안정해짐","Bulk에서는 cell-type 조성 변화가 상관으로 나타날 수 있어 composition을 함께 고려"]],
+         ["확장",["hdWGCNA는 single-cell·spatial 데이터에서 cell subpopulation·spatial domain 안의 module을 구성","Single-cell은 sparsity 때문에 cell을 묶어 correlation을 안정화하는 절차를 사용","방향성 있는 regulatory network 추론은 별도의 접근이 필요"]]],
+        ["module-trait","gene-set-enrichment","cell-type-deconvolution"]],
+
+      ["module-trait","Module eigengene & trait 연관",["module eigengene","module-trait correlation","hub gene","module membership"],"interpretation",
+        "Module을 대표값 하나로 요약한 뒤 sample trait과의 연관을 평가해, 형질과 함께 움직이는 module과 후보 gene을 고르는 단계",
+        [["Module eigengene",["Module에 속한 gene expression의 first principal component를 module 대표값으로 사용","Sample마다 module 하나당 값 하나가 되어 비교가 단순해짐","Gene 수천 개를 module 수십 개로 줄여 multiple testing 부담을 낮춤"]],
+         ["Trait 연관",["Module eigengene과 sample trait의 correlation으로 관심 module을 선택","Module membership과 gene significance로 module 내 후보 gene을 순위화","Hub gene은 module 안에서 연결성이 높은 gene"]],
+         ["해석 주의",["Module-trait 연관은 correlation이며 module이 trait을 일으킨다는 뜻이 아님","방향을 따지려면 mediation 같은 별도 분석 설계가 필요","다른 cohort에서 module이 재현되는지(module preservation) 확인이 권장됨"]]],
+        ["co-expression-module","pca-sample-qc","differential-expression"]],
 
       ["expression-repositories","GEO & Expression Atlas",["Gene Expression Omnibus","Expression Atlas","public transcriptomics data"],"interpretation",
         "Public transcriptomics study의 metadata·raw 또는 processed data와 gene expression profile을 탐색하는 repository",
@@ -589,6 +608,8 @@
         ["GSEA / MSigDB", "https://www.gsea-msigdb.org/gsea/index.jsp"],
         ["clusterProfiler Bioconductor page", "https://bioconductor.org/packages/clusterProfiler/"]
       ],
+      "co-expression-module": [["WGCNA CRAN package", "https://cran.r-project.org/package=WGCNA"]],
+      "module-trait": [["CWGCNA repository", "https://github.com/yuabrahamliu/CWGCNA"]],
       "ora-vs-gsea": [["fgsea Bioconductor page", "https://bioconductor.org/packages/fgsea/"]],
       "expression-repositories": [
         ["NCBI Gene Expression Omnibus", "https://www.ncbi.nlm.nih.gov/geo/"],
@@ -612,9 +633,11 @@
       "log fold change": {key:"lfc",definition:"두 condition의 expression ratio를 log scale로 표현한 effect size."},
       "fdr": {key:"fdr",definition:"선택된 결과 중 기대되는 false discovery 비율을 조절하는 기준."},
       "pca": {key:"pca",definition:"고차원 variation을 서로 직교하는 소수의 principal component로 요약하는 방법."},
-      "deconvolution": {key:"deconv",definition:"혼합 sample signal을 구성 요소의 proportion 또는 component signal로 분해하는 추정."}
+      "deconvolution": {key:"deconv",definition:"혼합 sample signal을 구성 요소의 proportion 또는 component signal로 분해하는 추정."},
+      "module eigengene": {key:"eigengene",definition:"Module 내 gene expression의 first principal component로 정의한 module 대표값."},
+      "co-expression": {key:"coexpr",definition:"여러 sample에서 발현이 함께 변하는 gene 사이의 상관 관계."}
     };
-    const glossaryPattern = /(^|[^A-Za-z0-9])(median-of-ratios|negative binomial|log fold change|splice junction|bulk RNA-seq|count matrix|transcriptome|strandedness|transcript|isoform|deconvolution|TPM|CPM|TMM|FDR|PCA)(?=$|[^A-Za-z0-9])/gi;
+    const glossaryPattern = /(^|[^A-Za-z0-9])(module eigengene|co-expression|median-of-ratios|negative binomial|log fold change|splice junction|bulk RNA-seq|count matrix|transcriptome|strandedness|transcript|isoform|deconvolution|TPM|CPM|TMM|FDR|PCA)(?=$|[^A-Za-z0-9])/gi;
 
     function createAnnotator() {
       const seen = new Set();
@@ -735,6 +758,14 @@
     }
 
     const paperLinks = {
+  "co-expression-module": [
+    ["Langfelder & Horvath, 2008, BMC Bioinformatics", "https://doi.org/10.1186/1471-2105-9-559"],
+    ["Morabito et al., 2023, Cell Rep Methods", "https://doi.org/10.1016/j.crmeth.2023.100498"]
+  ],
+  "module-trait": [
+    ["Langfelder & Horvath, 2008, BMC Bioinformatics", "https://doi.org/10.1186/1471-2105-9-559"],
+    ["Liu, 2024, NAR Genom Bioinform", "https://doi.org/10.1093/nargab/lqae042"]
+  ],
   "transcriptome-rnaseq": [
     ["Wang et al., 2009, Nat Rev Genet", "https://doi.org/10.1038/nrg2484"],
     ["Mortazavi et al., 2008, Nat Methods", "https://doi.org/10.1038/nmeth.1226"]
