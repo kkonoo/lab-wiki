@@ -560,7 +560,7 @@
         "Sample 간 expression 상관을 network로 보고 함께 움직이는 gene 묶음(module)을 찾아, 개별 gene 대신 module 단위로 결과를 요약하는 방법",
         [["기본 발상",["Differential expression은 gene을 하나씩 비교하지만 co-expression은 gene 사이의 상관 구조를 봄","여러 sample에서 함께 오르내리는 gene을 하나의 module로 묶음","Module은 사전에 정의된 gene set이 아니라 데이터에서 유도된 묶음"]],
          ["구성 절차",["Gene 사이 correlation을 계산하고 soft-thresholding으로 weighted network를 구성","Topological overlap 기반 clustering으로 module을 검출","Module마다 eigengene·hub gene·module membership 값을 계산"]],
-         ["실무 주의",["Soft power·minimum module size·merge threshold 선택이 module 경계를 바꿈","Sample 수가 적으면 correlation 추정이 불안정해짐","Bulk에서는 cell-type 조성 변화가 상관으로 나타날 수 있어 composition을 함께 고려"]],
+         ["실제 분석에서 주의",["Soft power·minimum module size·merge threshold 선택이 module 경계를 바꿈","Sample 수가 적으면 correlation 추정이 불안정해짐","Bulk에서는 cell-type 조성 변화가 상관으로 나타날 수 있어 composition을 함께 고려"]],
          ["확장",["hdWGCNA는 single-cell·spatial 데이터에서 cell subpopulation·spatial domain 안의 module을 구성","Single-cell은 sparsity 때문에 cell을 묶어 correlation을 안정화하는 절차를 사용","방향성 있는 regulatory network 추론은 별도의 접근이 필요"]]],
         ["module-trait","gene-set-enrichment","cell-type-deconvolution"]],
 
