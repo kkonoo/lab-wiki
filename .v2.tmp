@@ -1,0 +1,1256 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="류마티스 관절염(RA)을 정의·역학·원인·진행·진단·치료·오믹스·미해결·시의성의 9개 질문으로 탐색하는 HaLab Wiki (schema v2)">
+  <title>Rheumatoid Arthritis (RA) · HaLab Wiki [v2]</title>
+  <style>
+    :root {
+      --ink: #18211b;
+      --muted: #667168;
+      --paper: #f7f7f2;
+      --surface: #ffffff;
+      --line: #d8ddd7;
+      --green: #6f3a55;
+      --green-soft: #f3e7ee;
+      --blue: #315d78;
+      --rust: #94553b;
+      --gold: #936f21;
+      --shadow: 0 14px 35px rgba(24, 33, 27, .07);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    button, input { font: inherit; }
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 247, 242, .94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .topbar-inner {
+      width: min(1180px, calc(100% - 40px));
+      min-height: 64px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .brand {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--ink);
+      cursor: pointer;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.18rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .brand span { color: var(--green); }
+    .brand-group { display: flex; align-items: center; white-space: nowrap; }
+    .brand-home { text-decoration: none; }
+    .brand-domain { margin-left: 6px; text-decoration: none; }
+    .top-search { flex: 1; max-width: 460px; margin-left: auto; position: relative; }
+    .top-search input {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      padding: 0 44px 0 14px;
+      color: var(--ink);
+      outline: none;
+    }
+    .top-search input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+    .keycap { position: absolute; right: 10px; top: 9px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted); background: var(--paper); padding: 1px 6px; font-size: .75rem; }
+    .top-link { border: 1px solid var(--green); border-radius: 6px; background: var(--green-soft); color: var(--green); padding: 7px 13px; font-size: .82rem; font-weight: 750; cursor: pointer; white-space: nowrap; }
+
+    main { min-height: calc(100vh - 140px); }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+
+    .hero {
+      padding: 66px 0 46px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(rgba(111, 58, 85, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(111, 58, 85, .035) 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+    .eyebrow { margin: 0 0 10px; color: var(--green); font-size: .76rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+    h1, h2, h3 { font-family: Georgia, "Noto Serif KR", serif; line-height: 1.25; }
+    .hero h1 { margin: 0; font-size: clamp(2.3rem, 5.4vw, 4.4rem); letter-spacing: -.045em; }
+    .hero-copy { margin: 16px auto 26px; max-width: 690px; color: var(--muted); font-size: 1.02rem; }
+    .hero-search { width: min(720px, calc(100% - 32px)); margin: 0 auto; position: relative; }
+    .hero-search input {
+      width: 100%;
+      height: 58px;
+      border: 1px solid #c6b3bd;
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      padding: 0 58px 0 20px;
+      color: var(--ink);
+      font-size: 1.01rem;
+      outline: none;
+    }
+    .hero-search input:focus { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft), var(--shadow); }
+    .search-icon { position: absolute; right: 20px; top: 16px; color: var(--green); font-size: 1.3rem; }
+    .search-hint { margin: 11px 0 0; color: var(--muted); font-size: .82rem; }
+
+    /* ── 4 blocks (site index와 동일한 card grid) ───── */
+    .browse { padding: 52px 0 76px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .card {
+      position: relative;
+      display: block;
+      min-height: 260px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--accent);
+      border-radius: 10px;
+      background: var(--surface);
+      color: inherit;
+      text-align: left;
+      text-decoration: none;
+      cursor: pointer;
+      transition: .18s;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 14px 35px rgba(24, 33, 27, .08); }
+    .card:focus-visible { outline: 3px solid var(--green-soft); outline-offset: 2px; }
+    .card small { color: var(--accent); font-weight: 800; font-size: .76rem; letter-spacing: .12em; }
+    .card h2 { margin: 17px 0 9px; font-size: 2rem; }
+    .card p { margin: 0; color: var(--muted); }
+    .route { display: block; margin-top: 32px; color: var(--accent); font-weight: 750; }
+    .card-meta { position: absolute; right: 26px; bottom: 26px; display: flex; gap: 5px; }
+
+    /* ── badges ─────────────────────────────────────── */
+    .badge { display: inline-block; padding: 1px 7px; border-radius: 999px; font-size: .7rem; font-weight: 750; letter-spacing: .02em; white-space: nowrap; vertical-align: middle; }
+    .b-established { background: #e2efe6; color: #1f5d43; }
+    .b-supported   { background: #e6eef4; color: #2b5570; }
+    .b-preliminary { background: #f6efdc; color: #7d5d16; }
+    .b-contested   { background: #f7e3dc; color: #8c4527; }
+    .b-speculative { background: #eee9f0; color: #5f4a66; }
+    .b-stable { background: #eef0ed; color: #5b665d; }
+    .b-slow   { background: #edf2f6; color: #40627a; }
+    .b-fast   { background: #fbeef0; color: #8c3b58; }
+    .b-stale  { background: #fdeccd; color: #8a5b00; }
+    .b-check  { background: #ffe9e4; color: #a03c1d; }
+
+    /* ── section page ───────────────────────────────── */
+    .breadcrumb { padding: 26px 0 16px; color: var(--muted); font-size: .84rem; }
+    .breadcrumb button { border: 0; padding: 0; background: none; color: var(--green); cursor: pointer; }
+    .breadcrumb span { margin: 0 8px; color: #9ca49e; }
+    .page-header { padding: 16px 0 30px; border-bottom: 1px solid var(--line); }
+    .page-header h1 { margin: 7px 0 12px; font-size: clamp(2rem, 4.4vw, 3.3rem); letter-spacing: -.035em; }
+    .page-header .lead { margin: 0; max-width: 740px; color: var(--muted); font-size: 1rem; }
+    .question-list { padding: 34px 0 66px; display: grid; gap: 16px; }
+    .question-block { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .question-head { padding: 20px 24px 16px; border-bottom: 1px solid var(--line); }
+    .question-head small { color: var(--green); font-weight: 800; font-size: .74rem; letter-spacing: .1em; }
+    .question-head h2 { margin: 5px 0 6px; font-size: 1.24rem; }
+    .question-head .q-lead { margin: 0 0 12px; color: var(--muted); font-size: .89rem; }
+    .question-head .q-list { margin: 0; padding-left: 18px; color: #4c5850; font-size: .88rem; }
+    .question-head .q-list li { margin: 4px 0; }
+    .question-head .q-list li::marker { color: var(--green); }
+    .concept-row { display: grid; grid-template-columns: 1.15fr 2fr auto; align-items: center; gap: 18px; padding: 16px 24px; border-top: 1px solid #edf0ec; }
+    .concept-row:first-child { border-top: 0; }
+    .concept-row strong { font-size: .95rem; }
+    .concept-row p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .concept-row .go { border: 0; background: none; color: var(--green); font-weight: 750; cursor: pointer; padding: 5px; white-space: nowrap; }
+
+    /* ── updates (fast tier) ────────────────────────── */
+    .updates-box { margin: 26px 0 0; border: 1px solid var(--line); border-left: 4px solid var(--rust); border-radius: 8px; background: var(--surface); padding: 16px 20px; }
+    .updates-box h3 { margin: 0 0 4px; font-size: 1rem; }
+    .updates-box .hint { margin: 0 0 12px; color: var(--muted); font-size: .78rem; }
+    .update-row { display: grid; grid-template-columns: 74px 78px 1fr; gap: 12px; align-items: baseline; padding: 9px 0; border-top: 1px solid #edf0ec; font-size: .87rem; }
+    .update-row:first-of-type { border-top: 0; }
+    .update-date { color: var(--muted); font-size: .8rem; font-variant-numeric: tabular-nums; }
+    .u-tag { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: .72rem; font-weight: 750; text-align: center; }
+    .u-guideline { background: #e6eef4; color: #2b5570; }
+    .u-drug      { background: #f7e3dc; color: #8c4527; }
+    .u-cohort    { background: #e2efe6; color: #1f5d43; }
+    .u-method    { background: #eee9f0; color: #5f4a66; }
+    .update-row a { color: var(--blue); font-size: .8rem; text-decoration: none; }
+    .update-row a:hover { text-decoration: underline; }
+
+    /* ── article ────────────────────────────────────── */
+    .article-layout { display: grid; grid-template-columns: minmax(0, 740px) 260px; gap: 56px; padding: 12px 0 80px; align-items: start; }
+    .article { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(25px, 5vw, 50px); }
+    .article h1 { margin: 6px 0 5px; font-size: clamp(1.9rem, 4.2vw, 3rem); letter-spacing: -.03em; }
+    .aliases { margin: 0 0 8px; color: var(--muted); font-size: .83rem; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 22px; }
+    .definition { margin: 0 0 26px; padding: 18px 20px; border-left: 4px solid var(--green); background: var(--green-soft); font-size: 1.02rem; }
+    .definition .lbl { display: block; margin-bottom: 5px; color: var(--green); font-size: .7rem; font-weight: 800; letter-spacing: .12em; }
+    .article h2 { margin: 32px 0 12px; padding-bottom: 7px; border-bottom: 1px solid var(--line); font-size: 1.28rem; }
+    .article p { margin: 0 0 15px; }
+    .article ul { margin: 0 0 18px; padding-left: 22px; }
+    .article li { margin: 6px 0; }
+    .fact-list { display: grid; gap: 9px; margin: 0 0 18px; padding-left: 20px; color: #37423a; }
+    .fact-list li { padding-left: 4px; }
+    .fact-list li::marker { color: var(--green); }
+
+    /* facts table */
+    .facts-wrap { margin: 0 0 26px; overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+    table.facts { width: 100%; border-collapse: collapse; font-size: .86rem; }
+    table.facts th, table.facts td { padding: 9px 13px; text-align: left; border-bottom: 1px solid #edf0ec; vertical-align: top; }
+    table.facts thead th { background: #f4f5f1; color: var(--muted); font-weight: 700; font-size: .76rem; letter-spacing: .04em; text-transform: uppercase; }
+    table.facts tbody tr:last-child td { border-bottom: 0; }
+    table.facts td.val { font-weight: 700; }
+    table.facts td.src { color: var(--muted); font-size: .8rem; }
+
+    /* contradiction */
+    .contradiction { margin: 0 0 20px; border: 1px solid #e4c6bb; border-left: 4px solid var(--rust); border-radius: 8px; background: #fdf6f3; padding: 15px 18px; }
+    .contradiction h4 { margin: 0 0 8px; font-family: inherit; font-size: .88rem; color: var(--rust); letter-spacing: .04em; }
+    .contradiction dl { margin: 0; font-size: .88rem; }
+    .contradiction dt { float: left; clear: left; width: 82px; color: var(--muted); font-weight: 700; }
+    .contradiction dd { margin: 0 0 6px 90px; }
+
+    /* gap callout */
+    .gapline { margin: 26px 0 0; padding: 13px 16px; border: 1px dashed #b9a5b0; border-radius: 8px; background: #fbf7f9; font-size: .89rem; }
+    .gapline b { color: var(--green); }
+
+    .term-link { border: 0; border-bottom: 1px solid #b08aa0; background: none; padding: 0; color: var(--green); cursor: pointer; font-weight: 700; }
+    .glossary-term { position: relative; border-bottom: 1px dotted var(--green); color: #5a2d44; cursor: help; outline: none; }
+    .glossary-term::after {
+      content: attr(data-definition);
+      position: absolute; z-index: 40; left: 0; bottom: calc(100% + 8px);
+      width: max-content; max-width: min(320px, calc(100vw - 40px));
+      padding: 10px 12px; border-radius: 7px; background: #17221b; color: #f8faf8;
+      box-shadow: 0 10px 28px rgba(10, 20, 14, .24);
+      font-family: "Pretendard", "Noto Sans KR", sans-serif; font-size: .78rem; font-weight: 500; line-height: 1.55;
+      white-space: normal; opacity: 0; visibility: hidden; transform: translateY(4px);
+      transition: opacity .14s ease, transform .14s ease, visibility .14s ease; pointer-events: none;
+    }
+    .glossary-term:hover::after, .glossary-term:focus::after { opacity: 1; visibility: visible; transform: translateY(0); }
+    .glossary-term:focus { border-bottom-style: solid; }
+    .tooltip-hint { margin: -12px 0 22px; color: var(--muted); font-size: .76rem; }
+
+    .aside { position: sticky; top: 88px; }
+    .aside-box { border-top: 3px solid var(--green); background: var(--surface); padding: 18px; box-shadow: 0 8px 24px rgba(24,33,27,.05); }
+    .aside-box h3 { margin: 0 0 12px; font-size: 1rem; }
+    .related-list { display: grid; gap: 9px; }
+    .related-list button { border: 0; background: none; padding: 0; text-align: left; color: var(--green); cursor: pointer; font-size: .87rem; }
+    .source-box { margin-top: 16px; border-top-color: var(--blue); }
+    .source-list { display: grid; gap: 9px; }
+    .source-list a { color: var(--blue); font-size: .84rem; text-decoration: none; }
+    .source-list a:hover { text-decoration: underline; }
+    .paper-box { margin-top: 16px; border-top-color: var(--rust); }
+    .paper-list { display: grid; gap: 9px; }
+    .paper-list a { color: var(--rust); font-size: .82rem; line-height: 1.45; text-decoration: none; }
+    .paper-list a:hover { text-decoration: underline; }
+    .wiki-box { margin-top: 16px; border-top-color: #5f4a66; }
+    .wiki-box code { display: block; margin-top: 4px; color: var(--muted); font-size: .74rem; word-break: break-all; }
+
+    /* search */
+    .search-page { padding-bottom: 72px; }
+    .search-summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 10px 0 22px; }
+    .search-summary p { margin: 0; color: var(--muted); }
+    .filters { display: flex; flex-wrap: wrap; gap: 7px; }
+    .filter-btn { border: 1px solid var(--line); border-radius: 999px; background: var(--surface); padding: 6px 12px; color: var(--muted); cursor: pointer; font-size: .8rem; }
+    .filter-btn.active { border-color: var(--green); background: var(--green-soft); color: var(--green); font-weight: 750; }
+    .results { display: grid; gap: 12px; }
+    .result-card { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 18px 20px; cursor: pointer; text-align: left; }
+    .result-card:hover { border-color: #b39aa6; box-shadow: 0 7px 20px rgba(24, 33, 27, .05); }
+    .result-path { color: var(--green); font-size: .76rem; font-weight: 750; }
+    .result-card h2 { margin: 4px 0 6px; font-size: 1.2rem; }
+    .result-card p { margin: 0; color: var(--muted); font-size: .89rem; }
+    mark { background: #fff0ad; color: inherit; padding: 0 2px; }
+    .empty { border: 1px dashed #c0b0b8; border-radius: var(--radius); padding: 48px 24px; text-align: center; color: var(--muted); }
+
+    .schema-note { margin: 30px 0 0; padding: 16px 20px; border: 1px solid var(--line); border-radius: 8px; background: #fbfbf8; color: var(--muted); font-size: .82rem; }
+    .schema-note b { color: var(--ink); }
+    .schema-note ul { margin: 8px 0 0; padding-left: 20px; }
+
+    footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .78rem; }
+    footer .container { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+
+    @media (max-width: 860px) {
+      .topbar-inner { width: min(100% - 24px, 1180px); gap: 12px; }
+      .brand { font-size: 1rem; }
+      .keycap { display: none; }
+      .container { width: min(100% - 28px, 1120px); }
+      .hero { padding-top: 46px; }
+      .grid { grid-template-columns: 1fr; }
+      .card { min-height: 0; }
+      .card-meta { position: static; margin-top: 18px; }
+      .concept-row { grid-template-columns: 1fr auto; }
+      .concept-row p { grid-column: 1 / -1; grid-row: 2; }
+      .article-layout { grid-template-columns: 1fr; gap: 20px; }
+      .aside { position: static; }
+      .search-summary { align-items: flex-start; flex-direction: column; }
+      .update-row { grid-template-columns: 68px 1fr; }
+      .update-row .u-tag { grid-row: 1; grid-column: 2; justify-self: start; }
+      .update-row .u-body { grid-column: 1 / -1; }
+    }
+    @media (max-width: 520px) {
+      .topbar-inner { min-height: 58px; }
+      .brand-domain { display: none; }
+      .hero h1 { font-size: 2.2rem; }
+      .act { padding-left: 12px; }
+      .question-head, .concept-row { padding-left: 18px; padding-right: 18px; }
+      .contradiction dt { float: none; width: auto; }
+      .contradiction dd { margin-left: 0; }
+      footer .container { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="index.html">HaLab Wiki</a><a class="brand brand-domain" href="disease/index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="disease/autoimmune/index.html"><span>/ Autoimmune</span></a><button class="brand brand-domain" type="button" data-route="home"><span>/ RA</span></button></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer>
+    <div class="container">
+      <span>schema v2 · Updated <span id="pageUpdated"></span></span>
+      <span>SSOT: <code>wiki/syntheses/rheumatoid-arthritis.md</code></span>
+    </div>
+  </footer>
+
+  <script>
+  /* =========================================================================
+     HaLab Wiki — disease page schema v2  (pilot: RA)
+
+     설계 요약
+     ─────────────────────────────────────────────────────────────────────────
+     · 9 sections → 4 blocks(A 무엇인가 / B 왜·어떻게 / C 임상 / D 연구)
+     · article: conf(§3 confidence) · tier(반감기) · updated(갱신일)
+                facts(수치표) · body · flags(§5 모순) · gap(한 줄) · related
+     · updates[]: fast tier를 본문에 흩뿌리지 않고 한 배열에 모음
+                  [date, kind, 내용, link, [영향 section id], check]
+                  → 각 섹션은 자기 id가 걸린 항목만 "최근 변화"로 렌더
+                  → 09 Why now 섹션은 이 배열에서 자동 생성 (손으로 안 씀)
+     · stale 뱃지: updated + tier 기준 경과월 초과 시 자동 표시
+     · check:true → "확인 필요" 뱃지. CLAUDE.md §6.5 "모르면 지어내지 않는다"
+     ========================================================================= */
+
+  const meta = {
+    id: "ra",
+    title: "Rheumatoid Arthritis (RA)",
+    domain: "Autoimmune",
+    updated: "2026-08-05",
+    ssot: "wiki/syntheses/rheumatoid-arthritis.md"
+  };
+
+  /* 반감기 티어 → stale 판정 기준(개월) */
+  const TIER = {
+    stable: { label: "stable", months: 60 },
+    slow:   { label: "slow",   months: 24 },
+    fast:   { label: "fast",   months: 12 }
+  };
+
+  /* ── 4 blocks ────────────────────────────────────────────────────────── */
+  const acts = [
+    { id: "A", num: "01", en: "DEFINITION · EPIDEMIOLOGY", title: "무엇인가", accent: "#6f3a55",
+      blurb: "정의·분류 · 감별 · 아형 · 유병률과 질병부담 · 한국과 세계의 추세",
+      sections: ["def", "epi"] },
+    { id: "B", num: "02", en: "CAUSE · COURSE", title: "왜·어떻게", accent: "#315d78",
+      blurb: "유전과 환경의 기여 · 점막 기원 · 임상 전 단계 · 활막염에서 골 파괴까지",
+      sections: ["risk", "course"] },
+    { id: "C", num: "03", en: "CLINICAL", title: "임상", accent: "#94553b",
+      blurb: "증상과 진단 기준 · 바이오마커 · treat-to-target · 아직 해결되지 않은 것",
+      sections: ["dx", "tx"] },
+    { id: "D", num: "04", en: "RESEARCH", title: "연구", accent: "#1f5d43",
+      blurb: "GWAS와 단일세포가 밝힌 것 · 결정적 미해결 · 지금 답할 수 있게 된 질문",
+      sections: ["omics", "gap", "now"] }
+  ];
+
+  /* ── 9섹션 ───────────────────────────────────────────────────────────── */
+  const sections = {
+    def: { number: "01", title: "정의 · 분류", act: "A", tier: "stable",
+      lead: "RA를 어떻게 정의하고, 무엇과 구분하며, 어떤 아형으로 나누는가",
+      questions: ["어떻게 정의하고 분류하는가?", "비슷한 질환과 무엇이 다른가?", "주요 아형은 무엇인가?"] },
+    epi: { number: "02", title: "역학 · 질병부담", act: "A", tier: "slow",
+      lead: "얼마나 흔하고, 누구에게 생기며, 한국과 세계에서 어떻게 변하고 있는가",
+      questions: ["세계와 한국에서 얼마나 흔한가?", "발생률·유병률은 증가하는가?", "어떤 연령·성별·집단에서 많은가?", "질병부담과 사회경제적 영향은?"] },
+    risk: { number: "03", title: "원인 · 위험인자", act: "B", tier: "stable",
+      lead: "누가 왜 걸리는가 — 유전과 환경의 기여, 그리고 질병이 시작되는 장소",
+      questions: ["주요 위험인자는 무엇인가?", "유전과 환경은 각각 얼마나 기여하는가?", "어떤 장기·조직에서 시작되는가?", "보호요인과 촉발요인은?"] },
+    course: { number: "04", title: "발병 · 진행", act: "B", tier: "stable",
+      lead: "임상 전 단계에서 말기까지, 그리고 무엇이 환자를 사망에 이르게 하는가",
+      questions: ["발병 전에는 어떤 변화가 일어나는가?", "초기에서 말기까지 어떤 경로를 밟는가?", "진행속도와 표현형이 다른 이유는?", "주요 합병증과 사망 원인은?"] },
+    dx: { number: "05", title: "진단 · 분류", act: "C", tier: "fast",
+      lead: "어떻게 발견하고, 무엇으로 구분하며, 왜 조기진단이 어려운가",
+      questions: ["초기 증상은 무엇인가?", "현재 진단 기준은 무엇인가?", "어떤 검사와 바이오마커를 쓰는가?", "조기진단이 어려운 이유는?", "아형·중증도·예후를 어떻게 구분하는가?"] },
+    tx: { number: "06", title: "치료 · 미충족 수요", act: "C", tier: "fast",
+      lead: "현재 표준 치료는 어디까지 왔고, 무엇이 아직 해결되지 않았는가",
+      questions: ["현재 표준 치료는 무엇인가?", "어떤 환자에게 효과가 있는가?", "치료반응이 다른 이유는?", "불응·재발·부작용 문제는?", "충족되지 않은 임상적 필요는?"] },
+    omics: { number: "07", title: "유전학 · 오믹스", act: "D", tier: "fast",
+      lead: "GWAS와 단일세포는 무엇을 밝혔고, 어디까지 왔는가",
+      questions: ["GWAS는 어떤 유전자·경로를 지목하는가?", "위험변이는 어떤 세포에서 작동하는가?", "bulk와 single-cell은 무엇을 보여주었는가?", "조직·혈액 바이오마커는 얼마나 일치하는가?", "ancestry 차이는 무엇인가?"] },
+    gap: { number: "08", title: "미해결 · 논쟁", act: "D", tier: "slow",
+      lead: "합의된 것과 갈리는 것을 나누고, 왜 아직 답하지 못했는지 적는다",
+      questions: ["합의된 사실과 논쟁 중인 주장은?", "기존 연구는 왜 답하지 못했는가?", "부족한 환자군·시점·조직·세포는?", "해결해야 할 핵심 연구 질문은?"] },
+    now: { number: "09", title: "Why now", act: "D", tier: "fast",
+      lead: "최근 3–5년의 임상·기술·데이터 변화 — 지금이어야 하는 이유",
+      questions: ["최근 어떤 임상·기술적 변화가 있었는가?", "새 코호트나 오믹스 데이터가 생겼는가?", "지금 해결 가능한 질문은?", "해결하면 진단·치료·예후가 어떻게 달라지는가?"],
+      auto: "updates" }
+  };
+
+  /* ── fast tier 통합 관리 배열 ─────────────────────────────────────────
+     갱신 = 여기 맨 위에 한 줄 추가. 본문은 건드리지 않는다.
+     [date, kind, 내용, link, [affected sections], check]
+     kind: guideline | drug | cohort | method
+     check:true → 날짜·수치를 아직 원문에서 확인하지 않음
+     ------------------------------------------------------------------- */
+  const updates = [
+    ["2025", "method", "활막 fibroblast 표적화 관점 정리 — 병원성 subset만 겨냥하는 전략의 현주소 (Zou & Brenner 2025, Nat Rev Rheumatol)",
+      "https://doi.org/10.1038/s41584-025-01259-0", ["omics", "tx", "gap"], false],
+    ["2024", "method", "단일세포로 RA 활막·면역세포 지형을 재분류하려는 시도 — molecular taxonomy 진행 중 (Nishide & Kumanogoh 2024)",
+      "", ["omics", "gap"], true],
+    ["2022", "cohort", "다인종(multi-ancestry) RA GWAS 확장 — HLA 밖 위험 loci와 ancestry 간 전이성 확인 (Ishigaki 2022, Nat Genet)",
+      "https://doi.org/10.1038/s41588-022-01032-z", ["omics", "risk"], false],
+    ["2022", "drug", "JAK 억제제 안전성 — 심혈관·악성종양 위험을 다룬 시판후 무작위 안전성 연구 결과로 허가사항·처방 권고가 조정됨 (ORAL Surveillance)",
+      "", ["tx", "dx"], true],
+    ["2021", "guideline", "difficult-to-treat RA(D2T RA) 정의가 학회 차원에서 제시되어, 불응 환자군을 별도 연구 대상으로 규정할 수 있게 됨 (EULAR)",
+      "", ["tx", "gap"], true],
+    ["2019", "cohort", "활막 조직 단일세포 아틀라스 — FAP⁺THY1⁺(염증)/FAP⁺THY1⁻(파괴) subset 분리 (Croft 2019, Nature)",
+      "https://doi.org/10.1038/s41586-019-1263-7", ["omics", "course"], false]
+  ];
+
+  /* ── articles ────────────────────────────────────────────────────────
+     summary = 이 문서를 한 문장으로 (수치 + 함의)
+     facts   = [라벨, 값, 출처, 연도, check]
+     flags   = §5 모순 플래그 (synthesis에서 이관)
+     gap     = 이 article이 남기는 한 줄 — 08 섹션의 재료
+     ------------------------------------------------------------------ */
+  const articleList = [
+    /* ── 01 정의 ─────────────────────────────────────────────────────── */
+    {
+      id: "ra-definition", section: "def", tier: "stable", conf: "established", updated: "2026-08",
+      title: "RA란 무엇인가 — 정의와 감별",
+      aliases: ["rheumatoid arthritis", "류마티스 관절염", "symmetric polyarthritis"],
+      summary: "RA는 활막(synovium)을 표적으로 하는 만성 전신 자가면역질환으로, 치료하지 않으면 관절의 비가역적 파괴와 장애로 진행한다.",
+      facts: [
+        ["질환 분류", "만성 염증성 자가면역질환", "—", "", false],
+        ["표적 조직", "활막(synovium) — 이차적으로 연골·골", "—", "", false],
+        ["ICD-10", "M05 (seropositive) · M06 (기타)", "WHO ICD-10", "", true]
+      ],
+      body: [
+        ["정의", [
+          "관절을 둘러싼 활막에 만성 염증이 생기고, 그 염증이 연골과 골을 파괴하는 자가면역질환",
+          "관절에 국한되지 않는 전신질환 — 폐·혈관·눈·피부를 함께 침범할 수 있다",
+          "면역계가 자기 조직을 표적으로 삼는다는 점에서 퇴행성 질환과 근본적으로 다르다"
+        ]],
+        ["비슷한 질환과의 구분", [
+          "골관절염(OA) — 퇴행성이고 비대칭·체중부하 관절 중심, 염증지표가 정상. RA는 대칭성·소관절 중심이고 CRP/ESR이 오른다",
+          "건선관절염(PsA) — 부착부염(enthesitis)·지염(dactylitis)·피부병변이 특징이고 대개 ACPA 음성",
+          "SLE — 관절 침범이 있으나 대개 비미란성이며, 신장·피부·혈액 침범과 항핵항체 프로파일이 다르다",
+          "통풍 — 급성 단관절 발작이 전형적이고 결정(crystal) 확인으로 감별"
+        ]],
+        ["주요 아형", [
+          "seropositive RA — ACPA 및/또는 RF 양성. 유전 연관(HLA shared epitope)이 뚜렷하고 관절 파괴가 더 빠른 경향",
+          "seronegative RA — 자가항체 음성. 유전 배경과 임상 경과가 다를 수 있어 별개 질환군일 가능성이 논의된다",
+          "이 두 축이 현재 임상 분류의 중심이며, 분자·세포 수준의 재분류는 아직 진행 중"
+        ]]
+      ],
+      gap: "seropositive/seronegative라는 자가항체 기반 이분법이 실제로 서로 다른 질환을 가르는지, 아니면 같은 스펙트럼의 양끝인지 아직 합의가 없다.",
+      related: ["ra-epidemiology", "ra-clinical", "ra-genetics"],
+      papers: [["Smolen 2018, Nat Rev Dis Primers", "https://doi.org/10.1038/nrdp.2018.1"],
+               ["McInnes & Schett 2011, N Engl J Med", "https://doi.org/10.1056/NEJMra1004965"]]
+    },
+
+    /* ── 02 역학 ─────────────────────────────────────────────────────── */
+    {
+      id: "ra-epidemiology", section: "epi", tier: "slow", conf: "supported", updated: "2026-08",
+      title: "RA는 얼마나 흔한가 — 유병률과 추세",
+      aliases: ["prevalence", "incidence", "epidemiology", "유병률", "발생률", "GBD"],
+      summary: "RA는 전 세계 인구의 약 0.5–1%가 앓는 흔한 자가면역질환이며, 여성에서 2–3배 많고 인구 고령화에 따라 유병 환자 수가 계속 늘고 있다.",
+      facts: [
+        ["전 세계 유병률", "약 0.5–1%", "GBD · Primer", "2018–", true],
+        ["전 세계 환자 수", "확인 필요 — GBD 최신 라운드 수치로 채울 것", "IHME GBD", "", true],
+        ["한국 유병률", "확인 필요 — 건강보험 청구자료(HIRA/NHIS) 기반 추정치", "질병관리청 · HIRA", "", true],
+        ["연간 발생률", "확인 필요 — 인구 10만명당", "국가별 registry", "", true],
+        ["성비 (여:남)", "약 2–3 : 1", "Primer", "2018", false],
+        ["호발 연령", "40–60대 발병 정점", "Primer", "2018", false],
+        ["seropositive 비율", "환자의 대략 2/3", "Primer", "2018", true],
+        ["추세", "연령표준화 발생률은 비교적 안정, 고령화로 유병 인구는 증가", "GBD", "", true]
+      ],
+      body: [
+        ["얼마나 흔한가", [
+          "자가면역질환 중 가장 흔한 축에 속하며, 전 세계 유병률은 대략 0.5–1% 범위로 보고된다",
+          "지역·인종 간 편차가 커서 단일 숫자로 말하기 어렵다 — 인용할 때는 반드시 출처와 연도를 병기할 것",
+          "한국 수치는 건강보험 청구자료 기반 연구가 주 출처다. 청구자료는 진단코드 기반이라 실제 유병률을 과대 또는 과소 추정할 수 있다는 점을 함께 적어야 한다"
+        ]],
+        ["누구에게 생기는가", [
+          "여성이 남성보다 2–3배 많다 — 성호르몬과 임신·출산이 발병 위험을 조절한다는 관찰과 이어진다",
+          "발병은 40–60대에 정점을 이루지만 젊은 성인에서도 발생하며, 고령 발병 RA(elderly-onset RA)는 임상 양상이 다르다",
+          "흡연율·인구 구조 차이가 지역 간 유병률 격차의 상당 부분을 설명한다"
+        ]],
+        ["질병부담", [
+          "관절 파괴로 인한 기능 장애가 노동 능력 상실로 직결되어, 직접 의료비보다 생산성 손실이 더 큰 비중을 차지할 수 있다",
+          "심혈관질환 동반으로 기대수명이 단축되며, 이는 관절 증상과 별개의 부담이다",
+          "생물학적 제제 도입 이후 치료비가 크게 상승해 비용 부담의 구조 자체가 바뀌었다"
+        ]]
+      ],
+      gap: "한국의 최신 유병률·발생률과 사회경제적 비용 추정치가 아직 채워지지 않았다.",
+      related: ["ra-definition", "ra-progression", "ra-unmet"],
+      papers: [["Smolen 2018, Nat Rev Dis Primers", "https://doi.org/10.1038/nrdp.2018.1"]],
+      links: [["IHME — Global Burden of Disease", "https://www.healthdata.org/research-analysis/gbd"],
+              ["국가통계포털 KOSIS", "https://kosis.kr/"]]
+    },
+
+    /* ── 03 원인 ─────────────────────────────────────────────────────── */
+    {
+      id: "ra-genetics", section: "risk", tier: "stable", conf: "established", updated: "2026-08",
+      title: "유전 위험 — HLA shared epitope와 폴리제닉 배경",
+      aliases: ["HLA", "shared epitope", "heritability", "GWAS", "HLA-DRB1"],
+      summary: "seropositive RA의 유전 위험은 HLA-DRβ1 peptide-binding groove의 아미노산 모티프(shared epitope)에 가장 크게 집중되며, 나머지는 다수의 작은 효과가 더해지는 폴리제닉 구조다.",
+      facts: [
+        ["유전율 (쌍둥이 연구)", "약 60% — seropositive에서 더 높음", "쌍둥이 연구", "", true],
+        ["최대 단일 위험 영역", "HLA-DRB1 (shared epitope)", "Raychaudhuri 2012", "2012", false],
+        ["보고된 위험 loci", "trans-ethnic GWAS 101개", "Okada 2014", "2014", false]
+      ],
+      body: [
+        ["HLA가 중심이다", [
+          "seropositive RA의 MHC 연관은 HLA-DRβ1 peptide-binding groove의 특정 아미노산 위치로 정련된다 — 이를 shared epitope라 부른다",
+          "위험 HLA는 두 방향으로 작동한다 — citrullination된 self-peptide를 T세포에 제시하고, 자가반응 T세포 수용체의 선택에 관여한다",
+          "seronegative RA는 이 HLA 연관이 뚜렷하지 않아, 유전 구조가 다르다는 근거가 된다"
+        ]],
+        ["HLA 밖은 폴리제닉", [
+          "MHC 밖 위험은 개별 효과가 작은 다수의 변이가 더해지는 구조다",
+          "trans-ethnic GWAS에서 101개 loci가 보고되었고, 그 후보유전자들이 이미 승인된 RA 치료제의 표적과 상당 부분 겹친다",
+          "이 일치가 유전학→약물 번역(drug repurposing)의 직접적 근거가 된다"
+        ]]
+      ],
+      gap: "보고된 loci가 설명하는 유전율은 전체 유전율의 일부에 그친다 — 나머지가 rare variant인지, 상호작용인지, 아직 안 잡힌 common variant인지 미해결.",
+      related: ["ra-environment", "ra-gwas", "ra-mucosal-origin"],
+      papers: [["Raychaudhuri 2012, Nat Genet", "https://doi.org/10.1038/ng.1076"],
+               ["Okada 2014, Nature", "https://doi.org/10.1038/nature12873"],
+               ["Ishigaki 2022, Nat Genet", "https://doi.org/10.1038/s41588-022-01032-z"]]
+    },
+    {
+      id: "ra-environment", section: "risk", tier: "stable", conf: "established", updated: "2026-08",
+      title: "환경 위험인자 — 흡연, 점막, 미생물",
+      aliases: ["smoking", "microbiome", "dysbiosis", "periodontitis", "gene-environment interaction"],
+      summary: "흡연은 seropositive RA의 가장 잘 확립된 환경 위험인자이며, HLA shared epitope와 상호작용해 위험을 상승적으로 높인다.",
+      facts: [
+        ["최대 환경 위험인자", "흡연 (seropositive RA)", "리뷰 합의", "", false],
+        ["유전×환경 상호작용", "흡연 × HLA shared epitope", "리뷰 합의", "", false],
+        ["후보 점막 부위", "폐 · 구강(치주) · 장", "Holers 2018", "2018", false]
+      ],
+      body: [
+        ["확립된 위험인자", [
+          "흡연 — seropositive RA에서 가장 재현성 높은 환경 위험인자이고, HLA shared epitope 보유자에서 위험이 더 크게 증가한다(gene-environment interaction)",
+          "치주염 — 구강 미생물이 단백질 citrullination을 유도할 수 있다는 기전 가설과 함께 연관이 보고된다",
+          "여성 호르몬·출산력 — 발병 시점과 위험을 조절하는 것으로 보고되나 방향이 단순하지 않다"
+        ]],
+        ["미생물과 점막", [
+          "장·구강·폐 microbiome의 불균형(dysbiosis)이 RA와 연관되어 보고되었다",
+          "다만 dysbiosis가 원인인지 질병의 결과인지는 아직 확정되지 않았다 — 인과 방향이 핵심 미해결 지점",
+          "이 지점이 우리 랩의 metagenomics·Mendelian randomization 접근이 들어갈 자리다"
+        ]]
+      ],
+      gap: "미생물–숙주 인과 방향, 그리고 어느 점막·어느 균이 핵심인지가 미해결(Scher & Abramson 2011; Holers 2018).",
+      related: ["ra-genetics", "ra-mucosal-origin", "ra-preclinical"],
+      papers: [["Holers 2018, Nat Rev Rheumatol", "https://doi.org/10.1038/s41584-018-0070-0"],
+               ["McInnes & Schett 2011, N Engl J Med", "https://doi.org/10.1056/NEJMra1004965"]]
+    },
+    {
+      id: "ra-mucosal-origin", section: "risk", tier: "stable", conf: "supported", updated: "2026-08",
+      title: "질병은 어디서 시작하는가 — 점막 기원 가설",
+      aliases: ["mucosal origins", "ACPA", "NET", "at-risk"],
+      summary: "seropositive RA는 관절이 아니라 폐·구강·장 점막에서 개시될 수 있으며, 이는 관절 증상 이전 단계에 개입할 표적이 존재함을 뜻한다.",
+      facts: [
+        ["개시 추정 부위", "관절이 아닌 점막(폐·구강·장)", "Holers 2018", "2018", false],
+        ["at-risk 단계 관찰", "국소 ACPA 생성 · 점막 염증 · dysbiosis · NET 형성", "Holers 2018", "2018", false]
+      ],
+      body: [
+        ["점막에서 시작된다", [
+          "seropositive RA는 관절보다 먼저 점막에서 개시될 수 있다는 근거가 쌓였다",
+          "임상 전(at-risk) 단계에서 국소 ACPA 생성, 점막 염증, dysbiosis, NET(neutrophil extracellular trap) 형성이 관찰된다",
+          "이 단계는 아직 관절 증상이 없어, 예방적 개입이 이론적으로 가능한 유일한 창(window)이다"
+        ]],
+        ["관절로의 전환이 핵심", [
+          "점막에서 만들어진 자가항체가 어떻게 전신 자가면역과 관절염으로 전환되는지가 미해결",
+          "이 전환 지점을 잡는 것이 RA 예방의 핵심 표적으로 지목된다"
+        ]]
+      ],
+      flags: [{
+        what: "점막 ACPA는 보호적인가 병원성인가 (\"protection turns to destruction\")",
+        evidence: "at-risk 개인의 점막 IgA ACPA 생성 빈도가 실제 RA 발병률보다 훨씬 높다 → 점막 ACPA가 본래 보호적일 수 있다 (Holers 2018)",
+        judgement: "점막 자가항체의 생성·소실·전신화 기전이 RA 예방의 핵심 표적. \"자가항체=병원성\"으로 단순화하지 말 것"
+      }],
+      gap: "점막 ACPA가 전신 자가면역으로 넘어가는 전환 기전이 규명되지 않아, 예방적 개입의 표적이 특정되지 않는다.",
+      related: ["ra-environment", "ra-preclinical", "ra-bcell"],
+      papers: [["Holers 2018, Nat Rev Rheumatol", "https://doi.org/10.1038/s41584-018-0070-0"]]
+    },
+
+    /* ── 04 진행 ─────────────────────────────────────────────────────── */
+    {
+      id: "ra-preclinical", section: "course", tier: "stable", conf: "established", updated: "2026-08",
+      title: "발병 전 단계 — 자가항체가 먼저 온다",
+      aliases: ["preclinical RA", "ACPA", "RF", "anti-CCP", "at-risk"],
+      summary: "ACPA와 RF는 관절 증상이 나타나기 수년 전부터 혈청에서 검출되며, 이는 RA에 임상 이전의 긴 잠복 단계가 존재함을 보여준다.",
+      facts: [
+        ["자가항체 선행 기간", "관절 증상 수년 전", "Smolen 2018", "2018", false],
+        ["선행 자가항체", "anti-CCP(ACPA) · rheumatoid factor(RF)", "Primer", "2018", false]
+      ],
+      body: [
+        ["임상 전 잠복 단계", [
+          "anti-CCP(ACPA)와 RF는 관절 증상이 생기기 수년 전부터 혈청에 나타난다",
+          "즉 진단 시점은 질병의 시작이 아니라 이미 상당히 진행된 시점이다",
+          "ACPA는 citrullination 등 번역후변형(PTM) 항원을 표적하며, 가변부 N-glycosylation을 획득한다. 이 가변부 glycan이 ACPA 양성 건강인의 발병을 예측한다는 보고가 있다"
+        ]],
+        ["왜 이 단계가 중요한가", [
+          "이 구간이 발병 자체를 막을 수 있는 유일한 시점이다 — 발병 후 치료는 억제이지 예방이 아니다",
+          "그러나 ACPA 양성자 전원이 RA로 진행하지는 않아, 누가 진행할지 가려낼 예측 지표가 없다",
+          "예측 지표 부재가 예방 임상시험 설계를 가로막는 실질적 병목이다"
+        ]]
+      ],
+      gap: "ACPA 양성 at-risk 개인 중 누가 실제 발병할지 예측할 지표가 없어 예방 개입의 대상을 특정할 수 없다.",
+      related: ["ra-mucosal-origin", "ra-clinical", "ra-bcell"],
+      papers: [["Smolen 2018, Nat Rev Dis Primers", "https://doi.org/10.1038/nrdp.2018.1"],
+               ["Scherer 2022", ""]]
+    },
+    {
+      id: "ra-progression", section: "course", tier: "stable", conf: "established", updated: "2026-08",
+      title: "활막염에서 골 파괴로 — 진행과 합병증",
+      aliases: ["synovitis", "bone erosion", "osteoimmunology", "RANKL", "RA-ILD", "cardiovascular"],
+      summary: "RA에서 활막 fibroblast는 수동적 구조세포가 아니라 능동적 병원체이며, 염증과 조직파괴를 서로 다른 subset이 나눠 매개한다.",
+      facts: [
+        ["염증 매개 subset", "FAP⁺THY1⁺ (sub-lining)", "Croft 2019", "2019", false],
+        ["파괴 매개 subset", "FAP⁺THY1⁻ (lining)", "Croft 2019", "2019", false],
+        ["골 파괴 경로", "RANKL · M-CSF → osteoclast 활성화", "Caetano-Lopes 2008", "2008", false],
+        ["주요 사망 원인", "심혈관질환", "리뷰 합의", "", false]
+      ],
+      body: [
+        ["활막에서 무슨 일이 일어나나", [
+          "활막 fibroblast는 오래 수동적 구조세포로 여겨졌으나, RA 활막에서는 염증과 파괴를 능동적으로 주도한다",
+          "FAP(fibroblast activation protein)⁺가 병원성 표현형의 표지이며, 두 subset이 기능을 나눈다 — FAP⁺THY1⁺는 염증을, FAP⁺THY1⁻는 연골·골 파괴를 매개한다",
+          "면역 신호(RANKL·M-CSF)가 osteoclast를 활성화해 골미란을 만든다(osteoimmunology)"
+        ]],
+        ["경과와 표현형 차이", [
+          "치료하지 않으면 활막염 → 연골 소실 → 골미란 → 관절 변형으로 진행한다",
+          "진행 속도는 환자마다 크게 다르며, seropositive·고역가 자가항체·조기 미란이 빠른 진행과 연관된다",
+          "다만 이 임상 지표만으로 개별 환자의 진행을 예측하기는 어렵다"
+        ]],
+        ["합병증과 사망", [
+          "심혈관질환 — 만성 염증이 동맥경화를 촉진해 주요 사망 원인이 된다. 관절 증상과 별개의 부담",
+          "간질성 폐질환(RA-ILD) — 예후가 나쁜 관절 외 침범",
+          "감염 — 질병 자체와 면역억제 치료 양쪽에서 위험이 오른다"
+        ]]
+      ],
+      flags: [{
+        what: "염증과 조직파괴는 같은 과정인가, 다른 세포가 따로 모는가",
+        evidence: "FAP⁺ fibroblast의 THY1⁺(염증)·THY1⁻(파괴) subset이 adoptive transfer에서 비중첩 효과를 보임 (Croft 2019)",
+        judgement: "염증 억제가 곧 구조 보존을 보장하지 않을 수 있다 — 증상과 방사선학적 진행의 분리를 시사하며, 두 과정을 별도 표적으로 다뤄야 할 가능성"
+      }],
+      gap: "인간에서 병원성 fibroblast subset만 안전하게 겨냥하는 방법이 확립되지 않았다(Zou & Brenner 2025).",
+      related: ["ra-treatment", "ra-singlecell", "ra-clinical"],
+      papers: [["Croft 2019, Nature", "https://doi.org/10.1038/s41586-019-1263-7"],
+               ["Zou & Brenner 2025, Nat Rev Rheumatol", "https://doi.org/10.1038/s41584-025-01259-0"],
+               ["Caetano-Lopes 2008, Autoimmun Rev", "https://doi.org/10.1016/j.autrev.2008.07.038"]]
+    },
+
+    /* ── 05 진단 ─────────────────────────────────────────────────────── */
+    {
+      id: "ra-clinical", section: "dx", tier: "fast", conf: "established", updated: "2026-08",
+      title: "증상과 진단 기준",
+      aliases: ["morning stiffness", "ACR/EULAR criteria", "DAS28", "CRP", "ESR"],
+      summary: "RA는 단일 확진 검사가 없어 임상 소견·자가항체·염증지표·영상을 종합해 분류하며, 조기 진단이 관절 파괴 예방의 전제가 된다.",
+      facts: [
+        ["분류 기준", "ACR/EULAR 2010 (관절 수·혈청학·급성반응물질·기간)", "ACR/EULAR", "2010", false],
+        ["핵심 자가항체", "anti-CCP(ACPA) · RF", "—", "", false],
+        ["염증지표", "CRP · ESR", "—", "", false],
+        ["아침 강직", "대개 30분–1시간 이상 지속", "임상 소견", "", false],
+        ["질병활성도 지표", "DAS28 · CDAI · SDAI", "—", "", true]
+      ],
+      body: [
+        ["초기 증상", [
+          "손·손목·발의 작은 관절을 좌우 대칭으로 침범하는 다발관절염",
+          "30분 이상 지속되는 아침 강직 — 골관절염의 짧은 강직과 구분되는 지점",
+          "관절 종창·통증·열감, 피로와 미열 같은 전신 증상이 동반될 수 있다"
+        ]],
+        ["어떻게 진단하나", [
+          "단일 확진 검사가 없다 — 임상 소견 + 혈액검사 + 영상을 종합한다",
+          "ACPA·RF와 CRP·ESR을 확인하고, ACR/EULAR 분류 기준으로 분류한다",
+          "초음파·MRI가 진찰로 잡히지 않는 활막염과 조기 미란을 잡아낸다"
+        ]],
+        ["왜 조기진단이 어려운가", [
+          "초기 증상이 비특이적이라 다른 관절통과 구분되지 않는 구간이 있다",
+          "seronegative 환자는 자가항체라는 결정적 단서가 없어 진단이 늦어진다",
+          "분류 기준은 연구용 분류를 위한 것이지 개별 환자의 확진 도구가 아니다 — 기준 미달이어도 RA일 수 있다"
+        ]],
+        ["중증도·예후 구분", [
+          "DAS28 등 복합 질병활성도 지표로 활성도를 정량화해 치료 조정의 근거로 삼는다",
+          "예후 불량 인자로 고역가 자가항체, 조기 미란, 높은 염증지표가 꼽힌다",
+          "그러나 치료반응이나 장기 예후를 개별 환자 수준에서 예측할 신뢰 마커는 아직 없다"
+        ]]
+      ],
+      gap: "예후·치료반응·독성을 예측할 신뢰할 만한 바이오마커가 없어, 치료 선택이 사실상 순차적 시행착오다.",
+      related: ["ra-preclinical", "ra-treatment", "ra-definition"],
+      papers: [["Smolen 2018, Nat Rev Dis Primers", "https://doi.org/10.1038/nrdp.2018.1"],
+               ["McInnes & Schett 2011, N Engl J Med", "https://doi.org/10.1056/NEJMra1004965"]],
+      links: [["NIAMS — Rheumatoid Arthritis", "https://www.niams.nih.gov/health-topics/rheumatoid-arthritis"]]
+    },
+
+    /* ── 06 치료 ─────────────────────────────────────────────────────── */
+    {
+      id: "ra-treatment", section: "tx", tier: "fast", conf: "established", updated: "2026-08",
+      title: "표준 치료 — treat-to-target",
+      aliases: ["treat-to-target", "DMARD", "methotrexate", "biologic", "JAK inhibitor", "bDMARD", "tsDMARD"],
+      summary: "RA 치료는 조기·적극 치료로 관해를 목표하는 treat-to-target으로 전환했고, 표적치료제 확대로 상당수 환자에서 관절 파괴를 억제할 수 있게 되었다.",
+      facts: [
+        ["치료 전략", "treat-to-target (관해 또는 낮은 질병활성도 목표)", "Smolen 2018", "2018", false],
+        ["1차 치료", "methotrexate 중심 csDMARD", "가이드라인", "", false],
+        ["생물학적 제제", "TNF 억제제 · IL-6 수용체 억제제 · T세포 공동자극 조절 · B세포 제거(rituximab)", "—", "", false],
+        ["표적 합성 제제", "JAK 억제제 (tsDMARD)", "—", "", false]
+      ],
+      body: [
+        ["treat-to-target", [
+          "조기에 적극적으로 치료해 질병 활성도를 낮추고 관해를 목표한다",
+          "질병활성도를 정기적으로 측정하고, 목표에 도달하지 못하면 치료를 바꾼다 — 증상 완화가 아니라 목표 도달이 기준",
+          "이 전환으로 심한 관절 변형의 빈도가 과거보다 크게 줄었다"
+        ]],
+        ["무엇을 쓰는가", [
+          "csDMARD(methotrexate 중심)로 시작하고, 반응이 불충분하면 생물학적 제제나 JAK 억제제로 넘어간다",
+          "생물학적 제제는 TNF·IL-6·T세포 공동자극·B세포 등 서로 다른 축을 겨냥한다",
+          "JAK 억제제는 경구 투여가 가능하나, 시판후 안전성 연구 결과로 심혈관·악성종양 위험에 대한 처방 권고가 조정되었다"
+        ]],
+        ["유전학에서 약물로", [
+          "trans-ethnic GWAS 101개 loci의 후보유전자가 RA 승인약 표적과 상당 부분 일치한다",
+          "이 일치가 기존 약의 적응 확대(repurposing)와 신약 표적 발굴의 근거가 된다",
+          "표적이 면역세포를 넘어 기질(fibroblast)로 확장되는 중이다"
+        ]]
+      ],
+      gap: "어떤 환자에게 어떤 기전의 약을 먼저 쓸지 고를 근거가 없어, 실제 진료는 순차적 교체에 의존한다.",
+      related: ["ra-unmet", "ra-progression", "ra-gwas"],
+      papers: [["Smolen 2018, Nat Rev Dis Primers", "https://doi.org/10.1038/nrdp.2018.1"],
+               ["Okada 2014, Nature", "https://doi.org/10.1038/nature12873"]],
+      links: [["NIAMS — Rheumatoid Arthritis: Diagnosis, Treatment", "https://www.niams.nih.gov/health-topics/rheumatoid-arthritis"]]
+    },
+    {
+      id: "ra-unmet", section: "tx", tier: "fast", conf: "supported", updated: "2026-08",
+      title: "무엇이 아직 부족한가 — 미충족 임상 수요",
+      aliases: ["difficult-to-treat RA", "D2T RA", "unmet need", "refractory", "remission"],
+      summary: "치료제가 늘었음에도 상당수 환자가 여러 기전의 약제에 순차적으로 실패하며, 누가 어떤 약에 반응할지 예측할 수단이 없다는 것이 RA의 핵심 미충족 수요다.",
+      facts: [
+        ["difficult-to-treat RA", "학회 차원의 정의가 제시됨 (EULAR)", "EULAR", "2021", true],
+        ["D2T RA 비율", "확인 필요 — 코호트별 편차 큼", "코호트 연구", "", true],
+        ["약제 선택 기준", "치료반응 예측 바이오마커 없음", "리뷰 합의", "", false]
+      ],
+      body: [
+        ["해결되지 않은 것", [
+          "여러 기전의 약제에 순차적으로 실패하는 환자군이 존재하며, difficult-to-treat RA로 별도 정의되었다",
+          "약을 중단하면 재발하는 경우가 많다 — 관해는 억제 상태이지 치유가 아니다",
+          "ACPA 발현 B세포가 약물 관해 중에도 활성 표현형으로 잔존해, 치료 중단 시 재발의 원천이 된다"
+        ]],
+        ["왜 예측이 안 되는가", [
+          "동일한 임상 진단 안에 서로 다른 분자·세포 병태가 섞여 있을 가능성이 크다",
+          "임상표현형 기반 분류를 분자·세포 subgroup으로 바꾸는 작업이 아직 완성되지 않았다",
+          "혈액에서 얻는 지표가 실제 병변인 활막의 상태를 얼마나 반영하는지도 불확실하다"
+        ]],
+        ["부작용과 안전성", [
+          "면역억제에 따르는 감염 위험이 지속적 부담이다",
+          "JAK 억제제의 심혈관·악성종양 안전성 신호가 처방 판단에 반영되고 있다",
+          "장기 사용의 안전성 데이터가 축적되면서 약제 선택 기준이 계속 바뀐다 — fast tier로 관리해야 하는 영역"
+        ]]
+      ],
+      gap: "치료반응 예측 바이오마커의 부재가 RA의 가장 큰 임상적 미충족 수요이며, 이것이 분자 재분류 연구의 직접적 동기다.",
+      related: ["ra-treatment", "ra-gaps", "ra-singlecell"],
+      papers: [["Smolen 2018, Nat Rev Dis Primers", "https://doi.org/10.1038/nrdp.2018.1"]]
+    },
+
+    /* ── 07 오믹스 ───────────────────────────────────────────────────── */
+    {
+      id: "ra-gwas", section: "omics", tier: "fast", conf: "established", updated: "2026-08",
+      title: "GWAS가 밝힌 것 — loci에서 약물 표적까지",
+      aliases: ["GWAS", "trans-ethnic", "multi-ancestry", "drug target", "fine-mapping"],
+      summary: "RA는 GWAS 결과가 승인 약물 표적과 일치한 대표적 사례로, 유전학이 약물 발굴로 번역될 수 있음을 보여준 질환이다.",
+      facts: [
+        ["보고 loci", "trans-ethnic 101개", "Okada 2014", "2014", false],
+        ["MHC fine-mapping", "HLA-DRβ1 아미노산 수준까지 정련", "Raychaudhuri 2012", "2012", false],
+        ["다인종 확장", "multi-ancestry GWAS로 loci 확장 및 전이성 평가", "Ishigaki 2022", "2022", false],
+        ["ancestry 편중", "유럽계 중심 — 동아시아 코호트 상대적 부족", "—", "", true]
+      ],
+      body: [
+        ["무엇을 지목했나", [
+          "MHC 연관을 아미노산 수준까지 정련해 shared epitope의 분자적 실체를 규정했다",
+          "MHC 밖에서 다수의 면역 관련 loci가 보고되었고, T세포·B세포 활성화 경로로 수렴한다",
+          "후보유전자와 승인 약물 표적의 일치가 유전학→약물 번역의 근거로 쓰인다"
+        ]],
+        ["ancestry", [
+          "다인종 GWAS로 효과의 전이성과 인종 특이적 신호를 함께 평가할 수 있게 되었다",
+          "그럼에도 표본은 유럽계에 편중되어 있어, 한국인 코호트에서의 PRS 성능은 별도 검증이 필요하다",
+          "이 편중이 우리 랩의 한국인 코호트 기반 연구가 갖는 차별점이 되는 지점"
+        ]]
+      ],
+      gap: "동아시아·한국인 코호트에서의 위험변이 전이성과 PRS 성능이 충분히 검증되지 않았다.",
+      related: ["ra-genetics", "ra-singlecell", "ra-treatment"],
+      papers: [["Okada 2014, Nature", "https://doi.org/10.1038/nature12873"],
+               ["Raychaudhuri 2012, Nat Genet", "https://doi.org/10.1038/ng.1076"],
+               ["Ishigaki 2022, Nat Genet", "https://doi.org/10.1038/s41588-022-01032-z"]]
+    },
+    {
+      id: "ra-singlecell", section: "omics", tier: "fast", conf: "supported", updated: "2026-08",
+      title: "단일세포가 밝힌 것 — 활막 세포 지형",
+      aliases: ["single-cell", "scRNA-seq", "synovium", "FAP", "THY1", "cell-type deconvolution"],
+      summary: "단일세포 분석이 RA 활막에서 염증과 조직파괴를 각각 매개하는 fibroblast subset을 분리해내면서, 병태의 표적이 면역세포를 넘어 기질세포로 확장되었다.",
+      facts: [
+        ["핵심 발견", "FAP⁺THY1⁺(염증) / FAP⁺THY1⁻(파괴) subset 분리", "Croft 2019", "2019", false],
+        ["검체", "활막 조직 — 접근성이 낮은 표적 조직", "—", "", false],
+        ["진행 중", "임상표현형 → 분자·세포 subgroup 재분류", "Nishide & Kumanogoh 2024", "2024", true]
+      ],
+      body: [
+        ["무엇이 달라졌나", [
+          "bulk 분석으로는 섞여 보이던 활막 세포가 기능적으로 구분되는 subset으로 분리되었다",
+          "fibroblast가 수동적 구조세포가 아니라 능동적 병원체라는 관점 전환이 여기서 나왔다",
+          "염증과 파괴가 서로 다른 세포에 의해 분리 제어된다는 근거가 기질 표적치료의 출발점이 되었다"
+        ]],
+        ["조직과 혈액의 간극", [
+          "활막은 생검이 필요해 접근성이 낮고, 대규모 코호트 확보가 어렵다",
+          "혈액 지표가 활막의 상태를 얼마나 반영하는지는 충분히 검증되지 않았다",
+          "이 간극이 예후·치료반응 마커 개발의 실질적 병목이다"
+        ]]
+      ],
+      gap: "혈액 기반 지표와 활막 조직 상태의 대응 관계가 검증되지 않아, 침습적 생검 없이 병태를 추적할 방법이 없다.",
+      related: ["ra-progression", "ra-unmet", "ra-gaps"],
+      papers: [["Croft 2019, Nature", "https://doi.org/10.1038/s41586-019-1263-7"],
+               ["Zou & Brenner 2025, Nat Rev Rheumatol", "https://doi.org/10.1038/s41584-025-01259-0"]]
+    },
+    {
+      id: "ra-bcell", section: "omics", tier: "fast", conf: "supported", updated: "2026-08",
+      title: "B세포 tolerance — 자가항체는 왜 계속 만들어지는가",
+      aliases: ["B cell tolerance", "FcγRIIB", "BAFF", "rituximab", "marginal zone", "germinal center"],
+      summary: "자가항체가 임상 전에 먼저 생기고 B세포 제거 치료가 효과적이라는 두 사실이, B세포 tolerance 회복을 RA의 근본 표적으로 지목한다.",
+      facts: [
+        ["근거 1", "자가항체가 임상 증상보다 먼저 출현", "Primer", "2018", false],
+        ["근거 2", "B세포 제거(rituximab)가 효과적", "임상", "", false],
+        ["tolerance 조절자", "FcγRIIB · MZ B세포 · BAFF · 성호르몬", "concepts 페이지", "", false]
+      ],
+      body: [
+        ["왜 B세포인가", [
+          "자가항체가 발병 수년 전부터 생기고, B세포를 제거하면 질병이 호전된다 — 두 사실이 B세포를 병인 중심에 놓는다",
+          "ACPA는 citrullination 등 번역후변형 항원을 표적하고 가변부 N-glycosylation을 획득한다",
+          "ACPA 발현 B세포는 약물 관해 중에도 활성 표현형으로 잔존해 치료 중단 시 재발의 원천이 된다 → tolerance 회복이 근본 표적"
+        ]]
+      ],
+      flags: [{
+        what: "억제수용체 FcγRIIB는 B세포 tolerance에서 \"억제=보호\"로 단순 작동하는가",
+        evidence: "FcγRIIB 발현 감소가 immature 자가반응 B세포의 deletion·anergy는 강화하나 germinal center에서는 자가반응 확장·자가항체를 촉진 — checkpoint별 정반대 효과 (Espéli 2019). LOF 변이는 자가면역 위험이면서 malaria 보호(balancing selection)",
+        judgement: "FcγRIIB 순효과는 checkpoint·세포·유전 배경 의존 — GC/MZ 억제 소실이 자가항체의 핵심 경로로 보이나 \"억제=보호\"는 성립하지 않는다"
+      }],
+      gap: "tolerance 회복을 표적으로 삼는 개입이 어느 checkpoint를 겨냥해야 하는지 특정되지 않았다.",
+      related: ["ra-preclinical", "ra-mucosal-origin", "ra-gaps"],
+      papers: [["Scherer 2022", ""], ["Espéli 2019", ""], ["Barlev 2022", ""]],
+      wiki: ["wiki/concepts/b-cell-tolerance-autoreactivity.md", "wiki/ideas/b-cell-tolerance-checkpoints-in-ra.md"]
+    },
+
+    /* ── 08 미해결 ───────────────────────────────────────────────────── */
+    {
+      id: "ra-gaps", section: "gap", tier: "slow", conf: "established", updated: "2026-08",
+      title: "결정적으로 무엇을 모르는가",
+      aliases: ["gap", "open questions", "molecular taxonomy", "unmet research need"],
+      summary: "RA는 기전과 치료제가 함께 발전했음에도, 개별 환자를 분자 수준에서 분류하고 치료반응을 예측하는 단계에는 도달하지 못했다.",
+      body: [
+        ["네 가지 핵심 gap", [
+          "molecular taxonomy — 임상표현형 기반 분류를 예후·치료반응을 예측하는 분자·세포 subgroup으로 바꾸는 작업이 미완성",
+          "예측 바이오마커 부재 — 예후·치료반응·독성을 예측할 신뢰 마커가 없다",
+          "미생물–숙주 인과 — dysbiosis가 원인인지 결과인지, 어느 점막·어느 균이 핵심인지 미해결",
+          "fibroblast 표적화 — 인간에서 병원성 subset만 안전하게 겨냥하는 방법이 미확립"
+        ]],
+        ["왜 기존 연구가 답하지 못했나", [
+          "표적 조직(활막)이 생검을 요구해 대규모·종단 코호트를 만들기 어렵다",
+          "임상 전 단계 검체가 희소해 발병 시점의 변화를 관찰할 수 없다",
+          "단일 오믹스 층만으로는 유전 위험이 어느 세포·어느 시점에 작동하는지 특정되지 않는다",
+          "코호트가 유럽계에 편중되어 한국인에서의 전이성이 검증되지 않았다"
+        ]],
+        ["부족한 환자군·시점·조직", [
+          "환자군 — 동아시아·한국인 코호트, seronegative RA, difficult-to-treat RA",
+          "시점 — 임상 전(at-risk) 단계, 치료 전환 시점, 관해 후 중단 시점",
+          "조직 — 활막, 그리고 활막과 짝지어진 혈액(paired sample)",
+          "세포 — 기질(fibroblast) subset, ACPA 발현 B세포"
+        ]]
+      ],
+      gap: "위 네 gap은 모두 \"어느 세포·어느 시점\"의 문제로 수렴한다 — 다층 오믹스와 종단 설계가 필요한 이유.",
+      related: ["ra-unmet", "ra-singlecell", "ra-whynow"],
+      papers: [["McInnes & Schett 2011, N Engl J Med", "https://doi.org/10.1056/NEJMra1004965"],
+               ["Zou & Brenner 2025, Nat Rev Rheumatol", "https://doi.org/10.1038/s41584-025-01259-0"]],
+      wiki: ["wiki/syntheses/rheumatoid-arthritis.md", "wiki/open_questions.md"]
+    },
+
+    /* ── 09 Why now ─────────────────────────────────────────────────── */
+    {
+      id: "ra-whynow", section: "now", tier: "fast", conf: "supported", updated: "2026-08",
+      title: "왜 지금인가 — 해결 가능해진 조건",
+      aliases: ["why now", "feasibility", "enabling technology"],
+      summary: "활막 단일세포 아틀라스와 다인종 GWAS가 축적되면서, 10년 전에는 답할 수 없던 \"어느 세포에서 유전 위험이 작동하는가\"를 지금은 직접 검증할 수 있다.",
+      body: [
+        ["무엇이 달라졌나", [
+          "활막 조직의 단일세포 아틀라스가 공개되어, 기질세포 subset을 참조 기준으로 쓸 수 있게 되었다",
+          "다인종 GWAS가 확장되어 ancestry 간 효과 전이성을 정량적으로 평가할 수 있다",
+          "difficult-to-treat RA가 학회 차원에서 정의되어, 불응 환자군을 명확한 연구 대상으로 규정할 수 있게 되었다"
+        ]],
+        ["지금 답할 수 있는 질문", [
+          "RA 위험변이가 어느 세포유형에서 작동하는가 — 단일세포 참조 + colocalization으로 직접 검증 가능",
+          "혈액 지표가 활막 상태를 얼마나 반영하는가 — paired sample 설계로 정량 가능",
+          "유럽계 기반 PRS가 한국인에서 얼마나 작동하는가 — 한국인 코호트로 검증 가능"
+        ]],
+        ["해결하면 무엇이 달라지나", [
+          "진단 — 임상 전 단계에서 발병할 개인을 가려낼 지표의 후보가 생긴다",
+          "치료 — 어떤 기전의 약을 먼저 쓸지 고르는 근거가 생겨 순차적 시행착오를 줄인다",
+          "예후 — 빠르게 진행할 환자를 조기에 식별해 적극 치료 대상을 특정할 수 있다"
+        ]]
+      ],
+      gap: "",
+      related: ["ra-gaps", "ra-gwas", "ra-singlecell"]
+    }
+  ];
+
+  const articles = Object.fromEntries(articleList.map(function (a) { return [a.id, a]; }));
+
+  /* ── glossary ───────────────────────────────────────────────────────── */
+  const glossaryTerms = {
+    "hla": { key: "hla", definition: "Human Leukocyte Antigen (MHC). 펩타이드를 T세포에 제시하는 분자로, 자가면역 최강 유전 위험 영역." },
+    "shared epitope": { key: "se", definition: "RA 위험을 공유하는 HLA-DRB1 아미노산 모티프(peptide-binding groove)." },
+    "acpa": { key: "acpa", definition: "Anti-citrullinated protein antibody(anti-CCP). RA 진단·분류의 핵심 자가항체." },
+    "citrullination": { key: "citr", definition: "단백질 arginine→citrulline 변형. RA 자가항체(ACPA)의 표적." },
+    "fap": { key: "fap", definition: "Fibroblast activation protein. RA 병원성 활막 fibroblast의 표지." },
+    "thy1": { key: "thy1", definition: "활막 fibroblast subset을 가르는 표면 표지 — THY1⁺(염증) vs THY1⁻(파괴)." },
+    "rankl": { key: "rankl", definition: "Receptor activator of NF-κB ligand. osteoclast를 활성화해 골 파괴를 유도." },
+    "osteoclast": { key: "oc", definition: "골을 흡수하는 세포. 만성 염증이 활성화하면 골미란을 일으킴." },
+    "dmard": { key: "dmard", definition: "Disease-modifying antirheumatic drug. 질병 경과를 바꾸는 RA 핵심 치료제." },
+    "dysbiosis": { key: "dys", definition: "미생물 군집 구성의 불균형. RA에서 점막 트리거 후보로 지목." },
+    "prs": { key: "prs", definition: "Polygenic risk score. 다수 변이 효과를 합산한 개인 유전 위험 점수." },
+    "colocalization": { key: "coloc", definition: "GWAS 신호와 QTL 신호가 같은 인과변이를 공유하는지 검정하는 방법." }
+  };
+  const glossaryPattern = /(^|[^A-Za-z0-9가-힣])(HLA|shared epitope|ACPA|citrullination|FAP|THY1|RANKL|osteoclast|DMARD|dysbiosis|PRS|colocalization)(?=$|[^A-Za-z0-9])/gi;
+
+  /* ── utils ──────────────────────────────────────────────────────────── */
+  const app = document.getElementById("app");
+  const topSearch = document.getElementById("topSearch");
+  let activeFilter = "all";
+
+  function esc(v) {
+    return String(v).replace(/[&<>'"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[c];
+    });
+  }
+  function route(hash) { window.location.hash = hash; }
+  function actOf(sectionId) {
+    const key = sections[sectionId] && sections[sectionId].act;
+    return acts.filter(function (a) { return a.id === key; })[0] || acts[0];
+  }
+  function articlesOf(sectionId) {
+    return articleList.filter(function (a) { return a.section === sectionId; });
+  }
+
+  function createAnnotator() {
+    const seen = new Set();
+    return function (text) {
+      return esc(text).replace(glossaryPattern, function (match, prefix, term) {
+        const item = glossaryTerms[term.toLowerCase()];
+        if (!item || seen.has(item.key)) return match;
+        seen.add(item.key);
+        return prefix + '<span class="glossary-term" tabindex="0" data-definition="' + esc(item.definition) + '">' + esc(term) + '</span>';
+      });
+    };
+  }
+
+  /* stale 판정 — updated(YYYY-MM) + tier 기준 경과월 */
+  function monthsSince(ym) {
+    if (!ym) return null;
+    const parts = String(ym).split("-");
+    const y = parseInt(parts[0], 10);
+    const m = parts.length > 1 ? parseInt(parts[1], 10) : 1;
+    if (isNaN(y)) return null;
+    const now = new Date();
+    return (now.getFullYear() - y) * 12 + (now.getMonth() + 1 - m);
+  }
+  function isStale(a) {
+    const t = TIER[a.tier] || TIER.stable;
+    const m = monthsSince(a.updated);
+    return m !== null && m > t.months;
+  }
+  function badge(cls, text, title) {
+    return '<span class="badge ' + cls + '"' + (title ? ' title="' + esc(title) + '"' : "") + '>' + esc(text) + "</span>";
+  }
+  function articleBadges(a) {
+    let out = badge("b-" + a.conf, a.conf, "CLAUDE.md §3 confidence 등급");
+    out += badge("b-" + a.tier, TIER[a.tier].label, "반감기 티어 — 갱신 주기 " + TIER[a.tier].months + "개월");
+    if (isStale(a)) out += badge("b-stale", "갱신 확인", "마지막 갱신 " + a.updated + " — 티어 기준 초과");
+    if ((a.facts || []).some(function (f) { return f[4]; })) out += badge("b-check", "확인 필요 수치", "원문 확인이 필요한 값이 포함됨");
+    return out;
+  }
+
+  /* updates 필터 */
+  function updatesFor(sectionId) {
+    return updates.filter(function (u) { return u[4].indexOf(sectionId) >= 0; });
+  }
+
+  /* ── home ───────────────────────────────────────────────────────────── */
+  function renderHome() {
+    document.title = meta.title + " · HaLab Wiki";
+    const cards = acts.map(function (act) {
+      const arts = act.sections.reduce(function (n, sid) { return n.concat(articlesOf(sid)); }, []);
+      const staleN = arts.filter(isStale).length;
+      const nums = act.sections.map(function (sid) { return sections[sid].number; }).join("·");
+      return '<button class="card" style="--accent:' + act.accent + '" data-act="' + act.id + '">' +
+        "<small>" + act.num + " · " + esc(act.en) + "</small>" +
+        "<h2>" + esc(act.title) + "</h2>" +
+        "<p>" + esc(act.blurb) + "</p>" +
+        '<span class="route">' + esc(act.title) + " 살펴보기 →</span>" +
+        '<span class="card-meta">' + badge("b-stable", nums + " · 문서 " + arts.length) +
+        (staleN ? badge("b-stale", "갱신 " + staleN) : "") + "</span></button>";
+    }).join("");
+
+    app.innerHTML = '<section class="hero"><div class="container">' +
+      '<p class="eyebrow">' + esc(meta.domain) + " disease knowledge base</p><h1>" + esc(meta.title) + "</h1>" +
+      '<p class="hero-copy">무엇인가 · 왜·어떻게 · 임상 · 연구 — 네 갈래의 질문을 따라 RA를 탐색합니다.</p>' +
+      '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="RA 통합 검색" placeholder="Search: 유병률, HLA, fibroblast, difficult-to-treat"><span class="search-icon">⌕</span></form>' +
+      '<p class="search-hint">Korean / English / acronym · 수치표도 검색됩니다</p></div></section>' +
+      '<section class="browse"><div class="container"><div class="grid">' + cards + "</div>" +
+      renderUpdatesBox(null, "최근 변화") +
+      "</div></section>";
+
+    document.getElementById("heroSearchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const q = document.getElementById("heroSearch").value.trim();
+      if (q) route("search/" + encodeURIComponent(q));
+    });
+    window.scrollTo(0, 0);
+  }
+
+  /* ── act page (블록 안의 섹션들) ────────────────────────────────────── */
+  function renderAct(actId) {
+    const act = acts.filter(function (a) { return a.id === actId; })[0];
+    if (!act) return renderHome();
+    document.title = act.title + " · " + meta.title;
+    const annotate = createAnnotator();
+
+    const blocks = act.sections.map(function (sid) {
+      const s = sections[sid];
+      const qs = s.questions.map(function (q) { return "<li>" + annotate(q) + "</li>"; }).join("");
+      const rows = articlesOf(sid).map(function (a) {
+        return '<div class="concept-row"><strong>' + annotate(a.title) + "</strong>" +
+          "<p>" + annotate(a.summary) + "</p>" +
+          '<button class="go" data-article="' + a.id + '">읽기 →</button></div>';
+      }).join("");
+      return '<section class="question-block"><div class="question-head">' +
+        "<small>SECTION " + s.number + "</small><h2>" + esc(s.title) + "</h2>" +
+        '<p class="q-lead">' + esc(s.lead) + '</p><ul class="q-list">' + qs + "</ul></div>" +
+        "<div>" + rows + "</div></section>";
+    }).join("");
+
+    app.innerHTML = '<div class="container"><nav class="breadcrumb" aria-label="현재 위치">' +
+      '<button data-route="home">홈</button><span>›</span>' + esc(act.title) + "</nav>" +
+      '<header class="page-header" style="border-top:4px solid ' + act.accent + '">' +
+      '<p class="eyebrow">' + act.num + " · " + esc(act.en) + "</p>" +
+      "<h1>" + esc(act.title) + '</h1><p class="lead">' + esc(act.blurb) + "</p></header>" +
+      '<div class="question-list">' + blocks + "</div>" +
+      act.sections.map(function (sid) {
+        return sections[sid].auto === "updates"
+          ? renderUpdatesBox(null, "최근 3–5년 변화 — 자동 생성")
+          : renderUpdatesBox(sid);
+      }).join("") +
+      '<div style="height:60px"></div></div>';
+    window.scrollTo(0, 0);
+  }
+
+  /* ── updates box ────────────────────────────────────────────────────── */
+  const KIND_LABEL = { guideline: "가이드라인", drug: "치료제", cohort: "코호트·데이터", method: "분석기술" };
+  function renderUpdatesBox(sectionId, heading) {
+    const rows = sectionId ? updatesFor(sectionId) : updates;
+    if (!rows.length) return "";
+    const body = rows.map(function (u) {
+      return '<div class="update-row"><span class="update-date">' + esc(u[0]) + "</span>" +
+        '<span class="u-tag u-' + u[1] + '">' + esc(KIND_LABEL[u[1]] || u[1]) + "</span>" +
+        '<span class="u-body">' + esc(u[2]) +
+        (u[5] ? " " + badge("b-check", "확인 필요", "날짜·수치를 원문에서 확인할 것") : "") +
+        (u[3] ? ' <a href="' + esc(u[3]) + '" target="_blank" rel="noopener noreferrer">원문 ↗</a>' : "") +
+        "</span></div>";
+    }).join("");
+    return '<div class="updates-box"><h3>' + esc(heading || "최근 변화") + "</h3>" +
+      '<p class="hint">fast tier · 갱신은 <code>updates</code> 배열 맨 위에 한 줄 추가 → 본문은 건드리지 않음</p>' + body + "</div>";
+  }
+
+  /* 섹션 딥링크(#section/dx)는 해당 블록으로 보낸다 */
+  function renderSection(sid) {
+    if (!sections[sid]) return renderHome();
+    return renderAct(sections[sid].act);
+  }
+
+  /* ── article ────────────────────────────────────────────────────────── */
+  function renderFacts(facts) {
+    if (!facts || !facts.length) return "";
+    const rows = facts.map(function (f) {
+      const src = [f[2], f[3]].filter(function (x) { return x && x !== "—"; }).join(" · ");
+      return "<tr><td>" + esc(f[0]) + '</td><td class="val">' + esc(f[1]) +
+        (f[4] ? " " + badge("b-check", "확인 필요") : "") + '</td><td class="src">' + esc(src || "—") + "</td></tr>";
+    }).join("");
+    return '<div class="facts-wrap"><table class="facts"><thead><tr><th>항목</th><th>값</th><th>출처 · 연도</th></tr></thead><tbody>' +
+      rows + "</tbody></table></div>";
+  }
+  function renderFlags(flags) {
+    if (!flags || !flags.length) return "";
+    return flags.map(function (f) {
+      return '<div class="contradiction"><h4>⚠ 갈리는 지점 · confidence:contested</h4><dl>' +
+        "<dt>무엇이</dt><dd>" + esc(f.what) + "</dd>" +
+        "<dt>근거</dt><dd>" + esc(f.evidence) + "</dd>" +
+        "<dt>현재 판단</dt><dd>" + esc(f.judgement) + "</dd></dl></div>";
+    }).join("");
+  }
+
+  function renderArticle(id) {
+    const a = articles[id];
+    if (!a) return renderHome();
+    const s = sections[a.section];
+    const act = actOf(a.section);
+    const annotate = createAnnotator();
+    document.title = a.title + " · " + meta.title;
+
+    const body = (a.body || []).map(function (part) {
+      return "<section><h2>" + esc(part[0]) + '</h2><ul class="fact-list">' +
+        part[1].map(function (p) { return "<li>" + annotate(p) + "</li>"; }).join("") + "</ul></section>";
+    }).join("");
+
+    const related = (a.related || []).filter(function (r) { return articles[r]; }).map(function (r) {
+      return '<button data-article="' + r + '">' + esc(articles[r].title) + " →</button>";
+    }).join("");
+    const papers = (a.papers || []).map(function (p) {
+      return p[1] ? '<a href="' + esc(p[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(p[0]) + " ↗</a>"
+                  : "<a>" + esc(p[0]) + "</a>";
+    }).join("");
+    const links = (a.links || []).map(function (l) {
+      return '<a href="' + esc(l[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(l[0]) + " ↗</a>";
+    }).join("");
+    const wiki = (a.wiki || []).map(function (w) { return "<code>" + esc(w) + "</code>"; }).join("");
+
+    app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span>' +
+      '<button data-act="' + act.id + '">' + esc(act.title) + "</button><span>›</span>" + esc(s.title) + "</nav>" +
+      '<div class="article-layout"><article class="article">' +
+      '<p class="eyebrow">' + s.number + " · " + esc(s.title) + "</p>" +
+      "<h1>" + esc(a.title) + "</h1>" +
+      '<p class="aliases">Aliases: ' + esc((a.aliases || []).join(" · ")) + "</p>" +
+      '<p class="meta-row">' + articleBadges(a) + '<span class="badge b-stable">updated ' + esc(a.updated) + "</span></p>" +
+      '<p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p>' +
+      '<p class="definition">' + annotate(a.summary) + "</p>" +
+      renderFacts(a.facts) + body + renderFlags(a.flags) +
+      (a.gap ? '<div class="gapline"><b>남는 질문 →</b> ' + esc(a.gap) + "</div>" : "") +
+      "</article>" +
+      '<aside class="aside">' +
+      (related ? '<div class="aside-box"><h3>Related</h3><div class="related-list">' + related + "</div></div>" : "") +
+      (links ? '<div class="aside-box source-box"><h3>Resources</h3><div class="source-list">' + links + "</div></div>" : "") +
+      (papers ? '<div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">' + papers + "</div></div>" : "") +
+      (wiki ? '<div class="aside-box wiki-box"><h3>Wiki 출처 (SSOT)</h3>' + wiki + "</div>" : "") +
+      "</aside></div></div>";
+    window.scrollTo(0, 0);
+  }
+
+  /* ── search ─────────────────────────────────────────────────────────── */
+  function articleText(a) {
+    const bodyText = (a.body || []).map(function (b) { return [b[0]].concat(b[1]).join(" "); });
+    const factText = (a.facts || []).map(function (f) { return f.slice(0, 4).join(" "); });
+    const flagText = (a.flags || []).map(function (f) { return [f.what, f.evidence, f.judgement].join(" "); });
+    return [a.title, (a.aliases || []).join(" "), a.summary, a.gap || ""]
+      .concat(bodyText, factText, flagText).join(" ").toLowerCase();
+  }
+  function highlight(text, q) {
+    if (!q) return esc(text);
+    const safe = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return esc(text).replace(new RegExp("(" + safe + ")", "ig"), "<mark>$1</mark>");
+  }
+  function searchArticles(query, filter) {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return articleList.map(function (a) {
+      if (filter !== "all" && sections[a.section].act !== filter) return null;
+      const hay = articleText(a);
+      if (hay.indexOf(q) < 0) return null;
+      const t = a.title.toLowerCase().includes(q) ? 3 : 0;
+      const al = (a.aliases || []).join(" ").toLowerCase().includes(q) ? 2 : 0;
+      return { a: a, score: t + al + 1 };
+    }).filter(Boolean).sort(function (x, y) { return y.score - x.score || x.a.title.localeCompare(y.a.title); });
+  }
+  function renderSearch(query) {
+    document.title = '"' + query + '" 검색 · ' + meta.title;
+    const filterButtons = ['<button class="filter-btn ' + (activeFilter === "all" ? "active" : "") + '" data-filter="all">전체</button>']
+      .concat(acts.map(function (act) {
+        return '<button class="filter-btn ' + (activeFilter === act.id ? "active" : "") + '" data-filter="' + act.id + '">' +
+          act.id + ". " + esc(act.title) + "</button>";
+      })).join("");
+    const found = searchArticles(query, activeFilter);
+    const cards = found.length ? found.map(function (r) {
+      const s = sections[r.a.section];
+      return '<button class="result-card" data-article="' + r.a.id + '">' +
+        '<span class="result-path">' + s.number + " " + esc(s.title) + "</span>" +
+        "<h2>" + highlight(r.a.title, query) + "</h2><p>" + highlight(r.a.summary, query) + "</p></button>";
+    }).join("") : '<div class="empty"><strong>No results</strong><br>Try: 유병률 / HLA / fibroblast / difficult-to-treat</div>';
+    app.innerHTML = '<div class="container search-page"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span>검색</nav>' +
+      '<header class="page-header"><p class="eyebrow">Search</p><h1>“' + esc(query) + "”</h1></header>" +
+      '<div class="search-summary"><p>문서 <strong>' + found.length + '</strong>건</p><div class="filters">' + filterButtons + "</div></div>" +
+      '<div class="results">' + cards + "</div></div>";
+    topSearch.value = query;
+    window.scrollTo(0, 0);
+  }
+
+  /* ── routing ────────────────────────────────────────────────────────── */
+  function handleRoute() {
+    const raw = window.location.hash.replace(/^#/, "");
+    const parts = raw.split("/");
+    if (!raw || raw === "home") return renderHome();
+    if (parts[0] === "act") return renderAct(parts[1]);
+    if (parts[0] === "section") return renderSection(parts[1]);
+    if (parts[0] === "article") return renderArticle(parts[1]);
+    if (parts[0] === "search") return renderSearch(decodeURIComponent(parts.slice(1).join("/")));
+    renderHome();
+  }
+
+  document.addEventListener("click", function (e) {
+    const home = e.target.closest("[data-route='home']");
+    const actEl = e.target.closest("[data-act]");
+    const section = e.target.closest("[data-section]");
+    const article = e.target.closest("[data-article]");
+    const filter = e.target.closest("[data-filter]");
+    if (home) route("home");
+    else if (article) route("article/" + article.dataset.article);
+    else if (actEl) route("act/" + actEl.dataset.act);
+    else if (section) route("section/" + section.dataset.section);
+    else if (filter) {
+      activeFilter = filter.dataset.filter;
+      renderSearch(decodeURIComponent(window.location.hash.split("/").slice(1).join("/")));
+    }
+  });
+
+  document.getElementById("topSearchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const q = topSearch.value.trim();
+    if (q) { activeFilter = "all"; route("search/" + encodeURIComponent(q)); }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "/" && document.activeElement.tagName !== "INPUT") { e.preventDefault(); topSearch.focus(); }
+  });
+
+  document.getElementById("pageUpdated").textContent = meta.updated;
+  window.addEventListener("hashchange", handleRoute);
+  handleRoute();
+  </script>
+</body>
+</html>
