@@ -1,5 +1,5 @@
 window.DISEASE = (function () {
-  const meta = { id:"ad", title: "Alzheimer's Disease (AD)", domain: "Neuro", searchPlaceholder: "Search: amyloid, APOE, p-tau217, ARIA" };
+  const meta = { id:"ad", title: "Alzheimer's Disease (AD)", domain: "Neuro", updated: "2026-09-15", searchPlaceholder: "Search: amyloid, APOE, p-tau217, ARIA" };
   const acts = [
     { id:"A", num: "01", en: "DEFINITION · EPIDEMIOLOGY", title: "무엇인가", accent: "#6f3a55", blurb: "정의·생물학적 단계 · 아형·감별 · 세계와 한국의 규모 · 질병부담", sections: ["def", "epi"] },
     { id:"B", num: "02", en: "CAUSE · COURSE", title: "왜·어떻게", accent: "#315d78", blurb: "유전·비유전 위험 · APOE · amyloid·tau · microglia·혈관 · 이질적 진행", sections: ["risk", "course"] },
@@ -76,6 +76,8 @@ window.DISEASE = (function () {
     donanemab: ["Sims et al. 2023, JAMA 330:512–527", "https://doi.org/10.1001/jama.2023.13239"],
     memantine: ["Reisberg et al. 2003, N Engl J Med 348:1333–1341", "https://doi.org/10.1056/NEJMoa013128"],
     nice: ["NICE NG97 2018, last reviewed 2025", "https://www.nice.org.uk/guidance/ng97"],
+    murdock: ["Murdock et al. 2024, Nature 627:149–156", "https://doi.org/10.1038/s41586-024-07132-6"],
+    romero: ["Hitpass Romero et al. 2025, J Neuroinflammation 22:109", "https://doi.org/10.1186/s12974-025-03436-0"],
     lecanemabAur: ["Cummings et al. 2023, J Prev Alzheimers Dis 10:362–377", "https://doi.org/10.14283/jpad.2023.30"],
     donanemabAur: ["Rabinovici et al. 2025, J Prev Alzheimers Dis 12:100150", "https://doi.org/10.1016/j.tjpad.2025.100150"]
   };
@@ -159,11 +161,11 @@ window.DISEASE = (function () {
       body: [["진행 좌표",["amyloid 축적 → tau 확산·신경퇴행 위험의 배경","tau burden과 임상 기능의 더 가까운 대응","세 축의 시간차·비선형성·환자 간 차이"]],["단순화의 위험",["amyloid 유전 근거는 강함","amyloid plaque 감소와 인지 이득의 크기는 불일치","biomarker 변화 ≠ 동일 크기의 임상 효과"]]],
       related: ["ckd-preclinical","ckd-treatment-effect","ckd-biomarkers"], papers: [P.scheltens,P.criteria,P.lecanemab,P.donanemab] },
     { id: "ckd-neuroimmune-course", section: "course", title: "microglia·혈관·경계 면역은 진행에 어떻게 관여하는가?",
-      aliases: ["microglia","TREM2","APOE","endothelial","meningeal lymphatic","neuroimmune"],
+      aliases: ["microglia","TREM2","APOE","endothelial","meningeal lymphatic","neuroimmune","glymphatic","AQP4","CSF clearance","수막"],
       summary: "AD 유전 위험의 microglia 수렴 + endothelial loss·뇌 경계 배수 축 — amyloid·tau만으로 설명되지 않는 cellular phase",
-      facts: [["microglia enrichment","P=1.7×10⁻⁸","Bellenguez et al.","2022",false],["혈관 조성","AD에서 endothelial cell proportion 감소","Yap et al.","2024",false],["경계 면역","meningeal lymphatic 노화와 amyloid 제거 저하","Rustenhoven et al.","2023",false]],
-      body: [["세포·경계 축",["APOE·TREM2·PLCG2·ABCA7 → microglia·면역 기능으로 수렴","endothelial loss와 neurovascular unit 변화","meningeal lymphatic 노화 → brain clearance 저하 후보"]],["인과성 경계",["microglia activation — 보호적 제거와 병원성 염증의 양면","endothelial 변화 — methylation deconvolution·PGS 기반 추론","인간 종단·기능 검증 전 치료 인과 단정 금지"]]],
-      related: ["ckd-apoe-rare","ckd-variant-celltype","ckd-vascular-microglia"], papers: [P.bellenguez,P.yap] },
+      facts: [["microglia enrichment","P=1.7×10⁻⁸","Bellenguez et al.","2022",false],["혈관 조성","AD에서 endothelial cell proportion 감소","Yap et al.","2024",false],["경계 면역","meningeal lymphatic 노화와 amyloid 제거 저하","Rustenhoven et al.","2023",false],["수막 기질","노화 dura의 peri-lymphatic type I collagen 축적 → 수막 림프 배수 저하","Hitpass Romero et al.","2025",false],["청소 구동력","40 Hz 다감각 자극 → 동맥 pulsatility·AQP4 극성화 → amyloid 제거 증가","Murdock et al.","2024",false]],
+      body: [["세포·경계 축",["APOE·TREM2·PLCG2·ABCA7 → microglia·면역 기능으로 수렴","endothelial loss와 neurovascular unit 변화","수막 림프 노화 → CSF 배수 저하 — dural fibroblast의 TGFβ 신호·기질 강성이 기전 후보","뉴런 활동 → 동맥 박동 → CSF-ISF 교환 — amyloid 제거의 유체 경로"]],["측정 단위의 분리",["CSF 유입 · 실질 내 교환 · 용질 유출 · 수막 림프 배출 — 단계별로 다른 tracer·시간척도","구동력 구분 — 심박 pulsatility · 느린 vasomotion · 뇌실막 섬모","AQP4 — 총량이 아닌 astrocyte endfoot 배치(극성화)가 지표"]],["인과성 경계",["microglia activation — 보호적 제거와 병원성 염증의 양면","endothelial 변화 — methylation deconvolution·PGS 기반 추론","배수 경로 인과는 mouse 개입 근거 — 인간 배수 정량 표준 부재","인간 종단·기능 검증 전 치료 인과 단정 금지"]]],
+      related: ["ckd-apoe-rare","ckd-variant-celltype","ckd-vascular-microglia"], papers: [P.bellenguez,P.yap,P.romero,P.murdock] },
     { id: "ckd-heterogeneity", section: "course", title: "진행 속도와 회복탄력성은 왜 다른가?",
       aliases: ["heterogeneity","resilience","resistance","progression","인지 예비력"],
       summary: "같은 진단 안의 유전 배경·혼합병리·세포 상태·혈관 부담 차이 → biomarker와 임상 진행의 비동기",

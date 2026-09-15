@@ -7,8 +7,8 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="뇌 발달 trajectory와 위험변이의 세포유형·시점 매핑, neuroimmune 발달축을 다루는 HaLab Wiki 횡단 페이지">
-  <title>Development & Neuroimmune · HaLab Wiki</title>
+  <meta name="description" content="발달 trajectory · scQTL cell-type 매핑 · 질환별 세포 수렴">
+  <title>Development · HaLab Wiki</title>
   <style>
     :root {
       --ink: #18211b;
@@ -308,7 +308,7 @@
 <body>
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Neuro</span></a><button class="brand brand-domain" type="button" data-route="home"><span>/ Development</span></button></div>
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Neuro</span></a><a class="brand brand-domain" href="./index.html"><span>/ General</span></a><button class="brand brand-domain" type="button" data-route="home"><span>/ Development</span></button></div>
       <form class="top-search" id="topSearchForm" role="search">
         <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
         <span class="keycap">/</span>
@@ -319,43 +319,109 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container"><span>Updated 2026-06-24</span></div>
+    <div class="container"><span>Updated 2026-09-15</span></div>
   </footer>
 
   <script>
     const sections = {
-      "trajectory":{"number":"01","title":"발달과 위험유전자","english":"WHEN AND WHERE RISK GENES ACT","accent":"#6f3a55","summary":"발달 trajectory · scQTL cell-type 매핑 · 질환별 세포 수렴","groups":[
-        {"q":"뇌는 어떻게 발달하며 위험유전자는 언제 작동하나?","note":"발달 시점·세포 좌표 없이는 위험유전자를 해석할 수 없음","items":[
-          ["neuro-development","뇌 발달 단일세포 trajectory","많은 위험유전자가 특정 발달 시점·세포 계통에서만 발현"],
-          ["neuro-celltype-mapping","위험 변이 → 세포유형·시점 매핑","AD는 microglia, SCZ는 뉴런, ASD는 발달 초기 뉴런으로 수렴"]
-        ]}
-      ]},
-      "immune":{"number":"02","title":"Neuroimmune 축","english":"IMMUNITY IN DEVELOPMENT AND DISEASE","accent":"#315d78","summary":"microglia pruning · MIA 2-hit · complement · 질환별 면역 접점","groups":[
-        {"q":"면역이 뇌 발달과 질환에 어떻게 관여하나?","note":"면역은 정상 발달의 구성요소이자 질환의 위험 요인","items":[
-          ["neuro-mia","Neuroimmune 축 — 발달과 질환","산전 면역 활성화(MIA)가 자손 NDD 위험을 높임"]
-        ]}
-      ]}
-    };
+  "trajectory": {
+    "number": "01",
+    "title": "발달과 위험유전자",
+    "english": "WHEN AND WHERE RISK GENES ACT",
+    "accent": "#6f3a55",
+    "summary": "발달 trajectory · scQTL cell-type 매핑 · 질환별 세포 수렴",
+    "groups": [
+      {
+        "q": "뇌는 어떻게 발달하며 위험유전자는 언제 작동하나?",
+        "note": "발달 시점·세포 좌표 없이는 위험유전자를 해석할 수 없음",
+        "items": [
+          [
+            "neuro-development",
+            "뇌 발달 단일세포 trajectory",
+            "많은 위험유전자가 특정 발달 시점·세포 계통에서만 발현"
+          ],
+          [
+            "neuro-celltype-mapping",
+            "위험 변이 → 세포유형·시점 매핑",
+            "AD는 microglia, SCZ는 뉴런, ASD는 발달 초기 뉴런으로 수렴"
+          ]
+        ]
+      }
+    ]
+  }
+};
     const articleRows = [
-      ["neuro-development","뇌 발달 단일세포 trajectory",["neurodevelopment","pseudotime","BICCN","radial glia"],"trajectory",
-       "태아기부터 성인까지 뇌 세포가 progenitor에서 성숙 뉴런·glia로 분화하는 과정을 단일세포 pseudotime으로 재구성하면, 많은 위험유전자가 특정 발달 시점·세포 계통에서만 발현됨이 드러난다",
-       [["왜 중요한가",["많은 NDD 위험 유전자가 특정 발달 시점·세포 계통에서만 발현 — 발달 좌표 없이는 작용 맥락을 알 수 없음","인간 뉴런은 출생 후까지 지속되는 protracted maturation을 보여 마우스와 다름","late-fetal 시기에 영역 간 차이가 급감했다가 아동·청소년기에 재분화하는 'cup-shaped' 전환이 관찰됨"]],
-        ["핵심 관찰",["chromatin accessibility 변화가 전사에 선행한다는 pseudotime 추론(모델 기반, 검증 중)","GABAergic 억제성 뉴런이 외부에서 thalamus 등으로 이주","여성 up-regulated 계통 프로그램이 ASD 위험유전자에 enrich — 남성 취약성 가설과 연결"]]],
-       ["neuro-celltype-mapping","asd-convergence","neuro-mia"]],
-
-      ["neuro-celltype-mapping","위험 변이 → 세포유형·시점 매핑",["scQTL","caQTL","PsychENCODE2","cell-type enrichment"],"trajectory",
-       "단일세포 아틀라스와 세포유형별 QTL을 결합하면 비코딩 위험 변이가 어느 세포·발달 시점에서 작동하는지 매핑할 수 있고, 질환마다 수렴하는 세포가 다르다",
-       [["질환별 수렴",["AD → microglia/면역(단일세포 enrichment 유의)","SCZ → 뉴런(시냅스) — 3D chromosomal connectome이 위험 유전자 공간을 뉴런에서 가장 크게 확장","ASD → 발달 초기 흥분성 뉴런 + 전사조절 기능군"]],
-        ["2024년의 도약",["population-scale 단일세포 QTL(PsychENCODE2)이 cell-type 해상도로 위험을 직접 매핑 — 1.4M 이상의 scQTL 중 2/3가 bulk 분석에서는 검출되지 않던 신호","cell-type caQTL 공유율이 10.4%에 불과 — 세포유형 특이성이 강함","PFC·유럽계 위주 데이터라 다른 뇌영역·ancestry로의 일반화는 아직 미검증"]]],
-       ["neuro-development","ad-microglia","asd-singlecell"]],
-
-      ["neuro-mia","Neuroimmune 축 — 발달과 질환",["maternal immune activation","MIA","microglia pruning","complement"],"immune",
-       "면역은 정상 뇌 발달의 구성요소이자 산전 면역 활성화(MIA)를 통해 NDD 위험을 높이는 요인으로, 질환마다 다른 면역 접점을 갖는다",
-       [["정상 발달과 MIA",["microglia가 progenitor 증식·뉴런 생존·시냅스 형성/pruning을 조절 — complement(C1q/C3)·IL-33·fractalkine 매개","임신 중 감염·자가면역·알러지가 자손 ASD/ADHD/SCZ 위험을 높이며, 핵심은 산모 염증인자(IL-17A·IL-6·IFN-I)와 유전 소인의 2-hit 상호작용","뇌 경계(meninges·CSF·choroid plexus)는 더 이상 면역 특권 영역이 아니라 능동적 면역 niche"]],
-        ["질환별 접점과 한계",["AD는 microglia 수렴 + 노화로 인한 amyloid 제거 저하, SCZ는 complement C4 매개 과도한 시냅스 제거와 연관","인간 NDD에서 면역의 인과 기여는 대체로 상관관계 수준이며, MIA 동물모델의 인간 번역에는 주의가 필요","사람-마우스 microglia 비전이성으로 동물모델 결론을 그대로 인간에 적용하기 어려움"]]],
-       ["neuro-development","ad-microglia","mdd-neuroimmune"]]
-    ];
-
+  [
+    "neuro-development",
+    "뇌 발달 단일세포 trajectory",
+    [
+      "neurodevelopment",
+      "pseudotime",
+      "BICCN",
+      "radial glia"
+    ],
+    "trajectory",
+    "태아기부터 성인까지 뇌 세포가 progenitor에서 성숙 뉴런·glia로 분화하는 과정을 단일세포 pseudotime으로 재구성하면, 많은 위험유전자가 특정 발달 시점·세포 계통에서만 발현됨이 드러난다",
+    [
+      [
+        "왜 중요한가",
+        [
+          "많은 NDD 위험 유전자가 특정 발달 시점·세포 계통에서만 발현 — 발달 좌표 없이는 작용 맥락을 알 수 없음",
+          "인간 뉴런은 출생 후까지 지속되는 protracted maturation을 보여 마우스와 다름",
+          "late-fetal 시기에 영역 간 차이가 급감했다가 아동·청소년기에 재분화하는 'cup-shaped' 전환이 관찰됨"
+        ]
+      ],
+      [
+        "핵심 관찰",
+        [
+          "chromatin accessibility 변화가 전사에 선행한다는 pseudotime 추론(모델 기반, 검증 중)",
+          "GABAergic 억제성 뉴런이 외부에서 thalamus 등으로 이주",
+          "여성 up-regulated 계통 프로그램이 ASD 위험유전자에 enrich — 남성 취약성 가설과 연결"
+        ]
+      ]
+    ],
+    [
+      "neuro-celltype-mapping",
+      "asd-convergence",
+      "neuro-mia"
+    ]
+  ],
+  [
+    "neuro-celltype-mapping",
+    "위험 변이 → 세포유형·시점 매핑",
+    [
+      "scQTL",
+      "caQTL",
+      "PsychENCODE2",
+      "cell-type enrichment"
+    ],
+    "trajectory",
+    "단일세포 아틀라스와 세포유형별 QTL을 결합하면 비코딩 위험 변이가 어느 세포·발달 시점에서 작동하는지 매핑할 수 있고, 질환마다 수렴하는 세포가 다르다",
+    [
+      [
+        "질환별 수렴",
+        [
+          "AD → microglia/면역(단일세포 enrichment 유의)",
+          "SCZ → 뉴런(시냅스) — 3D chromosomal connectome이 위험 유전자 공간을 뉴런에서 가장 크게 확장",
+          "ASD → 발달 초기 흥분성 뉴런 + 전사조절 기능군"
+        ]
+      ],
+      [
+        "2024년의 도약",
+        [
+          "population-scale 단일세포 QTL(PsychENCODE2)이 cell-type 해상도로 위험을 직접 매핑 — 1.4M 이상의 scQTL 중 2/3가 bulk 분석에서는 검출되지 않던 신호",
+          "cell-type caQTL 공유율이 10.4%에 불과 — 세포유형 특이성이 강함",
+          "PFC·유럽계 위주 데이터라 다른 뇌영역·ancestry로의 일반화는 아직 미검증"
+        ]
+      ]
+    ],
+    [
+      "neuro-development",
+      "ad-microglia",
+      "asd-singlecell"
+    ]
+  ]
+];
     const articles = Object.fromEntries(articleRows.map(function (row) {
       return [row[0], {title:row[1],aliases:row[2],section:row[3],summary:row[4],body:row[5],related:row[6]}];
     }));
@@ -417,22 +483,7 @@
       }).join("");
     }
 
-    function renderHome() {
-      document.title = "Development & Neuroimmune";
-      app.innerHTML = '<section class="hero"><div class="container">' +
-        '<p class="eyebrow">Neuro · cross-cutting</p><h1>Development & Neuroimmune</h1>' +
-        '<p class="hero-copy">뇌 발달 trajectory · 위험변이의 세포유형·시점 매핑 · neuroimmune 발달축</p>' +
-        '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="발달·면역 통합 검색" placeholder="Search: scQTL, MIA, complement, BICCN"><span class="search-icon">⌕</span></form>' +
-        '<p class="search-hint">Korean / English / acronym</p></div></section>' +
-        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>여러 질환을 가로지르는 발달·면역 축을 살펴보세요.</p></div>' +
-        '<div class="category-grid">' + categoryCards() + '</div></div></section>';
-      document.getElementById("heroSearchForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        const q = document.getElementById("heroSearch").value.trim();
-        if (q) route("search/" + encodeURIComponent(q));
-      });
-      window.scrollTo(0, 0);
-    }
+    function renderHome() { return renderSection("trajectory"); }
 
     function renderSection(key) {
       const s = sections[key];
@@ -544,8 +595,10 @@
         const points = Array.isArray(part[1]) ? part[1] : part[1].replace(/\.\s+/g, ".||| ").split("|||").filter(Boolean);
         return '<section><h2>' + part[0] + '</h2><ul class="fact-list">' + points.map(function (point) { return "<li>" + annotateOnce(point.trim()) + "</li>"; }).join("") + "</ul></section>";
       }).join("");
-      const related = a.related.filter(function (rid) { return articles[rid]; }).map(function (rid) {
-        return '<button data-article="' + rid + '">' + articles[rid].title + ' →</button>';
+      const crossLinks = {"neuro-mia":{"title":"Neuroimmune 축 — 발달과 질환","href":"./neuroinflammation.html#article/neuro-mia"}};
+      const related = a.related.filter(rid => articles[rid] || crossLinks[rid]).map(function(rid) {
+        if (articles[rid]) return '<button data-article="' + rid + '">' + articles[rid].title + ' →</button>';
+        return '<a href="' + crossLinks[rid].href + '">' + crossLinks[rid].title + ' →</a>';
       }).join("");
       const sources = getSources(id).map(function (source) {
         return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
