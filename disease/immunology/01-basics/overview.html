@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="조혈 계통도로 보는 면역계의 짜임 — 계통과 역할, 선천↔적응 연결, 세포·장소·시간 축">
+  <title>면역계는 전체적으로 어떻게 짜여 있나? · Immunology</title>
+  <link rel="stylesheet" href="../immunology.css">
+  <link rel="stylesheet" href="./basics.css">
+</head>
+<body class="vpage">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Immunology</span></a></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="./index.html">목록</a><span>›</span><a href="./index.html">기초와 구성</a><span>›</span>면역계의 큰 그림</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">기초와 구성 — 면역계는 무엇으로 이루어지나</p>
+        <h1>면역계는 전체적으로 어떻게 짜여 있나?</h1>
+        <p class="aliases">Aliases: immune system · 선천면역 · 적응면역 · HSC · CMP · CLP · myeloid · lymphoid · leukocyte · PMN · MNC · NK · NKT · 조혈 · 계통도</p>
+        <p class="definition">골수 HSC → 골수계·림프계 두 갈래 → 혈액과 조직의 면역세포. 같은 지도를 <b>계통</b>(어디서 왔나)과 <b>역할</b>(선천·적응)로 다시 칠하면 두 분류가 어긋나는 세포가 드러남.</p>
+
+        <!-- ───────── 1. 지도 ───────── -->
+        <h2 id="map">한 장 지도 — 조혈 계통도<small>Who comes from where</small></h2>
+        <p class="lede">배경 띠 = <b>장소</b>(골수·흉선 → 혈액 → 조직) · 색 = <b>계통</b> 또는 <b>역할</b> · 세포에 마우스 → 계통·역할·경로 표시 · 아래 용어 칩 → 그 이름이 가리키는 범위만 강조.</p>
+        <figure class="fig" id="mapFig">
+          <div class="fig-tools">
+            <div class="seg" id="mapMode" role="group" aria-label="색 기준">
+              <button type="button" data-mode="lin" aria-pressed="true">계통으로 보기</button>
+              <button type="button" data-mode="role" aria-pressed="false">역할로 보기</button>
+            </div>
+            <div class="legend" id="mapLegend" data-show="lin">
+              <span data-mode="lin"><i style="--c:var(--st)"></i>줄기세포</span>
+              <span data-mode="lin"><i style="--c:var(--my)"></i>골수계 myeloid · CMP 유래</span>
+              <span data-mode="lin"><i style="--c:var(--ly)"></i>림프계 lymphoid · CLP 유래</span>
+              <span data-mode="role"><i style="--c:var(--inn)"></i>선천 innate</span>
+              <span data-mode="role"><i style="--c:var(--ada)"></i>적응 adaptive</span>
+              <span data-mode="role"><i style="--c:var(--il)"></i>innate-like</span>
+              <span data-mode="role"><i style="--c:var(--non)"></i>산소 운반·지혈 혈구</span>
+              <span data-mode="role"><i style="--c:var(--prog)"></i>전구 단계</span>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:MAP-->
+<svg class="hmap" viewBox="0 0 860 552" role="img" aria-labelledby="hmapT hmapD" xmlns="http://www.w3.org/2000/svg">
+<title id="hmapT">조혈 계통도 — HSC에서 혈액·조직의 면역세포까지</title>
+<desc id="hmapD">골수의 HSC가 CMP와 CLP로 갈라지고, CMP는 MEP(적혈구·거핵세포)와 GMP(과립구·단핵구·DC·비만세포)로, CLP는 NK·B·T세포로 이어짐. T세포는 흉선을 거침. 단핵구→대식세포, B→형질세포는 조직에서 분화.</desc>
+<defs><marker id="hmapArrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto"><path d="M0,0.6 L7.6,4 L0,7.4 Z" fill="#a3aaa2"/></marker></defs>
+<g class="bands"><rect class="band bm" x="8" y="38" width="372" height="506" rx="12"/><rect class="band thymus" x="296" y="452" width="80" height="84" rx="10"/><rect class="band blood" x="388" y="38" width="236" height="506" rx="12"/><rect class="band tissue" x="632" y="38" width="222" height="506" rx="12"/><text class="bandlab" x="22" y="26">골수 · BONE MARROW</text><text class="bandlab" x="402" y="26">혈액 · BLOOD</text><text class="bandlab" x="646" y="26">조직 · 림프기관</text><text class="bandlab small" x="336" y="468" text-anchor="middle">흉선</text></g>
+<text class="lineagelab my" x="150" y="176" text-anchor="middle">골수계 myeloid</text>
+<text class="lineagelab ly" x="150" y="413" text-anchor="middle">림프계 lymphoid</text>
+<g class="edges">
+<path class="edge " data-k="cmp" d="M77,287H98Q104,287 104,281V207Q104,201 110,201H133" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="clp" d="M77,287H98Q104,287 104,293V432Q104,438 110,438H133" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="mep" d="M164,201H187Q193,201 193,195V99.5Q193,93.5 199,93.5H219" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="gmp" d="M164,201H187Q193,201 193,207V238Q193,244 199,244H219" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="rbc" d="M250,93.5H277Q283,93.5 283,87.5V78Q283,72 289,72H391" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="mk" d="M250,93.5H277Q283,93.5 283,99.5V109Q283,115 289,115H310" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="plt" d="M347,115H393" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="neut" d="M250,244H316Q322,244 322,238V164Q322,158 328,158H391" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="eos" d="M250,244H316Q322,244 322,238V207Q322,201 328,201H391" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="baso" d="M250,244H391" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="mono" d="M250,244H316Q322,244 322,250V281Q322,287 328,287H390" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="dc" d="M250,244H316Q322,244 322,250V324Q322,330 328,330H389" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="nk" d="M164,438H187Q193,438 193,432V379Q193,373 199,373H391" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="b" d="M164,438H187Q193,438 193,432V422Q193,416 199,416H391" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="thy" d="M164,438H187Q193,438 193,444V482Q193,488 199,488H319" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="t" d="M346,488H368Q374,488 374,482V465Q374,459 380,459H391" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="nkt" d="M346,488H368Q374,488 374,494V496Q374,502 380,502H391" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="mac" d="M606,287H631" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="tdc" d="M606,330H633" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="plasma" d="M606,416H628" marker-end="url(#hmapArrow)"/>
+<path class="edge " data-k="efft" d="M606,459H634" marker-end="url(#hmapArrow)"/>
+<path class="edge dashed" data-k="mast" d="M322,232V226H633" marker-end="url(#hmapArrow)"/>
+</g>
+<g class="cells">
+<g class="cell st prog" data-k="hsc" transform="translate(58 287)" tabindex="-1"><circle class="ring" r="21"/><circle class="cy" r="16"/><circle class="nu" r="9.5"/><text class="nm big" x="0" y="32" text-anchor="middle">HSC</text><text class="sb" x="0" y="44" text-anchor="middle">조혈줄기세포</text></g>
+<g class="cell my prog" data-k="cmp" transform="translate(150 201)" tabindex="-1"><circle class="cy" r="11.5"/><circle class="nu" r="7"/><text class="nm" x="0" y="27" text-anchor="middle">CMP</text><text class="sb" x="0" y="39" text-anchor="middle">공통 골수계 전구</text></g>
+<g class="cell ly prog" data-k="clp" transform="translate(150 438)" tabindex="-1"><circle class="cy" r="11.5"/><circle class="nu" r="7"/><text class="nm" x="0" y="27" text-anchor="middle">CLP</text><text class="sb" x="0" y="39" text-anchor="middle">공통 림프계 전구</text></g>
+<g class="cell my prog" data-k="mep" transform="translate(236 93.5)" tabindex="-1"><circle class="cy" r="11.5"/><circle class="nu" r="7"/><text class="nm" x="0" y="27" text-anchor="middle">MEP</text><text class="sb" x="0" y="39" text-anchor="middle">적혈구·거핵세포 전구</text></g>
+<g class="cell my prog" data-k="gmp" transform="translate(236 244)" tabindex="-1"><circle class="cy" r="11.5"/><circle class="nu" r="7"/><text class="nm" x="0" y="27" text-anchor="middle">GMP</text><text class="sb" x="0" y="39" text-anchor="middle">과립구·대식세포 전구</text></g>
+<g class="cell my non" data-k="mk" transform="translate(330 115)" tabindex="-1"><circle class="cy" r="14.5"/><circle class="nu" cx="-4" cy="-3" r="4.1"/><circle class="nu" cx="3" cy="-5" r="4.1"/><circle class="nu" cx="5" cy="2" r="4.1"/><circle class="nu" cx="-2" cy="4" r="4.1"/><circle class="nu" cx="0" cy="-0.5" r="4.1"/><text class="sb" x="0" y="-22" text-anchor="middle">거핵세포 · MK</text></g>
+<g class="cell ly prog" data-k="thy" transform="translate(334 488)" tabindex="-1"><circle class="cy" r="10"/><circle class="nu" r="6.5"/></g>
+<g class="cell my non" data-k="rbc" transform="translate(408 72)" tabindex="-1"><circle class="rbc" r="12"/><ellipse class="pal" rx="5.2" ry="4.6"/><text class="nm" x="21" y="-2">Erythrocyte (RBC)</text><text class="sb" x="21" y="12">적혈구</text></g>
+<g class="cell my non" data-k="plt" transform="translate(408 115)" tabindex="-1"><ellipse class="nu" cx="-6" cy="-4" rx="4.4" ry="3" transform="rotate(-20 -6 -4)"/><ellipse class="nu" cx="5" cy="-3" rx="3.8" ry="2.7" transform="rotate(25 5 -3)"/><ellipse class="nu" cx="-1" cy="5.5" rx="4.2" ry="2.8"/><text class="nm" x="19" y="-2">Platelet</text><text class="sb" x="19" y="12">혈소판 · 거핵세포 조각</text></g>
+<g class="cell my inn" data-k="neut" transform="translate(408 158)" tabindex="-1"><circle class="cy" r="12"/><path class="lk" d="M-6,-2 L-1,3 L4,-1 L6,-6"/><circle class="nu" cx="-6" cy="-2" r="3.1"/><circle class="nu" cx="-1" cy="3" r="3.1"/><circle class="nu" cx="4" cy="-1" r="3.1"/><circle class="nu" cx="6" cy="-6" r="3.1"/><text class="nm" x="21" y="-2">Neutrophil</text><text class="sb" x="21" y="12">호중구</text></g>
+<g class="cell my inn" data-k="eos" transform="translate(408 201)" tabindex="-1"><circle class="cy" r="12"/><path class="lk" d="M-4,-1 L4,-1"/><circle class="nu" cx="-4.3" cy="-1" r="4.2"/><circle class="nu" cx="4.3" cy="-1" r="4.2"/><circle class="gr" cx="-6" cy="6" r="1.2"/><circle class="gr" cx="-1" cy="7.5" r="1.2"/><circle class="gr" cx="4" cy="6.5" r="1.2"/><circle class="gr" cx="8" cy="3" r="1.2"/><circle class="gr" cx="-8.5" cy="2" r="1.2"/><circle class="gr" cx="0" cy="-7.5" r="1.2"/><circle class="gr" cx="7" cy="-6.5" r="1.2"/><circle class="gr" cx="-7" cy="-6.5" r="1.2"/><text class="nm" x="21" y="-2">Eosinophil</text><text class="sb" x="21" y="12">호산구</text></g>
+<g class="cell my inn" data-k="baso" transform="translate(408 244)" tabindex="-1"><circle class="cy" r="12"/><circle class="nu faint" cx="-3.5" cy="0" r="3.8"/><circle class="nu faint" cx="3.5" cy="0" r="3.8"/><circle class="gr" cx="-6" cy="-5" r="1.6"/><circle class="gr" cx="-1" cy="-8" r="1.6"/><circle class="gr" cx="5" cy="-6" r="1.6"/><circle class="gr" cx="8" cy="-1" r="1.6"/><circle class="gr" cx="6" cy="5" r="1.6"/><circle class="gr" cx="1" cy="7.5" r="1.6"/><circle class="gr" cx="-5" cy="6" r="1.6"/><circle class="gr" cx="-8.5" cy="1" r="1.6"/><circle class="gr" cx="-1.5" cy="-3" r="1.6"/><circle class="gr" cx="2" cy="3" r="1.6"/><circle class="gr" cx="0" cy="0.5" r="1.6"/><circle class="gr" cx="-4" cy="3" r="1.6"/><text class="nm" x="21" y="-2">Basophil</text><text class="sb" x="21" y="12">호염기구</text></g>
+<g class="cell my inn" data-k="mono" transform="translate(408 287)" tabindex="-1"><circle class="cy" r="13"/><path class="nu" d="M-7,-3 C-7,-9 3,-10 6,-5 C8,-2 4,0 2,2 C0,4 4,7 1,8 C-5,9 -7,3 -7,-3 Z"/><text class="nm" x="22" y="-2">Monocyte</text><text class="sb" x="22" y="12">단핵구</text></g>
+<g class="cell my inn" data-k="dc" transform="translate(408 330)" tabindex="-1"><path class="cy" d="M-3,-6 L-6,-17 L1,-8 L9,-15 L6,-5 L17,-4 L7,1 L13,11 L3,6 L-1,16 L-3,6 L-14,10 L-7,1 L-17,-4 L-6,-3 Z"/><circle class="nu" r="4.3"/><text class="nm" x="23" y="-2">Dendritic cell</text><text class="sb" x="23" y="12">수지상세포 · 혈액</text></g>
+<g class="cell ly inn" data-k="nk" transform="translate(408 373)" tabindex="-1"><circle class="cy" r="12"/><circle class="nu" cx="-2.5" cy="0" r="6.8"/><circle class="gr" cx="6.5" cy="-3.5" r="1.8"/><circle class="gr" cx="7.5" cy="2.5" r="1.8"/><circle class="gr" cx="4" cy="7" r="1.8"/><text class="nm" x="21" y="-2">NK cell</text><text class="sb" x="21" y="12">자연살해세포</text></g>
+<g class="cell ly ada" data-k="b" transform="translate(408 416)" tabindex="-1"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M0,-11 V-14.5 M0,-14.5 L-2.4,-17 M0,-14.5 L2.4,-17 M11,0 H14.5 M14.5,0 L17,-2.4 M14.5,0 L17,2.4"/><text class="nm" x="21" y="-2">B cell</text><text class="sb" x="21" y="12">B세포</text></g>
+<g class="cell ly ada" data-k="t" transform="translate(408 459)" tabindex="-1"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5 M11,-1.4 H15.5 M11,1.4 H15.5"/><text class="nm" x="21" y="-2">T cell · CD4 / CD8</text><text class="sb" x="21" y="12">T세포</text></g>
+<g class="cell ly il" data-k="nkt" transform="translate(408 502)" tabindex="-1"><circle class="cy" r="11"/><circle class="nu" cx="-1.5" cy="0" r="7"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5"/><circle class="gr" cx="7" cy="3" r="1.6"/><circle class="gr" cx="5" cy="7" r="1.6"/><text class="nm" x="21" y="-2">NKT cell</text><text class="sb" x="21" y="12">자연살해 T세포 · T 하위</text></g>
+<g class="cell my inn" data-k="mast" transform="translate(652 224)" tabindex="-1"><ellipse class="cy" rx="14" ry="11"/><circle class="nu" cx="-3" cy="0" r="4.6"/><circle class="gr" cx="4" cy="-6" r="1.4"/><circle class="gr" cx="8" cy="-2" r="1.4"/><circle class="gr" cx="7" cy="4" r="1.4"/><circle class="gr" cx="2" cy="7" r="1.4"/><circle class="gr" cx="-5" cy="7" r="1.4"/><circle class="gr" cx="-10" cy="3" r="1.4"/><circle class="gr" cx="-9" cy="-4" r="1.4"/><circle class="gr" cx="-3" cy="-8" r="1.4"/><circle class="gr" cx="3" cy="1" r="1.4"/><circle class="gr" cx="10" cy="1.5" r="1.4"/><circle class="gr" cx="5" cy="-1.5" r="1.4"/><circle class="gr" cx="-1" cy="5.5" r="1.4"/><text class="nm" x="23" y="-2">Mast cell</text><text class="sb" x="23" y="12">비만세포 · 조직에서 분화</text></g>
+<g class="cell my inn" data-k="mac" transform="translate(652 287)" tabindex="-1"><path class="cy" d="M-15,-3 C-19,-9 -11,-15 -6,-12 C-3,-18 6,-17 7,-11 C13,-14 19,-7 14,-2 C20,3 15,11 9,9 C8,16 -2,17 -4,11 C-10,15 -17,9 -13,4 C-18,2 -18,-1 -15,-3 Z"/><ellipse class="nu" cx="-2" cy="0" rx="5.5" ry="4.2"/><circle class="vac" cx="6" cy="-4" r="2.1"/><circle class="vac" cx="5" cy="4" r="1.6"/><text class="nm" x="25" y="-2">Macrophage</text><text class="sb" x="25" y="12">대식세포</text></g>
+<g class="cell my inn" data-k="tdc" transform="translate(652 330)" tabindex="-1"><path class="cy" d="M-3,-6 L-6,-17 L1,-8 L9,-15 L6,-5 L17,-4 L7,1 L13,11 L3,6 L-1,16 L-3,6 L-14,10 L-7,1 L-17,-4 L-6,-3 Z"/><circle class="nu" r="4.3"/><text class="nm" x="23" y="-2">Tissue DC</text><text class="sb" x="23" y="12">항원 포획 → 림프절</text></g>
+<g class="cell ly ada" data-k="plasma" transform="translate(652 416)" tabindex="-1"><ellipse class="cy" rx="14" ry="10"/><circle class="nu" cx="-6" cy="0" r="5.4"/><ellipse class="vac" cx="2" cy="0" rx="2.6" ry="3.4"/><path class="rcp" d="M17,-6 l3,-3 M20,-9 l-1,-4 M20,-9 l4,-1 M18,6 l3,3 M21,9 l4,-1 M21,9 l-1,4"/><text class="nm" x="28" y="-2">Plasma cell</text><text class="sb" x="28" y="12">형질세포 · 항체 분비</text></g>
+<g class="cell ly ada" data-k="efft" transform="translate(652 459)" tabindex="-1"><circle class="cy" r="12.5"/><circle class="nu" cx="-1.5" cy="0" r="7.5"/><path class="rcp" d="M-1.4,-12.5 V-17 M1.4,-12.5 V-17 M12.5,-1.4 H17 M12.5,1.4 H17"/><circle class="gr" cx="7" cy="5.5" r="1.5"/><circle class="gr" cx="4.5" cy="8.5" r="1.5"/><text class="nm" x="22" y="-2">Effector T</text><text class="sb" x="22" y="12">작동 T세포</text></g>
+</g>
+<g class="rolenote"><text x="646" y="89">← 주 기능: 산소 운반 · 지혈</text><text x="646" y="377">← 림프계 출신 · 선천면역</text><text x="646" y="499">← TCR 가진 T 하위 ·</text><text x="660" y="513">innate-like</text></g>
+</svg>
+<!--/GEN:MAP-->
+          </div>
+          <p class="mapinfo" id="mapInfo" aria-live="polite">세포에 마우스 → 계통 · 역할 · 장소 · HSC부터의 경로</p>
+          <div class="chips" aria-label="용어로 범위 강조">
+            <span class="chip-h">용어로 찾기</span>
+            <button type="button" class="chip" data-fig="map" data-hl="neut eos baso mono dc nk b t nkt">Leukocyte · WBC<small>백혈구</small></button>
+            <button type="button" class="chip" data-fig="map" data-hl="neut eos baso">Granulocyte · PMN<small>과립구</small></button>
+            <button type="button" class="chip" data-fig="map" data-hl="mono dc nk b t nkt">Mononuclear cell · MNC<small>단핵세포</small></button>
+            <button type="button" class="chip" data-fig="map" data-hl="nk b t nkt">Lymphocyte<small>림프구</small></button>
+            <button type="button" class="chip" data-fig="map" data-hl="cmp mep gmp mk rbc plt neut eos baso mono dc mast mac tdc">Myeloid<small>골수계</small></button>
+            <button type="button" class="chip" data-fig="map" data-hl="clp thy nk b t nkt plasma efft">Lymphoid<small>림프계</small></button>
+            <button type="button" class="chip" data-fig="map" data-hl="neut eos baso mast mono mac dc tdc nk">선천<small>innate</small></button>
+            <button type="button" class="chip" data-fig="map" data-hl="b plasma t efft">적응<small>adaptive</small></button>
+            <button type="button" class="chip" data-fig="map" data-hl="mast mac tdc plasma efft">조직에서 분화·작동</button>
+          </div>
+          <div class="abbrbox">
+            <span class="chip-h">약어 풀이</span>
+            <dl class="abbr">
+              <div><dt>HSC</dt><dd>hematopoietic stem cell · 조혈줄기세포</dd></div>
+              <div><dt>CMP</dt><dd>common myeloid progenitor · 공통 골수계 전구세포</dd></div>
+              <div><dt>CLP</dt><dd>common lymphoid progenitor · 공통 림프계 전구세포</dd></div>
+              <div><dt>MEP</dt><dd>megakaryocyte–erythrocyte progenitor · 거핵세포·적혈구 전구세포</dd></div>
+              <div><dt>GMP</dt><dd>granulocyte–macrophage progenitor · 과립구·대식세포 전구세포</dd></div>
+              <div><dt>MK</dt><dd>megakaryocyte · 거핵세포</dd></div>
+              <div><dt>RBC · WBC</dt><dd>red · white blood cell · 적혈구 · 백혈구</dd></div>
+              <div><dt>PMN</dt><dd>polymorphonuclear leukocyte · 다형핵 백혈구 = granulocyte</dd></div>
+              <div><dt>MNC</dt><dd>mononuclear cell · 단핵세포</dd></div>
+              <div><dt>DC</dt><dd>dendritic cell · 수지상세포</dd></div>
+              <div><dt>NK · NKT</dt><dd>natural killer (T) cell · 자연살해 (T)세포</dd></div>
+              <div><dt>ILC</dt><dd>innate lymphoid cell · 선천 림프구</dd></div>
+              <div><dt>CTL</dt><dd>cytotoxic T lymphocyte · 세포독성 T세포</dd></div>
+              <div><dt>TH1</dt><dd>type 1 helper T cell · 1형 보조 T세포</dd></div>
+            </dl>
+            <p class="abbr-src">명칭 <a class="src" href="https://doi.org/10.1038/35004599" target="_blank" rel="noopener">Akashi 2000</a> <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a> <a class="src" href="https://doi.org/10.1016/j.cell.2018.07.017" target="_blank" rel="noopener">Vivier 2018</a></p>
+          </div>
+          <figcaption>
+            고전 계통도 기준 단순화 — CMP·CLP = 골수계·림프계의 가장 이른 갈림 <a class="src" href="https://doi.org/10.1038/35004599" target="_blank" rel="noopener">Akashi 2000</a>
+            · 인간 전구세포 지도에서는 대식세포·DC의 림프계 초기 기원도 보고 <a class="src" href="https://doi.org/10.1038/ni.1889" target="_blank" rel="noopener">Doulatov 2010</a>
+            · 중간 전구 단계·DC 아형 경로 생략.
+            세포 계통·장소 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a>
+            · 선천면역 세포 구성 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK459455/" target="_blank" rel="noopener">Aristizábal 2013</a>
+            · NKT <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK532332/" target="_blank" rel="noopener">Heller 2018</a>
+          </figcaption>
+        </figure>
+        <div class="callout blue">
+          <h4>역할로 바꾸면 색이 변하는 세포 = 계통 ≠ 역할</h4>
+          <p><b>NK</b> — 림프계 출신 · 항원특이 수용체 없음 → 선천면역 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a>
+             · 같은 성격의 <b>ILC</b> — T·B식 다양화 항원수용체 없는 림프구 <a class="src" href="https://doi.org/10.1016/j.cell.2018.07.017" target="_blank" rel="noopener">Vivier 2018</a></p>
+          <p><b>NKT</b> — NK의 하위가 아니라 semi-invariant αβ TCR을 가진 T세포 · CD1d 위 당지질 인식 · NK 표지(CD161·CD56) 공유 → 빠른 반응의 innate-like <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK532332/" target="_blank" rel="noopener">Heller 2018</a></p>
+        </div>
+
+        <!-- ───────── 2. 선천 ↔ 적응 ───────── -->
+        <h2 id="innate-adaptive">선천 ↔ 적응 한눈에<small>How the two arms connect</small></h2>
+        <p class="lede">선천면역 → 즉시 1차 방어 + 적응면역 시동 · 적응면역 → 며칠 뒤 특이적 작동 + 선천면역 재강화 → 한 방향 단계보다 <b>되먹임 회로</b>. 2장(선천)과 3·4장(적응)의 연결 지도.</p>
+        <figure class="fig">
+          <div class="fig-scroll">
+<!--GEN:FLOW-->
+<svg class="flow" viewBox="0 0 920 350" role="img" aria-labelledby="flowT flowD" xmlns="http://www.w3.org/2000/svg">
+<title id="flowT">선천면역과 적응면역의 연결</title>
+<desc id="flowD">병원체 침입 → 대식세포·호중구·보체의 1차 방어 → DC가 항원을 포획해 림프절로 이동 → naive T·B 활성화 → 클론 증식 → 항체·CTL·TH1 작동 → 항체의 opsonization·보체 활성과 TH1의 대식세포 활성화로 다시 선천면역 강화.</desc>
+<defs><marker id="flowArrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0.6 L7.6,4 L0,7.4 Z" fill="#8f978e"/></marker><marker id="flowBack" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M0,0.6 L7.6,4 L0,7.4 Z" fill="#6f3a55"/></marker></defs>
+<rect class="lane inn" x="8" y="30" width="904" height="120" rx="14"/>
+<rect class="lane ada" x="8" y="204" width="904" height="138" rx="14"/>
+<text class="lanet inn" x="26" y="62">선천면역</text><text class="lanek" x="26" y="79">INNATE</text>
+<text class="sb" x="26" y="104">감염 직후 작동</text><text class="sb" x="26" y="119">germline 수용체</text>
+<text class="lanet ada" x="26" y="236">적응면역</text><text class="lanek" x="26" y="253">ADAPTIVE</text>
+<text class="sb" x="26" y="278">첫 반응까지 4–7일</text><text class="sb" x="26" y="293">유전자 재조합 수용체</text>
+<g class="cell path" transform="translate(220 100)"><rect class="bug" x="-9" y="-3.5" width="18" height="7" rx="3.5" transform="rotate(-25)"/><rect class="bug" x="-4" y="5" width="15" height="6" rx="3" transform="rotate(12)"/></g>
+<text class="nm " x="220" y="58" text-anchor="middle">병원체</text><text class="sb" x="220" y="73" text-anchor="middle">침입</text>
+<g class="cell inn" transform="translate(342 100)"><path class="cy" d="M-15,-3 C-19,-9 -11,-15 -6,-12 C-3,-18 6,-17 7,-11 C13,-14 19,-7 14,-2 C20,3 15,11 9,9 C8,16 -2,17 -4,11 C-10,15 -17,9 -13,4 C-18,2 -18,-1 -15,-3 Z"/><ellipse class="nu" cx="-2" cy="0" rx="5.5" ry="4.2"/><circle class="vac" cx="6" cy="-4" r="2.1"/><circle class="vac" cx="5" cy="4" r="1.6"/></g>
+<g class="cell inn" transform="translate(382 100)"><circle class="cy" r="12"/><path class="lk" d="M-6,-2 L-1,3 L4,-1 L6,-6"/><circle class="nu" cx="-6" cy="-2" r="3.1"/><circle class="nu" cx="-1" cy="3" r="3.1"/><circle class="nu" cx="4" cy="-1" r="3.1"/><circle class="nu" cx="6" cy="-6" r="3.1"/></g>
+<text class="nm " x="362" y="58" text-anchor="middle">대식세포 · 호중구 · 보체</text><text class="sb" x="362" y="73" text-anchor="middle">1차 방어</text>
+<g class="cell inn" transform="translate(520 100)"><path class="cy" d="M-3,-6 L-6,-17 L1,-8 L9,-15 L6,-5 L17,-4 L7,1 L13,11 L3,6 L-1,16 L-3,6 L-14,10 L-7,1 L-17,-4 L-6,-3 Z"/><circle class="nu" r="4.3"/></g>
+<text class="nm " x="520" y="58" text-anchor="middle">수지상세포 DC</text><text class="sb" x="520" y="73" text-anchor="middle">항원 포획 · 성숙</text>
+<path class="farrow" d="M240,100H316" marker-end="url(#flowArrow)"/>
+<path class="farrow" d="M398,100H496" marker-end="url(#flowArrow)"/>
+<path class="farrow strong" d="M520,120V236" marker-end="url(#flowArrow)"/>
+<text class="sb dark" x="508" y="148" text-anchor="end">림프절로 이동</text>
+<text class="sb dark" x="508" y="162" text-anchor="end">T세포에 항원 제시</text>
+<g transform="translate(520 270)"><path class="lnode" d="M-26,-6 C-28,-20 -10,-24 2,-20 C10,-26 26,-18 25,-4 C30,8 18,22 2,19 C-4,14 -8,14 -12,18 C-26,20 -30,6 -26,-6 Z"/></g>
+<g class="cell ada" transform="translate(508 266) scale(0.5)"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5 M11,-1.4 H15.5 M11,1.4 H15.5"/></g>
+<g class="cell ada" transform="translate(532 274) scale(0.5)"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M0,-11 V-14.5 M0,-14.5 L-2.4,-17 M0,-14.5 L2.4,-17 M11,0 H14.5 M14.5,0 L17,-2.4 M14.5,0 L17,2.4"/></g>
+<text class="nm " x="520" y="314" text-anchor="middle">림프절 · 2차 림프기관</text><text class="sb" x="520" y="329" text-anchor="middle">naive T · B 활성화</text>
+<path class="farrow" d="M552,270H626" marker-end="url(#flowArrow)"/>
+<g class="cell ada" transform="translate(644 270) scale(0.6)"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5 M11,-1.4 H15.5 M11,1.4 H15.5"/></g>
+<path class="farrow" d="M654,270H668" marker-end="url(#flowArrow)"/>
+<g class="cell ada" transform="translate(683 259) scale(0.5)"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5 M11,-1.4 H15.5 M11,1.4 H15.5"/></g><g class="cell ada" transform="translate(696 259) scale(0.5)"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5 M11,-1.4 H15.5 M11,1.4 H15.5"/></g><g class="cell ada" transform="translate(709 259) scale(0.5)"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5 M11,-1.4 H15.5 M11,1.4 H15.5"/></g><g class="cell ada" transform="translate(689 271) scale(0.5)"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5 M11,-1.4 H15.5 M11,1.4 H15.5"/></g><g class="cell ada" transform="translate(702 271) scale(0.5)"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5 M11,-1.4 H15.5 M11,1.4 H15.5"/></g><g class="cell ada" transform="translate(715 271) scale(0.5)"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5 M11,-1.4 H15.5 M11,1.4 H15.5"/></g><g class="cell ada" transform="translate(696 283) scale(0.5)"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5 M11,-1.4 H15.5 M11,1.4 H15.5"/></g><g class="cell ada" transform="translate(709 283) scale(0.5)"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5 M11,-1.4 H15.5 M11,1.4 H15.5"/></g>
+<text class="nm " x="684" y="314" text-anchor="middle">클론 증식</text><text class="sb" x="684" y="329" text-anchor="middle">1개 → 약 1,000개 · 4–5일</text>
+<path class="farrow" d="M726,270H766" marker-end="url(#flowArrow)"/>
+<g class="cell ada" transform="translate(790 266)"><path class="abY" d="M0,9 V1 M0,1 L-6,-7 M0,1 L6,-7"/></g>
+<g class="cell ada" transform="translate(828 270) scale(0.9)"><circle class="cy" r="12.5"/><circle class="nu" cx="-1.5" cy="0" r="7.5"/><path class="rcp" d="M-1.4,-12.5 V-17 M1.4,-12.5 V-17 M12.5,-1.4 H17 M12.5,1.4 H17"/><circle class="gr" cx="7" cy="5.5" r="1.5"/><circle class="gr" cx="4.5" cy="8.5" r="1.5"/></g>
+<g class="cell ada" transform="translate(866 270) scale(0.9)"><circle class="cy" r="11"/><circle class="nu" r="8"/><path class="rcp" d="M-1.4,-11 V-15.5 M1.4,-11 V-15.5 M11,-1.4 H15.5 M11,1.4 H15.5"/></g>
+<text class="tiny" x="790" y="298" text-anchor="middle">항체</text>
+<text class="tiny" x="828" y="298" text-anchor="middle">CTL</text>
+<text class="tiny" x="866" y="298" text-anchor="middle">TH1</text>
+<text class="nm" x="828" y="316" text-anchor="middle">작동 → 기억세포</text>
+<text class="sb" x="828" y="331" text-anchor="middle">2차 반응: 지연 짧고 수준 높음</text>
+<path class="fback" d="M790,248V238H858Q868,238 868,230V180Q868,172 860,172H370Q362,172 362,164V126" marker-end="url(#flowBack)"/>
+<text class="backlab" x="548" y="164">항체 → opsonization · 보체 활성</text>
+<text class="backlab" x="548" y="190">TH1 → 대식세포 활성화</text>
+</svg>
+<!--/GEN:FLOW-->
+          </div>
+          <figcaption>
+            모식도 · 시간 축 비율 아님. 적응면역 첫 반응까지 4–7일 · 활성화 후 클론 증식 완료까지 4–5일 · naive 림프구 1개 → 약 1,000개 딸세포 · 기억세포 → 2차 반응 지연 짧고 수준 높음 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27090/" target="_blank" rel="noopener">Janeway 2001 · 1-5~1-12</a>
+            · 항체 → 중화·opsonization·보체 활성, CTL → 감염세포 제거, TH1 → 대식세포 활성화 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27124/" target="_blank" rel="noopener">Janeway 2001 · 1-14~1-15</a>
+          </figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>비교</th><th>선천면역 innate</th><th>적응면역 adaptive</th></tr></thead>
+            <tbody>
+              <tr><th>반응 시점</th><td class="inn">감염 직후 · 적응면역이 늦는 동안 감염 억제</td><td class="ada">첫 반응까지 4–7일 지연 · 재감염 시 지연 짧고 반응 큼</td></tr>
+              <tr><th>수용체</th><td class="inn">germline 암호 수용체 → 여러 병원체의 공통 구조 인식</td><td class="ada">유전자 절편 재조합 → 림프구마다 1가지 특이성</td></tr>
+              <tr><th>증폭</th><td class="inn">—</td><td class="ada">항원 만난 림프구만 활성화·증식 (clonal selection)</td></tr>
+              <tr><th>대표 세포</th><td class="inn">대식세포 · 호중구 · DC · NK</td><td class="ada">B세포 → 형질세포 · T세포 (CD4 · CD8)</td></tr>
+              <tr><th>상대에게 주는 것</th><td class="inn">DC → 림프절에서 T세포에 항원 제시 · 보체 조각 → 림프구 활성화 신호 보조</td><td class="ada">항체 → 식세포 인식 표지 · TH1 → 대식세포 활성화 · memory T → myeloid 세포 조절 <a class="src" href="https://doi.org/10.1146/annurev-immunol-083122-040624" target="_blank" rel="noopener">Warrick 2025</a></td></tr>
+              <tr><th>이어 읽기</th><td class="inn"><a class="next" href="../02-innate/index.html">02 선천면역 →</a></td><td class="ada"><a class="next" href="../03-adaptive-recognition/index.html">03 인식·발달 →</a> · <a class="next" href="../04-adaptive-effector/index.html">04 실행·장소 →</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="lede" style="margin-top:8px;font-size:.78rem">표 출처: <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27090/" target="_blank" rel="noopener">Janeway 2001 · Principles</a> <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27124/" target="_blank" rel="noopener">Janeway 2001 · Effector</a> <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001 · Components</a></p>
+
+        <!-- ───────── 3. 세 축 ───────── -->
+        <h2 id="axes">세 축으로 읽기<small>Cell · Place · Time</small></h2>
+        <div class="tablist" role="tablist" aria-label="세 축">
+          <button role="tab" id="tab-cell" aria-controls="panel-cell" aria-selected="true">세포 축<small>누가 · 이름이 가리키는 범위</small></button>
+          <button role="tab" id="tab-place" aria-controls="panel-place" aria-selected="false" tabindex="-1">장소 축<small>어디서 · 만들고 만나고 일하는 곳</small></button>
+          <button role="tab" id="tab-time" aria-controls="panel-time" aria-selected="false" tabindex="-1">시간 축<small>언제 · 발생 순서</small></button>
+        </div>
+
+        <!-- 세포 축 -->
+        <section role="tabpanel" id="panel-cell" aria-labelledby="tab-cell">
+          <h3 class="panelhd">이름이 가리키는 범위</h3>
+          <p class="lede">혈액·면역세포 상위 용어의 포함 관계 · “그림에서 보기” → 위 지도에서 범위 강조.</p>
+          <div class="fixlist">
+            <div class="fix">
+              <code>HSC → CMP (골수계 전구) + CLP (림프계 전구)</code>
+              <p class="why">합이 아니라 분화 방향 · 고전 모델의 가장 이른 갈림 <a class="src" href="https://doi.org/10.1038/35004599" target="_blank" rel="noopener">Akashi 2000</a> · 인간 지도 수정안 <a class="src" href="https://doi.org/10.1038/ni.1889" target="_blank" rel="noopener">Doulatov 2010</a></p>
+              <button type="button" class="see" data-fig="map" data-hl="hsc cmp clp">그림에서 보기 ↑</button>
+            </div>
+            <div class="fix">
+              <code>Blood = plasma (~55%) + formed elements (RBC + WBC + platelet)</code>
+              <p class="why">원심분리 시 적혈구 ~45% · 버피코트(WBC+혈소판) &lt;1% <a class="src" href="https://openstax.org/books/anatomy-and-physiology-2e/pages/18-1-an-overview-of-blood" target="_blank" rel="noopener">OpenStax A&amp;P 2e</a> <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK531504/" target="_blank" rel="noopener">StatPearls 2026 · Plasma</a></p>
+              <button type="button" class="see" data-fig="map" data-hl="rbc plt neut eos baso mono dc nk b t nkt">그림에서 보기 ↑</button>
+            </div>
+            <div class="fix">
+              <code>Leukocyte = WBC = granulocyte (= PMN) + mononuclear cell (MNC)</code>
+              <p class="why">granulocyte 별칭 = polymorphonuclear leukocyte <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a> · 단핵세포 = mononuclear (PBMC = peripheral blood mononuclear cell) <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK500157/" target="_blank" rel="noopener">Kleiveland 2015</a></p>
+              <button type="button" class="see" data-fig="map" data-hl="neut eos baso mono dc nk b t nkt">그림에서 보기 ↑</button>
+            </div>
+            <div class="fix">
+              <code>PMN = neutrophil + eosinophil + basophil</code>
+              <p class="why">mast cell → 혈중 전구 불명확, 조직에서 분화 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a> · 넓은 뜻의 granulocyte에 mast cell을 묶는 문헌도 존재 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK459455/" target="_blank" rel="noopener">Aristizábal 2013</a></p>
+              <button type="button" class="see" data-fig="map" data-hl="neut eos baso">그림에서 보기 ↑</button>
+            </div>
+            <div class="fix">
+              <code>PBMC = lymphocyte (T + B + NK) 70–90% + monocyte 10–20% + DC 1–2%</code>
+              <p class="why"><a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK500157/" target="_blank" rel="noopener">Kleiveland 2015</a> · NKT = TCR 가진 T세포 하위 → T 안에 포함, NK와 나란한 항목 아님 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK532332/" target="_blank" rel="noopener">Heller 2018</a></p>
+              <button type="button" class="see" data-fig="map" data-hl="mono dc nk b t nkt">그림에서 보기 ↑</button>
+            </div>
+            <div class="fix">
+              <code>Lymphoid progenitor → B · T (적응) + NK · ILC (선천)</code>
+              <p class="why">lymphoid ≠ adaptive · NK = 항원특이 수용체 없는 선천면역 림프구 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a> · ILC = 다양화된 항원수용체 없는 림프구 <a class="src" href="https://doi.org/10.1016/j.cell.2018.07.017" target="_blank" rel="noopener">Vivier 2018</a></p>
+              <button type="button" class="see" data-fig="map" data-hl="clp thy nk b t nkt plasma efft">그림에서 보기 ↑</button>
+            </div>
+          </div>
+
+          <h3 class="subhd">함께 헷갈리는 짝</h3>
+          <div class="tblwrap">
+            <table class="vtable">
+              <thead><tr><th>용어</th><th>가리키는 것</th><th>구분 포인트</th><th></th></tr></thead>
+              <tbody>
+                <tr><th>Myeloid<span class="ko">골수계</span></th><td>CMP 계열 — 과립구·대식세포·DC·비만세포 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a> · 적혈구·거핵세포 전구까지 <a class="src" href="https://doi.org/10.1038/35004599" target="_blank" rel="noopener">Akashi 2000</a></td><td>백혈구 계열만 · 적혈구·거핵세포 포함 — 두 범위 모두 쓰임 → 문맥 확인</td><td><button type="button" class="see chip" data-fig="map" data-hl="cmp mep gmp mk rbc plt neut eos baso mono dc mast mac tdc">그림 ↑</button></td></tr>
+                <tr><th>Monocyte · Macrophage<span class="ko">단핵구 · 대식세포</span></th><td>혈액 순환 단핵구 → 조직 이동 후 대식세포로 분화</td><td>같은 계열의 장소·성숙 차이 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></td><td><button type="button" class="see chip" data-fig="map" data-hl="mono mac">그림 ↑</button></td></tr>
+                <tr><th>NK · NKT<span class="ko">자연살해세포 · 자연살해 T세포</span></th><td>NK: 선천 림프구 · NKT: αβ TCR 가진 T세포 하위</td><td>NKT는 NK 표지를 공유할 뿐 NK의 하위 아님 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK532332/" target="_blank" rel="noopener">Heller 2018</a></td><td><button type="button" class="see chip" data-fig="map" data-hl="nk nkt">그림 ↑</button></td></tr>
+                <tr><th>Plasma cell · Plasma<span class="ko">형질세포 · 혈장</span></th><td>활성화 B세포 → 항체 분비 세포 · 혈액의 액체 성분</td><td>이름만 비슷, 전혀 다른 대상 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a> · <a class="next" href="./cells.html#fractions">혈액 분획 →</a></td><td><button type="button" class="see chip" data-fig="map" data-hl="b plasma">그림 ↑</button></td></tr>
+                <tr><th>Mast cell · Basophil<span class="ko">비만세포 · 호염기구</span></th><td>조직에서 분화하는 과립 세포 · 혈액 과립구</td><td>기능 유사·보완 추정, 장소가 다름 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></td><td><button type="button" class="see chip" data-fig="map" data-hl="mast baso">그림 ↑</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <a class="more" href="./cells.html">세포 종류·상태와 혈액 속 비율 자세히 →</a>
+        </section>
+
+        <!-- 장소 축 -->
+        <section role="tabpanel" id="panel-place" aria-labelledby="tab-place" hidden>
+          <h3 class="panelhd">만들고 · 만나고 · 일하는 곳</h3>
+          <p class="lede">지도의 배경 띠가 곧 장소 축 · 같은 세포라도 어디에 있느냐에 따라 이름(단핵구 → 대식세포)과 역할 단계가 바뀜.</p>
+          <ol class="route">
+            <li style="--c:var(--st)"><span class="lv">만드는 곳</span><h4>1차 림프기관</h4><p><b>골수</b> — 모든 혈구의 출발점 HSC · <b>흉선</b> — T세포 성숙 · 림프구 생성 장소 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></p></li>
+            <li style="--c:var(--ly)"><span class="lv">만나는 곳</span><h4>2차 림프기관</h4><p><b>림프절 · 비장 · 점막 림프조직</b> — 적응면역 개시 · 림프구 유지 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></p></li>
+            <li style="--c:var(--my)"><span class="lv">일하는 곳</span><h4>조직 · 감염 부위</h4><p>순환 백혈구 → 혈관 내피 부착 → 감염 부위로 이동 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27090/" target="_blank" rel="noopener">Janeway 2001</a> · 단핵구 → 조직에서 대식세포 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></p></li>
+          </ol>
+          <ul class="moves">
+            <li><b>B·T 림프구</b>: 혈액 → 2차 림프조직 → 림프관 → 다시 혈액 — 지속 순환 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></li>
+            <li><b>DC</b>: 조직에서 항원 포획 → 가까운 림프절로 이동 → T세포에 제시 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27090/" target="_blank" rel="noopener">Janeway 2001</a></li>
+            <li><b>림프절</b>: 어느 조직을 배수하느냐 → 들어오는 세포·용질·국소 면역 이력 차이 → 다른 반응 맥락 <a class="src" href="https://doi.org/10.1038/s41577-023-00965-8" target="_blank" rel="noopener">Cruz de Casas 2024</a></li>
+          </ul>
+          <div class="chips"><span class="chip-h">그림에서</span>
+            <button type="button" class="chip see" data-fig="map" data-hl="hsc cmp clp mep gmp mk thy">골수 · 흉선</button>
+            <button type="button" class="chip see" data-fig="map" data-hl="mast mac tdc plasma efft">조직 열</button>
+            <button type="button" class="chip see" data-fig="map" data-hl="dc tdc">DC 이동</button>
+          </div>
+          <a class="more" href="./index.html#article/immunology-lymph-node">같은 림프절도 왜 서로 다른 면역반응을 만드나? →</a>
+        </section>
+
+        <!-- 시간 축 -->
+        <section role="tabpanel" id="panel-time" aria-labelledby="tab-time" hidden>
+          <h3 class="panelhd">조혈 장소의 이동 — 인간 발생</h3>
+          <p class="lede">성인 지도의 출발점(골수 HSC)도 처음부터 골수에 있던 것 아님 → 난황낭 → AGM → 태아 간 → 골수 순으로 조혈 장소 이동. <span class="mono">AGM</span> = aorta-gonad-mesonephros · <span class="mono">dpc</span> = days post conception, 수정 후 일수 · <span class="mono">CS</span> = Carnegie stage.</p>
+          <ol class="tl">
+            <li><span class="when">CS 7–8 · 16–18.5 dpc</span><h4>Yolk sac 난황낭</h4><p>첫 조혈세포 — primitive erythroid · monocyte/macrophage</p></li>
+            <li><span class="when">CS 14 → CS 17 이상</span><h4>AGM 부위</h4><p>첫 HSC 검출 — 30–32 dpc부터 · 최소 39–42 dpc까지</p></li>
+            <li><span class="when">7–8주부터</span><h4>Fetal liver 태아 간</h4><p>HSC의 뚜렷한 존재 — AGM보다 늦게 검출</p></li>
+            <li><span class="when">CS 23 · 56 dpc</span><h4>Bone marrow 골수</h4><p>골수 형성 = 배아기 끝 표지 · 골수 HSC 활성 시작 시점 미확정</p></li>
+            <li class="adult"><span class="when">출생 후</span><h4>골수 HSC</h4><p>모든 혈구 세포의 공통 출발점 → 위 지도</p></li>
+          </ol>
+          <p class="lede" style="margin-top:12px;font-size:.78rem">출처: 발생 시기 <a class="src" href="https://doi.org/10.1242/dev.134866" target="_blank" rel="noopener">Ivanovs 2017 · Development</a> · 성인 골수 조혈 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></p>
+          <a class="more" href="./index.html#article/immunology-ontogeny">면역계는 언제 만들어지고 출생 전후에 어떻게 달라지나? →</a>
+        </section>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./cells.html">면역세포의 종류와 상태는 어떻게 구분하나? →</a>
+          <a href="./index.html#article/immunology-lymph-node">같은 림프절도 왜 서로 다른 면역반응을 만드나? →</a>
+          <a href="./index.html#article/immunology-recognition">인식은 어떻게 세포 반응과 양방향 소통으로 이어지나? →</a>
+          <a href="./index.html#article/immunology-ontogeny">면역계는 언제 만들어지고 출생 전후에 어떻게 달라지나? →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 면역계 구성 ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27090/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 선천·적응 원리 ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27124/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 적응면역 작동 ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK459455/" target="_blank" rel="noopener noreferrer">Aristizábal 2013 · 선천면역 세포 ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK532332/" target="_blank" rel="noopener noreferrer">Heller 2018 · NKT cells ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK500157/" target="_blank" rel="noopener noreferrer">Kleiveland 2015 · PBMC ↗</a>
+          <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/18-1-an-overview-of-blood" target="_blank" rel="noopener noreferrer">OpenStax A&amp;P 2e · 혈액 개관 ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/35004599" target="_blank" rel="noopener noreferrer">Akashi 2000, Nature — CMP ↗</a>
+          <a href="https://doi.org/10.1038/ni.1889" target="_blank" rel="noopener noreferrer">Doulatov 2010, Nat Immunol ↗</a>
+          <a href="https://doi.org/10.1016/j.cell.2018.07.017" target="_blank" rel="noopener noreferrer">Vivier 2018, Cell — ILC ↗</a>
+          <a href="https://doi.org/10.1242/dev.134866" target="_blank" rel="noopener noreferrer">Ivanovs 2017, Development ↗</a>
+          <a href="https://doi.org/10.1146/annurev-immunol-083122-040624" target="_blank" rel="noopener noreferrer">Warrick 2025, Annu Rev Immunol ↗</a>
+          <a href="https://doi.org/10.1038/s41577-023-00965-8" target="_blank" rel="noopener noreferrer">Cruz de Casas 2024, Nat Rev Immunol ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span>그림 = SVG · 본문·표 = HTML · 출처 = 문장 끝 태그</span><span class="stamp"><!--GEN:STAMP-->그림 자동 생성 — 2026-09-17 · site-meta/immunology-01-figures/make-basics-figures.py<!--/GEN:STAMP--> · Updated 2026-09-17</span></div>
+  </footer>
+  <script src="./basics.js"></script>
+</body>
+</html>

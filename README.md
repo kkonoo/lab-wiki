@@ -1,4 +1,3 @@
 # lab-wiki
 
-
-https://halab-wiki.knu.ac.kr
+https://kkonoo.github.io/lab-wiki
