@@ -244,7 +244,7 @@ function renderTermTable(id) {
     document.getElementById("topSearchForm").addEventListener("submit", function (e) {
       e.preventDefault();
       const q = topSearch.value.trim();
-      if (q) { activeFilter = "all"; route("search/" + encodeURIComponent(q)); }
+      if (q) window.location.href = new URL("../../index.html?q=" + encodeURIComponent(q), PAGE_BASE).href; // 상단 검색 → 대문 전체 검색
     });
 
     document.addEventListener("keydown", function (e) {

@@ -4,12 +4,13 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  /* 상단 검색 → 목록 페이지 검색으로 */
+  /* 상단 검색 → 대문 전체 검색 (wiki/site/index.html?q=) */
+  var SCRIPT_BASE = (document.currentScript && document.currentScript.src) || location.href;
   var form = $("#topSearchForm"), input = $("#topSearch");
   if (form) form.addEventListener("submit", function (e) {
     e.preventDefault();
     var v = input.value.trim();
-    if (v) location.href = "./index.html#search/" + encodeURIComponent(v);
+    if (v) location.href = new URL("../../../index.html?q=" + encodeURIComponent(v), SCRIPT_BASE).href;
   });
   document.addEventListener("keydown", function (e) {
     if (e.key === "/" && input && document.activeElement.tagName !== "INPUT") { e.preventDefault(); input.focus(); }

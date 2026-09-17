@@ -81,7 +81,7 @@ footer{border-top:1px solid var(--line);padding:22px max(20px,calc((100% - 1120p
 <a class="card" style="--accent:var(--gold)" href="./multi-omics/index.html"><small>04 · MULTI-OMICS</small><h2>Multi-omics</h2><p>Paired · Unpaired · Mosaic · Latent factors · Bridge integration</p><span class="route">Multi-omics 살펴보기 →</span></a>
 <a class="card" style="--accent:var(--plum)" href="./disease/index.html"><small>05 · DISEASE</small><h2>Human diseases</h2><p>질환별 정의 · 원인 · 증상 · 연구</p><span class="route">Human diseases 살펴보기 →</span></a>
 </div>
-</main><footer>Updated 2026-08-20</footer>
+</main><footer>Updated 2026-09-17</footer>
 
 <script src="./assets/js/search-index.js" defer></script>
 <script>
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }).concat(IDX.pages.map(function (p) {
     return { t: p.t, k: "", s: p.s, u: p.u, d: p.d, c: p.c, crumb: p.d + " › 페이지 전체", page: true };
   }));
-  POOL.forEach(function (e) { e._t = e.t.toLowerCase(); e._k = e.k.toLowerCase(); e._s = e.s.toLowerCase(); e._c = e.crumb.toLowerCase(); });
+  POOL.forEach(function (e) { e._t = e.t.toLowerCase(); e._k = e.k.toLowerCase(); e._s = e.s.toLowerCase(); e._c = e.crumb.toLowerCase(); e._ka = e._k ? e._k.split(/\s*·\s*/) : []; });
 
   function esc(v) {
     return String(v).replace(/[&<>"']/g, function (c) {
@@ -128,12 +128,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function score(e, tokens) {
     var total = 0;
+    /* 검색어 전체 = 별칭 하나 → 제목 앞부분 일치(80)와 별칭 부분 일치(45) 사이 점수 · 첫 별칭(대표어)이면 70, 나머지 60 */
+    var ai = e._ka.indexOf(tokens.join(" ")), aliasExact = ai === 0 ? 70 : ai > 0 ? 60 : 0;
     for (var i = 0; i < tokens.length; i++) {
       var tk = tokens[i], s = 0;
       if (e._t === tk) s = 120;
       else if (e._t.indexOf(tk) === 0) s = 80;
       else if (e._t.indexOf(tk) > -1) s = 55;
-      if (e._k.indexOf(tk) > -1) s = Math.max(s, 45);
+      if (e._k.indexOf(tk) > -1) s = Math.max(s, aliasExact || 45);
       if (e._c.indexOf(tk) > -1) s = Math.max(s, 20);
       if (e._s.indexOf(tk) > -1) s = Math.max(s, 14);
       if (!s) return 0;              /* 모든 토큰이 어딘가에는 걸려야 함 (AND) */
