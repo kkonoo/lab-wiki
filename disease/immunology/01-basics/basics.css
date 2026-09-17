@@ -270,3 +270,59 @@ svg.umap{display:block;width:100%;height:auto}
 }
 .vpage .related-list a{color:var(--green);font-size:.87rem;text-decoration:none;line-height:1.45}
 .vpage .related-list a:hover{text-decoration:underline}
+
+/* ── 림프절 단면 ── */
+svg.lnmap{display:block;width:100%;height:auto;min-width:720px}
+.lnmap .cortex{fill:#f6efe6}
+.lnmap .tz{fill:#e4ecf1}
+.lnmap .med{fill:#cfe0e8}
+.lnmap .cord{fill:none;stroke:#c98f76;stroke-width:8;stroke-linecap:round;opacity:.45}
+.lnmap .scs{fill:none;stroke:#cfe0e8;stroke-width:40}
+.lnmap .capsule{fill:none;stroke:#7f8b93;stroke-width:2.4}
+.lnmap .fol{fill:#efdce6;stroke:#b98aa2;stroke-width:1.2}
+.lnmap .gc{fill:#dcb8ca;stroke:#a86f8b;stroke-width:1;stroke-dasharray:3 2}
+.lnmap .fdc{fill:none;stroke:#8a4f7d;stroke-width:1.2;stroke-linecap:round;stroke-opacity:.35}
+.lnmap .hev ellipse{fill:#fff;stroke:#b24f4f;stroke-width:3.4}
+.lnmap .hev circle{fill:#b24f4f}
+.lnmap .lvessel{fill:none;stroke:#8fb3c4;stroke-width:14;stroke-linecap:round}
+.lnmap .lvessel-in{fill:none;stroke:#d9e8ef;stroke-width:9;stroke-linecap:round}
+.lnmap .artery{fill:none;stroke:#c05b5b;stroke-width:6;stroke-linecap:round}
+.lnmap .vein{fill:none;stroke:#7c6aa6;stroke-width:6;stroke-linecap:round}
+.lnmap .leader{fill:none;stroke:#8f978e;stroke-width:1}
+.lnmap .lab{font-size:12px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}
+.lnmap .lab.in{fill:#3d4640}
+.lnmap .lab.small{font-size:10px;font-weight:600;fill:var(--muted)}
+.lnmap .lab.side{font-size:11.5px}
+.lnmap .rg{transition:opacity .25s}
+.lnmap .ov{opacity:0;transition:opacity .3s;pointer-events:none}
+.lnmap[data-mode="lymph"] .ov-lymph,.lnmap[data-mode="blood"] .ov-blood,.lnmap[data-mode="act"] .ov-act{opacity:1}
+.lnmap[data-mode="lymph"] .rg:not([data-in~="lymph"]),.lnmap[data-mode="blood"] .rg:not([data-in~="blood"]),.lnmap[data-mode="act"] .rg:not([data-in~="act"]){opacity:.32}
+.lnmap.hot .rg:not(.on){opacity:.18}
+.lnmap .ln-l{fill:none;stroke:#2f7f73;stroke-width:2.6}
+.lnmap .ln-b{fill:none;stroke:#b24f4f;stroke-width:2.6}
+.lnmap .ln-b.thin{stroke-width:1.3;stroke-opacity:.6}
+.lnmap .ln-a{fill:none;stroke:#6f3a55;stroke-width:2.6}
+.lnmap .dashed{stroke-dasharray:6 4}
+.lnmap .dotted{stroke-dasharray:1.5 3.5;stroke-linecap:round}
+.lnmap .dcg path{fill:#2f7f73;fill-opacity:.25;stroke:#2f7f73;stroke-width:2}
+.lnmap .burst path{fill:#6f3a55}
+.lnmap .gcring{fill:none;stroke:#6f3a55;stroke-width:2.4}
+.lnmap .num circle{stroke:#fff;stroke-width:2}
+.lnmap .num text{font-size:11px;font-weight:800;fill:#fff}
+.lnmap .ov-lymph.num circle{fill:#2f7f73} .lnmap .ov-blood.num circle{fill:#b24f4f} .lnmap .ov-act.num circle{fill:#6f3a55}
+.steps{display:none;margin:12px 2px 0;padding:0;list-style:none;counter-reset:st}
+.steps.on{display:grid;gap:5px}
+.steps li{position:relative;padding-left:26px;font-size:.84rem}
+.steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:2px;width:18px;height:18px;border-radius:50%;background:var(--sc);color:#fff;font-size:.68rem;font-weight:800;display:grid;place-items:center}
+.steps[data-mode="lymph"]{--sc:#2f7f73} .steps[data-mode="blood"]{--sc:#b24f4f} .steps[data-mode="act"]{--sc:#6f3a55}
+.steps li b{font-weight:700}
+.cases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.cases>div{background:#fff;border:1px solid var(--line);border-top:3px solid var(--c,#8e948c);border-radius:10px;padding:13px 15px}
+.cases .lv{font-size:.66rem;font-weight:800;letter-spacing:.1em;color:var(--muted)}
+.cases h4{margin:2px 0 6px;font:700 .96rem Georgia,"Noto Serif KR",serif}
+.cases p{margin:0 0 6px;font-size:.8rem;color:#37423a}
+.cases p:last-child{margin-bottom:0}
+.cases .sp{display:inline-block;font-size:.66rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 6px;margin-left:4px}
+@media (max-width:980px){.cases{grid-template-columns:1fr}}
+.legend.static span{display:inline-flex}
+.lnmap .rg.on{opacity:1 !important}

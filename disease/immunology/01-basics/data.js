@@ -147,33 +147,40 @@ window.IMMUNOLOGY_BASICS = {
         "stroma",
         "HEV",
         "retinoic acid",
-        "SCFA"
+        "subcapsular sinus",
+        "germinal center",
+        "배중심",
+        "paracortex",
+        "FRC",
+        "FDC",
+        "conduit",
+        "Peyer's patch"
       ],
       "basics",
-      "배수 조직에서 들어오는 세포와 용질, 국소 면역 이력, 구조세포가 함께 정하는 림프절의 성격",
+      "림프절 단면 지도(림프·혈액 입구, 반응 경로) · 구역별 세포 · 배수 장기에 따른 림프절 차이",
       [
         [
-          "림프절로 들어오는 두 경로",
+          "한 장 지도 — 림프절 단면",
           [
-            "혈류 경로 — HEV를 통한 naive T·B세포와 pre-DC의 재순환",
-            "림프 경로 — 배수 조직에서 이동한 DC 등이 항원과 조직의 상태를 전달",
-            "동일한 림프절 구성 요소라도 어느 조직을 배수하는지에 따라 다른 반응 맥락"
+            "피막하 굴 · B 여포 · 배중심 · T 영역 paracortex · HEV · 수질 · 수입·수출 림프관",
+            "림프 입구: 수입 림프관 → 피막하 굴 → conduit → HEV · 이동성 DC",
+            "혈액 입구: HEV · L-selectin · CCR7 → T 영역 · 여포",
+            "반응: T–B 경계 · 배중심 · FDC · 형질세포 수질삭"
           ]
         ],
         [
-          "미세환경을 만드는 구성원",
+          "같은 림프절, 다른 반응",
           [
-            "국소 반응 후 남은 memory T·B세포와 Treg·TFH — 이전 면역 경험의 흔적",
-            "FRC·FDC·LEC 등 구조세포 — chemokine·cytokine·접착 신호를 통한 국소 환경 형성",
-            "림프의 용질 — retinoic acid·SCFA 등 조직 유래 대사 신호의 전달 경로"
+            "장 배수 림프절 retinoic acid · α4β7 · CCR9 (Iwata 2004, Hammerschmidt 2008)",
+            "근위·원위 장 배수 림프절 관용 vs 염증 (Esterházy 2019)",
+            "기질세포 FRC · FDC · LEC (Krishnamurty & Turley 2020)"
           ]
         ],
         [
-          "장소를 함께 읽기",
+          "다른 2차 림프기관",
           [
-            "장 배수 축의 retinoic acid — gut homing과 관용 관련 프로그램의 조절 사례",
-            "종양 배수 림프절 — 종양 유래 신호에 따른 국소 면역 환경 재편 사례",
-            "세부 세포 이동·기능 기전의 동물모델 근거와 인간 관찰을 구분하여 해석 — Cruz de Casas 2024"
+            "비장 백색수질 PALS · 적색수질",
+            "Peyer's patch M cell"
           ]
         ]
       ],
@@ -415,7 +422,8 @@ window.IMMUNOLOGY_BASICS = {
   },
   "articlePages": {
     "immunology-overview": "01-basics/overview.html",
-    "immunology-cell-identity": "01-basics/cells.html"
+    "immunology-cell-identity": "01-basics/cells.html",
+    "immunology-lymph-node": "01-basics/lymph-node.html"
   }
 };
 window.IMMUNOLOGY = {
@@ -462,7 +470,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-lymph-node",
               "림프절과 미세환경",
-              "배수 조직에서 들어오는 세포와 용질, 국소 면역 이력, 구조세포가 함께 정하는 림프절의 성격",
+              "림프절 단면 지도(림프·혈액 입구, 반응 경로) · 구역별 세포 · 배수 장기에 따른 림프절 차이",
               "읽기",
               ""
             ]

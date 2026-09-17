@@ -161,4 +161,25 @@
       row.addEventListener("blur", function () { hiU(null); });
     });
   }
+
+  /* ── lymph-node: 단면 ── */
+  var ln = $("svg.lnmap");
+  if (ln) {
+    var hiL = highlighter(ln, ".rg[data-rg]", "data-rg");
+    var rows = function (k) { $$('tr[data-fig="ln"]').forEach(function (tr) { tr.classList.toggle("on", !!k && k.indexOf(tr.getAttribute("data-hl")) >= 0); }); };
+    bindTriggers("ln", function (k) { hiL(k); rows(k); });
+    $$(".rg[data-rg]", ln).forEach(function (g) {
+      var k = [g.getAttribute("data-rg")];
+      g.addEventListener("mouseenter", function () { hiL(k); rows(k); });
+      g.addEventListener("mouseleave", function () { hiL(null); rows(null); });
+    });
+    $$("[data-lnmode]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var m = b.getAttribute("data-lnmode");
+        ln.setAttribute("data-mode", m);
+        $$("[data-lnmode]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        $$(".steps").forEach(function (s) { s.classList.toggle("on", s.getAttribute("data-mode") === m); });
+      });
+    });
+  }
 })();
