@@ -172,3 +172,14 @@ svg .fg.on{opacity:1 !important}
 /* 그림 그룹 식별용 클래스 — 자바스크립트·선택자 훅, 별도 스타일 없음 */
 .fg.hub,.fg.tlr-s,.fg.tlr-e,.fg.clr,.fg.nlr,.fg.rlr,.fg.alr,
 .fg.ax,.fg.dna2,.fg.lane,.fg.lane2,.fg.alt2,.fg.reg,.fg.re,.fg.trim{cursor:default}
+
+/* 그림 자리표시 — SVG 도입 전까지 (2026-09-18 cell-death.html) */
+.fig-placeholder{
+  border:1px dashed var(--line,#cbd3cc);
+  border-radius:8px;
+  padding:1.1rem 1.2rem;
+  background:var(--bg-soft,#f6f8f6);
+  color:var(--ink-soft,#5b655c);
+}
+.fig-placeholder p{margin:.25rem 0;font-size:.92rem;line-height:1.6}
+.fig-placeholder p:first-child{font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;opacity:.75}

@@ -46,7 +46,7 @@ const tag = (html, t) => { const m = html.match(new RegExp("<" + t + "[^>]*>([\\
 
 function addItem(o) {
   if (!o.t || !o.u) return;
-  items.push({ t: clip(o.t, 140), k: clip(o.k || "", 260), s: clip(o.s || "", 240), u: o.u, d: o.d, c: o.c, p: o.p || "", g: o.g || "" });
+  items.push({ t: clip(o.t, 140), k: clip(o.k || "", 700), s: clip(o.s || "", 240), u: o.u, d: o.d, c: o.c, p: o.p || "", g: o.g || "" });
 }
 function addPage(o) {
   if (!o.t || !o.u || seenPage.has(o.u)) return;
@@ -179,7 +179,10 @@ function staticDoc(abs, html, crumbP) {
   /* 같은 URL 항목(예: immunology 목록의 전용 문서 행)이 있으면 별칭·약어만 합쳐 중복 결과 방지 */
   const same = items.find((it) => it.u === r);
   if (same) {
-    same.k = clip(join([same.k, k]), 400);
+    /* k(키워드)는 매칭 전용이고 화면에 표시되지 않는다 — 400자에서 자르면 문서당 키워드가 조용히 사라진다.
+       2026-09-18 점검: immunology 27문서 중 24문서가 키워드 일부를 잃고 있었다(최대 36/48개).
+       1400으로 올리면 전 도메인 잘림 0, 색인은 359→370 KB(+3%). */
+    same.k = clip(join([same.k, k]), 1400);
     if (!same.s) same.s = clip(desc, 240);
   } else addItem({ t: h1, k, s: desc, u: r, d: D.label, c: D.color, p: crumbP, g: "문서" });
   let n = 0;

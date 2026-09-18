@@ -332,6 +332,109 @@ window.IMMUNOLOGY_INNATE = {
         "immunology-sterile-inflammation",
         "immunology-complement"
       ]
+    ],
+    [
+      "immunology-cell-death",
+      "세포는 어떻게 죽고, 왜 어떤 죽음만 염증이 되나?",
+      [
+        "세포사",
+        "cell death",
+        "조절된 세포사",
+        "regulated cell death",
+        "RCD",
+        "PCD",
+        "NCCD",
+        "apoptosis",
+        "세포자멸사",
+        "caspase",
+        "caspase-8",
+        "BCL-2",
+        "MOMP",
+        "apoptosome",
+        "venetoclax",
+        "necroptosis",
+        "RIPK1",
+        "RIPK3",
+        "MLKL",
+        "ZBP1",
+        "Z-핵산",
+        "pyroptosis",
+        "gasdermin",
+        "GSDM",
+        "GSDMD",
+        "GSDME",
+        "NINJ1",
+        "IL-1β",
+        "ferroptosis",
+        "GPX4",
+        "FSP1",
+        "지질 과산화",
+        "철",
+        "PANoptosis",
+        "PANoptosome",
+        "karyoptosis",
+        "LaminB1",
+        "p38",
+        "efferocytosis",
+        "MERTK",
+        "시신 청소",
+        "DAMP",
+        "necrotic core",
+        "동맥경화"
+      ],
+      "innate",
+      "전용 기계형(apoptosis·necroptosis·pyroptosis)과 항상성 붕괴형(ferroptosis) 2축 · 막이 터지는지가 염증을 정한다 · GSDM·MLKL 뒤에 오는 NINJ1 최종 파열 · caspase-8 스위치와 경로 전환 · NCCD 기준으로 본 PANoptosis(contested)와 karyoptosis(preliminary) · 죽음의 나머지 절반인 efferocytosis",
+      [
+        [
+          "한 장 지도 — 두 축으로 나뉜다",
+          [
+            "전용 기계형 — apoptosis · necroptosis · pyroptosis, caspase 계열이 중심축",
+            "항상성 붕괴형 — ferroptosis · excitotoxicity · lysosomal cell death, 전용 실행자가 없다",
+            "RCD와 우발적 세포사(ACD)의 구분 — 약물·유전자로 늦추거나 앞당길 수 있는가"
+          ]
+        ],
+        [
+          "막이 터지는지가 염증을 정한다",
+          [
+            "apoptosis는 막을 유지해 조용하다 — 단 제때 치워질 때만",
+            "pyroptosis · necroptosis · ferroptosis는 용출로 DAMP를 쏟아 염증을 시작·증폭",
+            "앞 문서의 무균 염증 입력이 곧 이 죽음들이다"
+          ]
+        ],
+        [
+          "실행 말단 — 구멍과 파열은 다른 사건",
+          [
+            "gasdermin 자가억제 구조와 linker 절단 — caspase 말고도 granzyme · cathepsin · elastase",
+            "표적 막이 원형질막만이 아니다 — 핵막 · 미토콘드리아막",
+            "1단 GSDM pore 또는 인산화 MLKL → 2단 NINJ1 올리고머화로 최종 파열"
+          ]
+        ],
+        [
+          "경로는 서로 넘어간다",
+          [
+            "caspase-8이 RIPK1을 자르는 동안 necroptosis가 억제된다 — 막으면 넘어간다",
+            "caspase-3가 GSDME를 자르면 조용했을 apoptosis가 염증성이 된다",
+            "necroptosis의 extrinsic(TNFR1·TLR) 대 intrinsic(ZBP1의 Z-핵산)"
+          ]
+        ],
+        [
+          "이름이 늘어날 때의 판정 기준",
+          [
+            "NCCD 기준 — 형태가 아니라 기전적·필수적 요소로 정의한다",
+            "PANoptosis는 contested — 구분할 고유 마커가 없다",
+            "karyoptosis와 2025년 신규 4종은 preliminary — 독립 재현 전",
+            "종특이성 — 사람과 마우스의 necroptosis 장치가 다르고, NECSO는 사람 TRPM4에만 작동"
+          ]
+        ],
+        [
+          "죽음의 나머지 절반 — 치우는 일",
+          [
+            "식세포의 화물 대사가 연속 청소의 병목이고 거기서 염증 해소 신호가 나온다",
+            "청소 실패 → 2차 괴사 → 만성 염증",
+            "동맥경화 플라크의 necrotic core가 그 결과다"
+          ]
+        ]
+      ]
     ]
   ],
   "paperLinks": {
@@ -398,6 +501,76 @@ window.IMMUNOLOGY_INNATE = {
         "Hajishengallis 2025, Nat Rev Immunol",
         "https://doi.org/10.1038/s41577-025-01132-x"
       ]
+    ],
+    "immunology-cell-death": [
+      [
+        "Galluzzi 2018, Cell Death Differ",
+        "https://doi.org/10.1038/s41418-017-0012-4"
+      ],
+      [
+        "Yuan & Ofengeim 2024, Nat Rev Mol Cell Biol",
+        "https://doi.org/10.1038/s41580-023-00689-6"
+      ],
+      [
+        "Vitale 2023, Cell Death Differ",
+        "https://doi.org/10.1038/s41418-023-01153-w"
+      ],
+      [
+        "Broz 2025, Cell Res",
+        "https://doi.org/10.1038/s41422-025-01107-6"
+      ],
+      [
+        "Bai 2025, Nat Rev Mol Cell Biol",
+        "https://doi.org/10.1038/s41580-025-00837-0"
+      ],
+      [
+        "Lawlor 2024, Immunity",
+        "https://doi.org/10.1016/j.immuni.2024.02.011"
+      ],
+      [
+        "Yang 2026, Nat Rev Mol Cell Biol",
+        "https://doi.org/10.1038/s41580-026-01002-x"
+      ],
+      [
+        "Vince 2025, Nat Immunol",
+        "https://doi.org/10.1038/s41590-025-02298-1"
+      ],
+      [
+        "Pandeya & Kanneganti 2024, Trends Mol Med",
+        "https://doi.org/10.1016/j.molmed.2023.10.001"
+      ],
+      [
+        "Enuganti 2025, Apoptosis",
+        "https://doi.org/10.1007/s10495-025-02152-7"
+      ],
+      [
+        "Tang 2026, Cell Death Differ",
+        "https://doi.org/10.1038/s41418-026-01686-w"
+      ],
+      [
+        "Lee 2023, Exp Mol Med",
+        "https://doi.org/10.1038/s12276-023-01069-y"
+      ],
+      [
+        "Doran 2020, Nat Rev Immunol",
+        "https://doi.org/10.1038/s41577-019-0240-6"
+      ],
+      [
+        "De Meyer 2024, Nat Rev Cardiol",
+        "https://doi.org/10.1038/s41569-023-00957-0"
+      ],
+      [
+        "Adkar & Leeper 2024, Nat Rev Cardiol",
+        "https://doi.org/10.1038/s41569-024-01037-7"
+      ],
+      [
+        "Wahida & Conrad 2025, Nat Rev Cancer",
+        "https://doi.org/10.1038/s41568-025-00864-1"
+      ],
+      [
+        "Casterton 2026, Nat Commun",
+        "https://doi.org/10.1038/s41467-026-73802-w"
+      ]
     ]
   },
   "glossaryTerms": {
@@ -440,13 +613,34 @@ window.IMMUNOLOGY_INNATE = {
     "interferonopathy": {
       "key": "interferonopathy",
       "definition": "제1형 interferon이 과도하게 만들어져 생기는 단일유전자 자가염증 질환군"
+    },
+    "gasdermin": {
+      "key": "gasdermin",
+      "definition": "막에 구멍을 내어 pyroptosis를 실행하는 단백질 계열. 평소 C-말단이 N-말단을 붙잡아 억제한다"
+    },
+    "NINJ1": {
+      "key": "NINJ1",
+      "definition": "GSDM pore나 MLKL이 만든 손상 뒤에 올리고머화해 원형질막을 최종 파열시키는 단백질"
+    },
+    "efferocytosis": {
+      "key": "efferocytosis",
+      "definition": "식세포가 죽은 세포를 인식·삼켜 치우는 과정. 실패하면 조용했을 죽음이 염증이 된다"
+    },
+    "ferroptosis": {
+      "key": "ferroptosis",
+      "definition": "철 의존적 인지질 과산화로 일어나는 세포사. 활성화 신호가 아니라 방어축의 해제로 시작한다"
+    },
+    "PANoptosome": {
+      "key": "PANoptosome",
+      "definition": "pyroptosis·apoptosis·necroptosis 구성요소가 모인다고 제안된 복합체. 독립 양식 여부는 논쟁 중"
     }
   },
   "articlePages": {
     "immunology-prr": "02-innate/sensing.html",
     "immunology-sterile-inflammation": "02-innate/sterile.html",
     "immunology-complement": "02-innate/complement.html",
-    "immunology-innate-effector": "02-innate/effector.html"
+    "immunology-innate-effector": "02-innate/effector.html",
+    "immunology-cell-death": "02-innate/cell-death.html"
   }
 };
 window.IMMUNOLOGY = {
@@ -458,7 +652,7 @@ window.IMMUNOLOGY = {
       "english": "HOW DANGER IS SENSED FIRST",
       "accent": "#315d78",
       "kuby": "Kuby 4–5장",
-      "summary": "패턴인식수용체의 자리와 출력 · 자기 핵산 관용과 무균 염증 · 보체의 세 경로와 조절 · 선천 effector와 골수에 남는 기억",
+      "summary": "패턴인식수용체의 자리와 출력 · 자기 핵산 관용과 무균 염증 · 보체의 세 경로와 조절 · 선천 effector와 골수에 남는 기억 · 세포사 양식과 염증",
       "groups": [
         {
           "q": "선천면역은 무엇을 감지하나?",
@@ -507,6 +701,19 @@ window.IMMUNOLOGY = {
               "immunology-innate-effector",
               "선천 effector와 골수에 남는 기억",
               "식작용과 호흡폭발 · 호중구의 상태 스펙트럼과 NET · NK의 missing-self와 KIR 다양성 · 골수 조혈전구세포에 남는 trained immunity와 판정 기준",
+              "읽기",
+              ""
+            ]
+          ]
+        },
+        {
+          "q": "세포는 어떻게 죽고, 왜 어떤 죽음만 염증이 되나?",
+          "note": "Kuby 4장 연결 · 세포사 양식과 DAMP",
+          "items": [
+            [
+              "immunology-cell-death",
+              "세포사 양식과 염증 — 무엇이 DAMP를 내보내나",
+              "전용 기계형과 항상성 붕괴형 2축 · 막이 터지는지가 염증을 정한다 · GSDM·MLKL 뒤의 NINJ1 최종 파열 · caspase-8 스위치 · NCCD 기준으로 본 PANoptosis(contested)·karyoptosis(preliminary) · efferocytosis와 necrotic core",
               "읽기",
               ""
             ]

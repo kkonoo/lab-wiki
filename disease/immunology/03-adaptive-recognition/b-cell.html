@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="골수 B세포 발달 — PU.1·IKAROS·E2A의 지정과 EBF1·PAX5의 고정, pre-BCR의 전부 아니면 전무 관문과 자기반응성 검사, receptor editing, 단계별 인간 유전자 결함(IEI), 그리고 같은 회로가 B세포 급성림프구성백혈병에서 쓰이는 방식">
+  <title>B세포는 골수에서 어떻게 만들어지고 검사되나? · Immunology</title>
+  <link rel="stylesheet" href="../immunology.css">
+  <link rel="stylesheet" href="../01-basics/basics.css">
+  <link rel="stylesheet" href="./adaptive.css">
+</head>
+<body class="vpage">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Immunology</span></a></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="./index.html">목록</a><span>›</span><a href="./index.html">적응면역 I</a><span>›</span>B세포 발달과 관용</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">적응면역 I — 인식과 발달</p>
+        <h1>B세포는 골수에서 어떻게 만들어지고 검사되나?</h1>
+        <p class="definition">골수 B세포 발달 = HSC → 공통 림프계 전구세포(CLP) → pro-B → pre-B → immature B로 가는 과정과 그 사이의 관문들. T세포와 달리 전용 보조 장기가 없어, B세포는 <b>골수 안에서 세포 스스로</b> 수용체의 기능성과 자기반응성을 검사한다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></p>
+
+        <!-- ───────── 1. 문제 ───────── -->
+        <h2 id="problem">검사관이 따로 없다<small>No dedicated organ</small></h2>
+        <p class="lede">T세포에는 흉선이라는 전용 장기가 있다 → <a href="./thymus.html">흉선 선택</a>. B세포 수용체는 MHC 제약을 받지 않아 항원을 직접 붙잡으므로, 같은 방식의 장기가 필요 없다. 대신 검사는 <b>세포 안에서</b> 두 번 일어난다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></p>
+        <ol class="route">
+          <li style="--c:var(--st)"><span class="lv">지정</span><h4>specification</h4><p>PU.1 · IKAROS · E2A가 계통을 지정하고, E2A · EBF1 · PAX5가 B 정체성을 <b>고정</b>한다 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a></p></li>
+          <li style="--c:var(--ada)"><span class="lv">관문 1</span><h4>pre-BCR</h4><p>쓸 수 있는 중쇄를 만들었는지 — <b>전부 아니면 전무</b> 신호로 판정한다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></p></li>
+          <li style="--c:var(--il)"><span class="lv">관문 2</span><h4>self-reactivity</h4><p>자기에 붙는지 — 걸리면 경쇄를 다시 재조합해 <b>수용체를 갈아 끼운다</b> <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></p></li>
+        </ol>
+        <div class="callout blue">
+          <h4>이 페이지가 답하려는 것</h4>
+          <p>여기서는 <b>골수 안</b>에서 일어나는 일만 다룬다. 골수를 떠난 뒤의 말초 관용, 배중심에서의 선택, 자가항체가 실제로 만들어지는 과정은 다른 축에 있다.</p>
+          <p>수용체를 만드는 기전 → <a href="./diversity.html">수용체 다양성</a> · T세포 쪽 대조 → <a href="./thymus.html">흉선 선택</a> · 자가면역의 유전 구조 → <a href="../../autoimmune/general/index.html">자가면역의 공통 유전 구조</a></p>
+        </div>
+
+        <!-- ───────── 2. 지도 ───────── -->
+        <h2 id="map">한 장 지도 — 단계 · 관문 · 고장 나는 자리<small>Stages and gates</small></h2>
+        <figure class="fig" id="bdevFig">
+          <div class="fig-tools">
+            <div class="seg" role="group" aria-label="보기 선택">
+              <button type="button" data-bdmode="none" aria-pressed="true">전체</button>
+              <button type="button" data-bdmode="gate" aria-pressed="false">두 관문과 수치</button>
+              <button type="button" data-bdmode="iei" aria-pressed="false">유전자 결함이 막는 자리</button>
+              <button type="button" data-bdmode="tf" aria-pressed="false">전사인자와 백혈병</button>
+            </div>
+            <div class="legend static">
+              <span><i style="--c:#94553b"></i>재조합 · 관문</span>
+              <span><i style="--c:#7b5aa6"></i>receptor editing</span>
+              <span><i style="--c:#b24f4f"></i>결함 · 삭제</span>
+              <span><i style="--c:#2f7f73"></i>통과</span>
+            </div>
+          </div>
+          <div class="fig-scroll">
+            <!--GEN:BDEV-->
+<svg class="bdev" data-mode="none" viewBox="0 0 1260 800" role="img" aria-labelledby="bdT bdD" xmlns="http://www.w3.org/2000/svg">
+<title id="bdT">골수 B세포 발달 — 전사인자 회로, 재조합 사건, 두 관문, 그리고 유전자 결함이 걸리는 자리</title>
+<desc id="bdD">가로축은 HSC에서 CLP·pro-B·pre-B·immature B를 거쳐 말초로 가는 발달 축이다. 맨 윗줄은 계통을 지정하고 고정하는 전사인자, 그 아랫줄은 중쇄와 경쇄의 재조합 사건이다. 축 아래에는 두 관문이 있다 — pre-BCR의 전부 아니면 전무 신호와, 골수 안에서 스스로 하는 자기반응성 검사. 검사에 걸린 세포는 receptor editing으로 되돌아가거나 삭제·무반응이 된다. 맨 아랫줄에는 각 단계를 막는 인간 유전자 결함과, 같은 회로가 백혈병에서 쓰이는 방식이 놓인다.</desc>
+<defs><marker id="bdA-asm" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#94553b"/></marker><marker id="bdA-scan" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#3f6f8f"/></marker><marker id="bdA-ins" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7b5aa6"/></marker><marker id="bdA-plain" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7d857c"/></marker><marker id="bdA-keep" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#2f7f73"/></marker><marker id="bdA-del" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b24f4f"/></marker></defs>
+<rect class="zone marrow" x="40" y="46" width="1000" height="620" rx="26"/>
+<text class="zlab" x="60" y="74" text-anchor="start">골수 · BONE MARROW</text>
+<rect class="zone peri" x="1054" y="46" width="170" height="620" rx="26"/>
+<text class="zlab" x="1074" y="74" text-anchor="start">말초</text>
+<g class="fg g-tf" data-fg="tf" data-in="tf">
+<g class="bx lanebox"><rect x="150" y="104" width="290" height="62" rx="12"/><text class="lab" x="295" y="134" text-anchor="middle">지정 — PU.1 · IKAROS · E2A</text><text class="lab small" x="295" y="150" text-anchor="middle">HSC → CLP → pro-B</text></g>
+<g class="bx join"><rect x="460" y="104" width="530" height="62" rx="12"/><text class="lab" x="725" y="134" text-anchor="middle">고정 — E2A · EBF1 · PAX5</text><text class="lab small" x="725" y="150" text-anchor="middle">pro-B 이후로 B 정체성을 고정한다</text></g>
+<text class="olab small" x="725" y="186" text-anchor="middle">EBF1 좌위가 pro-B에서 핵막에서 떨어져 나온다</text>
+</g>
+<g class="fg g-rcb" data-fg="recomb" data-in="gate iei">
+<g class="pl asm"><rect x="352" y="212" width="200" height="19" rx="9.5"/><text x="452" y="225.2" text-anchor="middle">D–JH → VH–DJH</text></g>
+<g class="pl asm"><rect x="564" y="212" width="200" height="19" rx="9.5"/><text x="664" y="225.2" text-anchor="middle">Vκ–Jκ · Vλ–Jλ</text></g>
+<path class="fl asm" d="M452,231 L452,306" marker-end="url(#bdA-asm)"/>
+<path class="fl asm" d="M664,231 L664,306" marker-end="url(#bdA-asm)"/>
+</g>
+<g class="fg g-stage" data-fg="stage" data-in="gate iei tf">
+<line class="axline" x1="60" y1="330" x2="1050" y2="330"/>
+<g class="sg stg"><rect x="36" y="310" width="120" height="40" rx="8"/><text class="lab big" x="96" y="336" text-anchor="middle">HSC</text></g>
+<g class="sg stg"><rect x="208" y="310" width="120" height="40" rx="8"/><text class="lab big" x="268" y="336" text-anchor="middle">CLP</text></g>
+<g class="sg stg"><rect x="392" y="310" width="120" height="40" rx="8"/><text class="lab big" x="452" y="336" text-anchor="middle">pro-B</text></g>
+<g class="sg stg"><rect x="604" y="310" width="120" height="40" rx="8"/><text class="lab big" x="664" y="336" text-anchor="middle">pre-B</text></g>
+<g class="sg stg"><rect x="816" y="310" width="120" height="40" rx="8"/><text class="lab big" x="876" y="336" text-anchor="middle">immature B</text></g>
+<path class="fl plain" d="M158,330 L204,330" marker-end="url(#bdA-plain)"/>
+<path class="fl plain" d="M330,330 L388,330" marker-end="url(#bdA-plain)"/>
+<path class="fl plain" d="M514,330 L600,330" marker-end="url(#bdA-plain)"/>
+<path class="fl plain" d="M726,330 L812,330" marker-end="url(#bdA-plain)"/>
+</g>
+<g class="fg g-gate1" data-fg="gate1" data-in="gate">
+<g class="bx bm"><rect x="540" y="386" width="224" height="78" rx="12"/><text class="lab" x="652" y="424" text-anchor="middle">관문 1 — pre-BCR</text><text class="lab small" x="652" y="440" text-anchor="middle">전부 아니면 전무 신호</text></g>
+<path class="fl asm" d="M664,352 L664,382" marker-end="url(#bdA-asm)"/>
+</g>
+<g class="fg g-gate2" data-fg="gate2" data-in="gate">
+<g class="bx bm"><rect x="780" y="386" width="232" height="78" rx="12"/><text class="lab" x="896" y="424" text-anchor="middle">관문 2 — 자기반응성</text><text class="lab small" x="896" y="440" text-anchor="middle">골수 안에서 스스로 검사한다</text></g>
+<path class="fl asm" d="M876,352 L876,382" marker-end="url(#bdA-asm)"/>
+</g>
+<g class="fg g-nums" data-fg="numbers" data-in="gate">
+<g class="bx lanebox"><rect x="80" y="476" width="420" height="88" rx="12"/></g>
+<text class="lab" x="290" y="498" text-anchor="middle">접합부 추가가 만든 대가</text>
+<g class="pl small"><rect x="100" y="508" width="380" height="19" rx="9.5"/><text x="290" y="521.2" text-anchor="middle">재배열의 약 66%가 읽기 틀을 잃는다</text></g>
+<g class="pl small"><rect x="100" y="534" width="380" height="19" rx="9.5"/><text x="290" y="547.2" text-anchor="middle">중쇄는 대립형당 한 번 — in-frame 성공률 약 55%</text></g>
+</g>
+<g class="fg g-edit" data-fg="edit" data-in="gate">
+<path class="fl ins dash" d="M876,468 L876,514 L664,514 L664,360" marker-end="url(#bdA-ins)"/>
+<text class="olab small" x="790" y="534" text-anchor="middle">receptor editing — 어느 시점에나 발달 중 세포의 약 20%</text>
+</g>
+<g class="fg g-fates" data-fg="fate" data-in="gate iei tf">
+<g class="bx join"><rect x="1064" y="250" width="150" height="62" rx="12"/><text class="lab" x="1139" y="280" text-anchor="middle">방출</text><text class="lab small" x="1139" y="296" text-anchor="middle">말초 transitional</text></g>
+<g class="bx altbox"><rect x="1064" y="356" width="150" height="62" rx="12"/><text class="lab" x="1139" y="386" text-anchor="middle">삭제 · 무반응</text><text class="lab small" x="1139" y="402" text-anchor="middle">clonal deletion · anergy</text></g>
+<path class="fl keep" d="M938,322 L1060,288" marker-end="url(#bdA-keep)"/>
+<path class="fl del" d="M1012,420 L1060,394" marker-end="url(#bdA-del)"/>
+</g>
+<g class="fg g-iei" data-fg="iei" data-in="iei">
+<g class="pl warn small"><rect x="180" y="570" width="176" height="64" rx="32"/><text x="268" y="605.7" text-anchor="middle"></text></g>
+<text class="lab tiny" x="268" y="590" text-anchor="middle">TCF3 · IKZF1 · SPI1</text>
+<text class="lab tiny" x="268" y="605" text-anchor="middle">PAX5 · FLT3LG</text>
+<g class="pl warn small"><rect x="364" y="570" width="176" height="64" rx="32"/><text x="452" y="605.7" text-anchor="middle"></text></g>
+<text class="lab tiny" x="452" y="590" text-anchor="middle">RAG1/2 · DCLRE1C</text>
+<text class="lab tiny" x="452" y="605" text-anchor="middle">LIG4 · PRKDC · NHEJ1</text>
+<text class="lab tiny" x="452" y="620" text-anchor="middle">ATM · NBN</text>
+<g class="pl warn small"><rect x="576" y="570" width="176" height="64" rx="32"/><text x="664" y="605.7" text-anchor="middle"></text></g>
+<text class="lab tiny" x="664" y="590" text-anchor="middle">IGHM · IGLL1</text>
+<text class="lab tiny" x="664" y="605" text-anchor="middle">CD79A/B · BTK · BLNK</text>
+<text class="lab tiny" x="664" y="620" text-anchor="middle">PIK3CD · SLC39A7</text>
+<g class="pl warn small"><rect x="788" y="570" width="176" height="64" rx="32"/><text x="876" y="605.7" text-anchor="middle"></text></g>
+<text class="lab tiny" x="876" y="590" text-anchor="middle">BTK hypomorph</text>
+<text class="lab tiny" x="876" y="605" text-anchor="middle">RAG hypomorph</text>
+<text class="lab tiny" x="876" y="620" text-anchor="middle">PRKCD · TNFRSF13B</text>
+<text class="olab" x="60" y="650" text-anchor="start">같은 단계를 막는 인간 유전자 결함 — 대부분 면역결핍으로 나타난다</text>
+</g>
+<g class="fg g-ball" data-fg="ball" data-in="tf">
+<g class="bx altbox"><rect x="80" y="692" width="1130" height="76" rx="14"/></g>
+<text class="lab" x="110" y="718" text-anchor="start">같은 회로가 백혈병에서 다시 쓰인다</text>
+<g class="pl warn small"><rect x="345" y="732" width="250" height="19" rx="9.5"/><text x="470" y="745.2" text-anchor="middle">PAX5 결손 — B-ALL의 약 30%</text></g>
+<g class="pl warn small"><rect x="615" y="732" width="250" height="19" rx="9.5"/><text x="740" y="745.2" text-anchor="middle">IKZF1 결손 — 고위험에서 최대 70%</text></g>
+<g class="pl warn small"><rect x="885" y="732" width="250" height="19" rx="9.5"/><text x="1010" y="745.2" text-anchor="middle">ETV6 배선 변이 — 상대위험 약 23배</text></g>
+</g>
+<g class="ov ov-gate num"><circle cx="452" cy="212" r="11"/><text x="452" y="215.9" text-anchor="middle">1</text></g>
+<g class="ov ov-gate num"><circle cx="556" cy="400" r="11"/><text x="556" y="403.9" text-anchor="middle">2</text></g>
+<g class="ov ov-gate num"><circle cx="796" cy="400" r="11"/><text x="796" y="403.9" text-anchor="middle">3</text></g>
+</svg>
+<!--/GEN:BDEV-->
+          </div>
+          <ol class="steps" data-mode="gate">
+            <li>접합부에 p·n 뉴클레오타이드가 더해지기 때문에 재배열의 약 <b>66%가 읽기 틀을 잃는다</b> <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+            <li>중쇄 좌위는 대립형당 한 번만 재배열되므로 in-frame 중쇄 성공률은 약 <b>55%</b>이고, 실패한 45%는 pre-BCR의 <b>전부 아니면 전무</b> 신호로 제거된다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+            <li>중쇄가 통과하면 경쇄(Vκ–Jκ · Vλ–Jλ)를 재조합해 완전한 수용체를 만든다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+            <li>자기반응성 검사에 걸리면 경쇄를 다시 재조합해 수용체를 갈아 끼운다 — 어느 시점에나 발달 중인 사람 B세포의 약 <b>20%가 receptor editing 중</b>이다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+          </ol>
+          <ol class="steps" data-mode="iei">
+            <li>전사인자·cytokine 쪽 — <i>TCF3</i> · <i>IKZF1</i> · <i>IKZF3</i> · <i>SPI1</i> · <i>PAX5</i> · <i>FLT3LG</i> <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+            <li>V(D)J와 이중나선 절단 수선 쪽 — <i>RAG1</i>/<i>RAG2</i> · <i>NUDCD3</i> · <i>DCLRE1C</i> · <i>LIG4</i> · <i>PRKDC</i> · <i>NHEJ1</i> · <i>ATM</i> · <i>NBN</i> · <i>RAD50</i>. 다수가 방사선 감수성을 동반하는 중증 복합면역결핍이다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+            <li>pre-BCR과 신호 쪽 — <i>IGHM</i> · <i>IGLL1</i> · <i>CD79A</i>/<i>CD79B</i> · <i>BTK</i> · <i>BLNK</i> · <i>PIK3CD</i>(기능획득) · <i>PIK3R1</i> · <i>SLC39A7</i>(아연 수송) <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+            <li>DNA 복제 쪽(<i>POLD1</i> · <i>POLE1</i>/<i>POLE2</i> · <i>TOP2B</i>)은 B세포와 NK세포가 특히 취약하다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+          </ol>
+          <ol class="steps" data-mode="tf">
+            <li>지정은 PU.1 · IKAROS · E2A가, 고정은 E2A · EBF1 · PAX5가 맡는다 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a></li>
+            <li>pro-B 단계에서 <i>EBF1</i> 좌위가 핵막에서 떨어져 나오는 3차원 재배치가 일어난다 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a></li>
+            <li>PAX5와 EBF1을 억제하면 B세포가 T세포로 전환될 만큼 가소성이 크고, 이 가소성이 백혈병에서 다시 쓰인다 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a><span class="sp">mouse</span></li>
+            <li>체세포 변화로 <i>PAX5</i> 결손이 B세포 급성림프구성백혈병(B-ALL)의 약 30%, <i>IKZF1</i> 결손이 고위험군에서 최대 70%까지 나타난다 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a></li>
+          </ol>
+          <figcaption>그림의 가로축은 단계이지 시간 축이 아니다. 단계 구분과 관문 위치는 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a>, 전사인자 회로는 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a>을 따랐다.</figcaption>
+        </figure>
+
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>층</th><th>무엇인가</th><th>정하는 것</th><th>출처</th></tr></thead>
+            <tbody>
+              <tr data-fig="bdev" data-hl="stage"><th>단계</th><td>HSC → CLP → pro-B → pre-B → immature B</td><td>어느 지점에서 무엇이 가능한지</td><td><a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></td></tr>
+              <tr data-fig="bdev" data-hl="tf"><th>전사인자</th><td>지정 PU.1 · IKAROS · E2A / 고정 E2A · EBF1 · PAX5</td><td>B 정체성과 계통 가소성</td><td><a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a></td></tr>
+              <tr data-fig="bdev" data-hl="recomb"><th>재조합 사건</th><td>D–JH → VH–DJH, 이어서 Vκ–Jκ · Vλ–Jλ</td><td>수용체의 서열</td><td><a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></td></tr>
+              <tr data-fig="bdev" data-hl="gate1"><th>관문 1</th><td>pre-BCR의 전부 아니면 전무 신호</td><td>쓸 수 있는 중쇄를 만들었는지</td><td><a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></td></tr>
+              <tr data-fig="bdev" data-hl="gate2"><th>관문 2</th><td>자기반응성 검사</td><td>내보낼지, 갈아 끼울지, 없앨지</td><td><a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></td></tr>
+              <tr data-fig="bdev" data-hl="edit"><th>receptor editing</th><td>경쇄를 다시 재조합해 수용체를 바꾼다</td><td>자기반응 세포를 버리지 않고 고친다</td><td><a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></td></tr>
+              <tr data-fig="bdev" data-hl="iei"><th>유전자 결함</th><td>각 단계를 막는 단일유전자 변이</td><td>어디서 멈추는지 → 표현형</td><td><a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></td></tr>
+              <tr data-fig="bdev" data-hl="ball"><th>백혈병 쪽</th><td>같은 전사인자의 결손·하향조절</td><td>B-ALL의 소인과 진행</td><td><a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 3. 중심 관용 ───────── -->
+        <h2 id="tolerance">자기에 붙는 세포를 어떻게 처리하나<small>Central tolerance</small></h2>
+        <p class="lede">골수 단계의 검사는 <b>수용체 신호의 세기</b>와 엔도솜 TLR 신호가 함께 만든다. 사람의 유전자 결손이 그 지도를 그린다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></p>
+        <div class="grid2">
+          <div><h4>신호 세기 쪽</h4>
+            <ul>
+              <li><i>BTK</i> 부분기능 변이는 신호 강도의 폭을 눌러 검사의 해상도를 떨어뜨린다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+              <li><i>RAG1</i>/<i>RAG2</i> 부분기능 변이는 receptor editing을 실패하게 만든다 — 고칠 수 없으면 걸러지지 않는다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+              <li><i>ADA</i> · <i>PRKCD</i>(소아 전신홍반루푸스) · <i>AICDA</i> · <i>TNFRSF13B</i>도 같은 관문 지도에 놓인다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+              <li>흔한 변이 쪽에서는 <i>PTPN22</i> R620W가 자가반응 B세포를 늘린다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+            </ul>
+          </div>
+          <div><h4>자가반응 세포가 있다 ≠ 자가면역이다</h4>
+            <ul>
+              <li>엔도솜 TLR 축의 <i>UNC93B1</i> · <i>IRAK4</i> · <i>MYD88</i> 결손 환자는 <b>항핵 naive B세포가 쌓이는데도 임상 자가면역이 없다</b> <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+              <li>즉 자기항원을 <b>인식하는 것</b>과 그 세포가 <b>활성화되는 것</b>이 둘 다 필요하다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+              <li>T세포 쪽에서도 같은 결론이 나온다 — 자가반응 클론이 많아도 치명적 자가면역이 오지 않는 모델이 있다 <a class="src" href="https://doi.org/10.1038/s41577-023-00911-8" target="_blank" rel="noopener">Ashby &amp; Hogquist 2024</a> → <a href="./thymus.html">흉선 선택</a></li>
+              <li>자기 핵산이 엔도솜 TLR에 닿는 상황 자체가 왜 문제가 되는지는 <a href="../02-innate/sterile.html">자기 핵산과 무균 염증</a>에 있다.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ───────── 4. 백혈병 ───────── -->
+        <h2 id="leukemia">같은 회로가 백혈병에서 다시 쓰인다<small>The same circuit, rewired</small></h2>
+        <p class="lede">면역결핍 · 자가면역 · 백혈병이 <b>한 경로를 공유한다</b>. 같은 유전자(<i>IKZF1</i> · <i>TCF3</i> · <i>PAX5</i> · <i>NBN</i> · <i>RAG1</i>/<i>RAG2</i>)가 어느 쪽으로도 나타난다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>유전자</th><th>배선 변이의 표현형</th><th>백혈병 쪽</th></tr></thead>
+            <tbody>
+              <tr><th>IKZF1</th><td>흔한 가변면역결핍 + 자가면역</td><td>산발 B-ALL의 약 1% · 고위험군에서 결손이 최대 70%</td></tr>
+              <tr><th>TCF3</th><td>무감마글로불린혈증 (E555K)</td><td>융합 유전자의 상대 파트너</td></tr>
+              <tr><th>PAX5</th><td>가족성 B-ALL 소인 (p.Gly183Ser)</td><td>B-ALL의 약 30%에서 결손 · 백혈구에서 9p 이형접합성 소실로 야생형이 사라진다</td></tr>
+              <tr><th>ETV6</th><td>혈소판감소를 동반하는 소인</td><td>상대위험 약 23배 · 산발 급성림프구성백혈병의 약 1%</td></tr>
+              <tr><th>RUNX1</th><td>가족성 혈소판장애</td><td>골수계·림프계 종양 소인</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">표의 항목과 수치는 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a>의 배선·체세포 변이 정리를 따랐고, 유전자가 분과를 가로지른다는 관점은 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a>의 주장이다.</p>
+        <div class="callout">
+          <h4>전백혈병 클론은 흔하고, 발병은 드물다</h4>
+          <p><i>ETV6-RUNX1</i>이나 <i>BCR-ABL</i>p190 융합을 가진 클론은 신생아 제대혈에 흔한데 대부분 백혈병으로 가지 않는다 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a>. 소인을 가진 mouse에 감염을 노출시키면 B-ALL이 나오지만 야생형에는 나오지 않는다 — 두 번째 타격의 자리가 <b>유전–환경 협력</b>이라는 뜻이다 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a><span class="sp">mouse</span></p>
+        </div>
+        <div class="flag">
+          <h4>PAX5는 보호 인자인가, 허용 조건인가</h4>
+          <p><span class="side">근거 A</span>PAX5는 pro-B 단계를 넘는 데 절대적으로 필요하고, 결손된 전구세포는 T세포·NK세포·골수계로도 갈 수 있는 다계통 가소성을 유지한다 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a><span class="sp">mouse</span></p>
+          <p><span class="side">근거 B</span>그런데 B-ALL에서는 PAX5 결손·하향조절이 약 30%에서 관찰되고, <i>BCR-ABL</i>p190을 조혈줄기세포에 국한 발현시킨 mouse에서 Pax5 활성을 낮추면 전구 B-ALL이 급격히 빨라진다. 저자들은 PAX5 하향조절이 백혈병성 B 정체성을 <b>허용하는 조건</b>이라고 본다 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a><span class="sp">mouse</span></p>
+          <p><span class="side">판단</span>"필수 인자 = 보호 인자"로 단순화하지 않는다. 같은 인자가 발달 단계와 종양 맥락에서 반대 방향으로 작동할 수 있고, 이는 B세포 전사인자를 표적 삼는 전략에 직접 영향을 준다. 비대칭의 분자 기전은 아직 확립되지 않았다.</p>
+        </div>
+
+        <!-- ───────── 5. 근거와 한계 ───────── -->
+        <h2 id="limit">근거와 한계<small>What we do not know</small></h2>
+        <ul class="rules">
+          <li>전사 회로의 근거 대부분이 <b>mouse</b>에서 나왔고, 사람에서 각 단계 안의 상태 다양성은 최근에야 드러나는 중이다 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a> <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a><span class="sp">mouse</span></li>
+          <li>IGH 좌위는 사람 유전체에서 가장 다형적인 영역 중 하나로 단일염기 변이와 구조 변이가 얽혀 있어, 표준적인 연관 분석이 인과 변이를 잡기 어렵다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+          <li>초고침투 단일유전자 변이와 낮은 효과의 흔한 변이 <b>사이 구간</b>을 겨냥한 희귀변이 연관 연구가 이 축에서 거의 없다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+          <li>소인 변이나 전백혈병 클론을 찾아내도 임상적으로 개입할 수단이 없어, <b>진짜 위험군</b>을 가리는 지표가 필요하다 <a class="src" href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener">Fischer 2020</a></li>
+          <li><b>Neehus 2025</b>와 <b>Fischer 2020</b>은 모두 총설이라 개별 사실은 인용 문헌에 의존한다 — 이 페이지의 서술도 같은 한계를 물려받는다.</li>
+        </ul>
+
+        <a class="more" href="../04-adaptive-effector/index.html">골수와 흉선을 떠난 뒤에는 무슨 일이 →</a>
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">B cell development · B세포 발달 · pro-B · pre-B · immature B · CLP · pre-BCR · receptor editing · 수용체 편집 · central tolerance · 중심 관용 · B세포 tolerance checkpoint · PU.1 · SPI1 · IKAROS · IKZF1 · E2A · TCF3 · EBF1 · PAX5 · BTK · BLNK · IGHM · IGLL1 · CD79A · CD79B · PIK3CD · inborn errors of immunity · IEI · 선천면역결핍 · B-ALL · ETV6 · 전백혈병 클론</p></details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./thymus.html">T세포는 흉선에서 어떻게 골라지나? →</a>
+          <a href="./diversity.html">림프구 수용체의 다양성은 어떻게 만들어지나? →</a>
+          <a href="./presentation.html">항원은 어떻게 제시되나? →</a>
+          <a href="../02-innate/sterile.html">자기 성분은 왜 보통 문제가 안 되나? →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27123/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 골수와 흉선에서의 림프구 생성 (7-1~7-7) ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27113/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 항원수용체 유전자 재배열이 발달을 통제한다 (7장) ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener noreferrer">Neehus 2025, J Hum Immun ↗</a>
+          <a href="https://doi.org/10.1158/2643-3230.BCD-20-0011" target="_blank" rel="noopener noreferrer">Fischer 2020, Blood Cancer Discov ↗</a>
+          <a href="https://doi.org/10.1038/s41577-023-00911-8" target="_blank" rel="noopener noreferrer">Ashby &amp; Hogquist 2024, Nat Rev Immunol ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../01-basics/basics.js"></script>
+  <script src="./adaptive.js"></script>
+  <script src="./data.js"></script>
+  <script src="../glossary.js"></script>
+</body>
+</html>

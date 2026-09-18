@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="방어의 상관물과 잠복기·연령이 정하는 한계 · adjuvant가 고르는 선천 인식 경로 · mRNA-LNP의 핵산 화학과 cytokine wave · sensor 미규명과 reactogenicity 분리 논쟁">
+  <title>백신은 무엇을 켜서 방어를 만드나? · Immunology</title>
+  <link rel="stylesheet" href="../immunology.css">
+  <link rel="stylesheet" href="../01-basics/basics.css">
+  <link rel="stylesheet" href="./intervention.css">
+</head>
+<body class="vpage">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Immunology</span></a></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="./index.html">목록</a><span>›</span><a href="./index.html">질환과 면역 개입</a><span>›</span>백신</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">질환과 면역 개입 — 면역이 병을 만들 때</p>
+        <h1>백신은 무엇을 켜서 방어를 만드나?</h1>
+        <p class="definition">vaccine(백신) = 병을 일으키지 않는 형태의 항원으로 adaptive immunity(적응면역)를 미리 프로그래밍하는 개입. 오늘 쓰는 백신 대부분은 <b>면역학 없이 경험적으로 만들어진 산물</b> — 어려운 병원체와 노년층을 뚫으려면 무엇이 방어를 매개하는지부터 규명 필요 <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a></p>
+        <h2 id="problem">무엇을 켜야 방어가 되나<small>What actually protects</small></h2>
+        <p class="lede">BCG를 뺀 상용 백신의 방어는 거의 전부 <b>항체 매개</b>. 근거 셋 — complement(보체) 결핍자의 수막구균 감수성 · 비장 기능 저하자의 폐렴구균 감수성 · 수동 전달로 재현되는 방어 <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a></p>
+        <ol class="route">
+          <li style="--c:#2f7f73"><span class="lv">무엇을</span><h4>correlates of protection</h4><p>항체가 주역 · 기억만으로 버틸 수 있는지는 병원체의 잠복기가 결정 <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a></p></li>
+          <li style="--c:#936f21"><span class="lv">어떻게</span><h4>adjuvant</h4><p>어느 innate recognition(선천 인식) 경로를 누를지 골라 원하는 adaptive 반응 유형을 프로그래밍하는 설계 변수 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.015" target="_blank" rel="noopener">Lavelle 2024</a></p></li>
+          <li style="--c:#7b5aa6"><span class="lv">새 플랫폼</span><h4>mRNA-LNP</h4><p>효능의 출처는 조율된 cytokine wave — 정작 그 sensor는 미규명 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a></p></li>
+        </ol>
+        <div class="callout blue">
+          <h4>이 페이지가 답하려는 것</h4>
+          <p>"역가가 떨어지면 방어가 사라지나"의 답은 백신이 아니라 <b>병원체</b>에 있음. HBV는 잠복기 6주–6개월이라 역가 waning에도 기억이 따라잡지만, Hib·meningococcus C는 역가 상승에 3–4일이 걸려 돌파감염 발생 <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a></p>
+          <p>germinal center(배중심)와 affinity maturation(친화도 성숙) → <a href="../04-adaptive-effector/germinal-center.html">배중심</a> · 기억의 수명과 구획 → <a href="../04-adaptive-effector/memory.html">기억</a> · 항체의 실행 → <a href="../04-adaptive-effector/antibody.html">항체와 세포의 실행</a> · innate sensing 경로 자체 → <a href="../02-innate/sensing.html">감지</a></p>
+        </div>
+        <h2 id="map">한 장 지도 — 방어·보조제·시간축<small>Protection, adjuvant, timeline</small></h2>
+        <figure class="fig" id="vacFig">
+          <div class="fig-tools">
+            <div class="seg" role="group" aria-label="보기 선택">
+              <button type="button" data-vcmode="none" aria-pressed="true">전체</button>
+              <button type="button" data-vcmode="prot" aria-pressed="false">방어의 상관물</button>
+              <button type="button" data-vcmode="adj" aria-pressed="false">adjuvant</button>
+              <button type="button" data-vcmode="mrna" aria-pressed="false">mRNA-LNP</button>
+            </div>
+            <div class="legend static">
+              <span><i style="--c:#2f7f73"></i>켜는 쪽</span>
+              <span><i style="--c:#936f21"></i>고르는 자리</span>
+              <span><i style="--c:#7b5aa6"></i>항체·배중심</span>
+            </div>
+          </div>
+          <div class="fig-scroll">
+            <!--GEN:VAC-->
+<svg class="vac xfig" data-mode="none" viewBox="0 0 1260 741" role="img" aria-labelledby="vcT vcD" xmlns="http://www.w3.org/2000/svg">
+<title id="vcT">무엇이 방어를 매개하는가, adjuvant가 고르는 선천 경로, 그리고 mRNA-LNP 백신의 시간축</title>
+<desc id="vcD">위 줄은 방어의 상관물이다 — 상용 백신의 방어는 대체로 항체가 매개하고, 기억만으로 버틸 수 있는지는 병원체의 잠복기가 정하며, 언제부터 반응하는지는 항원의 T세포 의존성이 정한다. 가운데 줄은 허가된 adjuvant들이 각각 어느 선천 인식 경로를 누르는지다 — 같은 보조제라도 관용성과 CD8 기억이 한 축에서 상충한다. 아래 줄은 mRNA-지질나노입자 백신이 접종부터 항체까지 가는 시간축이고, 그 시작점인 센서가 아직 규명되지 않았다는 점이 이 그림의 빈칸이다.</desc>
+<defs><marker id="vcA-vac" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#2f7f73"/></marker><marker id="vcA-stop" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b24f4f"/></marker><marker id="vcA-gene" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#3f6f8f"/></marker><marker id="vcA-sort" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#936f21"/></marker><marker id="vcA-anti" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7b5aa6"/></marker><marker id="vcA-grey" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7d857c"/></marker></defs>
+<text class="lanet" x="28" y="46" text-anchor="start">무엇이 방어를 매개하나</text><text class="lanek" x="28" y="62" text-anchor="start">CORRELATES OF PROTECTION</text>
+<g class="fg g-pab" data-fg="pab" data-in="prot">
+<g class="bx vacbox"><rect x="150" y="74" width="348.7" height="78" rx="12"/></g><text class="lab big" x="324.3" y="100" text-anchor="middle">항체가 대부분</text><text class="lab small" x="324.3" y="122" text-anchor="middle">complement 결핍 → 수막구균 · 비장 기능 저하 → 폐렴구균</text><text class="lab small" x="324.3" y="138" text-anchor="middle">수동 전달로 재현되는 방어 — BCG를 뺀 상용 백신은 항체 매개</text>
+</g>
+<g class="ov ov-prot num"><circle cx="166" cy="94" r="10"/><text x="166" y="97.9" text-anchor="middle">1</text></g>
+<g class="fg g-pinc" data-fg="pinc" data-in="prot">
+<g class="bx"><rect x="516.7" y="74" width="348.7" height="78" rx="12"/></g><text class="lab big" x="691" y="100" text-anchor="middle">잠복기가 결정</text><text class="lab small" x="691" y="122" text-anchor="middle">HBV 6주–6개월 → 역가 하락에도 기억으로 방어</text><text class="lab small" x="691" y="138" text-anchor="middle">Hib·meningococcus C는 3–4일 → 돌파감염</text>
+</g>
+<g class="ov ov-prot num"><circle cx="532.7" cy="94" r="10"/><text x="532.7" y="97.9" text-anchor="middle">2</text></g>
+<g class="fg g-page" data-fg="page" data-in="prot">
+<g class="bx"><rect x="883.3" y="74" width="348.7" height="78" rx="12"/></g><text class="lab big" x="1057.7" y="100" text-anchor="middle">나이가 결정</text><text class="lab small" x="1057.7" y="122" text-anchor="middle">polysaccharide는 T세포 비의존 → 약 18개월까지 무반응</text><text class="lab small" x="1057.7" y="138" text-anchor="middle">conjugate는 생후 2개월부터 기억 형성</text>
+</g>
+<g class="ov ov-prot num"><circle cx="899.3" cy="94" r="10"/><text x="899.3" y="97.9" text-anchor="middle">3</text></g>
+<g class="fg g-herd" data-fg="herd" data-in="prot">
+<g class="bx lanebox"><rect x="150" y="168" width="1082" height="43" rx="10"/></g>
+<text class="lab" x="691" y="194" text-anchor="middle">집단면역 임계는 병원체마다 상이 — 홍역·백일해 약 95% · 폴리오·풍진 최대 86% · 인플루엔자 30–40%(파상풍은 예외)</text>
+</g>
+<text class="lanet" x="28" y="263" text-anchor="start">adjuvant가 고르는 경로</text><text class="lanek" x="28" y="279" text-anchor="start">TAILORING INNATE RECOGNITION</text>
+<g class="fg g-aalum" data-fg="aalum" data-in="adj">
+<g class="bx"><rect x="150" y="291" width="203.6" height="92" rx="12"/></g><text class="lab big" x="251.8" y="317" text-anchor="middle">alum</text><text class="lab small" x="251.8" y="339" text-anchor="middle">NLRP3·caspase-1 의존 IL-1β ·</text><text class="lab small" x="251.8" y="354" text-anchor="middle">항체 유도엔 불필요</text>
+</g>
+<g class="ov ov-adj num"><circle cx="166" cy="311" r="10"/><text x="166" y="314.9" text-anchor="middle">1</text></g>
+<g class="fg g-amf" data-fg="amf" data-in="adj">
+<g class="bx"><rect x="369.6" y="291" width="203.6" height="92" rx="12"/></g><text class="lab big" x="471.4" y="317" text-anchor="middle">MF59</text><text class="lab small" x="471.4" y="339" text-anchor="middle">근육 ATP 방출에 의존</text><text class="lab small" x="471.4" y="354" text-anchor="middle">MyD88·ASC 필요 · NLRP3 불필요</text>
+</g>
+<g class="ov ov-adj num"><circle cx="385.6" cy="311" r="10"/><text x="385.6" y="314.9" text-anchor="middle">2</text></g>
+<g class="fg g-aas" data-fg="aas" data-in="adj">
+<g class="bx vacbox"><rect x="589.2" y="291" width="203.6" height="92" rx="12"/></g><text class="lab big" x="691" y="317" text-anchor="middle">AS03</text><text class="lab small" x="691" y="339" text-anchor="middle">dLN 지질대사 → IRE1α 의존 ER</text><text class="lab small" x="691" y="354" text-anchor="middle">stress</text><text class="lab small" x="691" y="369" text-anchor="middle">affinity maturation에 필요</text>
+</g>
+<g class="ov ov-adj num"><circle cx="605.2" cy="311" r="10"/><text x="605.2" y="314.9" text-anchor="middle">3</text></g>
+<g class="fg g-ampla" data-fg="ampla" data-in="adj">
+<g class="bx"><rect x="808.8" y="291" width="203.6" height="92" rx="12"/></g><text class="lab big" x="910.6" y="317" text-anchor="middle">MPLA</text><text class="lab small" x="910.6" y="339" text-anchor="middle">TRIF만 사용 → 관용성 우수</text><text class="lab small" x="910.6" y="354" text-anchor="middle">CD8 memory precursor는 저조</text>
+</g>
+<g class="ov ov-adj num"><circle cx="824.8" cy="311" r="10"/><text x="824.8" y="314.9" text-anchor="middle">4</text></g>
+<g class="fg g-alnp" data-fg="alnp" data-in="adj">
+<g class="bx ab"><rect x="1028.4" y="291" width="203.6" height="92" rx="12"/></g><text class="lab big" x="1130.2" y="317" text-anchor="middle">LNP</text><text class="lab small" x="1130.2" y="339" text-anchor="middle">IL-6 의존 Tfh·germinal center</text><text class="lab small" x="1130.2" y="354" text-anchor="middle">EBI2·CH25H로 DC를 T–B</text><text class="lab small" x="1130.2" y="369" text-anchor="middle">border에 배치</text>
+</g>
+<g class="ov ov-adj num"><circle cx="1044.4" cy="311" r="10"/><text x="1044.4" y="314.9" text-anchor="middle">5</text></g>
+<g class="fg g-depot" data-fg="depot" data-in="adj">
+<g class="bx altbox"><rect x="150" y="399" width="1082" height="43" rx="10"/></g>
+<text class="lab" x="691" y="425" text-anchor="middle">depot 가설은 부위·항원에 따라 갈림 — 귀의 alum을 떼어내도 반응은 그대로</text>
+</g>
+<text class="lanet" x="28" y="488" text-anchor="start">mRNA-LNP의 시간축</text><text class="lanek" x="28" y="504" text-anchor="start">FROM LIPID TO ANTIBODY</text>
+<g class="fg g-m1" data-fg="m1" data-in="mrna">
+<g class="bx"><rect x="150" y="516" width="168.7" height="90" rx="12"/></g><text class="lab big" x="234.3" y="540" text-anchor="middle">설계</text><text class="lab small" x="234.3" y="562" text-anchor="middle">m1Ψ 치환 · cap1</text><text class="lab small" x="234.3" y="577" text-anchor="middle">dsRNA 오염 제거</text>
+</g>
+<g class="ov ov-mrna num"><circle cx="166" cy="534" r="10"/><text x="166" y="537.9" text-anchor="middle">1</text></g>
+<g class="fg g-m2" data-fg="m2" data-in="mrna">
+<g class="bx"><rect x="332.7" y="516" width="168.7" height="90" rx="12"/></g><text class="lab big" x="417" y="540" text-anchor="middle">흡수</text><text class="lab small" x="417" y="562" text-anchor="middle">dLN에서 cDC2가 가장 빠른</text><text class="lab small" x="417" y="577" text-anchor="middle">흡수·번역</text>
+</g>
+<g class="ov ov-mrna num"><circle cx="348.7" cy="534" r="10"/><text x="348.7" y="537.9" text-anchor="middle">2</text></g>
+<path class="fl vac" d="M319.7,561 L327.7,561" marker-end="url(#vcA-vac)"/>
+<g class="fg g-m3" data-fg="m3" data-in="mrna">
+<g class="bx altbox"><rect x="515.3" y="516" width="168.7" height="90" rx="12"/></g><text class="lab big" x="599.7" y="540" text-anchor="middle">감지</text><text class="lab small" x="599.7" y="562" text-anchor="middle">sensor 미규명</text>
+</g>
+<g class="ov ov-mrna num"><circle cx="531.3" cy="534" r="10"/><text x="531.3" y="537.9" text-anchor="middle">3</text></g>
+<path class="fl vac" d="M502.3,561 L510.3,561" marker-end="url(#vcA-vac)"/>
+<g class="fg g-m4" data-fg="m4" data-in="mrna">
+<g class="bx vacbox"><rect x="698" y="516" width="168.7" height="90" rx="12"/></g><text class="lab big" x="782.3" y="540" text-anchor="middle">cytokine wave</text><text class="lab small" x="782.3" y="562" text-anchor="middle">IL-6 · IL-1R · type I</text><text class="lab small" x="782.3" y="577" text-anchor="middle">IFN</text>
+</g>
+<g class="ov ov-mrna num"><circle cx="714" cy="534" r="10"/><text x="714" y="537.9" text-anchor="middle">4</text></g>
+<path class="fl vac" d="M685,561 L693,561" marker-end="url(#vcA-vac)"/>
+<g class="fg g-m5" data-fg="m5" data-in="mrna">
+<g class="bx ab"><rect x="880.7" y="516" width="168.7" height="90" rx="12"/></g><text class="lab big" x="965" y="540" text-anchor="middle">germinal center</text><text class="lab small" x="965" y="562" text-anchor="middle">사람에서 6개월 초과 유지</text><text class="lab small" x="965" y="577" text-anchor="middle">3–6개월 사이 affinity</text><text class="lab small" x="965" y="592" text-anchor="middle">maturation 심화</text>
+</g>
+<g class="ov ov-mrna num"><circle cx="896.7" cy="534" r="10"/><text x="896.7" y="537.9" text-anchor="middle">5</text></g>
+<path class="fl vac" d="M867.7,561 L875.7,561" marker-end="url(#vcA-vac)"/>
+<g class="fg g-m6" data-fg="m6" data-in="mrna">
+<g class="bx"><rect x="1063.3" y="516" width="168.7" height="90" rx="12"/></g><text class="lab big" x="1147.7" y="540" text-anchor="middle">출력</text><text class="lab small" x="1147.7" y="562" text-anchor="middle">항체 → 골수 long-lived</text><text class="lab small" x="1147.7" y="577" text-anchor="middle">plasma cell</text><text class="lab small" x="1147.7" y="592" text-anchor="middle">CD8은 6개월 뒤 41–65%</text>
+</g>
+<g class="ov ov-mrna num"><circle cx="1079.3" cy="534" r="10"/><text x="1079.3" y="537.9" text-anchor="middle">6</text></g>
+<path class="fl vac" d="M1050.3,561 L1058.3,561" marker-end="url(#vcA-vac)"/>
+<g class="ov ov-dis dis"><rect x="314.5" y="618" width="231" height="20" rx="10"/><text x="430" y="632" text-anchor="middle">센서 미규명 — MDA5 의존 대 MAVS 비의존</text></g>
+<g class="ov ov-dis dis"><rect x="750.2" y="618" width="259.6" height="20" rx="10"/><text x="880" y="632" text-anchor="middle">immunogenicity와 reactogenicity 분리 가능?</text></g>
+<g class="fg g-cap" data-fg="cap" data-in="mrna">
+<g class="bx"><rect x="150" y="650" width="1082" height="67" rx="10"/></g>
+<text class="lab big" x="691" y="676" text-anchor="middle">남는 제약</text>
+<text class="lab small" x="691" y="698" text-anchor="middle">용량 천장 50 µg이 다가백신을 제약 · 반복 접종은 spike 특이 IgG4 비율을 높여 ADCC·complement 기능 저하</text>
+</g>
+</svg>
+<!--/GEN:VAC-->
+          </div>
+          <ol class="steps" data-mode="prot">
+            <li><b>항체가 대부분</b> — complement 결핍과 비장 기능 저하가 각각 수막구균·폐렴구균 감수성으로, 수동 전달이 방어를 재현 <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a></li>
+            <li><b>잠복기가 결정</b> — HBV 6주–6개월이라 역가 하락에도 기억으로 방어, Hib·meningococcus C는 3–4일이 걸려 돌파감염. meningococcus C 2회 접종 영아의 7개월 뒤 방어역가 유지 41%, 모체 항체 반감기 30–40일 <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a></li>
+            <li><b>나이가 결정</b> — polysaccharide(다당류) 항원은 T세포 비의존이라 splenic marginal zone(비장 변연부) 성숙 시점인 약 18개월까지 무반응. conjugate(단백 접합체)는 T세포 의존 반응으로 전환해 생후 2개월부터 기억 형성 <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a><a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27131/" target="_blank" rel="noopener">Janeway 2001 · 14-16</a></li>
+          </ol>
+          <ol class="steps" data-mode="adj">
+            <li><b>alum</b> — NLRP3·caspase-1 의존 IL-1β를 만들지만 항체 유도에는 불필요 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.015" target="_blank" rel="noopener">Lavelle 2024</a><span class="sp">mouse</span></li>
+            <li><b>MF59</b> — 근육의 ATP 방출에 의존(apyrase로 감소) · MyD88·ASC는 필요, NLRP3·caspase-1은 불필요 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.015" target="_blank" rel="noopener">Lavelle 2024</a><span class="sp">mouse</span></li>
+            <li><b>AS03</b> — draining lymph node(배액림프절) 지질대사를 바꿔 <b>IRE1α</b> 의존 ER stress를 점화 · 그것이 IgG2c 역가·avidity·affinity maturation에 필수 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.015" target="_blank" rel="noopener">Lavelle 2024</a><span class="sp">mouse</span></li>
+            <li><b>MPLA</b> — TRIF만 사용 → 관용성은 우수하나 CD8 memory precursor 생성은 저조. <b>관용성과 CD8 기억이 같은 축에서 상충</b> <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.015" target="_blank" rel="noopener">Lavelle 2024</a></li>
+            <li><b>LNP</b> — IL-6 의존으로 Tfh와 germinal center 유도, <i>Myd88</i>·<i>Mavs</i> 결손에서도 보존. BNT162b2는 TLR2/3/4/7 비의존이나 MDA5 결손에서 IFN-α와 spike 특이 CD8 감소 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.015" target="_blank" rel="noopener">Lavelle 2024</a><span class="sp">mouse</span></li>
+          </ol>
+          <ol class="steps" data-mode="mrna">
+            <li><b>설계</b> — m1Ψ 치환 · cap1 · dsRNA 오염 제거(HPLC 또는 RNase III) · dsRNA를 늘리는 codon 최적화 회피. 이 넷이 염증을 낮추는 장치 <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a></li>
+            <li><b>흡수</b> — draining lymph node에서 cDC2가 가장 빠르고 효과적으로 LNP를 흡수·번역. 단 위치 효과가 없는 사람 in vitro 조건에서는 cDC1과 동등 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a></li>
+            <li><b>감지</b> — sensor 미규명. LNP는 운반체가 아니라 adjuvant로 작동 — EBI2·CH25H 유도로 dendritic cell을 T–B border에 배치하고 soluble CD25로 IL-2를 quench <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a></li>
+            <li><b>cytokine wave</b> — LNP 유래 IL-6가 Tfh·germinal center를, IL-1R이 최적 germinal center 반응을 매개 · 사람에서는 IL-15와 IFN-γ가 항체와 상관 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a></li>
+            <li><b>germinal center</b> — 사람에서 6개월 넘게 유지, 3–6개월 사이 affinity maturation 심화. 항체의 초기 급감은 실패가 아니라 peak가 높았던 결과이고 골수 long-lived plasma cell(장수명 형질세포) 유래로 안정화 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a><a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a></li>
+            <li><b>출력의 비대칭</b> — 접종 수주 내 CD8 검출 70–90%인데 2차 접종 6개월 뒤에는 <b>41–65%</b>로 개인차 큼 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a></li>
+          </ol>
+          <figcaption>세 줄은 백신의 세 층 — 무엇이 방어를 매개하는가(상관물), 무엇을 눌러 그것을 만드는가(보조제), 새 플랫폼에서 그 과정이 어떤 순서로 일어나는가. 상관물은 <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a>, 보조제는 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.015" target="_blank" rel="noopener">Lavelle 2024</a>, mRNA 설계·성적은 <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a>, 기전 시간축은 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a>를 따름.</figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>자리</th><th>무엇을 하나</th><th>무엇이 정해지나</th></tr></thead>
+            <tbody>
+              <tr data-fig="vac" data-hl="pab"><th>항체</th><td>거의 모든 상용 백신의 방어를 매개</td><td>무엇을 측정할 것인가</td></tr>
+              <tr data-fig="vac" data-hl="pinc"><th>잠복기</th><td>기억이 따라잡을 시간을 부여</td><td>역가 유지의 필요 여부</td></tr>
+              <tr data-fig="vac" data-hl="page"><th>항원의 T세포 의존성</th><td>polysaccharide인가 conjugate인가</td><td>접종 가능 시점</td></tr>
+              <tr data-fig="vac" data-hl="herd"><th>집단면역 임계</th><td>병원체마다 상이</td><td>접종률 목표</td></tr>
+              <tr data-fig="vac" data-hl="aalum"><th>alum</th><td>inflammasome을 켜지만 항체엔 불필요</td><td>기전 가정의 수정</td></tr>
+              <tr data-fig="vac" data-hl="aas"><th>AS03</th><td>ER stress 점화</td><td>affinity maturation</td></tr>
+              <tr data-fig="vac" data-hl="ampla"><th>MPLA</th><td>TRIF만 사용</td><td>관용성과 CD8 기억의 상충</td></tr>
+              <tr data-fig="vac" data-hl="alnp"><th>LNP</th><td>IL-6로 Tfh·germinal center 유도</td><td>항체의 품질</td></tr>
+              <tr data-fig="vac" data-hl="m1"><th>핵산 설계</th><td>m1Ψ·cap1·dsRNA 제거</td><td>투여 가능 용량</td></tr>
+              <tr data-fig="vac" data-hl="m3"><th>sensor</th><td>미규명</td><td>사람 간 변이의 후보를 고정 불가</td></tr>
+              <tr data-fig="vac" data-hl="m5"><th>germinal center 기간</th><td>사람에서 6개월 이상</td><td>항체 내구성</td></tr>
+              <tr data-fig="vac" data-hl="m6"><th>CD8 반응</th><td>6개월 뒤 41–65%</td><td>세포면역의 개인차</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">상관물 항목은 <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a>, 보조제 항목은 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.015" target="_blank" rel="noopener">Lavelle 2024</a>, mRNA 항목은 <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a>·<a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a>의 정리를 따름.</p>
+
+        <h2 id="design">좋은 백신의 조건과 그 대가<small>Trade-offs by design</small></h2>
+        <p class="lede">효과적 백신의 조건 — 안전성 · 효능 · <b>오래가는 기억</b> · 비용 · 올바른 epitope. 대량 접종이 전제라 낮은 수준의 독성도 허용 불가 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27131/" target="_blank" rel="noopener">Janeway 2001 · 14-16</a></p>
+        <div class="grid2">
+          <div><h4>live-attenuated(약독화 생백신)</h4>
+            <ul>
+              <li>MHC class I 제시를 거쳐 cytotoxic CD8까지 유도 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27131/" target="_blank" rel="noopener">Janeway 2001 · 14-16</a></li>
+              <li>드문 병원성 회복 위험 · 면역저하자에게 위험 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27131/" target="_blank" rel="noopener">Janeway 2001 · 14-16</a></li>
+            </ul>
+          </div>
+          <div><h4>killed·정제 항원</h4>
+            <ul>
+              <li>세포질 단백을 만들지 못해 MHC class I 경로 사용 불가 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27131/" target="_blank" rel="noopener">Janeway 2001 · 14-16</a></li>
+              <li>안전하나 면역원성이 낮아 adjuvant 필요 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27131/" target="_blank" rel="noopener">Janeway 2001 · 14-16</a></li>
+            </ul>
+          </div>
+        </div>
+        <p>안전성의 실제 크기 — anaphylaxis(아나필락시스) 10⁶분의 1 미만 · MMR 뒤 열성경련 3,000분의 1 · AS03 보조 H1N1 뒤 narcolepsy(기면증) 55,000–16,000분의 1이고 그 위험은 <i>HLA DQB1*0602</i> 보유자에 국한 <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a>. 접종 항원 총수는 3,200개에서 약 320개로 감소 → "항원 과부하" 주장 기각 <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a></p>
+        <p class="abbr-line">난제로 남은 병원체들의 성적 — HIV 시험 31% · 말라리아 백신 30–40% · 결핵 후보 3년 50% <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a></p>
+
+        <h2 id="mrna">mRNA 플랫폼이 실제로 바꾼 것<small>What nucleoside modification did</small></h2>
+        <p class="lede">성패를 가른 것은 전달체가 아니라 <b>핵산 화학</b> <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a></p>
+        <p>비변형 mRNA 후보는 12.5 µg에서도 과염증으로 증량 불가였고 그 용량은 방어에 불충분 — m1Ψ 덕분에 30 µg·100 µg 투여가 가능해진 것 <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a>. LNP의 ionizable lipid 자체가 내재 adjuvant이고, 빈 ionizable LNP에 단백을 섞은 조합이 squalene emulsion(스쿠알렌 유화) adjuvant를 능가 <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a></p>
+        <p>성적의 명암도 분명 — RSV 백신은 60세 이상 35,541명에서 단회 50 µg으로 하기도질환 83.7% 예방으로 승인, influenza 후보는 3상에서 이상반응 70% 대 48%로 높고 B형 면역원성 열등 <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a>. 전임상 예측력의 실패도 명시적 — H10 백신이 ferret에서 HAI 약 1:3,000이었으나 사람에서는 일시적으로 약 1:100 <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a></p>
+        <p>LNP의 물성이 결과를 결정 — 약 100 nm가 mouse에서 최강, 비인간 영장류에서는 60–150 nm · DSPC와 0.5% PEG-lipid 조합이 최강이고 DOPS 조성이 CD8에 최적 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a>. 반복 접종은 spike 특이 <b>IgG4 비율</b>을 높여 ADCC와 complement 기능을 저하 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a></p>
+        <div class="flag">
+          <h4>갈리는 지점 — mRNA-LNP를 감지하는 sensor는 무엇인가</h4>
+          <p><span class="side">근거 A</span>MYD88 결손 mouse에서 adaptive 반응 결함 · BNT162b2에서 TLR3 결손은 중화항체를, MDA5 결손은 CD8 반응을 감소 <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a><a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a><span class="sp">mouse</span></p>
+          <p><span class="side">근거 B</span>reporter 세포에서 한 mRNA 백신은 TLR7 비활성화 · TLR7 결손 mouse의 B·T 반응 정상 · mRNA-LNP 면역 활성화가 <b>MAVS 비의존</b>으로 보고(RIG-I·MDA5가 모두 MAVS를 경유하므로 모순) · TLR9과 cGAS–STING도 두 백신 모두에서 불필요 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a><span class="sp">mouse</span></p>
+          <p><span class="side">지금의 판단</span>제형(핵산 화학·생산 공정·LNP 조성)과 평가한 반응 종류의 차이로 해석 · 저자들의 결론대로 미규명 핵산 sensor 또는 sensor 간 보상을 전제 → 특정 PRR 유전형을 백신 반응의 사전 후보로 고정하지 않음 <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a><a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a></p>
+        </div>
+        <div class="flag">
+          <h4>갈리는 지점 — immunogenicity와 reactogenicity를 분리할 수 있나</h4>
+          <p><span class="side">근거 A</span>IL-1β가 reactogenicity(반응원성)의 주범 후보이고 특정 ionizable lipid가 이를 강하게 유도 → IL-1 경로만 겨냥하면 효능을 지키며 부작용 감소 가능이라는 기대 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a></p>
+          <p><span class="side">근거 B</span>그런데 IL-1R이 최적 germinal center 반응을 매개하고 IL-6와 type I IFN이 Tfh·germinal center·CD8에 필수 — <b>염증을 끄면 반응도 꺼짐</b> <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a></p>
+          <p><span class="side">지금의 판단</span>저자들의 유보를 수용 — 부분 분리는 가능해도 완전 분리는 아마 불가능. reactogenicity를 제거할 부작용이 아니라 용량–반응 위에서 최적점을 찾는 형질로 취급 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a></p>
+        </div>
+
+        <h2 id="limit">근거와 한계<small>What we do not know</small></h2>
+        <ul class="rules">
+          <li><b>백신 반응 변이의 사람 유전학이 거의 공백.</b> <a class="src" href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener">Pollard 2021</a>는 숙주 반응 변이의 중요성을 인정하면서 GWAS·eQTL 문헌을 한 건도 인용하지 않았고, <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a>도 숙주 유전학 미수록. 명시된 사람 유전 단서는 AS03-H1N1 narcolepsy의 <i>HLA DQB1*0602</i>와 IFNAR1 기능상실 보유 2명 중 1명만 항체 반응 결함이었다는 사례가 사실상 전부 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a></li>
+          <li>사람의 reactogenicity를 예측하는 동물 모델 부재 — 종간 IL-1 수용체 신호 차이가 부분 원인으로 지목되고, myocarditis(심근염)는 12–24세 남성에 편중되어 3상으로도 포착 불가 <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a></li>
+          <li>주사 경로로 점막 면역과 tissue-resident memory T cell을 만드는 방법이 미확립 · 상기도 homing 기전 자체가 미규명 · prime–pull에 adjuvant가 필요한지도 미상 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.015" target="_blank" rel="noopener">Lavelle 2024</a><a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a></li>
+          <li>용량 천장 50 µg이 다가백신을 제약 — 8가로 만들면 구성당 6.25 µg <a class="src" href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener">Pardi 2024</a></li>
+          <li>monocyte의 후성유전 재프로그래밍은 2차 접종 후 28일 안에 baseline 복귀 → 이 맥락에서 trained immunity 가설은 약함 <a class="src" href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener">Locci 2026</a></li>
+          <li>HBV 자체의 면역병인과 만성화 수치는 <a href="../../virus/index.html">바이러스 감염</a>에 소재 — 이 문서는 백신 쪽 기전까지만 취급.</li>
+        </ul>
+
+        <a class="more" href="./immunodeficiency.html">반대로 켤 부품이 없으면 무슨 일이 생기나 →</a>
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">vaccine · 백신 · vaccinology · correlates of protection · 방어의 상관물 · herd immunity · 집단면역 · conjugate vaccine · 접합백신 · polysaccharide · live-attenuated · 약독화 · adjuvant · 보조제 · alum · MF59 · AS03 · AS01 · MPLA · CpG · IRE1α · TRIF · NLRP3 · lipid nanoparticle · LNP · mRNA vaccine · mRNA 백신 · m1Ψ · nucleoside modification · cap1 · dsRNA · ionizable lipid · cDC2 · EBI2 · CH25H · IL-6 · IL-1R · germinal center · Tfh · long-lived plasma cell · reactogenicity · 반응원성 · myocarditis · IgG4 · HLA DQB1*0602 · narcolepsy · RSV · influenza</p></details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./immunodeficiency.html">면역이 부족하면 무엇이 무너지나? →</a>
+          <a href="../04-adaptive-effector/germinal-center.html">배중심은 어떻게 더 좋은 항체를 고르나? →</a>
+          <a href="../04-adaptive-effector/memory.html">기억은 어디에 어떤 형태로 남나? →</a>
+          <a href="../02-innate/sensing.html">선천면역은 무엇을 어떻게 감지하나? →</a>
+          <a href="../../virus/index.html">바이러스 감염 — HBV 면역병인 →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27131/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 14장 감염과 싸우기 위한 면역반응 조작 ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41577-020-00479-7" target="_blank" rel="noopener noreferrer">Pollard 2021, Nat Rev Immunol ↗</a>
+          <a href="https://doi.org/10.1016/j.immuni.2024.03.015" target="_blank" rel="noopener noreferrer">Lavelle 2024, Immunity ↗</a>
+          <a href="https://doi.org/10.1038/s41573-024-01042-y" target="_blank" rel="noopener noreferrer">Pardi 2024, Nat Rev Drug Discov ↗</a>
+          <a href="https://doi.org/10.1038/s41586-026-10599-0" target="_blank" rel="noopener noreferrer">Locci 2026, Nature ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../01-basics/basics.js"></script>
+  <script src="./intervention.js"></script>
+  <script src="./data.js"></script>
+  <script src="../glossary.js"></script>
+</body>
+</html>

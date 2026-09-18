@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="T세포 활성화 — Lck·ZAP-70·LAT/SLP-76·PLCγ1의 근위 회로, CD45와 Csk가 세우는 역치, 느린 한 부위가 만드는 리간드 변별, 그리고 CD4 여섯 갈래와 CD8 상반쌍·대사가 정하는 운명">
+  <title>T세포는 어떻게 켜지고 무엇으로 갈라지나? · Immunology</title>
+  <link rel="stylesheet" href="../immunology.css">
+  <link rel="stylesheet" href="../01-basics/basics.css">
+  <link rel="stylesheet" href="./execution.css">
+</head>
+<body class="vpage">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Immunology</span></a></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="./index.html">목록</a><span>›</span><a href="./index.html">적응면역 II</a><span>›</span>T세포 활성화</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">적응면역 II — 실행과 장소</p>
+        <h1>T세포는 어떻게 켜지고 무엇으로 갈라지나?</h1>
+        <p class="definition">T세포 활성화(T cell activation) = 항원제시세포의 peptide–MHC와 공자극 리간드를 잡은 T세포가 <b>Lck → ITAM → ZAP-70 → LAT/SLP-76 → PLCγ1</b>의 근위 회로를 거쳐 전사 프로그램에 들어가는 과정. 이 회로는 켜짐/꺼짐이 아니라 <b>속도가 조절된 관문</b>이어서, 변별 자체가 회로 안에 심어져 있다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></p>
+        <h2 id="problem">켜는 일과 가르는 일은 다른 문제다<small>Two decisions</small></h2>
+        <p class="lede">선택을 통과한 T세포는 두 가지를 따로 정해야 한다 — <b>켜질 것인가</b>, 그리고 <b>무엇이 될 것인가</b>. 앞의 질문은 수용체 근위의 몇 초를 다루고, 뒤의 질문은 전사인자 조합과 대사를 다룬다 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a></p>
+        <ol class="route">
+          <li style="--c:var(--ada)"><span class="lv">켜기</span><h4>proximal</h4><p>수용체가 리간드를 잡은 뒤 Lck에서 PLCγ1까지 이어지는 회로가 신호를 만든다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></p></li>
+          <li style="--c:var(--st)"><span class="lv">가리기</span><h4>discrimination</h4><p>잡았다고 다 켜지지 않는다 — 회로 자체에 느린 단계를 심어 리간드를 변별한다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></p></li>
+          <li style="--c:var(--il)"><span class="lv">갈라지기</span><h4>fate</h4><p>같은 신호를 받고도 cytokine 환경과 전사인자 조합에 따라 다른 세포가 된다 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a></p></li>
+        </ol>
+        <div class="callout blue">
+          <h4>이 페이지가 답하려는 것</h4>
+          <p>근위 회로는 <b>켜짐/꺼짐 스위치가 아니다</b>. 어느 단계를 얼마나 빠르게 지나가는지가 곧 변별이고, 그 속도를 인위로 올리면 자가면역이 생긴다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></p>
+          <p>무엇을 보여주는 쪽의 기전 → <a href="../03-adaptive-recognition/presentation.html">항원 제시</a> · 누가 통과했는지 → <a href="../03-adaptive-recognition/thymus.html">흉선 선택</a> · cytokine 수용체와 신호 계열 → <a href="../01-basics/cytokine.html">cytokine</a></p>
+        </div>
+        <h2 id="map">한 장 지도 — 세 줄로 읽는다<small>Circuit, discrimination, fate</small></h2>
+        <figure class="fig" id="tactFig">
+          <div class="fig-tools">
+            <div class="seg" role="group" aria-label="보기 선택">
+              <button type="button" data-tamode="none" aria-pressed="true">전체</button>
+              <button type="button" data-tamode="prox" aria-pressed="false">근위 회로</button>
+              <button type="button" data-tamode="disc" aria-pressed="false">리간드 변별</button>
+              <button type="button" data-tamode="fate" aria-pressed="false">운명과 대사</button>
+            </div>
+            <div class="legend static">
+              <span><i style="--c:#3f6f8f"></i>신호</span>
+              <span><i style="--c:#b24f4f"></i>느리게 하는 자리</span>
+              <span><i style="--c:#936f21"></i>운명</span>
+            </div>
+          </div>
+          <div class="fig-scroll">
+            <!--GEN:TACT-->
+<svg class="tact xfig" data-mode="none" viewBox="0 0 1260 812" role="img" aria-labelledby="taT taD" xmlns="http://www.w3.org/2000/svg">
+<title id="taT">T세포 활성화 — 근위 신호 회로, 리간드 변별, 그리고 운명과 대사의 분기</title>
+<desc id="taD">위 줄은 근위 TCR 회로다. 항원제시세포의 pMHC와 B7이 TCR–CD3와 CD28을 잡으면 Lck가 ITAM을 인산화하고 ZAP-70이 tandem SH2로 붙어 LAT·SLP-76 골격을 만들고 PLCγ1을 켠다. CD45와 Csk의 길항이 기저 역치를 정한다. 가운데 줄은 변별의 실체다 — ZAP-70이 LAT의 PLCγ1 결합 부위만 일부러 느리게 인산화하고, 그 속도를 올리면 자가면역이 생긴다. 아래 줄은 운명이다 — CD4는 전사인자 조합으로 여섯 갈래, CD8은 상반쌍과 첫 분열의 비대칭으로 effector와 memory로 갈리며 대사가 그 운명에 붙는다.</desc>
+<defs><marker id="taA-sig" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#3f6f8f"/></marker><marker id="taA-gold" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#936f21"/></marker><marker id="taA-off" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b24f4f"/></marker><marker id="taA-ab" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7b5aa6"/></marker><marker id="taA-res" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#2f7f73"/></marker><marker id="taA-plain" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7d857c"/></marker></defs>
+<text class="lanet" x="28" y="40" text-anchor="start">근위 회로 — 신호가 켜지는 순서</text><text class="lanek" x="28" y="56" text-anchor="start">PROXIMAL CIRCUIT</text>
+<g class="fg g-memb" data-fg="memb" data-in="prox disc fate">
+<g class="mem"><rect x="150" y="132" width="1000" height="22" rx="4"/><line x1="150" y1="143" x2="1150" y2="143"/></g>
+<text class="olab small" x="1160" y="148" text-anchor="start">세포막</text>
+</g>
+<g class="fg g-apc" data-fg="apc" data-in="prox">
+<g class="bx trig"><rect x="150" y="58" width="256" height="62" rx="12"/><text class="lab" x="278" y="88" text-anchor="middle">APC의 pMHC</text><text class="lab small" x="278" y="104" text-anchor="middle">class I → CD8 · class II → CD4</text></g>
+<g class="bx trig"><rect x="432" y="58" width="196" height="62" rx="12"/><text class="lab" x="530" y="88" text-anchor="middle">B7 — CD80 · CD86</text><text class="lab small" x="530" y="104" text-anchor="middle">두 번째 신호</text></g>
+<path class="fl plain" d="M278,120 L278,128" marker-end="url(#taA-plain)"/>
+<path class="fl plain" d="M530,120 L530,128" marker-end="url(#taA-plain)"/>
+</g>
+<g class="fg g-prox" data-fg="prox" data-in="prox disc">
+<g class="nd sig "><rect x="183" y="162" width="190" height="28" rx="8"/><text x="278" y="180" text-anchor="middle">TCR–CD3 의 ITAM</text></g>
+<g class="nd gold "><rect x="455" y="162" width="150" height="28" rx="8"/><text x="530" y="180" text-anchor="middle">CD28</text></g>
+<g class="nd sig "><rect x="213" y="220" width="130" height="28" rx="8"/><text x="278" y="238" text-anchor="middle">Lck</text></g>
+<g class="nd sig "><rect x="193" y="278" width="170" height="28" rx="8"/><text x="278" y="296" text-anchor="middle">ZAP-70</text></g>
+<g class="pl small"><rect x="133" y="318" width="290" height="19" rx="9.5"/><text x="278" y="331.2" text-anchor="middle">tandem SH2가 이중 인산화 ITAM을 잡는다</text></g>
+<path class="fl sig" d="M278,190 L278,216" marker-end="url(#taA-sig)"/>
+<path class="fl sig" d="M278,248 L278,274" marker-end="url(#taA-sig)"/>
+</g>
+<g class="fg g-lat" data-fg="lat" data-in="prox disc">
+<g class="bx"><rect x="560" y="208" width="268" height="74" rx="12"/><text class="lab" x="694" y="244" text-anchor="middle">LAT · SLP-76</text><text class="lab small" x="694" y="260" text-anchor="middle">신호를 한자리에 모으는 골격</text></g>
+<path class="fl sig" d="M366,292 L460,292 L460,250 L556,250" marker-end="url(#taA-sig)"/>
+</g>
+<g class="fg g-plc" data-fg="plc" data-in="prox">
+<g class="nd sig "><rect x="875" y="232" width="170" height="28" rx="8"/><text x="960" y="250" text-anchor="middle">PLCγ1</text></g>
+<g class="pl"><rect x="815" y="286" width="290" height="19" rx="9.5"/><text x="960" y="299.2" text-anchor="middle">PIP2 가수분해 → 칼슘이 오른다</text></g>
+<path class="fl sig" d="M828,246 L878,246" marker-end="url(#taA-sig)"/>
+</g>
+<g class="fg g-thr" data-fg="thr" data-in="prox">
+<g class="bx regbox"><rect x="22" y="208" width="116" height="110" rx="12"/><text class="lab" x="80" y="262" text-anchor="middle">CD45 ↔ Csk</text><text class="lab small" x="80" y="278" text-anchor="middle">기저 역치를 정한다</text></g>
+<path class="fl plain dash" d="M138,262 L186,262" marker-end="url(#taA-plain)"/>
+</g>
+<g class="ov ov-dis dis"><rect x="846.1" y="96" width="227.8" height="20" rx="10"/><text x="960" y="110" text-anchor="middle">CD28의 신호 기전은 30년이 지나도 미해결</text></g>
+<text class="lanet" x="28" y="380" text-anchor="start">변별의 실체 — 일부러 느린 한 부위</text><text class="lanek" x="28" y="396" text-anchor="start">KINETIC PROOFREADING</text>
+<g class="fg g-disc" data-fg="disc" data-in="disc">
+<g class="bx"><rect x="150" y="400" width="268" height="78" rx="12"/><text class="lab" x="284" y="438" text-anchor="middle">ZAP-70 → LAT 인산화</text><text class="lab small" x="284" y="454" text-anchor="middle">부위마다 속도가 다르다</text></g>
+<g class="pl keep"><rect x="470" y="404" width="300" height="19" rx="9.5"/><text x="620" y="417.2" text-anchor="middle">다른 결합 부위 — 빠르게</text></g>
+<g class="pl warn"><rect x="470" y="446" width="300" height="19" rx="9.5"/><text x="620" y="459.2" text-anchor="middle">PLCγ1 결합 부위 — 느리게</text></g>
+<path class="fl sig" d="M418,424 L466,414" marker-end="url(#taA-sig)"/>
+<path class="fl off" d="M418,452 L466,456" marker-end="url(#taA-off)"/>
+</g>
+<g class="fg g-auto" data-fg="auto" data-in="disc">
+<g class="bx altbox"><rect x="800" y="398" width="350" height="82" rx="12"/><text class="lab" x="975" y="438" text-anchor="middle">그 부위 옆 한 잔기를 바꿔 속도를 올리면</text><text class="lab small" x="975" y="454" text-anchor="middle">mouse에 자가면역이 생긴다</text></g>
+<path class="fl off" d="M772,456 L796,440" marker-end="url(#taA-off)"/>
+</g>
+<text class="lanet" x="28" y="524" text-anchor="start">운명 — 전사인자 조합과 대사</text><text class="lanek" x="28" y="540" text-anchor="start">FATE AND METABOLISM</text>
+<g class="fg g-cd4" data-fg="cd4" data-in="fate">
+<text class="olab big" x="150" y="562" text-anchor="start">CD4 — 도움의 여섯 갈래</text>
+<g class="bx"><rect x="150" y="574" width="130" height="66" rx="10"/><text class="lab" x="215" y="606" text-anchor="middle">Th1</text><text class="lab small" x="215" y="622" text-anchor="middle">STAT4 · T-bet</text></g>
+<g class="bx"><rect x="290" y="574" width="130" height="66" rx="10"/><text class="lab" x="355" y="606" text-anchor="middle">Th2</text><text class="lab small" x="355" y="622" text-anchor="middle">STAT6 · GATA-3</text></g>
+<g class="bx"><rect x="430" y="574" width="130" height="66" rx="10"/><text class="lab" x="495" y="606" text-anchor="middle">Th9</text><text class="lab small" x="495" y="622" text-anchor="middle">IRF4 · PU.1 · BATF</text></g>
+<g class="bx"><rect x="570" y="574" width="130" height="66" rx="10"/><text class="lab" x="635" y="606" text-anchor="middle">Th17</text><text class="lab small" x="635" y="622" text-anchor="middle">STAT3 · RORγt</text></g>
+<g class="bx"><rect x="710" y="574" width="130" height="66" rx="10"/><text class="lab" x="775" y="606" text-anchor="middle">Tfh</text><text class="lab small" x="775" y="622" text-anchor="middle">BCL-6 — IL-2가 억제</text></g>
+<g class="bx"><rect x="850" y="574" width="130" height="66" rx="10"/><text class="lab" x="915" y="606" text-anchor="middle">Treg</text><text class="lab small" x="915" y="622" text-anchor="middle">Foxp3 CNS0 · CNS2</text></g>
+</g>
+<g class="fg g-cd8" data-fg="cd8" data-in="fate">
+<text class="olab big" x="150" y="676" text-anchor="start">CD8 — 상반쌍이 effector와 memory를 가른다</text>
+<g class="pl"><rect x="127" y="688" width="178" height="19" rx="9.5"/><text x="216" y="701.2" text-anchor="middle">T-bet ↔ Eomes</text></g>
+<g class="pl"><rect x="317" y="688" width="178" height="19" rx="9.5"/><text x="406" y="701.2" text-anchor="middle">Blimp-1 ↔ Bcl-6</text></g>
+<g class="pl"><rect x="507" y="688" width="178" height="19" rx="9.5"/><text x="596" y="701.2" text-anchor="middle">Id2 ↔ Id3</text></g>
+<g class="pl"><rect x="697" y="688" width="178" height="19" rx="9.5"/><text x="786" y="701.2" text-anchor="middle">Zeb2 ↔ Zeb1</text></g>
+<g class="pl small"><rect x="127" y="726" width="178" height="19" rx="9.5"/><text x="216" y="739.2" text-anchor="middle">첫 분열의 비대칭</text></g>
+<g class="pl small"><rect x="317" y="726" width="178" height="19" rx="9.5"/><text x="406" y="739.2" text-anchor="middle">MYC^hi · cBAF^hi</text></g>
+<g class="bx altbox"><rect x="600" y="716" width="360" height="62" rx="10"/><text class="lab" x="780" y="746" text-anchor="middle">DNMT3A가 Tcf7 promoter를 메틸화</text><text class="lab small" x="780" y="762" text-anchor="middle">memory를 억제한다 · TET2는 반대</text></g>
+</g>
+<g class="fg g-met" data-fg="met" data-in="fate">
+<text class="olab big" x="1080" y="562" text-anchor="middle">대사가 운명에 붙는다</text>
+<line class="axline" x1="1006" y1="570" x2="1006" y2="778"/>
+<g class="bx bm"><rect x="1022" y="574" width="190" height="66" rx="10"/><text class="lab" x="1117" y="606" text-anchor="middle">effector 대사</text><text class="lab small" x="1117" y="622" text-anchor="middle">GLUT1 · 해당과정</text></g>
+<g class="bx keep"><rect x="1022" y="716" width="190" height="62" rx="10"/><text class="lab" x="1117" y="746" text-anchor="middle">memory 대사</text><text class="lab small" x="1117" y="762" text-anchor="middle">CPT1A 의존 FAO</text></g>
+</g>
+<g class="ov ov-prox num"><circle cx="278" cy="162" r="11"/><text x="278" y="165.9" text-anchor="middle">1</text></g>
+<g class="ov ov-prox num"><circle cx="278" cy="278" r="11"/><text x="278" y="281.9" text-anchor="middle">2</text></g>
+<g class="ov ov-prox num"><circle cx="960" cy="232" r="11"/><text x="960" y="235.9" text-anchor="middle">3</text></g>
+<g class="ov ov-disc num"><circle cx="160" cy="400" r="11"/><text x="160" y="403.9" text-anchor="middle">1</text></g>
+<g class="ov ov-disc num"><circle cx="810" cy="398" r="11"/><text x="810" y="401.9" text-anchor="middle">2</text></g>
+<g class="ov ov-fate num"><circle cx="160" cy="574" r="11"/><text x="160" y="577.9" text-anchor="middle">1</text></g>
+<g class="ov ov-fate num"><circle cx="160" cy="688" r="11"/><text x="160" y="691.9" text-anchor="middle">2</text></g>
+</svg>
+<!--/GEN:TACT-->
+          </div>
+          <ol class="steps" data-mode="prox">
+            <li>CD3가 칼슘 상승의 상류이고, 수용체는 <b>PIP2 가수분해</b>로 신호한다 — CD3 결손 Jurkat 돌연변이와 칼슘 영상으로 확정된 출발점이다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></li>
+            <li>Lck가 ITAM을 인산화하면 <b>ZAP-70</b>이 tandem SH2로 이중 인산화된 ITAM에 고친화로 붙는다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></li>
+            <li>ZAP-70이 <b>LAT · SLP-76</b> 골격을 인산화해 신호 분자를 한자리에 모으고, 그 위에서 PLCγ1이 켜진다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></li>
+            <li><b>CD45</b>의 발현량이 Src 계열 kinase의 음성조절 인산화를 용량 의존적으로 바꿔 신호 크기와 T세포 발생을 함께 움직인다 — Csk와 길항하며 기저 역치를 세운다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></li>
+            <li><b>CD28</b>은 두 번째 신호로 동정되었고 그 반응요소는 c-Rel·AP-1 복합부위인데, 신호 기전 자체는 30년이 지나도 풀리지 않았다고 저자가 직접 적었다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></li>
+          </ol>
+          <ol class="steps" data-mode="disc">
+            <li>변별의 실체는 수용체 친화도가 아니라 <b>인산화 속도</b>다 — ZAP-70이 LAT에서 PLCγ1이 붙는 부위만 예외적으로 느리게 인산화한다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></li>
+            <li>그 부위 N말단의 <b>단일 잔기를 바꿔 인산화를 빠르게 만들면</b> mouse에 자가면역이 생긴다 — kinetic proofreading의 유전학적 증명이다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a><span class="sp">mouse</span></li>
+            <li>ζ 세포질 도메인만 CD8에 붙인 키메라가 수용체의 전 신호능력을 재현한 것이 <b>CAR의 직접 기원</b>이다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></li>
+          </ol>
+          <ol class="steps" data-mode="fate">
+            <li>CD4의 갈래는 전사인자 조합으로 정해진다 — Th1은 STAT4·T-bet, Th2는 STAT6·GATA-3, Th9은 IRF4·PU.1·BATF, Th17은 STAT3·RORγt, Tfh는 BCL-6, Treg는 Foxp3의 CNS0·CNS2다 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a></li>
+            <li>Tfh 쪽은 <b>IL-2와 STAT5가 강하게 억제</b>하므로, 같은 자극에서도 IL-2 가용성이 갈래를 바꾼다 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a></li>
+            <li>CD8의 운명은 <b>T-bet↔Eomes · Blimp-1↔Bcl-6 · Id2↔Id3 · Zeb2↔Zeb1</b>의 상반쌍과 첫 분열의 비대칭(MYC^hi·cBAF^hi)에서 정해진다 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a></li>
+            <li><b>DNMT3A</b>가 <i>Tcf7</i> promoter를 메틸화해 memory 쪽을 억제하고 TET2는 반대로 작용한다 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a></li>
+            <li>대사가 운명에 붙는다 — effector는 GLUT1과 해당과정, memory는 CPT1A 의존 지방산 산화를 쓴다 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a></li>
+          </ol>
+          <figcaption>세 줄은 시간 순서가 아니라 <b>질문의 층</b>이다 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a>. 근위 회로의 구성과 CD45·ZAP-70·kinetic proofreading은 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a>의 정리를 따랐고, 갈래와 대사는 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a>의 그림·표를 옮긴 것이다. 그림의 상자 크기는 개념적 구분이지 정량이 아니다.</figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>자리</th><th>무엇을 하나</th><th>무엇이 정해지나</th></tr></thead>
+            <tbody>
+              <tr data-fig="tact" data-hl="apc"><th>APC의 pMHC와 B7</th><td>무엇을 보여주고 함께 밀어 주는가</td><td>켜질 자격</td></tr>
+              <tr data-fig="tact" data-hl="prox"><th>TCR–CD3 ITAM → Lck → ZAP-70</th><td>이중 인산화 ITAM에 tandem SH2가 붙는다</td><td>신호의 시작</td></tr>
+              <tr data-fig="tact" data-hl="thr"><th>CD45 ↔ Csk</th><td>Src 계열 kinase의 음성조절 인산화를 용량 의존으로 조절</td><td>기저 역치</td></tr>
+              <tr data-fig="tact" data-hl="lat"><th>LAT · SLP-76</th><td>신호 분자를 한자리에 모으는 골격</td><td>회로의 허브</td></tr>
+              <tr data-fig="tact" data-hl="plc"><th>PLCγ1</th><td>PIP2를 가수분해해 칼슘을 올린다</td><td>전사 프로그램 진입</td></tr>
+              <tr data-fig="tact" data-hl="disc"><th>느린 한 부위</th><td>PLCγ1 결합 부위만 일부러 느리게 인산화된다</td><td>리간드 변별</td></tr>
+              <tr data-fig="tact" data-hl="auto"><th>그 속도를 올리면</th><td>mouse에 자가면역</td><td>역치의 생리적 의미</td></tr>
+              <tr data-fig="tact" data-hl="cd4"><th>CD4 여섯 갈래</th><td>STAT–전사인자 조합</td><td>어떤 도움을 주는가</td></tr>
+              <tr data-fig="tact" data-hl="cd8"><th>CD8 상반쌍</th><td>T-bet↔Eomes 등 네 쌍과 첫 분열 비대칭</td><td>effector인가 memory인가</td></tr>
+              <tr data-fig="tact" data-hl="met"><th>대사</th><td>GLUT1·해당과정 대 CPT1A·지방산 산화</td><td>지금 싸우나 남나</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">표의 근위 회로 항목은 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a>의 자전적 정리를, 갈래와 대사 항목은 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a>의 총설을 따랐다.</p>
+        <h2 id="armed">켜진 뒤에는 요구 조건이 바뀐다<small>Armed effector T cells</small></h2>
+        <p class="lede">무장한 작동 T세포는 <b>공자극 없이도</b> 표적을 상대할 수 있게 접착 장치를 바꾼다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27149/" target="_blank" rel="noopener">Janeway 2001 · 8-1</a></p>
+        <div class="cases">
+          <div style="--c:var(--ada)"><span class="lv">접착</span><h4>LFA-1 · CD2</h4>
+            <p>작동 T세포의 LFA-1과 CD2는 naive보다 2~4배 높아, 접착분자 발현이 낮은 표적에도 붙는다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27149/" target="_blank" rel="noopener">Janeway 2001 · 8-1</a></p>
+          </div>
+          <div style="--c:var(--il)"><span class="lv">극성</span><h4>immunological synapse</h4>
+            <p>수용체가 뭉치면 세포골격이 재배열되어 분비 방향이 접촉면으로 돌고, LFA-1–ICAM 결합이 분자 봉인을 만든다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27149/" target="_blank" rel="noopener">Janeway 2001 · 8-1</a></p>
+          </div>
+          <div style="--c:var(--st)"><span class="lv">두 종류의 무기</span><h4>저장 대 신규 합성</h4>
+            <p>세포독소는 전용 과립에 저장돼 있다가 방출되고, cytokine과 TNF 계열은 수용체 결합 뒤 새로 합성된다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27149/" target="_blank" rel="noopener">Janeway 2001 · 8-1</a></p>
+          </div>
+        </div>
+        <p>작동 T세포는 세 부류로 정리된다 — CD8은 세포질 병원체를 실은 표적을 죽이고, TH1은 대식세포를 무장시키고, TH2는 B세포를 다른 isotype으로 밀어 준다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27149/" target="_blank" rel="noopener">Janeway 2001 · 8-1</a>. 이 셋이 실제로 무엇을 하는지는 <a href="./antibody.html">항체와 세포의 실행</a>에 두었다.</p>
+        <h2 id="human">사람의 고장이 회로의 지도다<small>What human genetics shows</small></h2>
+        <p class="lede">근위 회로의 어느 단계가 막히는지에 따라 표현형이 갈린다.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>유전자 · 도구</th><th>막히는 자리</th><th>무엇이 보이나</th></tr></thead>
+            <tbody>
+              <tr><th><i>ZAP70</i> 결손</th><td>이중 인산화 ITAM을 받는 단계</td><td>말초 CD8 결핍 + 남은 CD4도 기능하지 않는 복합면역결핍 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></td></tr>
+              <tr><th><i>PTPRC</i> (CD45) allelic series</th><td>기저 역치 설정</td><td>발현량에 따라 신호 크기와 T세포 발생이 함께 움직인다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a><span class="sp">mouse</span></td></tr>
+              <tr><th><i>Tcf7</i> 메틸화 (DNMT3A)</th><td>memory 프로그램</td><td>memory 쪽이 억제된다 — TET2는 반대 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a></td></tr>
+              <tr><th>Foxp3 <i>CNS0 · CNS2</i></th><td>Treg 유지</td><td>조절 계통의 안정성 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">흉선에서 <i>ZAP70</i>이 선택에 어떻게 쓰이는지는 <a href="../03-adaptive-recognition/thymus.html">흉선 선택</a>에 이미 정리해 두었다 — 여기서는 되풀이하지 않는다.</p>
+        <h2 id="limit">근거와 한계<small>What we do not know</small></h2>
+        <ul class="rules">
+          <li><b><a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></b>는 자전적 총설이라 회로의 발견 경로를 따라 서술된다 — 최신 정량보다 인과 논증의 계보를 보는 데 적합하다.</li>
+          <li><b><a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a></b>는 저자 스스로 "근거 대부분이 mouse"라고 한계를 명시했다 <span class="sp">mouse</span></li>
+          <li>CD28이 신호를 어떻게 전달하는지는 여전히 풀리지 않았다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener">Weiss 2024</a></li>
+          <li>T세포 레퍼토리는 종양·조직 연구의 표준 도구가 되었지만, 레퍼토리 형질 자체를 표현형으로 삼는 집단유전학 연구는 사실상 없다 — 이 공백은 원본 종합 문서에 기록해 두었다.</li>
+          <li>갈래 지도는 배양 조건에서 정의된 안정 상태를 전제한다 — 조직 안의 가소성과 중간 상태는 이 그림에 들어 있지 않다 <a class="src" href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener">Sun 2023</a></li>
+        </ul>
+
+        <a class="more" href="./exhaustion.html">만성 자극 아래에서는 이 회로가 어떻게 되나 →</a>
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">T cell activation · T세포 활성화 · TCR signaling · TCR 신호 · proximal signaling · 근위 신호 · ITAM · Lck · ZAP-70 · LAT · SLP-76 · PLCγ1 · CD45 · PTPRC · Csk · CD28 · costimulation · 공자극 · kinetic proofreading · ligand discrimination · CAR · chimeric antigen receptor · Th1 · Th2 · Th9 · Th17 · Tfh · Treg · T-bet · GATA-3 · RORγt · BCL-6 · Foxp3 · Eomes · Blimp-1 · Id2 · Id3 · Zeb2 · DNMT3A · TET2 · GLUT1 · CPT1A · immunological synapse · armed effector T cell</p></details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./exhaustion.html">만성 자극 아래 T세포는 왜 기능을 잃나? →</a>
+          <a href="./memory.html">기억은 어디에 어떤 형태로 남나? →</a>
+          <a href="./antibody.html">항체와 세포는 실제로 어떻게 방어하나? →</a>
+          <a href="../03-adaptive-recognition/thymus.html">T세포는 흉선에서 어떻게 골라지나? →</a>
+          <a href="../01-basics/cytokine.html">cytokine은 어떻게 신호가 되나? →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27149/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 8장 작동 T세포의 일반 성질 ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1146/annurev-immunol-090222-112028" target="_blank" rel="noopener noreferrer">Weiss 2024, Annu Rev Immunol ↗</a>
+          <a href="https://doi.org/10.1038/s41392-023-01471-y" target="_blank" rel="noopener noreferrer">Sun 2023, Signal Transduct Target Ther ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../01-basics/basics.js"></script>
+  <script src="./execution.js"></script>
+  <script src="./data.js"></script>
+  <script src="../glossary.js"></script>
+</body>
+</html>

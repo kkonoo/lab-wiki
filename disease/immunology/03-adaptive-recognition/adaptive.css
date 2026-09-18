@@ -1,0 +1,152 @@
+/* Immunology 03-adaptive-recognition — 그림 전용 규칙과 03 본문 블록
+   공통 틀은 ../immunology.css, 공통 문서 스타일은 ../01-basics/basics.css */
+:root{
+  --c-asm:#94553b; --c-scan:#3f6f8f; --c-ins:#7b5aa6;
+  --c-plain:#7d857c; --c-keep:#2f7f73; --c-del:#b24f4f;
+}
+
+/* ── 공통 ── */
+svg.vdj,svg.mhc,svg.thy,svg.bdev{display:block;width:100%;height:auto}
+svg.vdj{min-width:1060px} svg.mhc{min-width:1040px} svg.thy{min-width:1060px} svg.bdev{min-width:1060px}
+/* 03의 그림은 01보다 넓다 — 화면이 넓으면 본문 칸을 늘려 가로 스크롤을 줄인다 */
+@media (min-width:1460px){ .vpage .container{width:min(1440px,calc(100% - 40px))} }
+@media (min-width:1700px){ .vpage .container{width:min(1560px,calc(100% - 40px))} }
+.vdj text,.mhc text,.thy text,.bdev text{font-family:"Pretendard","Noto Sans KR",-apple-system,"Segoe UI",sans-serif}
+
+/* ── 구역 · 막 ── */
+.zone.out{fill:#f1eee6}
+.zone.cortex{fill:#f4f0e7;stroke:#ddd3c0;stroke-width:1.4}
+.zone.medulla{fill:#f8f2f5;stroke:#d9c3cf;stroke-width:1.4}
+.zone.marrow{fill:#f6f3ec;stroke:#dcd5c6;stroke-width:1.4}
+.zone.peri{fill:#eef3f7;stroke:#bdd0dd;stroke-width:1.4}
+.mem rect{fill:#efe7d8;stroke:#d9cdb6;stroke-width:1}
+.mem line{stroke:#d1c2a6;stroke-width:1.2}
+.zlab{font-size:11px;font-weight:800;letter-spacing:.08em;fill:#8a918a}
+.axline{stroke:#c3cac1;stroke-width:1.6}
+
+/* ── 글자 ── */
+.lab{font-size:12px;font-weight:700;fill:#2d352f;paint-order:stroke;stroke:#fff;stroke-width:3.2px;stroke-linejoin:round}
+.lab.big{font-size:13.5px;font-weight:800}
+.lab.small{font-size:10.5px;font-weight:600;fill:#5d665e}
+.lab.tiny{font-size:9.5px;font-weight:600;fill:#5d665e}
+.olab{font-size:11px;font-weight:750;fill:#6d756c;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.olab.big{font-size:13px;font-weight:800;fill:#3d4640}
+.olab.small{font-size:9.8px;font-weight:600;fill:#8a918a}
+.lanet{font:800 14px Georgia,"Noto Serif KR",serif;fill:#3d4640}
+.lanek{font-size:9.5px;font-weight:750;letter-spacing:.14em;fill:#9aa19a}
+
+/* ── 유전자 조각 · RSS · CTCF · cohesin ── */
+.sg rect{stroke:#fff;stroke-width:1.2}
+.sg.vseg rect{fill:#dfe6ec;stroke:#a9bcc7}
+.sg.dseg rect{fill:#f0e2d8;stroke:#ccab95}
+.sg.jseg rect{fill:#e6ecdf;stroke:#adbfa2}
+.sg.rcseg rect{fill:#efe7f4;stroke:#b3a3c9}
+.sg.cseg rect{fill:#f2ede4;stroke:#cfc7b8}
+.sg.stg rect{fill:#fff;stroke:#c3cac1;stroke-width:1.6}
+.rss path{stroke:#fff;stroke-width:1}
+.rss.r12 path{fill:var(--c-asm)}
+.rss.r23 path{fill:#fff;stroke:var(--c-asm);stroke-width:1.8}
+.rsst{font-size:9px;font-weight:800;fill:#94553b}
+.rsst.big{font-size:13px;font-weight:800;fill:#94553b}
+.ctcf rect{fill:#3d4640;stroke:#fff;stroke-width:1.2}
+.coh circle{fill:none;stroke:var(--c-scan);stroke-width:3.4}
+.coh .in{stroke:#fff;stroke-width:2.4}
+
+/* ── 노드 · pill · 상자 ── */
+.nd rect{stroke:#fff;stroke-width:1.2}
+.nd text{font-size:11.5px;font-weight:700;fill:#fff}
+.nd.asm rect{fill:var(--c-asm)} .nd.scan rect{fill:var(--c-scan)} .nd.ins rect{fill:var(--c-ins)}
+.nd.keep rect{fill:var(--c-keep)} .nd.del rect{fill:var(--c-del)} .nd.plain rect{fill:var(--c-plain)}
+
+.pl rect{fill:#fff;stroke:#cdd3c9;stroke-width:1}
+.pl text{font-size:10.5px;font-weight:650;fill:#3d4640}
+.pl.small text{font-size:9.6px;font-weight:600}
+.pl.asm rect{fill:#f8efe9;stroke:#d6b49f} .pl.asm text{fill:#7c432c}
+.pl.ins rect{fill:#f2edf7;stroke:#c1b0d6} .pl.ins text{fill:#5b467a}
+.pl.re rect{fill:#f2edf7;stroke:#c1b0d6} .pl.re text{fill:#5b467a}
+.pl.keep rect{fill:#edf5f2;stroke:#9ec5ba} .pl.keep text{fill:#2c5b52}
+.pl.warn rect{fill:#fbefee;stroke:#ddb3b0} .pl.warn text{fill:#8d4340}
+.pl.hep rect{fill:#f8efe9;stroke:#c98f6f} .pl.non rect{fill:#f8efe9;stroke:#c98f6f}
+
+.bx rect,.outbox rect{fill:#fff;stroke:#cdd3c9;stroke-width:1.4}
+.bx.trig rect{fill:#f3f1ea;stroke:#ccc7b6}
+.bx.join rect{fill:#eef2ea;stroke:#9fb09a;stroke-width:1.8}
+.bx.keep rect{fill:#f3f9f7;stroke:#9ec5ba}
+.bx.re rect{fill:#f7f3fb;stroke:#c1b0d6}
+.bx.regbox rect{fill:#f3f9f7;stroke:#9ec5ba;stroke-dasharray:5 4}
+.bx.altbox rect{fill:#fbf3f2;stroke:#ddb3b0;stroke-dasharray:5 4}
+.bx.lanebox rect{fill:#fdfdfa;stroke:#d5dbd2}
+.bx.bm rect{fill:#f8f2f5;stroke:#cdb4c2;stroke-width:1.8}
+.bx.cellbx rect{fill:#fdfdfa;stroke:#b9c2b6;stroke-width:1.8}
+
+/* ── 화살표 ── */
+.fl{fill:none;stroke-width:2.1}
+.fl.asm{stroke:var(--c-asm)} .fl.scan{stroke:var(--c-scan)} .fl.ins{stroke:var(--c-ins)}
+.fl.plain{stroke:var(--c-plain)} .fl.keep{stroke:var(--c-keep)} .fl.del{stroke:var(--c-del)}
+.fl.dash{stroke-dasharray:6 4}
+.fl.back{stroke-width:2.2;stroke-dasharray:7 4}
+
+/* ── 모드 오버레이 ── */
+.ov{opacity:0;transition:opacity .3s;pointer-events:none}
+.dis rect{fill:#b24f4f;stroke:#fff;stroke-width:1.5}
+.dis text{font-size:10px;font-weight:750;fill:#fff}
+.num circle{fill:#3d4640;stroke:#fff;stroke-width:2}
+.num text{font-size:11px;font-weight:800;fill:#fff}
+.ring{fill:none;stroke:var(--c-ins);stroke-width:2.2;stroke-dasharray:5 3}
+.ov-rss.num circle{fill:var(--c-asm)} .ov-scan.num circle{fill:var(--c-scan)}
+.ov-ins.num circle{fill:var(--c-ins)} .ov-i.num circle{fill:var(--c-asm)}
+.ov-ii.num circle{fill:var(--c-scan)} .ov-alt.num circle{fill:var(--c-ins)}
+.ov-pos.num circle{fill:var(--c-keep)} .ov-neg.num circle{fill:var(--c-del)}
+.ov-ago.num circle{fill:var(--c-ins)} .ov-gate.num circle{fill:var(--c-asm)}
+.ov-iei.num circle{fill:var(--c-del)} .ov-tf.num circle{fill:var(--c-scan)}
+
+svg[data-mode="rss"] .ov-rss,svg[data-mode="scan"] .ov-scan,svg[data-mode="ins"] .ov-ins,
+svg[data-mode="i"] .ov-i,svg[data-mode="ii"] .ov-ii,svg[data-mode="alt"] .ov-alt,
+svg[data-mode="pos"] .ov-pos,svg[data-mode="neg"] .ov-neg,svg[data-mode="ago"] .ov-ago,
+svg[data-mode="gate"] .ov-gate,svg[data-mode="iei"] .ov-iei,svg[data-mode="tf"] .ov-tf,
+svg[data-mode="neg"] .ov-dis,svg[data-mode="alt"] .ov-dis{opacity:1}
+
+.fg{transition:opacity .25s}
+svg[data-mode="rss"] .fg:not([data-in~="rss"]),
+svg[data-mode="scan"] .fg:not([data-in~="scan"]),
+svg[data-mode="ins"] .fg:not([data-in~="ins"]),
+svg[data-mode="i"] .fg:not([data-in~="i"]),
+svg[data-mode="ii"] .fg:not([data-in~="ii"]),
+svg[data-mode="alt"] .fg:not([data-in~="alt"]),
+svg[data-mode="pos"] .fg:not([data-in~="pos"]),
+svg[data-mode="neg"] .fg:not([data-in~="neg"]),
+svg[data-mode="ago"] .fg:not([data-in~="ago"]),
+svg[data-mode="gate"] .fg:not([data-in~="gate"]),
+svg[data-mode="iei"] .fg:not([data-in~="iei"]),
+svg[data-mode="tf"] .fg:not([data-in~="tf"]){opacity:.22}
+svg.hot .fg:not(.on){opacity:.2}
+svg .fg.on{opacity:1 !important}
+.vdj .fg.on .sg rect,.bdev .fg.on .sg rect{stroke:#2d352f;stroke-width:2}
+
+/* ── 본문 쪽 보조 ── */
+.steps[data-mode="rss"]{--sc:var(--c-asm)} .steps[data-mode="scan"]{--sc:var(--c-scan)}
+.steps[data-mode="ins"]{--sc:var(--c-ins)} .steps[data-mode="i"]{--sc:var(--c-asm)}
+.steps[data-mode="ii"]{--sc:var(--c-scan)} .steps[data-mode="alt"]{--sc:var(--c-ins)}
+.steps[data-mode="pos"]{--sc:var(--c-keep)} .steps[data-mode="neg"]{--sc:var(--c-del)}
+.steps[data-mode="ago"]{--sc:var(--c-ins)} .steps[data-mode="gate"]{--sc:var(--c-asm)}
+.steps[data-mode="iei"]{--sc:var(--c-del)} .steps[data-mode="tf"]{--sc:var(--c-scan)}
+
+.vtable tr.on{background:var(--green-soft)}
+.vtable tr[data-fig]{cursor:default}
+.flag{border-left:3px solid #b24f4f;background:#fdf6f5;padding:12px 16px;margin:16px 0 0;border-radius:0 8px 8px 0}
+.flag h4{margin:0 0 5px;font:700 .86rem "Pretendard","Noto Sans KR",sans-serif;color:#8d4340}
+.flag p{margin:0;font-size:.83rem}
+.flag p+p{margin-top:6px}
+.flag .side{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;color:#8d4340;border:1px solid #ddb3b0;border-radius:999px;padding:0 7px;margin-right:6px;vertical-align:1px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid2>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.grid2 h4{margin:0 0 6px;font:700 .96rem Georgia,"Noto Serif KR",serif}
+.grid2 ul{margin:0;padding-left:18px;font-size:.84rem}
+.grid2 li{margin:4px 0}
+@media (max-width:980px){.grid2{grid-template-columns:1fr}}
+
+/* 그림 그룹 식별용 클래스 — 자바스크립트·선택자 훅, 별도 스타일 없음 */
+.fg.g-loc,.fg.g-rssg,.fg.g-ctcf,.fg.g-pax,.fg.g-vhp,.fg.g-rssz,.fg.g-ragg,.fg.g-ragp,.fg.g-rep,
+.fg.g-junc,.fg.g-ins,.fg.g-tc8,.fg.g-tc4,.fg.g-pi,.fg.g-pii,.fg.g-nc,.fg.g-xp,.fg.g-splp,
+.fg.g-ctx,.fg.g-medz,.fg.g-dn,.fg.g-dp,.fg.g-ctec,.fg.g-linq,.fg.g-mtec,.fg.g-fates,.fg.g-exit,.fg.g-aff,
+.fg.g-tf,.fg.g-rcb,.fg.g-stage,.fg.g-gate1,.fg.g-gate2,.fg.g-nums,.fg.g-edit,.fg.g-iei,.fg.g-ball{cursor:default}

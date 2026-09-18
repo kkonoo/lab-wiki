@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="세포사 양식 지도 — 전용 기계가 실행하는 PCD(apoptosis·necroptosis·pyroptosis)와 항상성이 무너져 죽는 ferroptosis. 막이 터지는지가 염증을 정하고 GSDM·MLKL 뒤에 NINJ1이 최종 파열을 맡는다. 경로가 서로 넘어가는 이유, 이름이 늘어날 때 NCCD 기준으로 판정하는 법(PANoptosis·karyoptosis), 그리고 죽음의 나머지 절반인 efferocytosis">
+  <title>세포는 어떻게 죽고, 왜 어떤 죽음만 염증이 되나? · Immunology</title>
+  <link rel="stylesheet" href="../immunology.css">
+  <link rel="stylesheet" href="../01-basics/basics.css">
+  <link rel="stylesheet" href="./innate.css">
+</head>
+<body class="vpage">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Immunology</span></a></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="./index.html">목록</a><span>›</span><a href="./index.html">선천면역</a><span>›</span>세포사 양식과 염증</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">선천면역 — 위험을 감지하고 처음 대응하기</p>
+        <h1>세포는 어떻게 죽고, 왜 어떤 죽음만 염증이 되나?</h1>
+        <p class="definition"><b>조절된 세포사(regulated cell death, RCD)</b> = 전용 분자 기계가 실행하는 죽음 → 약물·유전자로 지연·촉진 가능. 물리·화학적 극한에 즉시 무너지는 <b>우발적 세포사(ACD)</b>와 구분. 외부 자극 없이 발생·조직 turnover를 맡는 생리적 RCD만 좁게 <b>programmed cell death(PCD)</b> <a class="src" href="https://doi.org/10.1038/s41418-017-0012-4" target="_blank" rel="noopener">Galluzzi 2018</a></p>
+
+        <!-- ───────── 1. bridge ───────── -->
+        <h2 id="bridge">DAMP는 어디서 나오나<small>Where DAMPs come from</small></h2>
+        <p class="lede">앞 문서 → 제자리를 벗어난 자기 성분이 센서에 잡혀 무균 염증 개시 <a href="./sterile.html">자기 성분은 왜 보통 문제가 안 되고, 언제 염증이 되나</a>. 그 자기 성분이 세포 밖으로 나오는 경로 = <b>죽는 방식</b>. 막 유지 시 조용 · 막 파열 시 내용물 유출 → 염증 점화. 즉 세포사 양식은 선천면역의 상류가 아니라 <b>입력 그 자체</b>.</p>
+        <div class="callout blue">
+          <h4>이 페이지의 세 축</h4>
+          <p><b>① 양식 지도</b> — 전용 기계가 실행하는 죽음 vs 항상성 붕괴로 생기는 죽음.</p>
+          <p><b>② 실행 말단</b> — 막에 구멍을 내는 단백질 · 그 뒤에 오는 최종 파열.</p>
+          <p><b>③ 판정 기준</b> — 이름이 늘어날 때 새 양식으로 인정하는 근거.</p>
+        </div>
+
+        <!-- ───────── 2. 지도 ───────── -->
+        <h2 id="map">한 장 지도 — 두 축으로 구분<small>Two logics of cell death</small></h2>
+        <p class="lede"><b>전용 기계형</b>(apoptosis·necroptosis·pyroptosis, caspase 계열이 중심) vs <b>항상성 붕괴형</b>(excitotoxicity·ferroptosis·lysosomal cell death). 후자에는 실행자 없음 <a class="src" href="https://doi.org/10.1038/s41580-023-00689-6" target="_blank" rel="noopener">Yuan &amp; Ofengeim 2024</a></p>
+        <figure class="fig" id="cdFig">
+          <div class="fig-scroll">
+            <!--GEN:CDMAP-->
+            <div class="fig-placeholder" role="img" aria-label="세포사 양식 지도 — 준비 중">
+              <p><b>그림 예정</b> — 세포사 양식 지도</p>
+              <p>왼쪽 전용 기계형 세 갈래(death receptor → caspase-8 → caspase-3/7 · BCL-2 균형 → MOMP → apoptosome → caspase-9 · inflammasome → caspase-1 → GSDMD) · 가운데 caspase-8 스위치와 RIPK1–RIPK3–MLKL · 오른쪽 항상성 붕괴형(철·지질 과산화 → ferroptosis). 아래 공통 말단에 GSDM pore·MLKL → NINJ1 최종 파열 → 시신 청소 efferocytosis.</p>
+            </div>
+            <!--/GEN:CDMAP-->
+          </div>
+        </figure>
+
+        <!-- ───────── 3. 양식 비교표 ───────── -->
+        <h2 id="modalities">양식별로 무엇이 다른가<small>Modality comparison</small></h2>
+        <p class="lede">방아쇠·실행자·막의 운명·염증 여부가 각각 상이. 막 파열 여부 = 염증 점화 여부 <a class="src" href="https://doi.org/10.1038/s12276-023-01069-y" target="_blank" rel="noopener">Lee 2023</a></p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>양식</th><th>방아쇠</th><th>실행자</th><th>막</th><th>염증</th><th>사람에서 놓이는 자리</th></tr></thead>
+            <tbody>
+              <tr data-fig="cd" data-hl="apo"><th>Apoptosis</th><td>BCL-2 균형 붕괴(intrinsic) · death receptor(extrinsic)</td><td>caspase-9 · caspase-8 → caspase-3/7</td><td>유지</td><td>조용 — 제때 치워질 때 한정</td><td>발생·조직 turnover · 흉선 음성선택 · 배중심 선택</td></tr>
+              <tr data-fig="cd" data-hl="nec"><th>Necroptosis</th><td>TNFR1·TLR4·TLR3(extrinsic) · ZBP1의 Z-핵산 감지(intrinsic)</td><td>RIPK3 → MLKL</td><td>파열</td><td>점화</td><td>허혈 손상 · 염증질환(사람 인과는 검증 중)</td></tr>
+              <tr data-fig="cd" data-hl="pyr"><th>Pyroptosis</th><td>inflammasome · 세포질 LPS · 다수 protease</td><td>gasdermin 계열 → NINJ1</td><td>파열</td><td>점화 — IL-1β·IL-18 방출</td><td>자가염증질환 · 장벽 조직 염증</td></tr>
+              <tr data-fig="cd" data-hl="fer"><th>Ferroptosis</th><td>방어 축(GPX4·FSP1·DHODH) 해제</td><td>전용 실행자 없음 — 철 의존 인지질 과산화</td><td>파열</td><td>점화</td><td>허혈·신손상 · 암세포의 취약점</td></tr>
+              <tr data-fig="cd" data-hl="pan"><th>PANoptosis <em>(contested)</em></th><td>ZBP1 · AIM2 · RIPK1 · NLRP12 PANoptosome</td><td>caspase·RIPK — 고유 실행자 미제시</td><td>파열</td><td>점화</td><td>감염·사이토카인 폭풍에서 보고 — 구분 마커 부재</td></tr>
+              <tr data-fig="cd" data-hl="kar"><th>Karyoptosis <em>(preliminary)</em></th><td>만성 자가포식 억제 · 단백독성 스트레스</td><td>p38 → LaminB1 불안정화</td><td>수축 — 핵물질 배출</td><td>미규명</td><td>ALS/FTD·AD 사후조직에서 특징 검출</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">apoptosis가 조용한 이유 = 막의 온전성이 아니라 <b>제때의 청소</b>. 청소 지연 시 동일한 죽음이 2차 괴사로 전환 → 염증. 아래 <a href="#cleanup">뒤처리</a> 절 <a class="src" href="https://doi.org/10.1038/s41577-019-0240-6" target="_blank" rel="noopener">Doran 2020</a></p>
+
+        <!-- ───────── 4. 실행 말단 ───────── -->
+        <h2 id="execution">실행 말단 — 구멍과 파열은 다른 사건<small>Pore formation and membrane rupture</small></h2>
+        <p class="lede">gasdermin 구조 = 세포독성 N-말단 + linker + N-말단을 붙잡는 C-말단. linker 절단 → N-말단 해제 → 막으로 이동. 절단 protease가 caspase에 한정되지 않음(granzyme·cathepsin·호중구 elastase) · 표적 막도 원형질막에 한정되지 않음(핵막·미토콘드리아막) <a class="src" href="https://doi.org/10.1038/s41422-025-01107-6" target="_blank" rel="noopener">Broz 2025</a> <a class="src" href="https://doi.org/10.1038/s41580-025-00837-0" target="_blank" rel="noopener">Bai 2025</a></p>
+        <div class="callout">
+          <h4>파열은 2단</h4>
+          <p><b>1단</b> — GSDM pore 또는 인산화 MLKL → 전기화학적 구배 붕괴 → 수분 유입·세포 팽창.</p>
+          <p><b>2단</b> — <b>NINJ1</b> 올리고머화 → 원형질막 최종 파열 → 큰 DAMP 방출. 구멍 형성과 막 파열은 분리된 사건.</p>
+        </div>
+        <p>gasdermin과 MLKL = 서로 다른 경로의 말단이나 기능은 동일 → 유전자 표적 마우스 결과가 질환별로 <b>보호·악화 양방향</b>. 저자들도 사람 조직 검증을 선행 조건으로 명시 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.02.011" target="_blank" rel="noopener">Lawlor 2024</a></p>
+
+        <!-- ───────── 5. 경로 전환 ───────── -->
+        <h2 id="switch">경로 간 전환<small>Pathway switching</small></h2>
+        <p class="lede">단일 경로 차단이 잘 듣지 않는 이유.</p>
+        <ul>
+          <li><b>caspase-8 = 스위치</b> — caspase-8의 RIPK1 절단 중에는 necroptosis 억제 · caspase-8 차단 시 necroptosis로 전환 <a class="src" href="https://doi.org/10.1038/s41580-023-00689-6" target="_blank" rel="noopener">Yuan &amp; Ofengeim 2024</a></li>
+          <li><b>caspase-3의 GSDME 절단</b> — 조용했을 apoptosis가 염증성으로 전환 · 동일 자극에도 GSDM 발현에 따라 결과가 갈림 <a class="src" href="https://doi.org/10.1038/s41580-025-00837-0" target="_blank" rel="noopener">Bai 2025</a></li>
+          <li><b>necroptosis도 두 갈래</b> — 막수용체 기점의 extrinsic · ZBP1의 세포질 Z-핵산 감지 기점의 intrinsic <a class="src" href="https://doi.org/10.1038/s41580-026-01002-x" target="_blank" rel="noopener">Yang 2026</a></li>
+        </ul>
+
+        <!-- ───────── 6. 판정 기준 ───────── -->
+        <h2 id="verdict">이름이 늘어날 때 무엇으로 판정하나<small>How new modalities are judged</small></h2>
+        <p class="lede">NCCD 2018 = 13종 정의 + 기준 확정 → <b>형태가 아니라 기전적·필수적(essential) 요소</b>. 상관적·비필수 현상은 명명 근거 아님. 이후에도 PANoptosis·karyoptosis·triaptosis 추가 · 2025년에만 NECSO·spectosis·floatptosis·mitoxyperilysis 4종 추가 보고 <a class="src" href="https://doi.org/10.1038/s41418-017-0012-4" target="_blank" rel="noopener">Galluzzi 2018</a> <a class="src" href="https://doi.org/10.1038/s41418-026-01686-w" target="_blank" rel="noopener">Tang 2026</a></p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>주장</th><th>근거</th><th>반대쪽</th><th>이 위키의 판정</th></tr></thead>
+            <tbody>
+              <tr><th>PANoptosis</th><td>PANoptosome의 생화학·이미징·유전학적 특징화 · caspase-1 또는 RIPK3 결손에도 죽음 지속</td><td>caspase·RIPK·inflammasome 단백의 경로 간 공유 → <b>고유 마커 부재</b> · 검체에서 정의 불가</td><td><b>contested</b> — 관찰(crosstalk)은 수용, 독립 양식 명명은 보류</td></tr>
+              <tr><th>Karyoptosis</th><td>apoptotic body 부재·세포 수축·caspase-3 절단 부재로 구분 · p38–LaminB1 축 · 사람 사후조직 근거</td><td>C. elegans linker cell death 등과의 동일성 미확인 · 근거가 두 계보에 한정</td><td><b>preliminary</b></td></tr>
+              <tr><th>2025년 신규 4종</th><td>기존 억제제(apoptosis·necroptosis·pyroptosis·ferroptosis·autophagy)로 차단되지 않음</td><td>각각 단일 그룹 1편 · 독립 재현 없음 · NECSO는 사람 TRPM4에만 작동, 마우스에는 미작동</td><td><b>preliminary</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">마지막 줄의 <b>종특이성</b> = 분야 전반의 문제. 사람과 마우스의 necroptosis 장치가 근본적으로 상이 · 사람 쪽 기계는 <b>림프구 편중 발현</b> → 마우스 유전학의 인과를 사람으로 옮길 때 직결되는 제약 <a class="src" href="https://doi.org/10.1038/s41590-025-02298-1" target="_blank" rel="noopener">Vince 2025</a></p>
+
+        <!-- ───────── 7. 뒤처리 ───────── -->
+        <h2 id="cleanup">죽음의 나머지 절반 — 치우는 일<small>Efferocytosis</small></h2>
+        <p class="lede">식세포의 시신 탐식 → 단백질·핵산·지질 화물 부담 → 신속 처리 시에만 다음 시신 탐식 가능. 이 <b>화물 대사</b>가 연속 청소의 병목 · 여기서 염증 해소 신호 생성 <a class="src" href="https://doi.org/10.1038/s41577-019-0240-6" target="_blank" rel="noopener">Doran 2020</a></p>
+        <p>청소 실패 → 조직 표현형으로 직결. 동맥경화 플라크 = 대식세포가 apoptosis와 조절된 괴사 3종으로 사망 · 미청소 시신이 <b>necrotic core</b> 확장 → 플라크 파열 소인 <a class="src" href="https://doi.org/10.1038/s41569-023-00957-0" target="_blank" rel="noopener">De Meyer 2024</a> <a class="src" href="https://doi.org/10.1038/s41569-024-01037-7" target="_blank" rel="noopener">Adkar &amp; Leeper 2024</a></p>
+
+        <!-- ───────── 8. 남는 질문 ───────── -->
+        <h2 id="open">남는 질문<small>Open questions</small></h2>
+        <ul>
+          <li><b>측정 — 최대 공백</b> — 조직·단일세포에서 양식별 기여를 정량할 표준 마커 부재 · 공유 분자로 인해 단일 마커로는 불가 → PANoptosis 논쟁의 기술적 뿌리.</li>
+          <li><b>마우스에서 사람으로</b> — 마우스 유전학이 지목한 necroptosis의 질환 인과가 사람에서 성립하는지 미확정.</li>
+          <li><b>치료 성적</b> — apoptosis 유도 승인약은 <b>venetoclax 단 1종</b> · ferroptosis 기반 승인약 전무 · 저자들도 번역 가치를 추정 단계로 표기 <a class="src" href="https://doi.org/10.1038/s41418-023-01153-w" target="_blank" rel="noopener">Vitale 2023</a> <a class="src" href="https://doi.org/10.1038/s41568-025-00864-1" target="_blank" rel="noopener">Wahida &amp; Conrad 2025</a></li>
+        </ul>
+      </article>
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./sterile.html">자기 성분은 왜 보통 문제가 안 되고, 언제 염증이 되나? →</a>
+          <a href="./sensing.html">선천면역은 무엇을 감지하나? →</a>
+          <a href="./effector.html">선천면역은 어떻게 죽이고, 어떻게 기억하나? →</a>
+          <a href="../03-adaptive-recognition/thymus.html">흉선 선택 — 면역계 안의 apoptosis →</a>
+          <a href="../../nephro/dkd/index.html">당뇨병성 신장질환 →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41418-017-0012-4" target="_blank" rel="noopener noreferrer">Galluzzi 2018, Cell Death Differ ↗</a>
+          <a href="https://doi.org/10.1038/s41580-023-00689-6" target="_blank" rel="noopener noreferrer">Yuan &amp; Ofengeim 2024, Nat Rev Mol Cell Biol ↗</a>
+          <a href="https://doi.org/10.1038/s41418-023-01153-w" target="_blank" rel="noopener noreferrer">Vitale 2023, Cell Death Differ ↗</a>
+          <a href="https://doi.org/10.1038/s41422-025-01107-6" target="_blank" rel="noopener noreferrer">Broz 2025, Cell Res ↗</a>
+          <a href="https://doi.org/10.1038/s41580-025-00837-0" target="_blank" rel="noopener noreferrer">Bai 2025, Nat Rev Mol Cell Biol ↗</a>
+          <a href="https://doi.org/10.1016/j.immuni.2024.02.011" target="_blank" rel="noopener noreferrer">Lawlor 2024, Immunity ↗</a>
+          <a href="https://doi.org/10.1038/s41580-026-01002-x" target="_blank" rel="noopener noreferrer">Yang 2026, Nat Rev Mol Cell Biol ↗</a>
+          <a href="https://doi.org/10.1038/s41590-025-02298-1" target="_blank" rel="noopener noreferrer">Vince 2025, Nat Immunol ↗</a>
+          <a href="https://doi.org/10.1016/j.molmed.2023.10.001" target="_blank" rel="noopener noreferrer">Pandeya &amp; Kanneganti 2024, Trends Mol Med ↗</a>
+          <a href="https://doi.org/10.1007/s10495-025-02152-7" target="_blank" rel="noopener noreferrer">Enuganti 2025, Apoptosis ↗</a>
+          <a href="https://doi.org/10.1038/s41418-026-01686-w" target="_blank" rel="noopener noreferrer">Tang 2026, Cell Death Differ ↗</a>
+          <a href="https://doi.org/10.1038/s12276-023-01069-y" target="_blank" rel="noopener noreferrer">Lee 2023, Exp Mol Med ↗</a>
+          <a href="https://doi.org/10.1038/s41577-019-0240-6" target="_blank" rel="noopener noreferrer">Doran 2020, Nat Rev Immunol ↗</a>
+          <a href="https://doi.org/10.1038/s41569-023-00957-0" target="_blank" rel="noopener noreferrer">De Meyer 2024, Nat Rev Cardiol ↗</a>
+          <a href="https://doi.org/10.1038/s41569-024-01037-7" target="_blank" rel="noopener noreferrer">Adkar &amp; Leeper 2024, Nat Rev Cardiol ↗</a>
+          <a href="https://doi.org/10.1038/s41568-025-00864-1" target="_blank" rel="noopener noreferrer">Wahida &amp; Conrad 2025, Nat Rev Cancer ↗</a>
+          <a href="https://doi.org/10.1038/s41467-026-73802-w" target="_blank" rel="noopener noreferrer">Casterton 2026, Nat Commun ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../01-basics/basics.js"></script>
+  <script src="./innate.js"></script>
+  <script src="./data.js"></script>
+  <script src="../glossary.js"></script>
+</body>
+</html>

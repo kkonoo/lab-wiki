@@ -1,0 +1,301 @@
+/* Immunology 05-disease-intervention — 그림 전용 규칙과 05 본문 블록
+   공통 틀은 ../immunology.css, 공통 문서 스타일은 ../01-basics/basics.css
+   그림 규칙은 전부 .xfig 안으로 한정한다(04와 같은 방침) — 공용 CSS의 짧은 클래스명과 겹치지 않게.
+   그림 그룹 훅 클래스는 전부 g- 접두사. 02의 innate.css·03의 adaptive.css·04의 execution.css는 링크하지 않는다. */
+:root{
+  --c-vac:#2f7f73; --c-stop:#b24f4f; --c-gene:#3f6f8f;
+  --c-sort:#936f21; --c-anti:#7b5aa6; --c-grey:#7d857c;
+}
+
+/* ── 공통 ── */
+svg.xfig{display:block;width:100%;height:auto}
+svg.hyp,svg.tol,svg.vac,svg.rst{min-width:1100px}
+svg.tra,svg.iei{min-width:1120px}
+svg.str{min-width:1080px}
+/* 05의 그림도 01보다 넓다 — 화면이 넓으면 본문 칸을 늘려 가로 스크롤을 줄인다 */
+@media (min-width:1460px){ .vpage .container{width:min(1440px,calc(100% - 40px))} }
+@media (min-width:1700px){ .vpage .container{width:min(1580px,calc(100% - 40px))} }
+.xfig text{font-family:"Pretendard","Noto Sans KR",-apple-system,"Segoe UI",sans-serif}
+
+/* ── 축 ── */
+.xfig .axline{stroke:#c3cac1;stroke-width:1.6}
+
+/* ── 글자 ── */
+.xfig .lab{font-size:12px;font-weight:700;fill:#2d352f;paint-order:stroke;stroke:#fff;stroke-width:3.2px;stroke-linejoin:round}
+.xfig .lab.big{font-size:13.5px;font-weight:800}
+.xfig .lab.small{font-size:10.5px;font-weight:600;fill:#5d665e}
+.xfig .lab.tiny{font-size:9.5px;font-weight:600;fill:#5d665e}
+.xfig .olab{font-size:11px;font-weight:750;fill:#6d756c;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.xfig .olab.big{font-size:13px;font-weight:800;fill:#3d4640}
+.xfig .olab.small{font-size:9.8px;font-weight:600;fill:#8a918a}
+.xfig .lanet{font:800 14px Georgia,"Noto Serif KR",serif;fill:#3d4640}
+.xfig .lanek{font-size:9.5px;font-weight:750;letter-spacing:.14em;fill:#9aa19a}
+
+/* ── 노드 · pill · 상자 ── */
+.xfig .nd rect{stroke:#fff;stroke-width:1.2}
+.xfig .nd text{font-size:11.5px;font-weight:700;fill:#fff}
+.xfig .nd.vac rect{fill:var(--c-vac)} .xfig .nd.stop rect{fill:var(--c-stop)}
+.xfig .nd.gene rect{fill:var(--c-gene)} .xfig .nd.sort rect{fill:var(--c-sort)}
+.xfig .nd.anti rect{fill:var(--c-anti)} .xfig .nd.grey rect{fill:var(--c-grey)}
+
+.xfig .pl rect{fill:#fff;stroke:#cdd3c9;stroke-width:1}
+.xfig .pl text{font-size:10.5px;font-weight:650;fill:#3d4640}
+.xfig .pl.keep rect{fill:#edf5f2;stroke:#9ec5ba} .xfig .pl.keep text{fill:#2c5b52}
+.xfig .pl.warn rect{fill:#fbefee;stroke:#ddb3b0} .xfig .pl.warn text{fill:#8d4340}
+
+.xfig .bx rect{fill:#fff;stroke:#cdd3c9;stroke-width:1.4}
+.xfig .bx.trig rect{fill:#f3f1ea;stroke:#ccc7b6}
+.xfig .bx.keep rect{fill:#f3f9f7;stroke:#9ec5ba}
+.xfig .bx.res rect{fill:#eff7f4;stroke:#82b6a9;stroke-width:1.8}
+.xfig .bx.vacbox rect{fill:#edf5f2;stroke:#78b3a6;stroke-width:1.8}
+.xfig .bx.sortbox rect{fill:#faf4e6;stroke:#cdb279;stroke-width:1.8}
+.xfig .bx.ab rect{fill:#f7f3fb;stroke:#c1b0d6;stroke-width:1.8}
+.xfig .bx.re rect{fill:#f7f3fb;stroke:#c1b0d6}
+.xfig .bx.off rect{fill:#fbf1f0;stroke:#d79c98;stroke-width:1.8}
+.xfig .bx.lanebox rect{fill:#fdfdfa;stroke:#d5dbd2}
+.xfig .bx.altbox rect{fill:#fbf3f2;stroke:#ddb3b0;stroke-dasharray:5 4}
+.xfig .bx.regbox rect{fill:#f3f9f7;stroke:#9ec5ba;stroke-dasharray:5 4}
+.xfig .bx.stg rect{fill:#fff;stroke:#c3cac1;stroke-width:1.6}
+
+/* ── 화살표 ── */
+.xfig .fl{fill:none;stroke-width:2.1}
+.xfig .fl.vac{stroke:var(--c-vac)} .xfig .fl.stop{stroke:var(--c-stop)}
+.xfig .fl.gene{stroke:var(--c-gene)} .xfig .fl.sort{stroke:var(--c-sort)}
+.xfig .fl.anti{stroke:var(--c-anti)} .xfig .fl.grey{stroke:var(--c-grey)}
+.xfig .fl.dash{stroke-dasharray:6 4}
+
+/* ── 모드 오버레이 ── */
+.xfig .ov{opacity:0;transition:opacity .3s;pointer-events:none}
+.xfig .dis rect{fill:#b24f4f;stroke:#fff;stroke-width:1.5}
+.xfig .dis text{font-size:10px;font-weight:750;fill:#fff}
+.xfig .num circle{fill:#3d4640;stroke:#fff;stroke-width:2}
+.xfig .num text{font-size:11px;font-weight:800;fill:#fff}
+
+/* 모드별 번호 배지 색 */
+.xfig .ov-type.num circle{fill:var(--c-stop)}
+.xfig .ov-barr.num circle{fill:var(--c-stop)}
+.xfig .ov-ige.num circle{fill:var(--c-anti)}
+.xfig .ov-tier.num circle{fill:var(--c-vac)}
+.xfig .ov-treg.num circle{fill:var(--c-vac)}
+.xfig .ov-induce.num circle{fill:var(--c-sort)}
+.xfig .ov-path.num circle{fill:var(--c-gene)}
+.xfig .ov-reject.num circle{fill:var(--c-stop)}
+.xfig .ov-block.num circle{fill:var(--c-vac)}
+.xfig .ov-prot.num circle{fill:var(--c-vac)}
+.xfig .ov-adj.num circle{fill:var(--c-sort)}
+.xfig .ov-mrna.num circle{fill:var(--c-anti)}
+.xfig .ov-circ.num circle{fill:var(--c-gene)}
+.xfig .ov-arch.num circle{fill:var(--c-gene)}
+.xfig .ov-fix.num circle{fill:var(--c-vac)}
+.xfig .ov-stage.num circle{fill:var(--c-stop)}
+.xfig .ov-plane.num circle{fill:var(--c-anti)}
+.xfig .ov-map.num circle{fill:var(--c-sort)}
+.xfig .ov-kin.num circle{fill:var(--c-gene)}
+.xfig .ov-gen.num circle{fill:var(--c-sort)}
+.xfig .ov-endo.num circle{fill:var(--c-vac)}
+
+/* 모드가 켜지면 해당 오버레이만 나타난다 */
+.xfig[data-mode="type"] .ov-type,
+.xfig[data-mode="barr"] .ov-barr,
+.xfig[data-mode="ige"] .ov-ige,
+.xfig[data-mode="tier"] .ov-tier,
+.xfig[data-mode="treg"] .ov-treg,
+.xfig[data-mode="induce"] .ov-induce,
+.xfig[data-mode="path"] .ov-path,
+.xfig[data-mode="reject"] .ov-reject,
+.xfig[data-mode="block"] .ov-block,
+.xfig[data-mode="prot"] .ov-prot,
+.xfig[data-mode="adj"] .ov-adj,
+.xfig[data-mode="mrna"] .ov-mrna,
+.xfig[data-mode="circ"] .ov-circ,
+.xfig[data-mode="arch"] .ov-arch,
+.xfig[data-mode="fix"] .ov-fix,
+.xfig[data-mode="stage"] .ov-stage,
+.xfig[data-mode="plane"] .ov-plane,
+.xfig[data-mode="map"] .ov-map,
+.xfig[data-mode="kin"] .ov-kin,
+.xfig[data-mode="gen"] .ov-gen,
+.xfig[data-mode="endo"] .ov-endo,
+.xfig[data-mode="barr"] .ov-dis,
+.xfig[data-mode="mrna"] .ov-dis,
+.xfig[data-mode="endo"] .ov-dis{opacity:1}
+
+/* 모드에 없는 그룹은 흐려진다 */
+.xfig .fg{transition:opacity .25s}
+.xfig[data-mode="type"] .fg:not([data-in~="type"]),
+.xfig[data-mode="barr"] .fg:not([data-in~="barr"]),
+.xfig[data-mode="ige"] .fg:not([data-in~="ige"]),
+.xfig[data-mode="tier"] .fg:not([data-in~="tier"]),
+.xfig[data-mode="treg"] .fg:not([data-in~="treg"]),
+.xfig[data-mode="induce"] .fg:not([data-in~="induce"]),
+.xfig[data-mode="path"] .fg:not([data-in~="path"]),
+.xfig[data-mode="reject"] .fg:not([data-in~="reject"]),
+.xfig[data-mode="block"] .fg:not([data-in~="block"]),
+.xfig[data-mode="prot"] .fg:not([data-in~="prot"]),
+.xfig[data-mode="adj"] .fg:not([data-in~="adj"]),
+.xfig[data-mode="mrna"] .fg:not([data-in~="mrna"]),
+.xfig[data-mode="circ"] .fg:not([data-in~="circ"]),
+.xfig[data-mode="arch"] .fg:not([data-in~="arch"]),
+.xfig[data-mode="fix"] .fg:not([data-in~="fix"]),
+.xfig[data-mode="stage"] .fg:not([data-in~="stage"]),
+.xfig[data-mode="plane"] .fg:not([data-in~="plane"]),
+.xfig[data-mode="map"] .fg:not([data-in~="map"]),
+.xfig[data-mode="kin"] .fg:not([data-in~="kin"]),
+.xfig[data-mode="gen"] .fg:not([data-in~="gen"]),
+.xfig[data-mode="endo"] .fg:not([data-in~="endo"]){opacity:.22}
+.xfig.hot .fg:not(.on){opacity:.2}
+.xfig .fg.on{opacity:1 !important}
+.xfig .fg.on .bx rect{stroke:#2d352f;stroke-width:2}
+
+/* ── 본문 쪽 보조 ── */
+.steps[data-mode="tier"],
+.steps[data-mode="treg"],
+.steps[data-mode="block"],
+.steps[data-mode="fix"],
+.steps[data-mode="endo"]{--sc:var(--c-vac)}
+.steps[data-mode="type"],
+.steps[data-mode="barr"],
+.steps[data-mode="reject"],
+.steps[data-mode="stage"]{--sc:var(--c-stop)}
+.steps[data-mode="path"],
+.steps[data-mode="circ"],
+.steps[data-mode="arch"],
+.steps[data-mode="kin"]{--sc:var(--c-gene)}
+.steps[data-mode="induce"],
+.steps[data-mode="adj"],
+.steps[data-mode="map"],
+.steps[data-mode="gen"]{--sc:var(--c-sort)}
+.steps[data-mode="ige"],
+.steps[data-mode="mrna"],
+.steps[data-mode="plane"]{--sc:var(--c-anti)}
+.steps[data-mode="prot"]{--sc:var(--c-grey)}
+
+.vtable tr.on{background:var(--green-soft)}
+.vtable tr[data-fig]{cursor:default}
+.flag{border-left:3px solid #b24f4f;background:#fdf6f5;padding:12px 16px;margin:16px 0 0;border-radius:0 8px 8px 0}
+.flag h4{margin:0 0 5px;font:700 .86rem "Pretendard","Noto Sans KR",sans-serif;color:#8d4340}
+.flag p{margin:0;font-size:.83rem}
+.flag p+p{margin-top:6px}
+.flag .side{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;color:#8d4340;border:1px solid #ddb3b0;border-radius:999px;padding:0 7px;margin-right:6px;vertical-align:1px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid2>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.grid2 h4{margin:0 0 6px;font:700 .96rem Georgia,"Noto Serif KR",serif}
+.grid2 ul{margin:0;padding-left:18px;font-size:.84rem}
+.grid2 li{margin:4px 0}
+@media (max-width:980px){.grid2{grid-template-columns:1fr}}
+.bridge{margin:16px 0 0;padding:12px 16px;border:1px dashed var(--line);border-radius:10px;background:#fbfcf9;font-size:.85rem}
+.bridge b{color:var(--green)}
+
+/* 그림 그룹 식별용 클래스 — 자바스크립트·선택자 훅, 별도 스타일 없음 */
+.xfig .fg.g-a-cnv,
+.xfig .fg.g-a-di,
+.xfig .fg.g-a-epi,
+.xfig .fg.g-a-germ,
+.xfig .fg.g-a-mos,
+.xfig .fg.g-a-poly,
+.xfig .fg.g-aalum,
+.xfig .fg.g-aas,
+.xfig .fg.g-alarm,
+.xfig .fg.g-alnp,
+.xfig .fg.g-amf,
+.xfig .fg.g-ampla,
+.xfig .fg.g-aner,
+.xfig .fg.g-bar-bcma,
+.xfig .fg.g-bar-cd19,
+.xfig .fg.g-bar-cd20,
+.xfig .fg.g-barrier,
+.xfig .fg.g-bhost,
+.xfig .fg.g-bim,
+.xfig .fg.g-borgan,
+.xfig .fg.g-bxeno,
+.xfig .fg.g-cap,
+.xfig .fg.g-cell,
+.xfig .fg.g-cent,
+.xfig .fg.g-cexe,
+.xfig .fg.g-cns0,
+.xfig .fg.g-cns1,
+.xfig .fg.g-cns2,
+.xfig .fg.g-cns3,
+.xfig .fg.g-conc,
+.xfig .fg.g-crel,
+.xfig .fg.g-csen,
+.xfig .fg.g-def,
+.xfig .fg.g-depot,
+.xfig .fg.g-dogma,
+.xfig .fg.g-dsa,
+.xfig .fg.g-dz,
+.xfig .fg.g-dzlist,
+.xfig .fg.g-e1,
+.xfig .fg.g-e2,
+.xfig .fg.g-e3,
+.xfig .fg.g-e4,
+.xfig .fg.g-expo,
+.xfig .fg.g-f1,
+.xfig .fg.g-f2,
+.xfig .fg.g-f3,
+.xfig .fg.g-f4,
+.xfig .fg.g-freq,
+.xfig .fg.g-gil12,
+.xfig .fg.g-gil17,
+.xfig .fg.g-gtyk2,
+.xfig .fg.g-half,
+.xfig .fg.g-heal,
+.xfig .fg.g-herd,
+.xfig .fg.g-ige2,
+.xfig .fg.g-ign,
+.xfig .fg.g-ind1,
+.xfig .fg.g-ind2,
+.xfig .fg.g-ind3,
+.xfig .fg.g-ind4,
+.xfig .fg.g-kbtk,
+.xfig .fg.g-kirak,
+.xfig .fg.g-kitk,
+.xfig .fg.g-kjak,
+.xfig .fg.g-leak,
+.xfig .fg.g-m1,
+.xfig .fg.g-m2,
+.xfig .fg.g-m3,
+.xfig .fg.g-m4,
+.xfig .fg.g-m5,
+.xfig .fg.g-m6,
+.xfig .fg.g-mbc,
+.xfig .fg.g-mem,
+.xfig .fg.g-memb,
+.xfig .fg.g-miss,
+.xfig .fg.g-mouse,
+.xfig .fg.g-pab,
+.xfig .fg.g-page,
+.xfig .fg.g-pc72,
+.xfig .fg.g-pdir,
+.xfig .fg.g-pen,
+.xfig .fg.g-phase,
+.xfig .fg.g-pinc,
+.xfig .fg.g-pind,
+.xfig .fg.g-pinv,
+.xfig .fg.g-plane,
+.xfig .fg.g-priv,
+.xfig .fg.g-psemi,
+.xfig .fg.g-qc,
+.xfig .fg.g-racu,
+.xfig .fg.g-rchr,
+.xfig .fg.g-ref,
+.xfig .fg.g-reg,
+.xfig .fg.g-rhyp,
+.xfig .fg.g-rlate,
+.xfig .fg.g-rsec,
+.xfig .fg.g-s1,
+.xfig .fg.g-s2,
+.xfig .fg.g-s3,
+.xfig .fg.g-scale,
+.xfig .fg.g-seq,
+.xfig .fg.g-soma,
+.xfig .fg.g-step,
+.xfig .fg.g-t1,
+.xfig .fg.g-t2,
+.xfig .fg.g-t3,
+.xfig .fg.g-t4,
+.xfig .fg.g-th1,
+.xfig .fg.g-th2,
+.xfig .fg.g-th3,
+.xfig .fg.g-treg,
+.xfig .fg.g-win{cursor:default}

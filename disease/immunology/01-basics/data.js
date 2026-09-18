@@ -193,35 +193,41 @@ window.IMMUNOLOGY_BASICS = {
       "immunology-recognition",
       "면역세포는 무엇으로 서로 신호를 주고받나?",
       [
+        "Immune Dictionary",
+        "IREA",
+        "cytokine niche",
+        "STAT tetramer",
+        "ACKR",
+        "atypical chemokine receptor",
         "cytokine",
         "사이토카인",
         "chemokine",
         "interleukin",
+        "JAK-STAT",
         "JAK",
         "STAT",
-        "JAK-STAT",
         "NF-κB",
         "SMAD",
         "GPCR",
+        "γc",
+        "gp130",
+        "공유 사슬",
+        "수용체 계열",
+        "pleiotropy",
+        "redundancy",
+        "three-signal",
+        "신호 3",
         "TIR",
         "MyD88",
         "TRAF",
         "TNFSF",
         "TNFRSF",
         "CD40L",
-        "수용체 계열",
-        "공유 사슬",
-        "γc",
-        "gp130",
-        "three-signal",
-        "신호 3",
         "Th1",
         "Th2",
         "Th17",
         "Treg",
         "Tfh",
-        "pleiotropy",
-        "redundancy",
         "CCR7",
         "CXCL13",
         "IL7R",
@@ -243,7 +249,7 @@ window.IMMUNOLOGY_BASICS = {
           [
             "autocrine · paracrine · endocrine — 분비 세포 자신, 이웃, 혈류 건너까지",
             "cytokine niche 30–150 µm(시험관) · 생체 80–120 µm — 소비하는 세포 밀도가 범위를 정함 (Oyler-Yaniv 2017, mouse)",
-            "pleiotropy와 redundancy의 이유 = 수용체 분포 · 신호 경로 공유 · 수용체 사슬 공유 (Ozaki 2002)"
+            "pleiotropy는 수용체 분포 때문이고 redundancy는 대개 겉보기 — 결손 표현형은 구별된다 (Lin & Leonard 2019; Cui 2024 실측)"
           ]
         ],
         [
@@ -392,16 +398,8 @@ window.IMMUNOLOGY_BASICS = {
     ],
     "immunology-recognition": [
       [
-        "Ozaki & Leonard 2002, J Biol Chem",
-        "https://doi.org/10.1074/jbc.R200003200"
-      ],
-      [
-        "Altan-Bonnet & Mukherjee 2019, Nat Rev Immunol",
-        "https://doi.org/10.1038/s41577-019-0131-x"
-      ],
-      [
-        "Oyler-Yaniv 2017, Immunity",
-        "https://doi.org/10.1016/j.immuni.2017.03.011"
+        "Lin & Leonard 2019, Annu Rev Immunol",
+        "https://doi.org/10.1146/annurev-immunol-042718-041447"
       ],
       [
         "Zhu, Yamane & Paul 2010, Annu Rev Immunol",
@@ -410,6 +408,18 @@ window.IMMUNOLOGY_BASICS = {
       [
         "Griffith, Sokol & Luster 2014, Annu Rev Immunol",
         "https://doi.org/10.1146/annurev-immunol-032713-120145"
+      ],
+      [
+        "Oyler-Yaniv 2017, Immunity",
+        "https://doi.org/10.1016/j.immuni.2017.03.011"
+      ],
+      [
+        "Cui 2024, Nature",
+        "https://doi.org/10.1038/s41586-023-06816-9"
+      ],
+      [
+        "Altan-Bonnet & Mukherjee 2019, Nat Rev Immunol",
+        "https://doi.org/10.1038/s41577-019-0131-x"
       ],
       [
         "Wang, Zhao & Wan 2023, Cell Mol Immunol",
@@ -422,6 +432,10 @@ window.IMMUNOLOGY_BASICS = {
       [
         "Saxton, Glassman & Garcia 2023, Nat Rev Drug Discov",
         "https://doi.org/10.1038/s41573-022-00557-6"
+      ],
+      [
+        "Virtanen 2024, Nat Rev Rheumatol",
+        "https://doi.org/10.1038/s41584-024-01153-1"
       ]
     ],
     "immunology-ontogeny": [

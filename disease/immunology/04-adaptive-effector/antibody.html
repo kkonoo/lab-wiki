@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="항체와 세포의 실행 — Fab가 아니라 Fc의 subclass와 Asn297 당사슬이 정하는 수용체 결합 균형, 고친화 수용체 하나와 결합가 의존, 중화·탐식·세포독성·보체의 네 갈래 출력, 중화가 무너진 뒤에도 남는 방어, perforin과 Fas 리간드로 죽이는 세포독성 T세포">
+  <title>항체와 세포는 실제로 어떻게 방어하나? · Immunology</title>
+  <link rel="stylesheet" href="../immunology.css">
+  <link rel="stylesheet" href="../01-basics/basics.css">
+  <link rel="stylesheet" href="./execution.css">
+</head>
+<body class="vpage">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Immunology</span></a></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="./index.html">목록</a><span>›</span><a href="./index.html">적응면역 II</a><span>›</span>항체와 세포의 실행</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">적응면역 II — 실행과 장소</p>
+        <h1>항체와 세포는 실제로 어떻게 방어하나?</h1>
+        <p class="definition">항체의 작동 기능(antibody effector function) = 항체가 항원에 붙은 뒤 실제로 일어나는 일. 무엇에 붙는지는 Fab가 정하지만 <b>무슨 일이 일어나는지는 Fc</b>가 정하고, 중화는 그중 측정하기 쉬운 한 갈래일 뿐이다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a> <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></p>
+        <h2 id="problem">무엇에 붙는가와 무슨 일이 일어나는가는 다른 질문이다<small>Binding is not function</small></h2>
+        <p class="lede">항체의 Fab는 <b>무엇에 붙을지</b>만 정한다. 실제로 몸에서 무슨 일이 일어나는지는 <b>Fc의 subclass와 Asn297 당사슬</b>이 만드는 수용체 결합 균형이 정한다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></p>
+        <ol class="route">
+          <li style="--c:var(--ada)"><span class="lv">붙기</span><h4>Fab</h4><p>특이성 — 어떤 항원의 어느 자리에 붙는가 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></p></li>
+          <li style="--c:var(--il)"><span class="lv">부르기</span><h4>Fc</h4><p>subclass와 당사슬이 활성·억제·type II 수용체의 결합 균형을 정한다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></p></li>
+          <li style="--c:var(--st)"><span class="lv">죽이기</span><h4>cells</h4><p>항체 없이도 세포독성 T세포가 직접 죽이고, TH1이 대식세포를 무장시킨다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27149/" target="_blank" rel="noopener">Janeway 2001 · 8-1</a></p></li>
+        </ol>
+        <div class="callout blue">
+          <h4>이 페이지가 답하려는 것</h4>
+          <p><b>중화는 방어의 전부가 아니다</b>. 측정이 쉬워 대리지표로 쓰이지만, 중화가 무너진 변이체에서도 Fc와 보체 기반 기능이 방어를 유지한다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></p>
+          <p>항체를 만드는 쪽 → <a href="./germinal-center.html">배중심과 isotype 전환</a> · 보체 경로 자체 → <a href="../02-innate/complement.html">보체</a> · 대식세포와 NK의 방어↔손상 → <a href="../02-innate/effector.html">선천 effector</a></p>
+        </div>
+        <h2 id="map">한 장 지도 — 분자 · 수용체 · 출력<small>Molecule, receptors, outputs</small></h2>
+        <figure class="fig" id="fcFig">
+          <div class="fig-tools">
+            <div class="seg" role="group" aria-label="보기 선택">
+              <button type="button" data-fcmode="none" aria-pressed="true">전체</button>
+              <button type="button" data-fcmode="fc" aria-pressed="false">Fc와 당사슬</button>
+              <button type="button" data-fcmode="fcr" aria-pressed="false">수용체와 출력</button>
+              <button type="button" data-fcmode="cell" aria-pressed="false">세포가 죽이는 쪽</button>
+            </div>
+            <div class="legend static">
+              <span><i style="--c:#7b5aa6"></i>항체 쪽</span>
+              <span><i style="--c:#b24f4f"></i>수용체와 살해</span>
+              <span><i style="--c:#2f7f73"></i>억제</span>
+            </div>
+          </div>
+          <div class="fig-scroll">
+            <!--GEN:FC-->
+<svg class="fcx xfig" data-mode="none" viewBox="0 0 1260 884" role="img" aria-labelledby="fcT fcD" xmlns="http://www.w3.org/2000/svg">
+<title id="fcT">항체와 세포의 실행 — Fc와 당사슬이 정하는 균형, 수용체 지도, 네 갈래 출력, 그리고 세포가 죽이는 쪽</title>
+<desc id="fcD">위 줄은 항체 분자다. Fab가 무엇을 잡을지 정하고 Fc의 subclass와 Asn297 당사슬이 무슨 일이 일어날지 정한다. fucose가 빠지면 FcγRIIIa 친화도가 오르고, sialic acid가 붙으면 Fc가 닫힌 모양이 되어 type II 수용체에 붙는다. 가운데 줄은 수용체 지도다 — 고친화 하나만 단량체를 잡고 나머지는 면역복합체의 결합가에 의존하며, 억제 수용체가 역치를 세운다. 아래 줄은 네 갈래 출력과, 중화가 무너진 뒤에도 방어가 남는다는 증거다. 맨 아래는 항체 없이 세포가 직접 죽이는 쪽이다.</desc>
+<defs><marker id="fcA-sig" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#3f6f8f"/></marker><marker id="fcA-gold" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#936f21"/></marker><marker id="fcA-off" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b24f4f"/></marker><marker id="fcA-ab" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7b5aa6"/></marker><marker id="fcA-res" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#2f7f73"/></marker><marker id="fcA-plain" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7d857c"/></marker></defs>
+<text class="lanet" x="28" y="40" text-anchor="start">Fab는 무엇을, Fc는 무슨 일이 일어날지</text><text class="lanek" x="28" y="56" text-anchor="start">THE MOLECULE</text>
+<g class="fg g-fab" data-fg="fab" data-in="fc">
+<g class="bx lanebox"><rect x="150" y="70" width="250" height="74" rx="12"/><text class="lab" x="275" y="106" text-anchor="middle">Fab — 특이성</text><text class="lab small" x="275" y="122" text-anchor="middle">무엇에 붙을지</text></g>
+</g>
+<g class="fg g-fcpart" data-fg="fcpart" data-in="fc fcr">
+<g class="bx ab"><rect x="150" y="158" width="250" height="74" rx="12"/><text class="lab" x="275" y="194" text-anchor="middle">Fc — 기능</text><text class="lab small" x="275" y="210" text-anchor="middle">subclass + Asn297 당사슬</text></g>
+</g>
+<g class="fg g-gly" data-fg="gly" data-in="fc">
+<g class="bx keep"><rect x="440" y="70" width="350" height="74" rx="12"/><text class="lab" x="615" y="106" text-anchor="middle">fucose가 빠지면</text><text class="lab small" x="615" y="122" text-anchor="middle">FcγRIIIa 친화도가 오른다</text></g>
+<g class="bx re"><rect x="440" y="158" width="350" height="74" rx="12"/><text class="lab" x="615" y="194" text-anchor="middle">sialic acid가 붙으면</text><text class="lab small" x="615" y="210" text-anchor="middle">Fc가 닫혀 type II 수용체에 붙는다</text></g>
+<path class="fl ab" d="M400,106 L436,106" marker-end="url(#fcA-ab)"/>
+<path class="fl ab" d="M400,194 L436,194" marker-end="url(#fcA-ab)"/>
+</g>
+<g class="fg g-ai" data-fg="ai" data-in="fc">
+<g class="bx bm"><rect x="830" y="70" width="406" height="162" rx="14"/></g><text class="lab big" x="1033" y="102" text-anchor="middle">두 계열의 결합 균형이 결과다</text><text class="lab small" x="1033" y="124" text-anchor="middle">type I 활성 ↔ type I 억제 ↔ type II</text>
+<g class="pl small"><rect x="845" y="150" width="376" height="19" rx="9.5"/><text x="1033" y="163.2" text-anchor="middle">임신·백신·감염에서 당사슬이 움직인다</text></g>
+<g class="pl small"><rect x="845" y="186" width="376" height="19" rx="9.5"/><text x="1033" y="199.2" text-anchor="middle">류마티스에서는 질환 특이 IgG의 galactose·sialic acid가 준다</text></g>
+</g>
+<text class="lanet" x="28" y="300" text-anchor="start">수용체 — 하나만 고친화, 나머지는 결합가</text><text class="lanek" x="28" y="316" text-anchor="start">RECEPTOR MAP</text>
+<g class="fg g-fcr" data-fg="fcr" data-in="fcr">
+<g class="mem"><rect x="140" y="368" width="1096" height="22" rx="4"/><line x1="140" y1="379" x2="1236" y2="379"/></g>
+<g class="nd off "><rect x="150" y="330" width="200" height="28" rx="8"/><text x="250" y="348" text-anchor="middle">FcγRI</text></g>
+<text class="lab small" x="250" y="410" text-anchor="middle">단량체 IgG를 잡는다</text>
+<g class="nd off "><rect x="366" y="330" width="178" height="28" rx="8"/><text x="455" y="348" text-anchor="middle">FcγRIIA</text></g>
+<text class="lab small" x="455" y="410" text-anchor="middle">면역복합체에 의존</text>
+<g class="nd off "><rect x="560" y="330" width="178" height="28" rx="8"/><text x="649" y="348" text-anchor="middle">FcγRIIIA</text></g>
+<text class="lab small" x="649" y="410" text-anchor="middle">면역복합체에 의존</text>
+<g class="nd res "><rect x="754" y="330" width="178" height="28" rx="8"/><text x="843" y="348" text-anchor="middle">FcγRIIB</text></g>
+<text class="lab small" x="843" y="410" text-anchor="middle">억제 · 역치를 세운다</text>
+<g class="nd ab "><rect x="948" y="330" width="288" height="28" rx="8"/><text x="1092" y="348" text-anchor="middle">DC-SIGN · CD23</text></g>
+<text class="lab small" x="1092" y="410" text-anchor="middle">type II — sialylated Fc를 읽는다</text>
+</g>
+<g class="fg g-aff" data-fg="aff" data-in="fcr">
+<g class="bx regbox"><rect x="150" y="446" width="500" height="56" rx="10"/><text class="lab" x="400" y="473" text-anchor="middle">고친화는 10⁻⁹–10⁻¹⁰ M 하나뿐</text><text class="lab small" x="400" y="489" text-anchor="middle">나머지는 10⁻⁵–10⁻⁷ M — 신호는 면역복합체의 결합가 문제</text></g>
+<g class="bx res"><rect x="680" y="446" width="556" height="56" rx="10"/><text class="lab" x="958" y="473" text-anchor="middle">B세포는 활성 수용체 없이 억제 수용체만 가진다</text><text class="lab small" x="958" y="489" text-anchor="middle">친화도 선택의 역치가 여기서 세워진다</text></g>
+</g>
+<text class="lanet" x="28" y="540" text-anchor="start">출력 네 갈래 — 그리고 중화가 무너진 뒤</text><text class="lanek" x="28" y="556" text-anchor="start">FOUR OUTPUTS</text>
+<g class="fg g-out" data-fg="out" data-in="fcr">
+<g class="bx"><rect x="150" y="568" width="256" height="88" rx="12"/></g><text class="lab big" x="278" y="596" text-anchor="middle">중화</text><text class="lab small" x="278" y="618" text-anchor="middle">붙기 · 들어가기 · 융합 · 나가기를 막는다</text>
+<g class="bx"><rect x="426" y="568" width="256" height="88" rx="12"/></g><text class="lab big" x="554" y="596" text-anchor="middle">ADCP</text><text class="lab small" x="554" y="618" text-anchor="middle">탐식 — 대식세포가 삼킨다</text>
+<g class="bx"><rect x="702" y="568" width="256" height="88" rx="12"/></g><text class="lab big" x="830" y="596" text-anchor="middle">ADCC</text><text class="lab small" x="830" y="618" text-anchor="middle">세포를 죽인다</text>
+<g class="bx"><rect x="978" y="568" width="258" height="88" rx="12"/></g><text class="lab big" x="1107" y="596" text-anchor="middle">ADCD</text><text class="lab small" x="1107" y="618" text-anchor="middle">보체 — C1q는 IgM · IgG1 · IgG3가 최상</text>
+</g>
+<g class="fg g-beyond" data-fg="beyond" data-in="fcr">
+<g class="bx altbox"><rect x="150" y="672" width="1086" height="80" rx="12"/></g>
+<text class="olab big" x="693" y="698" text-anchor="middle">중화가 크게 떨어진 변이체에서도 방어가 유지된다</text>
+<g class="pl small"><rect x="160" y="710" width="520" height="19" rx="9.5"/><text x="420" y="723.2" text-anchor="middle">Fc 결합을 없앤 변이 항체는 치료활성을 잃는다</text></g>
+<g class="pl small"><rect x="706" y="710" width="520" height="19" rx="9.5"/><text x="966" y="723.2" text-anchor="middle">NK·호중구를 없애도 그대로인데 단핵구·폐포 대식세포를 없애면 방어가 사라진다</text></g>
+</g>
+<text class="lanet" x="28" y="776" text-anchor="start">항체 없이 — 세포가 직접</text><text class="lanek" x="28" y="792" text-anchor="start">CELL-MEDIATED</text>
+<g class="fg g-ctl" data-fg="ctl" data-in="cell">
+<g class="bx off"><rect x="150" y="796" width="420" height="76" rx="12"/></g><text class="lab big" x="360" y="822" text-anchor="middle">CD8 세포독성 T세포</text><text class="lab small" x="360" y="844" text-anchor="middle">골지와 미세관을 접촉면으로 돌려 한 세포씩</text><text class="lab small" x="360" y="860" text-anchor="middle">perforin 16 nm 구멍 · granzyme B · Fas 리간드</text>
+</g>
+<g class="fg g-th1" data-fg="th1" data-in="cell">
+<g class="bx gold2"><rect x="600" y="796" width="636" height="76" rx="12"/></g><text class="lab big" x="918" y="822" text-anchor="middle">Th1이 대식세포를 무장시킨다</text><text class="lab small" x="918" y="844" text-anchor="middle">IFN-γ · TNF-α — 세포 안 미생물을 더 잘 죽이게 만든다</text>
+</g>
+<g class="ov ov-fc num"><circle cx="160" cy="158" r="11"/><text x="160" y="161.9" text-anchor="middle">1</text></g>
+<g class="ov ov-fc num"><circle cx="450" cy="70" r="11"/><text x="450" y="73.9" text-anchor="middle">2</text></g>
+<g class="ov ov-fc num"><circle cx="840" cy="70" r="11"/><text x="840" y="73.9" text-anchor="middle">3</text></g>
+<g class="ov ov-fcr num"><circle cx="160" cy="446" r="11"/><text x="160" y="449.9" text-anchor="middle">1</text></g>
+<g class="ov ov-fcr num"><circle cx="160" cy="568" r="11"/><text x="160" y="571.9" text-anchor="middle">2</text></g>
+<g class="ov ov-fcr num"><circle cx="160" cy="672" r="11"/><text x="160" y="675.9" text-anchor="middle">3</text></g>
+<g class="ov ov-cell num"><circle cx="160" cy="796" r="11"/><text x="160" y="799.9" text-anchor="middle">1</text></g>
+<g class="ov ov-cell num"><circle cx="610" cy="796" r="11"/><text x="610" y="799.9" text-anchor="middle">2</text></g>
+</svg>
+<!--/GEN:FC-->
+          </div>
+          <ol class="steps" data-mode="fc">
+            <li>IgG의 생체 내 효과를 정하는 것은 Fab 특이성이 아니라 <b>subclass + Asn297 당사슬이 정하는 활성/억제 수용체 결합 균형</b>이다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></li>
+            <li><b>fucose가 빠지면</b> FcγRIIIa 친화도가 오르고, <b>sialic acid가 붙으면</b> Fc가 닫힌 모양이 되어 type II 수용체(DC-SIGN·CD23)에 붙는다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></li>
+            <li>당사슬은 고정된 성질이 아니다 — 임신·백신 접종·감염에서 동적으로 바뀌고, 류마티스와 Wegener 육아종증에서는 질환 특이 IgG의 galactose·sialic acid가 준다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></li>
+            <li>IVIG의 항염 작용은 sialylated Fc → SIGN-R1/DC-SIGN → IL-33 → basophil IL-4 → 작동 대식세포의 억제 수용체 상승이라는 경로로 설명된다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a><span class="sp">mouse</span></li>
+          </ol>
+          <ol class="steps" data-mode="fcr">
+            <li>친화도 지형이 결정적이다 — <b>고친화 수용체 하나만 단량체 IgG를 잡고</b>(IgG1 KD 10⁻⁹~10⁻¹⁰ M) 나머지 type I과 type II는 10⁻⁵~10⁻⁷ M이어서, 신호는 <b>면역복합체의 결합가</b> 문제가 된다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></li>
+            <li>교과서 수준의 서술도 같다 — 붙은 항체와 유리 면역글로불린은 <b>뭉친 상태</b>로 구별되고, 탐식세포는 Fc 수용체를 차례로 붙이며 입자를 감싼다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27171/" target="_blank" rel="noopener">Janeway 2001 · 9-3</a></li>
+            <li>B세포는 활성 type I 수용체 없이 <b>억제 수용체만</b> 발현해 친화도 선택의 역치를 세운다 — 결손 mouse는 고역가·저친화 반응을 낸다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a><span class="sp">mouse</span></li>
+            <li>보체 쪽은 isotype이 갈린다 — C1q는 IgM·IgG1·IgG3에 가장 잘 붙고, IgG2는 FcγRIIA에만 붙는다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></li>
+            <li><b>C1q는 중화의 화학량 문턱을 낮춘다</b> — 서나일열·인플루엔자에서 바이러스를 깨지 않고도 중화를 증강한다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></li>
+            <li>세포 안에서는 <b>TRIM21</b>이 옵소닌화된 비피막 바이러스를 proteasome으로 보낸다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></li>
+          </ol>
+          <ol class="steps" data-mode="cell">
+            <li>무장한 작동 T세포는 수용체가 뭉치면 세포골격을 재배열해 분비 방향을 접촉면으로 돌리고, LFA-1–ICAM 결합이 분자 봉인을 만든다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27149/" target="_blank" rel="noopener">Janeway 2001 · 8-1</a></li>
+            <li>세포독소는 전용 과립에 저장돼 있고 cytokine은 새로 합성된다 — 두 무기의 시간 척도가 다르다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27149/" target="_blank" rel="noopener">Janeway 2001 · 8-1</a></li>
+            <li>과립은 변형된 lysosome이고, perforin은 내경 <b>16 nm</b>의 원통을 만들어 물과 이온을 통과시키며 granzyme B가 apoptosis 연쇄를 켠다 — 둘 다 있어야 효과적으로 죽인다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27101/" target="_blank" rel="noopener">Janeway 2001 · 8-2</a></li>
+            <li>골지와 미세관 중심체를 접촉면으로 돌리기 때문에 <b>한 세포씩</b> 죽이고 이웃은 상한다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27101/" target="_blank" rel="noopener">Janeway 2001 · 8-2</a></li>
+            <li>두 번째 경로는 <b>Fas 리간드</b>로 표적의 Fas를 잡아 caspase를 켜는 것이다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27101/" target="_blank" rel="noopener">Janeway 2001 · 8-2</a></li>
+            <li>대부분의 세포독성 CD8은 IFN-γ · TNF-α · TNF-β도 낸다 — IFN-γ는 바이러스 복제를 직접 억제하고 대식세포를 활성화한다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27101/" target="_blank" rel="noopener">Janeway 2001 · 8-2</a></li>
+            <li>TH1은 대식세포를 무장시켜 세포 안 미생물을 더 효율적으로 죽이게 만든다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27153/" target="_blank" rel="noopener">Janeway 2001 · 8-3</a></li>
+          </ol>
+          <figcaption>항체 분자와 수용체 균형은 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a>, 중화와 보체·Fc 경로의 정량은 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a>, 세포독성과 대식세포 무장의 교과서 기전은 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27101/" target="_blank" rel="noopener">Janeway 2001 · 8-2</a>·<a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27153/" target="_blank" rel="noopener">Janeway 2001 · 8-3</a>을 따랐다. 그림의 상자 크기는 개념적 구분이고 결합 세기의 비례가 아니다.</figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>자리</th><th>무엇이 정해지나</th><th>근거</th></tr></thead>
+            <tbody>
+              <tr data-fig="fcx" data-hl="fab"><th>Fab</th><td>무엇에 붙는가</td><td>특이성만 담당한다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></td></tr>
+              <tr data-fig="fcx" data-hl="fcpart"><th>Fc</th><td>무슨 일이 일어나는가</td><td>subclass + Asn297 당사슬 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></td></tr>
+              <tr data-fig="fcx" data-hl="gly"><th>당사슬 변화</th><td>fucose 제거 → FcγRIIIa↑ · sialic acid → type II</td><td>임신·감염·백신에서 동적 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></td></tr>
+              <tr data-fig="fcx" data-hl="ai"><th>결합 균형</th><td>활성 ↔ 억제 ↔ type II의 비</td><td>생체 내 효과의 예측 변수 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></td></tr>
+              <tr data-fig="fcx" data-hl="fcr"><th>수용체 다섯 부류</th><td>고친화 하나 · 억제 하나 · type II 둘</td><td>나머지는 결합가 의존 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></td></tr>
+              <tr data-fig="fcx" data-hl="aff"><th>친화도 지형</th><td>10⁻⁹~10⁻¹⁰ M 대 10⁻⁵~10⁻⁷ M</td><td>면역복합체가 필요한 이유 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></td></tr>
+              <tr data-fig="fcx" data-hl="out"><th>네 갈래 출력</th><td>중화 · 탐식 · 세포독성 · 보체</td><td>붙은 뒤 실제로 일어나는 일 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27171/" target="_blank" rel="noopener">Janeway 2001 · 9-3</a> <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></td></tr>
+              <tr data-fig="fcx" data-hl="beyond"><th>중화가 무너진 뒤</th><td>Fc·보체 경로가 방어를 유지한다</td><td>변이체에서의 관찰 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></td></tr>
+              <tr data-fig="fcx" data-hl="ctl"><th>세포독성 T세포</th><td>극성 분비 · perforin 16 nm · granzyme B · Fas 리간드</td><td>한 세포씩 죽인다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27101/" target="_blank" rel="noopener">Janeway 2001 · 8-2</a></td></tr>
+              <tr data-fig="fcx" data-hl="th1"><th>TH1</th><td>대식세포를 무장시킨다</td><td>세포 안 미생물 제거 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27153/" target="_blank" rel="noopener">Janeway 2001 · 8-3</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">표의 항체·수용체 항목은 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a>, 중화 관련 항목은 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a>, 세포매개 항목은 Janeway 8장을 따랐다.</p>
+        <h2 id="isotype">isotype이 곧 장소다<small>Where each isotype works</small></h2>
+        <p class="lede">어떤 불변부를 쓰는지는 <b>어디에서 일할 수 있는지</b>를 정한다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27162/" target="_blank" rel="noopener">Janeway 2001 · 9-2</a></p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>isotype</th><th>주로 있는 곳</th><th>무엇을 하나</th></tr></thead>
+            <tbody>
+              <tr><th>IgG</th><td>혈액과 세포바깥액의 주 isotype <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27162/" target="_blank" rel="noopener">Janeway 2001 · 9-2</a></td><td>조직에서 옵소닌화와 보체 활성화 · 작은 단량체라 확산이 쉬워 독소와 바이러스를 중화한다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27162/" target="_blank" rel="noopener">Janeway 2001 · 9-2</a></td></tr>
+              <tr><th>IgM</th><td>주로 혈액, 림프에 일부 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27162/" target="_blank" rel="noopener">Janeway 2001 · 9-2</a></td><td>오합체로 결합 부위 10개를 만들어 다가 항원에 붙고 <b>보체 활성화에 특히 효과적</b>이다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27162/" target="_blank" rel="noopener">Janeway 2001 · 9-2</a></td></tr>
+              <tr><th>IgA</th><td>분비물의 주 isotype — 장과 호흡기 점막 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27162/" target="_blank" rel="noopener">Janeway 2001 · 9-2</a></td><td>이중체가 poly-Ig 수용체에 붙어 상피를 관통 수송되고 내강면에서 수용체가 절단된다 · 모유에도 분비된다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27162/" target="_blank" rel="noopener">Janeway 2001 · 9-2</a></td></tr>
+              <tr><th>IgE</th><td>혈액에는 아주 적고 피부·점막 아래 비만세포에 붙어 있다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27162/" target="_blank" rel="noopener">Janeway 2001 · 9-2</a></td><td>항원이 붙으면 비만세포가 매개체를 내어 기침·재채기 같은 배출 반응을 일으킨다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27162/" target="_blank" rel="noopener">Janeway 2001 · 9-2</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">태반을 통과하는 것은 IgG이고 그 수송체 FcRn은 MHC class I과 구조가 닮아 있다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27162/" target="_blank" rel="noopener">Janeway 2001 · 9-2</a>. 주수별 모체 IgG 이동 수치는 <a href="../01-basics/ontogeny.html">면역계의 발생</a>에 이미 두었다 — 여기서 되풀이하지 않는다. IgA가 장에서 <b>어떻게 유도되는지</b>는 <a href="./barrier.html">장벽 조직</a>에 있다.</p>
+        <h2 id="beyond">중화가 무너진 뒤에도 방어가 남는다<small>Past neutralization</small></h2>
+        <p class="lede">중화는 붙기·들어가기·융합·나가기의 네 지점에서 일어나고 각각 표준 측정법이 다르다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a>. 문제는 중화가 <b>사라진 뒤</b>다.</p>
+        <div class="cases">
+          <div style="--c:var(--ada)"><span class="lv">변이체</span><h4>중화 급감, 방어 유지</h4>
+            <p>오미크론에서 중화가 크게 떨어진 단클론항체가 방어를 유지했고 단핵구의 탐식 능력은 동등했다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></p>
+          </div>
+          <div style="--c:var(--st)"><span class="lv">Fc를 지우면</span><h4>치료활성 소실</h4>
+            <p>Fc 결합을 없앤 변이(LALA-PG)를 넣으면 치료활성이 사라지는데, <b>NK와 호중구를 없애도 방어는 그대로</b>이고 단핵구 유입 차단이나 폐포 대식세포 제거에서 방어가 사라진다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a><span class="sp">mouse</span></p>
+          </div>
+          <div style="--c:var(--il)"><span class="lv">보체 의존은 병원체별</span><h4>일정하지 않다</h4>
+            <p>크림콩고열 비중화 항체의 방어는 <b>C3 결손에서 사라지고</b> 백시니아 anti-B5는 C3 소모 시 절반 이상을 잃는데, 면역혈청 실험에서 <b>C1q 결손은 야생형과 같았다</b> <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a><span class="sp">mouse</span></p>
+          </div>
+        </div>
+        <p>사람 상관 관찰도 같은 방향이다 — 에볼라 생존자의 보체 활성화 능력은 청력 소실 감소와, 뎅기 소아의 보체 활성화는 보호와, 모체의 거대세포바이러스 특이 세포독성 능력은 낮은 수직 전파와 연관된다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a>. 왜 이렇게 되는지에 대해 제시된 이유는 <b>Fc 기능에 필요한 결합 화학량이 중화에 필요한 것보다 낮다</b>는 것이다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a>.</p>
+        <h2 id="flag">누가 주로 죽이나, 그리고 당사슬은 보호적인가<small>Contested</small></h2>
+        <div class="flag">
+          <h4>항체 의존 세포독성의 주 효과기와 afucosylation의 방향</h4>
+          <p><span class="side">근거 A</span>mouse에서는 FcγRIV⁺ 대식세포가 전담한다 — mouse NK는 FcγRIV를 발현하지 않고, 대식세포를 없애면 세포독성이 완전히 사라진다. afucosylated 단클론항체는 치사 에볼라 모델에서 더 나은 방어를 보였다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a> <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a><span class="sp">mouse</span></p>
+          <p><span class="side">근거 B</span>사람 FcγRIIIa는 대식세포와 NK 모두에 발현하고 두 세포의 기여는 저자들도 "논쟁 중"으로 적었다. 게다가 afucosylated anti-SARS-CoV-2 IgG1 수준은 <b>입원 환자의 중증도와 상관</b>한다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a> <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></p>
+          <p><span class="side">판단</span>종과 병원체 맥락 의존으로 본다. mouse FcγR 계열을 사람 <i>FCGR</i>에 1:1로 옮기지 않고, glycoform을 예후·반응 지표로 쓸 때는 <b>질환별로 방향을 따로 추정한다</b> <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a> <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></p>
+          <p><span class="side">주의</span>근거 대부분이 <b>FcγR humanized mouse</b>에서 나왔다는 점을 저자가 명시했다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a><span class="sp">mouse</span></p>
+        </div>
+        <h2 id="therapy">치료항체는 Fc를 서로 다르게 쓴다<small>How therapeutic antibodies use Fc</small></h2>
+        <p class="lede">같은 표적을 잡아도 <b>무엇을 요구하는지</b>가 반대인 두 부류가 있다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></p>
+        <div class="grid2">
+          <div><h4>세포를 없애려는 항체</h4><ul>
+            <li>활성 Fc 수용체에 의존한다 — CD20 · HER2 · EGFR을 표적하는 세포독성 항체가 그 예다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></li>
+            <li>anti-CTLA-4의 효과는 종양 안 FcγRIV⁺ 대식세포에 의존하는 조절 T세포 제거로 설명된다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a><span class="sp">mouse</span></li>
+            <li>Fc engineering의 정량도 보고돼 있다 — 특정 변이 조합이 FcγRIIA·IIIA 결합을 각각 25배·30배 올린다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></li>
+            <li>galactose가 적으면 육합체 형성으로 보체 활성화가 오르고, fucose가 빠지면 FcγRIIIA만 선택적으로 오른다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></li>
+          </ul></div>
+          <div><h4>신호를 켜려는 항체</h4><ul>
+            <li><b>억제 수용체를 신호 없는 가교 발판으로 요구한다</b> — CD40과 DR5를 표적하는 agonist 항체가 그렇다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></li>
+            <li>억제 수용체 결합이 약한 subclass로 만든 후보는 임상 성적이 저조했고, 억제 수용체 지향으로 재설계해 10배 이상 개선되었다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></li>
+            <li>즉 "Fc를 없애면 안전하다"는 규칙이 일률적으로 성립하지 않는다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></li>
+            <li>약물은 표적 수준까지만 적었다 — 상표명과 적응증별 성적은 이 페이지의 범위가 아니다.</li>
+          </ul></div>
+        </div>
+        <p>사람 <i>FCGR</i> 유전학도 방향이 갈린다 — 전신루푸스에서는 저결합 대립형이 농축되고 <i>FCGR3B</i> 복제수가 줄며, 고결합 대립형 보유자에서는 여러 세포독성 치료항체의 반응률이 오른다. 반대로 <i>FCGR2A</i>의 한 변이는 패혈증 감수성을 올리지만 뎅기에서는 무증상 감염과 연관된다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a>. 항체가 오히려 감염을 돕는 경우도 정리돼 있다 — 뎅기 2차 감염과 모체항체 보유 영아, 그리고 1968년 불활화 백신 접종아의 중증 입원 <b>30배 이상</b> 증가가 그 예다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a>. HIV의 한 단백질은 탐식컵 형성을 차단해 탐식을 회피한다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a>.</p>
+        <h2 id="limit">근거와 한계<small>What we do not know</small></h2>
+        <ul class="rules">
+          <li>사람에서 대식세포와 NK의 상대 기여가 미결이고, 저자들이 직접 "논쟁 중"으로 적었다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></li>
+          <li>당사슬을 예후·반응 지표로 쓰기에는 방향이 질환마다 뒤집힌다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a> <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></li>
+          <li>보체 의존성이 병원체마다 달라 한 병원체의 결과를 다른 병원체로 옮길 수 없다 <a class="src" href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener">Mackin 2024</a></li>
+          <li><b><a class="src" href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener">Bournazos 2017</a></b>의 근거 대부분이 FcγR humanized mouse 기반이다 <span class="sp">mouse</span></li>
+          <li>Janeway 2001은 교과서 판본이라 개별 수치는 그 판의 서술 수준에 묶여 있다 — 이 페이지의 세포독성·isotype 서술도 같은 한계를 물려받는다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27101/" target="_blank" rel="noopener">Janeway 2001 · 8-2</a> <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27162/" target="_blank" rel="noopener">Janeway 2001 · 9-2</a></li>
+        </ul>
+
+        <a class="more" href="./barrier.html">이 실행이 어디에서 일어나는지로 →</a>
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">antibody effector function · 항체 작동 기능 · Fc · Fc receptor · Fc 수용체 · FcγR · FcgammaR · FCGR · FcγRI · FcγRIIA · FcγRIIB · FcγRIIIA · FcεRI · FcRn · DC-SIGN · CD23 · A/I ratio · Asn297 · glycan · 당사슬 · afucosylation · sialylation · galactosylation · ADCC · ADCP · ADCD · 옵소닌화 · opsonization · neutralization · 중화 · complement · C1q · TRIM21 · IVIG · antibody-dependent enhancement · ADE · isotype · IgG · IgM · IgA · IgE · poly-Ig receptor · transcytosis · cytotoxic T lymphocyte · CTL · perforin · granzyme · Fas · FasL · immunological synapse · TH1 · macrophage activation · Fc engineering</p></details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./germinal-center.html">배중심은 어떻게 더 좋은 항체를 고르나? →</a>
+          <a href="./memory.html">기억은 어디에 어떤 형태로 남나? →</a>
+          <a href="./barrier.html">장벽 조직은 어떻게 면역을 조직하나? →</a>
+          <a href="../02-innate/complement.html">보체는 어떻게 작동하나? →</a>
+          <a href="../02-innate/effector.html">선천 effector는 어떻게 방어하고 손상하나? →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27149/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 8장 작동 T세포의 일반 성질 ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27101/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 8장 T세포 매개 세포독성 ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27153/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 8장 TH1의 대식세포 활성화 ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27162/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 9장 isotype의 분포와 기능 ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27171/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 9장 Fc 수용체를 통한 제거 ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1146/annurev-immunol-051116-052433" target="_blank" rel="noopener noreferrer">Bournazos 2017, Annu Rev Immunol ↗</a>
+          <a href="https://doi.org/10.1111/imr.13383" target="_blank" rel="noopener noreferrer">Mackin 2024, Immunol Rev ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../01-basics/basics.js"></script>
+  <script src="./execution.js"></script>
+  <script src="./data.js"></script>
+  <script src="../glossary.js"></script>
+</body>
+</html>

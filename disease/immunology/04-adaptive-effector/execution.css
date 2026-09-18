@@ -1,0 +1,174 @@
+/* Immunology 04-adaptive-effector — 그림 전용 규칙과 04 본문 블록
+   공통 틀은 ../immunology.css, 공통 문서 스타일은 ../01-basics/basics.css
+   그림 규칙은 전부 .xfig 안으로 한정한다 — 공용 CSS의 짧은 클래스명과 겹치지 않게.
+   그림 그룹 훅 클래스는 전부 g- 접두사. */
+:root{
+  --c-sig:#3f6f8f; --c-gold:#936f21; --c-off:#b24f4f;
+  --c-ab:#7b5aa6; --c-res:#2f7f73; --c-plain:#7d857c;
+}
+
+/* ── 공통 ── */
+svg.xfig{display:block;width:100%;height:auto}
+svg.tact,svg.tex,svg.mem2{min-width:1080px}
+svg.gc,svg.fcx,svg.tis{min-width:1100px}
+svg.bar{min-width:1140px}
+/* 04의 그림은 01보다 넓다 — 화면이 넓으면 본문 칸을 늘려 가로 스크롤을 줄인다 */
+@media (min-width:1460px){ .vpage .container{width:min(1440px,calc(100% - 40px))} }
+@media (min-width:1700px){ .vpage .container{width:min(1580px,calc(100% - 40px))} }
+.xfig text{font-family:"Pretendard","Noto Sans KR",-apple-system,"Segoe UI",sans-serif}
+
+/* ── 구역 · 막 · 축 ── */
+.xfig .zone.out{fill:#faf8f2;stroke:#e4ddcc;stroke-width:1.4}
+.xfig .mem rect{fill:#efe7d8;stroke:#d9cdb6;stroke-width:1}
+.xfig .mem line{stroke:#d1c2a6;stroke-width:1.2}
+.xfig .zlab{font-size:11px;font-weight:800;letter-spacing:.08em;fill:#8a918a}
+.xfig .axline{stroke:#c3cac1;stroke-width:1.6}
+.xfig .lbar{fill:var(--c-gold);opacity:.78}
+
+/* ── 글자 ── */
+.xfig .lab{font-size:12px;font-weight:700;fill:#2d352f;paint-order:stroke;stroke:#fff;stroke-width:3.2px;stroke-linejoin:round}
+.xfig .lab.big{font-size:13.5px;font-weight:800}
+.xfig .lab.small{font-size:10.5px;font-weight:600;fill:#5d665e}
+.xfig .lab.tiny{font-size:9.5px;font-weight:600;fill:#5d665e}
+.xfig .olab{font-size:11px;font-weight:750;fill:#6d756c;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.xfig .olab.big{font-size:13px;font-weight:800;fill:#3d4640}
+.xfig .olab.small{font-size:9.8px;font-weight:600;fill:#8a918a}
+.xfig .lanet{font:800 14px Georgia,"Noto Serif KR",serif;fill:#3d4640}
+.xfig .lanek{font-size:9.5px;font-weight:750;letter-spacing:.14em;fill:#9aa19a}
+
+/* ── 좌위 조각 · cohesin ── */
+.xfig .sg rect{stroke:#fff;stroke-width:1.2}
+.xfig .sg.cseg rect{fill:#f2ede4;stroke:#cfc7b8}
+.xfig .sg.rcseg rect{fill:#efe7f4;stroke:#b3a3c9}
+.xfig .sg.stg rect{fill:#fff;stroke:#c3cac1;stroke-width:1.6}
+.xfig .coh circle{fill:none;stroke:var(--c-sig);stroke-width:3.4}
+.xfig .coh .in{stroke:#fff;stroke-width:2.4}
+
+/* ── 노드 · pill · 상자 ── */
+.xfig .nd rect{stroke:#fff;stroke-width:1.2}
+.xfig .nd text{font-size:11.5px;font-weight:700;fill:#fff}
+.xfig .nd.sig rect{fill:var(--c-sig)} .xfig .nd.gold rect{fill:var(--c-gold)}
+.xfig .nd.off rect{fill:var(--c-off)} .xfig .nd.ab rect{fill:var(--c-ab)}
+.xfig .nd.res rect{fill:var(--c-res)} .xfig .nd.plain rect{fill:var(--c-plain)}
+
+.xfig .pl rect{fill:#fff;stroke:#cdd3c9;stroke-width:1}
+.xfig .pl text{font-size:10.5px;font-weight:650;fill:#3d4640}
+.xfig .pl.small text{font-size:9.6px;font-weight:600}
+.xfig .pl.keep rect{fill:#edf5f2;stroke:#9ec5ba} .xfig .pl.keep text{fill:#2c5b52}
+.xfig .pl.warn rect{fill:#fbefee;stroke:#ddb3b0} .xfig .pl.warn text{fill:#8d4340}
+
+.xfig .bx rect{fill:#fff;stroke:#cdd3c9;stroke-width:1.4}
+.xfig .bx.trig rect{fill:#f3f1ea;stroke:#ccc7b6}
+.xfig .bx.keep rect{fill:#f3f9f7;stroke:#9ec5ba}
+.xfig .bx.res rect{fill:#eff7f4;stroke:#82b6a9;stroke-width:1.8}
+.xfig .bx.ab rect{fill:#f7f3fb;stroke:#c1b0d6;stroke-width:1.8}
+.xfig .bx.re rect{fill:#f7f3fb;stroke:#c1b0d6}
+.xfig .bx.off rect{fill:#fbf1f0;stroke:#d79c98;stroke-width:1.8}
+.xfig .bx.gold2 rect{fill:#faf4e6;stroke:#cdb279;stroke-width:1.8}
+.xfig .bx.regbox rect{fill:#f3f9f7;stroke:#9ec5ba;stroke-dasharray:5 4}
+.xfig .bx.altbox rect{fill:#fbf3f2;stroke:#ddb3b0;stroke-dasharray:5 4}
+.xfig .bx.lanebox rect{fill:#fdfdfa;stroke:#d5dbd2}
+.xfig .bx.bm rect{fill:#faf6ec;stroke:#d8c9a4;stroke-width:1.8}
+
+/* ── 화살표 ── */
+.xfig .fl{fill:none;stroke-width:2.1}
+.xfig .fl.sig{stroke:var(--c-sig)} .xfig .fl.gold{stroke:var(--c-gold)}
+.xfig .fl.off{stroke:var(--c-off)} .xfig .fl.ab{stroke:var(--c-ab)}
+.xfig .fl.res{stroke:var(--c-res)} .xfig .fl.plain{stroke:var(--c-plain)}
+.xfig .fl.dash{stroke-dasharray:6 4}
+.xfig .fl.back{stroke-width:2.2;stroke-dasharray:7 4}
+
+/* ── 모드 오버레이 ── */
+.xfig .ov{opacity:0;transition:opacity .3s;pointer-events:none}
+.xfig .dis rect{fill:#b24f4f;stroke:#fff;stroke-width:1.5}
+.xfig .dis text{font-size:10px;font-weight:750;fill:#fff}
+.xfig .num circle{fill:#3d4640;stroke:#fff;stroke-width:2}
+.xfig .num text{font-size:11px;font-weight:800;fill:#fff}
+.xfig .ring{fill:none;stroke:var(--c-ab);stroke-width:2.2;stroke-dasharray:5 3}
+.xfig .ov-prox.num circle,.xfig .ov-traj.num circle,.xfig .ov-life.num circle{fill:var(--c-sig)}
+.xfig .ov-disc.num circle,.xfig .ov-ir.num circle,.xfig .ov-fcr.num circle{fill:var(--c-off)}
+.xfig .ov-fate.num circle,.xfig .ov-csr.num circle,.xfig .ov-gut.num circle{fill:var(--c-gold)}
+.xfig .ov-epi.num circle,.xfig .ov-bmem.num circle,.xfig .ov-fc.num circle{fill:var(--c-ab)}
+.xfig .ov-sel.num circle,.xfig .ov-trm.num circle,.xfig .ov-skin.num circle{fill:var(--c-res)}
+.xfig .ov-exit.num circle,.xfig .ov-lung.num circle,.xfig .ov-mac.num circle{fill:var(--c-sig)}
+.xfig .ov-ilc.num circle{fill:var(--c-res)}
+.xfig .ov-str.num circle,.xfig .ov-cell.num circle{fill:var(--c-off)}
+
+.xfig[data-mode="prox"] .ov-prox,.xfig[data-mode="disc"] .ov-disc,.xfig[data-mode="fate"] .ov-fate,
+.xfig[data-mode="traj"] .ov-traj,.xfig[data-mode="ir"] .ov-ir,.xfig[data-mode="epi"] .ov-epi,
+.xfig[data-mode="sel"] .ov-sel,.xfig[data-mode="csr"] .ov-csr,.xfig[data-mode="exit"] .ov-exit,
+.xfig[data-mode="life"] .ov-life,.xfig[data-mode="trm"] .ov-trm,.xfig[data-mode="bmem"] .ov-bmem,
+.xfig[data-mode="fc"] .ov-fc,.xfig[data-mode="fcr"] .ov-fcr,.xfig[data-mode="cell"] .ov-cell,
+.xfig[data-mode="skin"] .ov-skin,.xfig[data-mode="lung"] .ov-lung,.xfig[data-mode="gut"] .ov-gut,
+.xfig[data-mode="mac"] .ov-mac,.xfig[data-mode="ilc"] .ov-ilc,.xfig[data-mode="str"] .ov-str,
+.xfig[data-mode="disc"] .ov-dis,.xfig[data-mode="ir"] .ov-dis,.xfig[data-mode="csr"] .ov-dis,
+.xfig[data-mode="str"] .ov-dis,.xfig[data-mode="fate"] .ov-dis{opacity:1}
+
+.xfig .fg{transition:opacity .25s}
+.xfig[data-mode="prox"] .fg:not([data-in~="prox"]),
+.xfig[data-mode="disc"] .fg:not([data-in~="disc"]),
+.xfig[data-mode="fate"] .fg:not([data-in~="fate"]),
+.xfig[data-mode="traj"] .fg:not([data-in~="traj"]),
+.xfig[data-mode="ir"] .fg:not([data-in~="ir"]),
+.xfig[data-mode="epi"] .fg:not([data-in~="epi"]),
+.xfig[data-mode="sel"] .fg:not([data-in~="sel"]),
+.xfig[data-mode="csr"] .fg:not([data-in~="csr"]),
+.xfig[data-mode="exit"] .fg:not([data-in~="exit"]),
+.xfig[data-mode="life"] .fg:not([data-in~="life"]),
+.xfig[data-mode="trm"] .fg:not([data-in~="trm"]),
+.xfig[data-mode="bmem"] .fg:not([data-in~="bmem"]),
+.xfig[data-mode="fc"] .fg:not([data-in~="fc"]),
+.xfig[data-mode="fcr"] .fg:not([data-in~="fcr"]),
+.xfig[data-mode="cell"] .fg:not([data-in~="cell"]),
+.xfig[data-mode="skin"] .fg:not([data-in~="skin"]),
+.xfig[data-mode="lung"] .fg:not([data-in~="lung"]),
+.xfig[data-mode="gut"] .fg:not([data-in~="gut"]),
+.xfig[data-mode="mac"] .fg:not([data-in~="mac"]),
+.xfig[data-mode="ilc"] .fg:not([data-in~="ilc"]),
+.xfig[data-mode="str"] .fg:not([data-in~="str"]){opacity:.22}
+.xfig.hot .fg:not(.on){opacity:.2}
+.xfig .fg.on{opacity:1 !important}
+.xfig .fg.on .bx rect{stroke:#2d352f;stroke-width:2}
+
+/* ── 본문 쪽 보조 ── */
+.steps[data-mode="prox"],.steps[data-mode="traj"],.steps[data-mode="life"],
+.steps[data-mode="lung"],.steps[data-mode="mac"]{--sc:var(--c-sig)}
+.steps[data-mode="disc"],.steps[data-mode="ir"],.steps[data-mode="cell"],
+.steps[data-mode="str"]{--sc:var(--c-off)}
+.steps[data-mode="fate"],.steps[data-mode="csr"],.steps[data-mode="gut"]{--sc:var(--c-gold)}
+.steps[data-mode="epi"],.steps[data-mode="bmem"],.steps[data-mode="fc"]{--sc:var(--c-ab)}
+.steps[data-mode="sel"],.steps[data-mode="trm"],.steps[data-mode="skin"],
+.steps[data-mode="ilc"]{--sc:var(--c-res)}
+.steps[data-mode="exit"],.steps[data-mode="fcr"]{--sc:var(--c-sig)}
+
+.vtable tr.on{background:var(--green-soft)}
+.vtable tr[data-fig]{cursor:default}
+.flag{border-left:3px solid #b24f4f;background:#fdf6f5;padding:12px 16px;margin:16px 0 0;border-radius:0 8px 8px 0}
+.flag h4{margin:0 0 5px;font:700 .86rem "Pretendard","Noto Sans KR",sans-serif;color:#8d4340}
+.flag p{margin:0;font-size:.83rem}
+.flag p+p{margin-top:6px}
+.flag .side{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;color:#8d4340;border:1px solid #ddb3b0;border-radius:999px;padding:0 7px;margin-right:6px;vertical-align:1px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid2>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.grid2 h4{margin:0 0 6px;font:700 .96rem Georgia,"Noto Serif KR",serif}
+.grid2 ul{margin:0;padding-left:18px;font-size:.84rem}
+.grid2 li{margin:4px 0}
+@media (max-width:980px){.grid2{grid-template-columns:1fr}}
+.bridge{margin:16px 0 0;padding:12px 16px;border:1px dashed var(--line);border-radius:10px;background:#fbfcf9;font-size:.85rem}
+.bridge b{color:var(--green)}
+
+/* 그림 그룹 식별용 클래스 — 자바스크립트·선택자 훅, 별도 스타일 없음 */
+.xfig .fg.g-memb,.xfig .fg.g-apc,.xfig .fg.g-prox,.xfig .fg.g-lat,.xfig .fg.g-plc,.xfig .fg.g-thr,
+.xfig .fg.g-disc,.xfig .fg.g-auto,.xfig .fg.g-cd4,.xfig .fg.g-cd8,.xfig .fg.g-met,
+.xfig .fg.g-split,.xfig .fg.g-traj,.xfig .fg.g-tdln,.xfig .fg.g-cyt,.xfig .fg.g-ir,
+.xfig .fg.g-epi,.xfig .fg.g-out,
+.xfig .fg.g-dz,.xfig .fg.g-lz,.xfig .fg.g-myc,.xfig .fg.g-exit,.xfig .fg.g-hold,
+.xfig .fg.g-dl,.xfig .fg.g-bl,.xfig .fg.g-obs,.xfig .fg.g-locus,.xfig .fg.g-coh,
+.xfig .fg.g-lic,.xfig .fg.g-aid,.xfig .fg.g-hum,
+.xfig .fg.g-life,.xfig .fg.g-long,.xfig .fg.g-pc,.xfig .fg.g-egr,.xfig .fg.g-exec,
+.xfig .fg.g-dep,.xfig .fg.g-hum2,.xfig .fg.g-bmem,.xfig .fg.g-mol,.xfig .fg.g-fb,
+.xfig .fg.g-fab,.xfig .fg.g-fcpart,.xfig .fg.g-gly,.xfig .fg.g-ai,.xfig .fg.g-fcr,
+.xfig .fg.g-aff,.xfig .fg.g-beyond,.xfig .fg.g-ctl,.xfig .fg.g-th1,
+.xfig .fg.g-col-skin,.xfig .fg.g-col-lung,.xfig .fg.g-col-gut,
+.xfig .fg.g-line,.xfig .fg.g-micro,.xfig .fg.g-gutm,.xfig .fg.g-three,.xfig .fg.g-niche,
+.xfig .fg.g-ilc,.xfig .fg.g-pos,.xfig .fg.g-fbk,.xfig .fg.g-tls,.xfig .fg.g-brm,.xfig .fg.g-str{cursor:default}

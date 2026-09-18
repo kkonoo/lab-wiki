@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="V(D)J 재조합의 문법 — RSS(heptamer·spacer·nonamer)와 12/23 규칙, RAG1-RAG2의 단계적 포획과 classical NHEJ 강제, cohesin loop extrusion이 정하는 조각 사용 빈도, 접합부 다양성과 항체에 끼어드는 다른 유전자 조각">
+  <title>림프구 수용체의 다양성은 어떻게 만들어지나? · Immunology</title>
+  <link rel="stylesheet" href="../immunology.css">
+  <link rel="stylesheet" href="../01-basics/basics.css">
+  <link rel="stylesheet" href="./adaptive.css">
+</head>
+<body class="vpage">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Immunology</span></a></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="./index.html">목록</a><span>›</span><a href="./index.html">적응면역 I</a><span>›</span>수용체 다양성</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">적응면역 I — 인식과 발달</p>
+        <h1>림프구 수용체의 다양성은 어떻게 만들어지나?</h1>
+        <p class="definition">V(D)J 재조합(V(D)J recombination) = 발달 중인 림프구가 germline에 흩어져 있는 V·D·J 조각을 잘라 붙여 B세포 수용체(BCR, B cell receptor)와 T세포 수용체(TCR, T cell receptor)의 가변영역 exon을 만드는 부위특이 재조합. RAG1-RAG2가 조각 옆의 <b>recombination signal sequence(RSS)</b> 쌍을 붙잡아 이중나선을 끊고, 그 끝을 classical non-homologous end joining(NHEJ)으로 넘긴다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></p>
+
+        <!-- ───────── 1. 문제 ───────── -->
+        <h2 id="problem">병원체를 보기 전에 레퍼토리를 다 만들어 둔다<small>Building before seeing</small></h2>
+        <p class="lede">선천면역은 germline에 든 센서를 그대로 쓴다 → <a href="../02-innate/sensing.html">선천면역은 무엇을 감지하나</a>. 적응면역은 반대다 — 무엇이 올지 모르는 채로 <b>거의 무작위인</b> 수용체를 먼저 만들어 놓는다. 그러면 무작위성은 무엇으로 통제되나?</p>
+        <ol class="route">
+          <li style="--c:var(--st)"><span class="lv">조각</span><h4>segments</h4><p>germline에 V·D·J 조각과 그 옆의 <b>RSS</b>가 놓여 있다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></p></li>
+          <li style="--c:var(--ada)"><span class="lv">조립</span><h4>assembly</h4><p>RAG가 RSS 쌍을 붙잡아 자르고, 어떤 조각이 쓰일지는 <b>3D 유전체 구조</b>가 정한다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a></p></li>
+          <li style="--c:var(--il)"><span class="lv">확장</span><h4>junction</h4><p>접합부에서 다양성이 한 번 더 붙고, 때로는 <b>다른 유전자의 조각</b>까지 끼어든다 <a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a></p></li>
+        </ol>
+        <div class="callout blue">
+          <h4>이 페이지가 답하려는 것</h4>
+          <p>이 페이지는 <b>어떻게 만드나</b>만 다룬다. 무작위로 만든 것 중 무엇이 쓸 만하고 무엇이 위험한지를 검사하는 단계는 다른 문서에 있다.</p>
+          <p>만든 것을 T세포에게 보여주는 쪽 → <a href="./presentation.html">항원은 어떻게 제시되나</a> · 흉선에서의 검사 → <a href="./thymus.html">T세포는 어떻게 골라지나</a> · 골수에서의 검사 → <a href="./b-cell.html">B세포는 어떻게 만들어지고 검사되나</a></p>
+        </div>
+
+        <!-- ───────── 2. 지도 ───────── -->
+        <h2 id="map">한 장 지도 — 문법 · 기계 · 접합부<small>One map</small></h2>
+        <figure class="fig" id="vdjFig">
+          <div class="fig-tools">
+            <div class="seg" role="group" aria-label="보기 선택">
+              <button type="button" data-vdmode="none" aria-pressed="true">전체</button>
+              <button type="button" data-vdmode="rss" aria-pressed="false">RSS와 절단·수선</button>
+              <button type="button" data-vdmode="scan" aria-pressed="false">3D 유전체가 정하는 사용 빈도</button>
+              <button type="button" data-vdmode="ins" aria-pressed="false">접합부와 삽입</button>
+            </div>
+            <div class="legend static">
+              <span><i style="--c:#94553b"></i>조립 · 절단</span>
+              <span><i style="--c:#3f6f8f"></i>염색질 훑기</span>
+              <span><i style="--c:#7b5aa6"></i>접합부 · 삽입</span>
+              <span><i style="--c:#2f7f73"></i>여는 장치</span>
+            </div>
+          </div>
+          <div class="fig-scroll">
+            <!--GEN:VDJ-->
+<svg class="vdj" data-mode="none" viewBox="0 0 1240 800" role="img" aria-labelledby="vdT vdD" xmlns="http://www.w3.org/2000/svg">
+<title id="vdT">항원수용체 유전자의 조립 — 좌위 위의 조각과 RSS, RAG의 절단과 수선, 접합부 다양성과 삽입</title>
+<desc id="vdD">위 띠는 면역글로불린 중쇄 좌위다. V·D·J 조각 옆에 12-RSS와 23-RSS가 붙어 있고, CTCF site 사이를 cohesin이 끌어당겨 recombination centre의 RAG 앞으로 조각을 차례로 들이민다. 가운데 띠는 RSS 문법(heptamer·spacer·nonamer와 12/23 규칙), RAG의 단계적 절단, 그리고 classical NHEJ로만 보내는 수선이다. 아래 띠는 접합부에 더해지는 p·n 뉴클레오타이드와, 접합부에 다른 유전자 조각이 끼어드는 두 수용 지점이다.</desc>
+<defs><marker id="vdA-asm" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#94553b"/></marker><marker id="vdA-scan" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#3f6f8f"/></marker><marker id="vdA-ins" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7b5aa6"/></marker><marker id="vdA-plain" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7d857c"/></marker><marker id="vdA-keep" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#2f7f73"/></marker><marker id="vdA-del" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b24f4f"/></marker></defs>
+<text class="lanet" x="30" y="26" text-anchor="start">① germline 좌위 — 조각과 RSS, 그리고 그것을 훑는 기구</text>
+<text class="lanek" x="30" y="42" text-anchor="start">THE LOCUS</text>
+<g class="fg g-loc" data-fg="locus" data-in="rss scan">
+<line class="axline" x1="40" y1="183" x2="1200" y2="183"/>
+<g class="sg vseg"><rect x="60" y="168" width="250" height="30" rx="4"/><text class="lab" x="185" y="187" text-anchor="middle">VH  distal</text><text class="lab tiny" x="185" y="214" text-anchor="middle">PAX5–Wapl 축이 열어 주어야 닿는다</text></g>
+<g class="sg vseg"><rect x="320" y="168" width="150" height="30" rx="4"/><text class="lab" x="395" y="187" text-anchor="middle">VH  proximal</text><text class="lab tiny" x="395" y="214" text-anchor="middle">하류 CTCF site가 있어야 쓰인다</text></g>
+<g class="sg dseg"><rect x="570" y="168" width="95" height="30" rx="4"/><text class="lab" x="617.5" y="187" text-anchor="middle">D</text><text class="lab tiny" x="617.5" y="214" text-anchor="middle">27개</text></g>
+<g class="sg jseg"><rect x="690" y="168" width="78" height="30" rx="4"/><text class="lab" x="729" y="187" text-anchor="middle">JH</text><text class="lab tiny" x="729" y="214" text-anchor="middle">9개</text></g>
+<g class="sg rcseg"><rect x="786" y="168" width="72" height="30" rx="4"/><text class="lab" x="822" y="187" text-anchor="middle">iEμ · DQ52</text><text class="lab tiny" x="822" y="214" text-anchor="middle">recombination centre</text></g>
+<g class="sg cseg"><rect x="878" y="168" width="80" height="30" rx="4"/><text class="lab" x="918" y="187" text-anchor="middle">Sμ · Cμ</text><text class="lab tiny" x="918" y="214" text-anchor="middle">전환영역과 불변부</text></g>
+</g>
+<g class="fg g-rssg" data-fg="rss" data-in="rss scan">
+<g class="rss r23"><path d="M293,168 L307,168 L300,157 Z"/><text class="rsst" x="300" y="153" text-anchor="middle">23</text></g>
+<g class="rss r23"><path d="M455,168 L469,168 L462,157 Z"/><text class="rsst" x="462" y="153" text-anchor="middle">23</text></g>
+<g class="rss r12"><path d="M571,168 L585,168 L578,157 Z"/><text class="rsst" x="578" y="153" text-anchor="middle">12</text></g>
+<g class="rss r12"><path d="M651,168 L665,168 L658,157 Z"/><text class="rsst" x="658" y="153" text-anchor="middle">12</text></g>
+<g class="rss r23"><path d="M693,168 L707,168 L700,157 Z"/><text class="rsst" x="700" y="153" text-anchor="middle">23</text></g>
+</g>
+<text class="olab" x="900" y="112" text-anchor="middle">12-RSS는 23-RSS와만 짝을 짓는다 — 12/23 규칙</text>
+<g class="fg g-ctcf" data-fg="ctcf" data-in="scan">
+<g class="ctcf"><rect x="492" y="166" width="16" height="26" rx="3"/><text class="lab tiny" x="500" y="208" text-anchor="middle">IGCR1</text></g>
+<g class="ctcf"><rect x="1022" y="166" width="16" height="26" rx="3"/><text class="lab tiny" x="1030" y="208" text-anchor="middle">3′ Igh 조절부</text></g>
+<g class="coh"><circle cx="770" cy="262" r="17"/><circle class="in" cx="770" cy="262" r="10"/></g>
+<path class="fl scan dash" d="M752,262 H360" marker-end="url(#vdA-scan)"/>
+<text class="olab small" x="556" y="286" text-anchor="middle">cohesin이 염색질을 끌어당겨 조각을 차례로 들이민다 — 수렴 방향 RSS만 쓰인다</text>
+</g>
+<g class="fg g-pax" data-fg="pax" data-in="scan">
+<g class="bx keep"><rect x="56" y="60" width="262" height="60" rx="12"/><text class="lab" x="187" y="89" text-anchor="middle">PAX5 → PRC2 → Wapl 약 4배 ↓</text><text class="lab small" x="187" y="105" text-anchor="middle">CTCF 장벽이 낮아져야 distal VH까지 훑는다</text></g>
+<path class="fl keep dash" d="M186,122 L186,150" marker-end="url(#vdA-keep)"/>
+</g>
+<g class="fg g-vhp" data-fg="vh-p" data-in="scan">
+<g class="bx lanebox"><rect x="352" y="60" width="226" height="60" rx="12"/><text class="lab" x="465" y="89" text-anchor="middle">하류 CTCF site가 곧 사용 빈도</text><text class="lab small" x="465" y="105" text-anchor="middle">site가 없는 VH는 거의 안 쓰인다</text></g>
+<path class="fl scan dash" d="M465,122 L420,150" marker-end="url(#vdA-scan)"/>
+</g>
+<g class="ov ov-scan num"><circle cx="770" cy="262" r="11"/><text x="770" y="265.9" text-anchor="middle">1</text></g>
+<g class="ov ov-scan num"><circle cx="500" cy="136" r="11"/><text x="500" y="139.9" text-anchor="middle">2</text></g>
+<text class="lanet" x="30" y="336" text-anchor="start">② 자르는 문법과 붙이는 규칙</text>
+<text class="lanek" x="30" y="352" text-anchor="start">RAG CHEMISTRY</text>
+<g class="fg g-rssz" data-fg="rss" data-in="rss">
+<g class="bx lanebox"><rect x="40" y="366" width="372" height="226" rx="14"/></g>
+<text class="lab big" x="226" y="392" text-anchor="middle">RSS — 조각 옆에 붙은 고정 문법</text>
+<g class="pl hep"><rect x="56" y="424" width="104" height="19" rx="9.5"/><text x="108" y="437.2" text-anchor="middle">heptamer</text></g>
+<text class="lab tiny" x="108" y="457" text-anchor="middle">CACAGTG</text>
+<g class="pl small"><rect x="180" y="424" width="96" height="19" rx="9.5"/><text x="228" y="437.2" text-anchor="middle">spacer 12 bp</text></g>
+<g class="pl non"><rect x="294" y="424" width="104" height="19" rx="9.5"/><text x="346" y="437.2" text-anchor="middle">nonamer</text></g>
+<text class="rsst big" x="58" y="438" text-anchor="middle">12</text>
+<g class="pl hep"><rect x="56" y="494" width="104" height="19" rx="9.5"/><text x="108" y="507.2" text-anchor="middle">heptamer</text></g>
+<text class="lab tiny" x="108" y="527" text-anchor="middle">CACAGTG</text>
+<g class="pl small"><rect x="180" y="494" width="96" height="19" rx="9.5"/><text x="228" y="507.2" text-anchor="middle">spacer 23 bp</text></g>
+<g class="pl non"><rect x="294" y="494" width="104" height="19" rx="9.5"/><text x="346" y="507.2" text-anchor="middle">nonamer</text></g>
+<text class="rsst big" x="58" y="508" text-anchor="middle">23</text>
+<text class="olab small" x="226" y="562" text-anchor="middle">앞의 CAC가 절단점을 정한다 · HMGB1/2가 23-RSS 쪽 결합과 굽힘을 돕는다</text>
+</g>
+<g class="fg g-ragg" data-fg="rag" data-in="rss">
+<g class="bx lanebox"><rect x="436" y="366" width="348" height="226" rx="14"/></g>
+<text class="lab big" x="610" y="392" text-anchor="middle">RAG1–RAG2의 단계적 포획</text>
+<g class="pl asm small"><rect x="460" y="408" width="300" height="19" rx="9.5"/><text x="610" y="421.2" text-anchor="middle">단일 RSS 복합체 (SC)</text></g>
+<path class="fl asm" d="M610,427 L610,440" marker-end="url(#vdA-asm)"/>
+<g class="pl asm small"><rect x="460" y="442" width="300" height="19" rx="9.5"/><text x="610" y="455.2" text-anchor="middle">짝 RSS 포획 (PC)</text></g>
+<path class="fl asm" d="M610,461 L610,474" marker-end="url(#vdA-asm)"/>
+<g class="pl asm small"><rect x="460" y="476" width="300" height="19" rx="9.5"/><text x="610" y="489.2" text-anchor="middle">협동 절단 — nick → hairpin</text></g>
+<path class="fl asm" d="M610,495 L610,508" marker-end="url(#vdA-asm)"/>
+<g class="pl asm small"><rect x="460" y="510" width="300" height="19" rx="9.5"/><text x="610" y="523.2" text-anchor="middle">절단 신호 복합체 (CSC)</text></g>
+<path class="fl asm" d="M610,529 L610,542" marker-end="url(#vdA-asm)"/>
+<g class="pl asm small"><rect x="460" y="544" width="300" height="19" rx="9.5"/><text x="610" y="557.2" text-anchor="middle">신호 말단 복합체 (SEC)</text></g>
+</g>
+<g class="fg g-ragp" data-fg="rag" data-in="rss">
+<text class="olab small" x="610" y="616" text-anchor="middle">RAG2의 PHD가 H3K4me3를 읽고, T490 인산화가 재조합을 G1에 묶어 둔다</text>
+</g>
+<g class="fg g-rep" data-fg="nhej" data-in="rss">
+<g class="bx lanebox"><rect x="808" y="366" width="392" height="226" rx="14"/></g>
+<text class="lab big" x="1004" y="392" text-anchor="middle">끝을 붙들고 한 길로만 보낸다</text>
+<g class="pl small"><rect x="818" y="416" width="164" height="19" rx="9.5"/><text x="900" y="429.2" text-anchor="middle">coding end — hairpin</text></g>
+<g class="pl small"><rect x="1022" y="416" width="164" height="19" rx="9.5"/><text x="1104" y="429.2" text-anchor="middle">signal end — 평활</text></g>
+<g class="nd asm "><rect x="839" y="454" width="330" height="30" rx="8"/><text x="1004" y="473" text-anchor="middle">classical NHEJ 전용</text></g>
+<g class="pl small"><rect x="839" y="498" width="330" height="19" rx="9.5"/><text x="1004" y="511.2" text-anchor="middle">DCLRE1C · PRKDC · LIG4 · NHEJ1 · ATM</text></g>
+<g class="pl warn small"><rect x="839" y="530" width="330" height="19" rx="9.5"/><text x="1004" y="543.2" text-anchor="middle">SEC가 흔들리면 HR · alt-NHEJ가 끼어든다</text></g>
+<text class="olab small" x="1004" y="574" text-anchor="middle">고충실도의 근거는 효소가 아니라 끝을 놓지 않는 복합체다</text>
+</g>
+<g class="ov ov-rss num"><circle cx="610" cy="402" r="11"/><text x="610" y="405.9" text-anchor="middle">3</text></g>
+<g class="ov ov-rss num"><circle cx="1004" cy="454" r="11"/><text x="1004" y="457.9" text-anchor="middle">4</text></g>
+<text class="lanet" x="30" y="652" text-anchor="start">③ 접합부에서 다양성이 한 번 더 붙는다</text>
+<text class="lanek" x="30" y="668" text-anchor="start">JUNCTION</text>
+<g class="fg g-junc" data-fg="junc" data-in="ins">
+<g class="bx lanebox"><rect x="40" y="682" width="500" height="100" rx="14"/></g>
+<g class="sg vseg"><rect x="54" y="712" width="84" height="26" rx="4"/><text class="lab" x="96" y="730" text-anchor="middle">V</text></g>
+<g class="sg dseg"><rect x="201" y="712" width="62" height="26" rx="4"/><text class="lab" x="232" y="730" text-anchor="middle">D</text></g>
+<g class="sg jseg"><rect x="325" y="712" width="62" height="26" rx="4"/><text class="lab" x="356" y="730" text-anchor="middle">J</text></g>
+<g class="pl ins small"><rect x="136" y="715" width="56" height="20" rx="10"/><text x="164" y="728.7" text-anchor="middle">p · n</text></g>
+<g class="pl ins small"><rect x="266" y="715" width="56" height="20" rx="10"/><text x="294" y="728.7" text-anchor="middle">p · n</text></g>
+<text class="olab small" x="456" y="708" text-anchor="middle">접합부 추가로</text>
+<text class="olab small" x="456" y="724" text-anchor="middle">읽기 틀이 자주 깨진다</text>
+<text class="olab small" x="456" y="740" text-anchor="middle">→ 관문이 필요해진다</text>
+</g>
+<g class="fg g-ins" data-fg="ins" data-in="ins">
+<g class="pl warn small"><rect x="560" y="652" width="640" height="19" rx="9.5"/><text x="880" y="665.2" text-anchor="middle">말라리아 노출 인구의 5% 이상에서 LAIR1 함유 항체가 특이 반응을 지배한다</text></g>
+<g class="bx re"><rect x="566" y="682" width="634" height="100" rx="14"/></g>
+<text class="lab" x="660" y="702" text-anchor="middle">수용 지점 둘</text>
+<g class="pl re small"><rect x="576" y="712" width="168" height="19" rx="9.5"/><text x="660" y="725.2" text-anchor="middle">VDJ 접합부 — 꼭대기</text></g>
+<g class="pl re small"><rect x="576" y="742" width="168" height="19" rx="9.5"/><text x="660" y="755.2" text-anchor="middle">J–CH1 접합부 — 팔꿈치</text></g>
+<text class="lab" x="992" y="702" text-anchor="middle">끼어드는 재료 네 부류</text>
+<g class="pl ins small"><rect x="771" y="712" width="218" height="19" rx="9.5"/><text x="880" y="725.2" text-anchor="middle">mtVDJ — mtDNA D-loop</text></g>
+<g class="pl ins small"><rect x="771" y="742" width="218" height="19" rx="9.5"/><text x="880" y="755.2" text-anchor="middle">nucVDJ — 대형 유전자 · LINE-1</text></g>
+<g class="pl ins small"><rect x="1013" y="712" width="182" height="19" rx="9.5"/><text x="1104" y="725.2" text-anchor="middle">telJC — subtelomere · R-loop</text></g>
+<g class="pl ins small"><rect x="1013" y="742" width="182" height="19" rx="9.5"/><text x="1104" y="755.2" text-anchor="middle">nucJC — 초기 복제 취약부위</text></g>
+</g>
+</svg>
+<!--/GEN:VDJ-->
+          </div>
+          <ol class="steps" data-mode="rss">
+            <li>RSS는 <b>heptamer</b>(CACAGTG) + 12 또는 23 bp spacer + <b>nonamer</b>로 되어 있고, 앞의 CAC가 절단점을 정한다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+            <li>12-RSS와 23-RSS만 효율적으로 짝을 짓는다 — <b>12/23 규칙</b> <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+            <li>포획은 단계적이다 — 단일 RSS 복합체(SC) → 짝 RSS 포획(PC) → 협동 절단 → 절단 신호 복합체(CSC) → 신호 말단 복합체(SEC) <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+            <li>RAG는 자기가 만든 끝을 붙들고 <b>classical NHEJ로만</b> 보낸다 — 고충실도의 근거는 효소가 아니라 끝을 놓지 않는 복합체다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+          </ol>
+          <ol class="steps" data-mode="scan">
+            <li>cohesin이 <b>수렴 방향</b> CTCF site 사이의 염색질을 끌어당기고, recombination centre의 RAG가 그렇게 지나가는 조각을 차례로 잡는다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a></li>
+            <li>IGCR1의 CTCF site 두 개가 D–JH 구역의 경계이고, 이를 불활성화하면 인접 VH 사용이 약 50배 늘어난다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a><span class="sp">mouse</span></li>
+            <li>PAX5가 PRC2를 통해 Wapl을 약 4배 낮춰야 cohesin이 CTCF 장벽을 넘어 distal VH까지 훑는다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a><span class="sp">mouse</span></li>
+          </ol>
+          <ol class="steps" data-mode="ins">
+            <li>접합부에 p·n 뉴클레오타이드가 더해져 다양성이 커지는 대신 읽기 틀이 자주 깨진다 — 그래서 뒤에 관문이 필요해진다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+            <li>삽입이 들어오는 자리는 둘이다 — RAG가 자른 <b>VDJ 접합부</b>(단백질에서는 항체 꼭대기)와 <b>J–CH1 접합부</b>(팔꿈치) <a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a></li>
+            <li>재료는 mtDNA · 대형 유전자 · LINE-1 · subtelomere · 초기 복제 취약부위에서 오고, 공통점은 높은 GC와 높은 전사량이다 <a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a></li>
+          </ol>
+          <figcaption>그림은 면역글로불린 중쇄 좌위를 예로 그렸다. TCR 좌위도 같은 RSS 문법과 같은 RAG를 쓴다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a>. 조각 개수는 인간 IGH 기준이다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></figcaption>
+        </figure>
+
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>부품</th><th>무엇인가</th><th>무엇을 정하나</th><th>출처</th></tr></thead>
+            <tbody>
+              <tr data-fig="vdj" data-hl="locus"><th>V · D · J 조각</th><td>germline에 흩어져 있는 가변영역 조각</td><td>조합 다양성의 재료 — 인간 IGH는 129 V · 27 D · 9 J</td><td><a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></td></tr>
+              <tr data-fig="vdj" data-hl="rss"><th>RSS</th><td>heptamer + 12/23 spacer + nonamer</td><td>어디를 자를지, 무엇과 짝지을지</td><td><a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></td></tr>
+              <tr data-fig="vdj" data-hl="rag"><th>RAG1 – RAG2</th><td>재조합효소 — nick → hairpin으로 절단</td><td>절단 자체와 수선 경로의 선택</td><td><a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></td></tr>
+              <tr data-fig="vdj" data-hl="nhej"><th>classical NHEJ</th><td>DCLRE1C · PRKDC · LIG4 · NHEJ1 · ATM</td><td>끊은 끝을 정확히 다시 붙이는 일</td><td><a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></td></tr>
+              <tr data-fig="vdj" data-hl="ctcf"><th>CTCF site · cohesin</th><td>loop extrusion의 경계와 동력</td><td><b>어느 조각이 얼마나 쓰이는지</b></td><td><a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a></td></tr>
+              <tr data-fig="vdj" data-hl="pax"><th>PAX5 → Wapl</th><td>전사인자가 cohesin 해리인자를 낮춘다</td><td>멀리 있는 VH까지 닿을지</td><td><a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a></td></tr>
+              <tr data-fig="vdj" data-hl="junc"><th>접합부 p · n</th><td>절단면에 더해지는 뉴클레오타이드</td><td>다양성 ↑ · 읽기 틀 손실 ↑</td><td><a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></td></tr>
+              <tr data-fig="vdj" data-hl="ins"><th>삽입 (insert)</th><td>다른 유전자·mtDNA 조각의 끼어듦</td><td>항체에 없던 도메인이 생긴다</td><td><a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 3. RSS 문법 ───────── -->
+        <h2 id="rss">문법은 서열에 적혀 있다<small>The RSS grammar</small></h2>
+        <p class="lede">RAG가 아무 데나 자르지 않는 이유는 조각 옆에 <b>고정된 신호 서열</b>이 붙어 있기 때문이다.</p>
+        <div class="grid2">
+          <div><h4>서열과 규칙</h4>
+            <ul>
+              <li>RSS = heptamer(CACAGTG) + <b>12 또는 23 bp</b> spacer + nonamer. 앞의 CAC가 절단점을 결정한다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+              <li><b>12/23 규칙</b> — 12-RSS는 23-RSS와만 효율적으로 재조합된다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+              <li>TCRβ 좌위에는 그 위에 <b>B12/23 제한</b>이 얹혀, Vβ가 Jβ의 12-RSS가 아니라 Dβ의 12-RSS와만 재조합한다 — episomal 기질에서 50~500배, 내인성 좌위에서 100배 이상의 선호 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+              <li>그 순서를 강제하는 것은 Dβ의 23-RSS 안에 박힌 AP-1 site와 c-Fos이고, <i>Fos</i> 결손에서는 Vβ-Jβ 직접 재조합이 늘어난다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a><span class="sp">mouse</span></li>
+            </ul>
+          </div>
+          <div><h4>단백질 쪽 장치</h4>
+            <ul>
+              <li>RAG1은 nonamer 결합 도메인·heptamer 쪽 중앙부·coding flank 결합부를 갖고, 활성부위 잔기 D600 · D708 · E962가 <b>trans로</b> 기여한다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+              <li>RAG2의 core는 6엽 Kelch 구조이고, core 밖의 <b>PHD가 H3K4me3를 읽는다</b>(Kd ≈ 4 μM, H3K4me2보다 10배 이상 강함) <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+              <li>RAG2의 T490 인산화와 Skp2 의존 분해가 활성을 <b>G1에 묶어</b> 둔다 — 재조합이 복제와 겹치지 않게 하는 장치 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+              <li>HMGB1/2는 23-RSS 쪽 결합과 굽힘을 선택적으로 도와 12/23 짝짓기를 촉진한다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout">
+          <h4>왜 수선 경로까지 RAG가 정하나</h4>
+          <p>SEC를 불안정하게 만드는 변이(RAG1 K980A · R838A/K839A/R840A, RAG2-361fs)에서는 homologous recombination과 alternative NHEJ가 끼어든다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a>. 즉 정확도는 수선 효소의 성질이 아니라 <b>RAG가 끝을 놓지 않는다</b>는 데서 나온다.</p>
+        </div>
+
+        <!-- ───────── 4. 3D 유전체 ───────── -->
+        <h2 id="scan">무작위성에도 좌표가 있다<small>Loop extrusion decides usage</small></h2>
+        <p class="lede">오랫동안 "어느 조각이 쓰이나"는 chromatin <b>접근성</b>의 문제로 불렸다. loop extrusion은 그 말을 물리적 기전으로 바꾼다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a></p>
+        <div class="cases">
+          <div style="--c:var(--ada)"><span class="lv">방향</span><h4>수렴 방향만 쓰인다</h4>
+            <p>Myc-DJ cassette 실험에서 1.8 Mb loop 안의 수백 개 cryptic RSS가 <b>수렴 방향일 때만</b> 쓰였고, 무작위로 고른 12개 다른 loop 구역에서도 재현됐다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a><span class="sp">mouse</span></p>
+            <p>2.4 Mb VH 구간을 통째로 뒤집으면 그 안의 기능 VH 37개가 <b>전혀</b> 재조합되지 않고, 원래 같은 방향이던 cryptic RSS가 대신 쓰였다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a><span class="sp">mouse</span></p>
+          </div>
+          <div style="--c:var(--st)"><span class="lv">경계</span><h4>CTCF 좌표가 곧 사용 빈도</h4>
+            <p>가까운 VH는 RSS가 아니라 <b>하류 CTCF site</b>가 있어야 쓰인다 — site가 없는 VH는 거의 쓰이지 않다가, 인공적으로 만들어 주면 가장 많이 쓰이는 VH가 된다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a><span class="sp">mouse</span></p>
+            <p>IGCR1의 CTCF site 두 개를 불활성화하면 인접 VH 사용이 약 50배 늘어난다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a><span class="sp">mouse</span></p>
+          </div>
+          <div style="--c:var(--il)"><span class="lv">개방</span><h4>전사인자가 구조를 통해 일한다</h4>
+            <p>PAX5가 PRC2를 끌어와 <b>Wapl을 약 4배 낮추고</b>, 그래야 cohesin이 CTCF 장벽을 지나 distal VH까지 훑는다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a><span class="sp">mouse</span></p>
+            <p>PAX5 결합부위만 지우면 좌위 수축과 distal VH 재조합이 함께 사라진다 — "전사인자 → 유전체 구조 → 재조합"이 한 줄로 이어진 드문 사례 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a><span class="sp">mouse</span></p>
+          </div>
+        </div>
+        <div class="callout blue">
+          <h4>같은 기구가 다음 장에서 다시 나온다</h4>
+          <p>같은 loop extrusion 기구가 활성화된 성숙 B세포에서 <b>class-switch recombination centre</b>를 만들어, 전사가 켜진 전환영역만 Sμ 옆으로 끌어와 정렬시킨다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a>. 그 뒤 이야기는 <a href="../04-adaptive-effector/index.html">적응면역 II</a> 쪽이다.</p>
+        </div>
+
+        <!-- ───────── 5. 접합부와 삽입 ───────── -->
+        <h2 id="junction">접합부 — 다양성이 한 번 더 붙는 자리<small>Junction and inserts</small></h2>
+        <p class="lede">조각을 고르는 것으로 끝이 아니다. 붙이는 자리에서 뉴클레오타이드가 더해지고, 드물게는 <b>다른 유전자의 조각</b>이 통째로 끼어든다.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>부류</th><th>수용 지점</th><th>재료</th><th>시점</th></tr></thead>
+            <tbody>
+              <tr><th>mtVDJ</th><td>VDJ 접합부</td><td>미토콘드리아 DNA의 D-loop 영역 — 전체 삽입의 약 14%가 mtDNA</td><td>발달 초기</td></tr>
+              <tr><th>nucVDJ</th><td>VDJ 접합부</td><td>대형 유전자 · LINE-1</td><td>발달 초기</td></tr>
+              <tr><th>telJC</th><td>J–CH1 접합부</td><td>subtelomere · R-loop</td><td>발달 초기 · AID 비의존</td></tr>
+              <tr><th>nucJC</th><td>J–CH1 접합부</td><td>초기 복제 취약부위(early replicating fragile site)</td><td>활성화 후</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">네 부류의 구분과 재료, 그리고 공통 특징(높은 GC · 높은 전사량)은 <a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a>를 따랐다. mtDNA 조각이 핵 pseudogene보다 mtDNA 자체와 상동성이 높아 <b>새로 일어난</b> 핵내 미토콘드리아 DNA 삽입을 시사한다는 해석도 같은 문헌이다.</p>
+        <ul class="rules">
+          <li>두 수용 지점의 결과가 다르다 — VDJ 접합부 삽입은 splicing으로 뺄 수 없어 항체 <b>꼭대기</b>에 발현되고 원래 결합부를 망가뜨리는 반면, J–CH1 접합부는 인트론이라 삽입 없는 항체도 함께 만들 수 있고 단백질에서는 <b>팔꿈치</b>에 놓인다 <a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a></li>
+          <li>말라리아 노출 인구의 <b>5% 이상</b>에서 LAIR1 세포외 도메인을 품은 항체가 <i>Plasmodium</i> RIFIN 반응을 지배하고, 유럽 공여자에서는 검출되지 않았다 <a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a></li>
+          <li>RAG는 VDJ 쪽 <b>수용 절단</b>을 제공하지만, 삽입 재료 쪽에는 cryptic RSS가 없어 재료 공급자는 아니다. 활성화 B세포의 J–CH1 절단은 AID가 만들 수 있으나 naive 세포의 telJC 삽입은 AID 비의존이며 절단원이 밝혀지지 않았다 <a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a></li>
+          <li>검출 자체가 길이에 편향돼 있다 — 저자들은 약 300 nt 삽입을 고르는 suppression PCR로 우회했고, 따라서 <b>실제 빈도는 미지</b>다. 레퍼토리 시퀀싱 결과를 읽을 때의 방법 경고이기도 하다 <a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a></li>
+          <li>TCR과 경쇄에서는 삽입이 검출되지 않았다 — 저자들은 IGH가 비생산적 대립형도 계속 전사돼 검출에 유리했을 가능성을 든다 <a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a></li>
+        </ul>
+        <div class="flag">
+          <h4>삽입은 기전인가 우연인가</h4>
+          <p><span class="side">근거 A</span>전용 세포기구가 없다 — 재료를 가져오는 장치도, 그 절단을 만드는 효소도 특정되지 않았다 <a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a></p>
+          <p><span class="side">근거 B</span>그런데도 선택압(말라리아) 아래에서 인구 수준으로 반복 관찰되고, 저자들은 이를 germline exon shuffling의 <b>체세포 대응물</b>로 위치시킨다 <a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a></p>
+          <p><span class="side">판단</span>"확장 = 보호"로 읽지 않는다 — LAIR1 항체가 반응을 지배해도 말라리아 방어 이득은 확인되지 않았다 <a class="src" href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener">Lebedin &amp; de la Rosa 2024</a></p>
+        </div>
+
+        <!-- ───────── 6. 대가 ───────── -->
+        <h2 id="cost">자르는 기계를 몸에 두는 대가<small>The price of cutting</small></h2>
+        <p class="lede">RAG는 진짜 RSS만 자르지 않는다. 최소 <b>CAC</b>만 있어도 자를 수 있기 때문에, 절단 후 복합체가 느슨해지면 그 자리가 전좌의 출발점이 된다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></p>
+        <div class="grid2">
+          <div><h4>유전체 불안정으로 가는 길</h4>
+            <ul>
+              <li>core RAG2만 남기고 <i>p53</i>을 함께 없앤 mouse는 <i>Tcra</i> · <i>Igh</i> 전좌를 가진 공격적 흉선 림프종을 일으키며, 이는 ATM 결손에서 보이는 것과 닮았다 — RAG가 사실상 종양억제 기능을 겸한다는 뜻 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a><span class="sp">mouse</span></li>
+              <li>loop extrusion 쪽에서도 같은 논리가 나온다 — extrusion이 <b>정체되는 자리</b>가 곧 RAG와 AID의 표적이 되고, 3′ Igh의 CTCF site 열 개를 지우면 하류의 비-Igh 서열이 ectopic 전환영역이 된다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a><span class="sp">mouse</span></li>
+            </ul>
+          </div>
+          <div><h4>사람에서 나타나는 자리</h4>
+            <ul>
+              <li><i>RAG1</i>/<i>RAG2</i> 변이는 T-B-SCID부터 Omenn 증후군 · γδ T세포 확장 · 자가면역까지 넓은 스펙트럼으로 나타난다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+              <li>수선 쪽 결함(<i>DCLRE1C</i> · <i>LIG4</i> · <i>PRKDC</i> · <i>NHEJ1</i> · <i>ATM</i> · <i>NBN</i>)은 방사선 감수성을 동반하는 중증 복합면역결핍이 된다 <a class="src" href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener">Neehus 2025</a></li>
+              <li>RAG2 PHD의 H3K4me3 인식 채널에 있는 W453 치환이 Omenn 증후군 변이로 보고돼, 후성유전 표지를 읽는 기능이 실제로 필요함을 보여준다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+              <li>어느 유전자가 발달의 어느 단계를 막는지는 <a href="./b-cell.html">B세포 발달 문서</a>에 단계별로 정리했다.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ───────── 7. 근거와 한계 ───────── -->
+        <h2 id="limit">근거와 한계<small>What we do not know</small></h2>
+        <ul class="rules">
+          <li><b>12/23 규칙의 분자 기전</b>은 2011년 종설이 "앞으로의 과제"로 적은 그대로 남아 있다 — 왜 12/23 쌍만 효율적으로 절단되는지 설명이 없다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+          <li>기전 근거의 대부분이 mouse 좌위 · v-Abl 세포주 · episomal 기질에서 나왔다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a> <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a><span class="sp">mouse</span></li>
+          <li>절단 후 복합체의 실제 안정성을 재기 어렵다 — coding end가 시험관에서 약하게 붙어 있어 변이 효과를 직접 정량하기 힘들다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></li>
+          <li>CTCF site도 전사도 없는데 자주 쓰이는 중간 VH가 있어, 사용 빈도를 정하는 요인이 아직 다 밝혀지지 않았다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a></li>
+          <li>Igκ 좌위의 <b>장거리 역위형 재조합</b>은 선형 scanning으로 깔끔히 설명되지 않는다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a></li>
+        </ul>
+        <div class="flag">
+          <h4>RAG는 12-RSS를 먼저 잡나, 접근성 좋은 RSS를 잡나</h4>
+          <p><span class="side">근거 A</span>정제 RAG와 HMGB1으로 12-RSS를 먼저 결합시키면 23-RSS 짝에 대한 선호가 강했고, pre-B세포와 흉선세포에서 12-RSS 쪽에만 nick이 관찰됐다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></p>
+          <p><span class="side">근거 B</span>그런데 <i>Tcrb</i>에서는 Jβ의 12-RSS보다 3′Dβ1의 <b>23-RSS</b>에 nick이 더 많았고, RAG1/RAG2 결합 지도는 12-RSS 선호를 전혀 보이지 않고 활성 chromatin이 좁게 모인 recombination centre에 결합했다 <a class="src" href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener">Schatz &amp; Swanson 2011</a></p>
+          <p><span class="side">판단</span>순서를 고정 규칙으로 두지 않는다. 초기 결합은 chromatin 접근성 · RSS 서열 품질 · 조력 인자(Dβ의 c-Fos, VH의 PAX5)의 중첩으로 읽고, 절단 속도가 서열에 의존하므로 <b>nick 검출을 결합의 대리지표로 쓰지 않는다</b>.</p>
+        </div>
+        <div class="flag">
+          <h4>멀리 있는 VH는 훑어서 닿나, 퍼져서 닿나</h4>
+          <p><span class="side">근거 A</span>2.4 Mb 역위에서 방향이 바뀐 VH가 전혀 쓰이지 않고 cryptic RSS가 대신 쓰인 것, WAPL 고갈로 distal VH 재조합이 살아난 것은 <b>선형</b> 기전을 가리킨다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a><span class="sp">mouse</span></p>
+          <p><span class="side">근거 B</span>같은 종설이 인용하는 다른 모델은 3′ Igh와 VH 쪽 CTCF site가 <b>안정적인 loop</b>를 만들고 그 안에서 VH가 확산으로 접근한다고 본다 — Wapl 하향조절을 좌위 수축의 원인으로 두는 점은 두 모델이 같다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a></p>
+          <p><span class="side">판단</span>방향 의존적 cryptic RSS 사용은 확산만으로 설명되지 않으므로 선형 scanning을 기본으로 두되, 가까운 거리에서는 확산이 함께 작동하는 혼합 모델로 읽는다. Igκ의 장거리 역위형 재조합이 그 예외 구역이다.</p>
+        </div>
+        <div class="flag">
+          <h4>전환 접합의 방향성 — 무작위 뒤 세포 선택인가, 기전인가</h4>
+          <p><span class="side">근거 A</span>과거 형질전환 세포주 연구는 역위형과 결실형 접합이 비슷한 빈도로 일어나고 생산적 산물은 <b>세포 선택</b>으로 걸러진다고 보았다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a></p>
+          <p><span class="side">근거 B</span>활성화된 정상 B세포에서 수만 개 접합을 한 번에 읽으면 대다수가 결실형이고, loop extrusion이 절단 끝을 같은 cohesin 고리로 당겨 정렬한다는 기전이 제시됐다. 전환 경로에 CTCF site를 끼워 넣으면 정렬이 깨져 역위형 접합이 늘어난다 <a class="src" href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener">Zhang 2022</a><span class="sp">mouse</span></p>
+          <p><span class="side">판단</span>세포주 기반 결론을 폐기하고 기전적 방향성을 기본으로 둔다. 방향성이 깨지는 조건(CTCF 삽입 · 구조 변이)이 오히려 기전의 증거다.</p>
+        </div>
+
+        <a class="more" href="./presentation.html">만든 수용체는 무엇을 보게 되나 →</a>
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">V(D)J recombination · V(D)J 재조합 · RAG · RAG1 · RAG2 · RSS · recombination signal sequence · 12/23 규칙 · heptamer · nonamer · junctional diversity · 접합부 다양성 · loop extrusion · cohesin · CTCF · IGCR1 · PAX5 · Wapl · chromatin scanning · NHEJ · insert 항체 · somatic exon shuffling · LAIR1 · 항체 레퍼토리 · antibody repertoire</p></details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./presentation.html">항원은 어떻게 제시되나? →</a>
+          <a href="./thymus.html">T세포는 흉선에서 어떻게 골라지나? →</a>
+          <a href="./b-cell.html">B세포는 골수에서 어떻게 만들어지고 검사되나? →</a>
+          <a href="../02-innate/sensing.html">선천면역은 무엇을 감지하나? →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27140/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 면역글로불린 다양성의 생성 (4-1~4-10) ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27145/" target="_blank" rel="noopener noreferrer">Janeway 2001 · T세포 수용체 유전자 재배열 (4-11~4-14) ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1146/annurev-genet-110410-132552" target="_blank" rel="noopener noreferrer">Schatz &amp; Swanson 2011, Annu Rev Genet ↗</a>
+          <a href="https://doi.org/10.1038/s41577-022-00679-3" target="_blank" rel="noopener noreferrer">Zhang 2022, Nat Rev Immunol ↗</a>
+          <a href="https://doi.org/10.1146/annurev-cellbio-112122-030835" target="_blank" rel="noopener noreferrer">Lebedin &amp; de la Rosa 2024, Annu Rev Cell Dev Biol ↗</a>
+          <a href="https://doi.org/10.70962/jhi.20250042" target="_blank" rel="noopener noreferrer">Neehus 2025, J Hum Immun ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../01-basics/basics.js"></script>
+  <script src="./adaptive.js"></script>
+  <script src="./data.js"></script>
+  <script src="../glossary.js"></script>
+</body>
+</html>

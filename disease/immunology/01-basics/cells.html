@@ -30,12 +30,11 @@
       <article class="article">
         <p class="eyebrow">기초와 구성 — 면역계는 무엇으로 이루어지나</p>
         <h1>면역세포의 종류와 상태는 어떻게 구분하나?</h1>
-        <p class="aliases">Aliases: cell type · cell state · whole blood · plasma · serum · buffy coat · PBMC · 혈장 · 혈청 · 세포 비율 · scRNA-seq · UMAP · DAM</p>
         <p class="definition">혈액 분획 → 분모 → single-cell cluster → 종류와 상태. 같은 <b>림프구 비율</b>도 무엇을 100으로 놓았는지에 따라 20–40% · 70–90% · 74.1%.</p>
 
         <!-- ───────── 1. 혈액 분획 ───────── -->
         <h2 id="fractions">혈액 분획 — 무엇을 분리했나<small>Whole blood · plasma · serum · buffy coat · PBMC</small></h2>
-        <p class="lede">항응고제 유무 · 원심분리 방식 → 층 이름이 달라짐. <b>표의 행이나 그림의 층에 마우스</b> → 서로 강조.</p>
+        <p class="lede">항응고제 유무 · 원심분리 방식 → 층 이름이 달라짐.</p>
         <figure class="fig" id="tubesFig">
           <div class="fig-scroll">
 <!--GEN:TUBES-->
@@ -138,7 +137,7 @@
 
         <!-- ───────── 3. single-cell ───────── -->
         <h2 id="single-cell">single-cell로 보기 — PBMC3k<small>Cell type composition</small></h2>
-        <p class="lede">single-cell 논문의 기본 조합 = <b>UMAP</b>(색 = cluster 주석) + <b>주석별 세포 수·비율</b>. 오른쪽 행에 마우스 → UMAP에서 그 cluster만 강조.</p>
+        <p class="lede">single-cell 논문의 기본 조합 = <b>UMAP</b>(색 = cluster 주석) + <b>주석별 세포 수·비율</b>.</p>
         <figure class="fig" id="umapFig">
           <div class="sc-fig">
 <!--GEN:UMAP-->
@@ -211,6 +210,8 @@
           <li>상태 해석 → 조직 · 발달 시기 · 자극 이력 함께</li>
           <li>발달 궤적 추정 ≠ 실제 계통추적 · 전사체 분류 + 기능 검증 결합 <a class="src" href="https://doi.org/10.1038/nri.2017.76" target="_blank" rel="noopener">Papalexi &amp; Satija 2018</a></li>
         </ol>
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">cell type · cell state · whole blood · plasma · serum · buffy coat · PBMC · 혈장 · 혈청 · 세포 비율 · scRNA-seq · UMAP · DAM</p></details>
       </article>
 
       <aside class="aside">
@@ -246,5 +247,7 @@
     <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
   </footer>
   <script src="./basics.js"></script>
+  <script src="./data.js"></script>
+  <script src="../glossary.js"></script>
 </body>
 </html>

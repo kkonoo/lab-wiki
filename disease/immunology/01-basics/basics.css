@@ -414,3 +414,16 @@ svg.onto{display:block;width:100%;height:auto;min-width:880px}
 .onto .ov-mat.num circle{fill:#7b5aa6}
 .onto .ov-post.num circle{fill:#2f7f73}
 .steps[data-mode="hema"]{--sc:#b0643c} .steps[data-mode="mat"]{--sc:#7b5aa6} .steps[data-mode="post"]{--sc:#2f7f73}
+
+/* 별칭·약어는 문서 맨 아래 접이식으로 — 검색 색인은 그대로 이 블록을 읽는다 */
+.aliases-fold{margin:26px 0 0;border-top:1px solid var(--line);padding-top:10px}
+.aliases-fold summary{cursor:pointer;list-style:none;color:var(--muted);font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.aliases-fold summary::-webkit-details-marker{display:none}
+.aliases-fold summary::before{content:"+ ";font-weight:700}
+.aliases-fold[open] summary::before{content:"− "}
+.aliases-fold summary:hover{color:var(--green)}
+.aliases-fold .aliases{margin:10px 0 0;font-size:.78rem;line-height:1.7}
+
+/* 그림 그룹 식별용 클래스 — 자바스크립트·선택자 훅, 별도 스타일 없음
+   (03에서 짧은 이름이 공용 규칙과 충돌해 글자가 흰색으로 렌더된 사고가 있어, 훅은 반드시 여기 선언해 둔다) */
+.hmap .bands,.hmap .edges,.tubes .tube,.cyto .rx-drug,.cyto .rx-block,.onto .eras,.onto .emb{cursor:default}
