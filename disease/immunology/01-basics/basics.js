@@ -218,3 +218,81 @@
     });
   }
 })();
+
+/* 문서 목차 — article의 h2[id]를 읽어 본문 왼쪽에 Contents 상자를 만든다.
+   문서 HTML은 건드리지 않는다. h2의 <small>(영문 부제)은 목차에서 뺀다. */
+(function () {
+  "use strict";
+  var article = document.querySelector(".vpage .article");
+  var layout = document.querySelector(".vpage .article-layout");
+  if (!article || !layout) return;
+
+  var hs = Array.prototype.slice.call(article.querySelectorAll("h2[id]"));
+  if (hs.length < 3) return;                       /* 너무 짧은 문서엔 두지 않음 */
+
+  var box = document.createElement("div");
+  box.className = "aside-box toc-box";
+  var h3 = document.createElement("h3");
+  h3.textContent = "Contents";
+  var nav = document.createElement("nav");
+  nav.className = "toc";
+  nav.setAttribute("aria-label", "문서 목차");
+  var ol = document.createElement("ol");
+
+  var links = hs.map(function (h, i) {
+    var c = h.cloneNode(true);
+    var sm = c.querySelector("small");
+    if (sm) sm.parentNode.removeChild(sm);
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    a.href = "#" + h.id;
+    var n = document.createElement("span");
+    n.className = "n";
+    n.textContent = String(i + 1);
+    a.appendChild(n);
+    a.appendChild(document.createTextNode((c.textContent || "").replace(/\s+/g, " ").trim()));
+    li.appendChild(a);
+    ol.appendChild(li);
+    return a;
+  });
+
+  nav.appendChild(ol);
+  box.appendChild(h3);
+  box.appendChild(nav);
+  layout.insertBefore(box, article);
+  document.body.classList.add("has-toc");   /* 3단 레이아웃 전환 — CSS의 .vpage.has-toc */
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  links.forEach(function (a, i) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      hs[i].scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      if (history.replaceState) history.replaceState(null, "", "#" + hs[i].id);
+    });
+  });
+
+  /* 지금 읽고 있는 절 표시 */
+  var ticking = false;
+  function spy() {
+    ticking = false;
+    var cur = 0;
+    for (var i = 0; i < hs.length; i++) {
+      if (hs[i].getBoundingClientRect().top <= 130) cur = i;
+    }
+    if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 4) {
+      cur = hs.length - 1;                          /* 문서 끝에서는 마지막 절 */
+    }
+    links.forEach(function (a, i) {
+      a.classList.toggle("on", i === cur);
+      if (i === cur) { a.setAttribute("aria-current", "true"); } else { a.removeAttribute("aria-current"); }
+    });
+  }
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(spy);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+  spy();
+})();
