@@ -281,42 +281,75 @@ window.IMMUNOLOGY_BASICS = {
       "면역계는 언제 만들어지고 출생 전후에 어떻게 달라지나?",
       [
         "ontogeny",
-        "조혈",
+        "발생",
+        "태아 면역",
+        "영아 면역",
+        "조혈 wave",
         "HSPC",
         "yolk sac",
+        "난황낭",
         "AGM",
-        "태아",
+        "fetal liver",
+        "태아 간",
         "골수",
         "thymus",
-        "영아",
-        "IgG",
-        "모유"
+        "모체 IgG",
+        "태반",
+        "FcRn",
+        "microchimerism",
+        "모체 세포",
+        "모유",
+        "sIgA",
+        "PIGR",
+        "HMO",
+        "미생물 정착",
+        "분만 방식",
+        "Baby Biome",
+        "Treg",
+        "RTE",
+        "memory T",
+        "critical window"
       ],
       "basics",
-      "태아기의 연속적인 조혈 wave와 출생 전후 환경이 함께 만드는 면역계 — 성인의 축소판을 넘어 발달 단계별 프로그램으로 해석",
+      "수정부터 두 돌까지 한 장 타임라인(난황낭 → AGM → 태아 간 → 골수) · 태반을 건너오는 모체 IgG와 모체 세포 · 모유와 미생물 정착 · 영아기 조직별 T세포 — 성인의 축소판이 아닌 시기별 프로그램",
       [
         [
-          "조혈의 장소와 인계",
+          "한 장 타임라인",
           [
-            "yolk sac → AGM → 태아 간 → 태아 골수로 이어지는 조혈의 공간·시간 축",
-            "태아 간에서의 면역세포 생산과 조직으로의 전구세포 유입",
-            "thymus의 T세포 발달과 골수의 면역세포 생산 — 기관별로 다른 발달 과정"
+            "난황낭 CS 7–8 · AGM 첫 HSC 30–32 dpc · 태아 간 7–8주 · 골수 CS 23 (Ivanovs 2017)",
+            "모체 IgG: 제대혈:모체혈 비가 24–25주 0.11 → 36–37주 0.98 (Sci Rep 2022)",
+            "모체 세포가 태아 림프절로 들어와 모체 항원에 대한 Treg 유도 (Mold 2008)"
           ]
         ],
         [
-          "발달 단계별 세포 프로그램",
+          "성인의 축소판이 아니다",
           [
-            "태아기에 두드러진 B-1 cell·innate T·pro-angiogenic macrophage 집단 — Haniffa 2025",
-            "영아 면역의 관용·조직 보호·빠른 effector 반응에 맞춘 특화 — Palma 2026",
-            "폐·장과 림프기관 사이에서 서로 다른 memory T세포 축적의 시간 경과"
+            "태아·영아 조직의 Treg 10–30% — 성인 2–5% (Thome 2016)",
+            "태아기 B1 세포와 비전형 T세포 · effector 기능은 2분기부터 (Suo 2022)",
+            "1차 조혈기관 밖 말초 장기에서도 B 림프구 생성 관찰 (Suo 2022)"
           ]
         ],
         [
-          "출생 전후의 조정 신호",
+          "출생 전후에 들어오는 것",
           [
-            "산모 IgG·모유 성분·미생물과 대사산물 — 초기 면역 환경을 조정하는 입력",
-            "면역 발달을 단순한 결손의 보충보다 시기·조직에 맞는 프로그램 변화로 이해",
-            "전사체 기반 발달 경로는 기원에 대한 추론 — 실제 계통추적 결과와 구분"
+            "모유 — IgA·IgM은 PIGR, IgG는 FcRn으로 유선을 건너감 · 엄마 장의 IgA 레퍼토리가 전달됨 (Immunol Rev 2024)",
+            "HMO는 소화되지 않는 prebiotic이자 병원체 decoy (Le Doare 2018)",
+            "신생아기 장내 미생물을 가장 크게 가르는 요인은 분만 방식 (Shao 2019)"
+          ]
+        ],
+        [
+          "영아기 조직 시계",
+          [
+            "naive T세포가 70–95%로 우세 · effector memory는 폐·공장·회장에서만 20% 이상 (Thome 2016)",
+            "초기 각인이 감염 방어·백신 반응·아토피 위험과 연결된다는 정리 (Palma 2026)"
+          ]
+        ],
+        [
+          "근거와 한계",
+          [
+            "태아 단일세포 아틀라스 — 수정 후 4–17주 · 9개 조직 · 90만 세포 이상 (Suo 2022)",
+            "전사체로 그린 발달 경로는 기원에 대한 추론 — 계통추적 결과와 구분 (Haniffa 2025)",
+            "수정 후 기준(dpc·CS)과 임신 주수 기준을 섞지 않기"
           ]
         ]
       ],
@@ -393,12 +426,40 @@ window.IMMUNOLOGY_BASICS = {
     ],
     "immunology-ontogeny": [
       [
+        "Ivanovs 2017, Development",
+        "https://doi.org/10.1242/dev.134866"
+      ],
+      [
         "Haniffa 2025, Nat Rev Immunol",
         "https://doi.org/10.1038/s41577-024-01099-1"
       ],
       [
         "Palma 2026, Nat Immunol",
         "https://doi.org/10.1038/s41590-026-02523-5"
+      ],
+      [
+        "Suo 2022, Science",
+        "https://doi.org/10.1126/science.abo0510"
+      ],
+      [
+        "Mold 2008, Science",
+        "https://doi.org/10.1126/science.1164511"
+      ],
+      [
+        "Thome 2016, Nat Med",
+        "https://doi.org/10.1038/nm.4008"
+      ],
+      [
+        "Shao 2019, Nature",
+        "https://doi.org/10.1038/s41586-019-1560-1"
+      ],
+      [
+        "Immunol Rev 2024 · 모유 항체",
+        "https://doi.org/10.1111/imr.13411"
+      ],
+      [
+        "Sci Rep 2022 · IgG 태반 이동",
+        "https://doi.org/10.1038/s41598-022-21908-8"
       ]
     ]
   },
@@ -498,7 +559,8 @@ window.IMMUNOLOGY_BASICS = {
     "immunology-overview": "01-basics/overview.html",
     "immunology-cell-identity": "01-basics/cells.html",
     "immunology-lymph-node": "01-basics/lymph-node.html",
-    "immunology-recognition": "01-basics/cytokine.html"
+    "immunology-recognition": "01-basics/cytokine.html",
+    "immunology-ontogeny": "01-basics/ontogeny.html"
   }
 };
 window.IMMUNOLOGY = {
@@ -571,7 +633,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-ontogeny",
               "면역 발생과 영아기",
-              "태아기의 연속적인 조혈 wave와 출생 전후 환경이 함께 만드는 면역계 — 성인의 축소판을 넘어 발달 단계별 프로그램으로 해석",
+              "수정부터 두 돌까지 한 장 타임라인(난황낭 → AGM → 태아 간 → 골수) · 태반을 건너오는 모체 IgG와 모체 세포 · 모유와 미생물 정착 · 영아기 조직별 T세포 — 성인의 축소판이 아닌 시기별 프로그램",
               "읽기",
               ""
             ]

@@ -143,24 +143,29 @@ function immunology(dirAbs) {
   addPage({ t: "Immunology", s: meta(fs.readFileSync(path.join(dirAbs, "index.html"), "utf8"), "description"), u: base + "/index.html", d: D.label, c: D.color });
   const rowsById = Object.fromEntries((I.articleRows || []).map((row) => [row[0], row]));
   const secUrl = (key) => base + "/" + String(routes[key] || "./index.html").replace(/^\.\//, "");
-  const artUrl = (id) => pagesMap[id] ? base + "/" + pagesMap[id] : base + "/" + articleRoute.replace(/^\.\//, "") + "#article/" + id;
-  // 섹션별 data.js (02~06 포함)
+  const allPages = Object.assign({}, pagesMap);                     // 섹션별 전용 문서를 모은다
+  // 섹션별 data.js (02~06 포함) — articleRows·articlePages가 섹션 쪽에 있으면 그것을 우선
   Object.entries(routes).forEach(([key, route]) => {
     const secDir = path.join(dirAbs, path.dirname(route));
     const W = loadWindow([path.join(secDir, "data.js")]);
-    const S = (W.IMMUNOLOGY && W.IMMUNOLOGY.sections && W.IMMUNOLOGY.sections[key]) || (I.sections || {})[key];
+    const SI = W.IMMUNOLOGY || {};
+    const S = (SI.sections && SI.sections[key]) || (I.sections || {})[key];
     if (!S) return;
+    const rows = Object.assign({}, rowsById, Object.fromEntries((SI.articleRows || []).map((row) => [row[0], row])));
+    const pages = Object.assign({}, pagesMap, SI.articlePages || {});
+    Object.assign(allPages, SI.articlePages || {});
+    const artUrl = (id) => pages[id] ? base + "/" + pages[id] : base + "/" + articleRoute.replace(/^\.\//, "") + "#article/" + id;
     const secTitle = S.number ? S.number + " " + S.title : S.title;
     addPage({ t: "Immunology · " + secTitle, s: S.summary, u: secUrl(key), d: D.label, c: D.color });
     addItem({ t: S.title, k: join([S.english, S.kuby]), s: S.summary, u: secUrl(key), d: D.label, c: D.color, p: "Immunology", g: "섹션" });
     (S.groups || []).forEach((g) => (g.items || []).forEach((it) => {
-      const row = rowsById[it[0]];
+      const row = rows[it[0]];
       if (row) addItem({ t: row[1], k: join(row[2]), s: row[4], u: artUrl(row[0]), d: D.label, c: D.color, p: "Immunology", g: secTitle });
       else addItem({ t: it[1], s: join([it[2], it[3]]), u: it[4] ? resolveUrl(secUrl(key), it[4]) : secUrl(key), d: D.label, c: D.color, p: "Immunology", g: secTitle + " › " + g.q });
     }));
   });
-  log.push(`immuno   ${base}  articles ${Object.keys(rowsById).length} · 전용 문서 ${Object.keys(pagesMap).length}`);
-  return new Set(Object.values(pagesMap).map((p) => base + "/" + p));
+  log.push(`immuno   ${base}  articles ${Object.keys(rowsById).length} · 전용 문서 ${Object.keys(allPages).length}`);
+  return new Set(Object.values(allPages).map((p) => base + "/" + p));
 }
 
 /* ── 4) 정적 문서 ── */

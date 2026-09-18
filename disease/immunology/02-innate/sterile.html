@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="자기 핵산이 염증을 켜지 않게 막는 관용 장치 — 핵 안 cGAS 결박, TREX1·DNase II·RNase H2, ADAR1의 Alu 편집, 세포 밖 C1q·DNASE1L3. 장치가 무너지는 자리의 질환(AGS·SAVI·COPA·단일유전자 루푸스), Alu·LINE-1·HERV retroelement 축, inflammasome이 켜지는 방식과 IFN signature 해석의 함정">
+  <title>자기 성분은 왜 보통 문제가 안 되고, 언제 염증이 되나? · Immunology</title>
+  <link rel="stylesheet" href="../immunology.css">
+  <link rel="stylesheet" href="../01-basics/basics.css">
+  <link rel="stylesheet" href="./innate.css">
+</head>
+<body class="vpage">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Immunology</span></a></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="./index.html">목록</a><span>›</span><a href="./index.html">선천면역</a><span>›</span>자기 성분과 무균 염증</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">선천면역 — 위험을 감지하고 처음 대응하기</p>
+        <h1>자기 성분은 왜 보통 문제가 안 되고, 언제 염증이 되나?</h1>
+        <p class="aliases">Aliases: sterile inflammation · 무균 염증 · 핵산 센싱 · nucleic acid sensing · cGAS-STING · TREX1 · ADAR1 · RNase H2 · SAMHD1 · AGS · Aicardi-Goutières · SAVI · interferonopathy · inflammasome · NLRP3 · pyroptosis · gasdermin D · Alu · LINE-1 · HERV · viral mimicry · IFN signature</p>
+        <p class="definition">무균 염증(sterile inflammation) = 감염원 없이, <b>제자리를 벗어난 자기 핵산</b>과 손상 신호가 선천 센서에 잡혀 일어나는 염증. DNA에도 RNA에도 "내 것"이라는 표식은 없으므로, 관용은 리간드가 아니라 <b>격리 · 분해 · 편집 · 종료</b>라는 장치들이 만든다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></p>
+
+        <!-- ───────── 1. bridge ───────── -->
+        <h2 id="bridge">표식이 없는 분자를 어떻게 구별하나<small>No self tag on nucleic acids</small></h2>
+        <p class="lede">앞 문서에서 본 대로 센서의 특이성은 <b>칸</b>에서 왔다 → <a href="./sensing.html">선천면역은 무엇을 감지하나</a>. 그런데 칸만으로는 부족하다 — 자기 DNA와 RNA는 늘 조금씩 새고, 세포는 늘 죽는다. 그래서 그 위에 관용 장치가 층층이 얹힌다.</p>
+        <div class="callout blue">
+          <h4>이 페이지의 두 축</h4>
+          <p><b>① 관용 장치</b> — 자기 핵산을 보이지 않게 만드는 법과, 그 장치가 무너지는 자리에 놓인 사람 질환.</p>
+          <p><b>② 증폭 장치</b> — 신호가 문턱을 넘었을 때 IL-1을 내보내는 inflammasome이 어떻게 조립되는지.</p>
+        </div>
+
+        <!-- ───────── 2. 지도 ───────── -->
+        <h2 id="map">한 장 지도 — 세 축이 각자 다른 방법으로 숨긴다<small>Three axes of self-nucleic-acid tolerance</small></h2>
+        <p class="lede">RNA 축 · DNA 축 · 세포 밖 축이 나란히 놓인다. 위 버튼 → <b>무너진 자리</b>를 누르면 각 축에서 사람 질환이 되는 지점이 나타난다.</p>
+        <figure class="fig" id="nasFig">
+          <div class="fig-tools">
+            <div class="seg" role="group" aria-label="보기 선택">
+              <button type="button" data-namode="none" aria-pressed="true">전체</button>
+              <button type="button" data-namode="tol" aria-pressed="false">관용 장치</button>
+              <button type="button" data-namode="dis" aria-pressed="false">무너진 자리</button>
+              <button type="button" data-namode="re" aria-pressed="false">retroelement</button>
+            </div>
+            <div class="legend static">
+              <span><i style="--c:#3f6f8f"></i>RNA 축</span>
+              <span><i style="--c:#b0643c"></i>DNA 축</span>
+              <span><i style="--c:#2f7f73"></i>세포 밖 축</span>
+              <span><i style="--c:#b24f4f"></i>inflammasome</span>
+            </div>
+          </div>
+          <div class="fig-scroll">
+            <!--GEN:NAS-->
+<svg class="nas" data-mode="none" viewBox="0 0 1120 700" role="img" aria-labelledby="naT naD" xmlns="http://www.w3.org/2000/svg">
+<title id="naT">자기 핵산이 새어 나오는 세 축과, 각 축을 막는 관용 장치·무너질 때의 질환</title>
+<desc id="naD">세로로 세 축이 나란히 놓인다. RNA 축은 Alu·HERV 유래 이중가닥 RNA를 ADAR1 편집과 SAMHD1이 가리고 MDA5·RIG-I가 읽는다. DNA 축은 핵·미토콘드리아·LINE-1에서 나온 DNA를 nucleosome 결박과 TREX1·DNase II·RNase H2가 치우고 cGAS-STING이 읽는다. 세포 밖 축은 죽은 세포 조각과 NET을 C1q·DNASE1L3이 치우고, 치우지 못하면 면역복합체가 pDC의 엔도솜 TLR을 켠다. 각 축의 관용 장치가 무너지는 자리에 AGS·SAVI·단일유전자 루푸스가 놓이고, 출력은 제1형 interferon과 IL-1β다.</desc>
+<defs><marker id="naA-ifn" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#3f6f8f"/></marker><marker id="naA-nfkb" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b0643c"/></marker><marker id="naA-casp" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b24f4f"/></marker><marker id="naA-clr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7b5aa6"/></marker><marker id="naA-plain" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7d857c"/></marker><marker id="naA-keep" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#2f7f73"/></marker></defs>
+<g class="fg ax rna" data-fg="rna" data-in="tol dis re">
+<text class="lanet rna" x="195" y="18" text-anchor="middle">RNA 축</text>
+<text class="lanek" x="195" y="34" text-anchor="middle">self RNA</text>
+<g class="bx src"><rect x="30" y="46" width="330" height="138" rx="14"/></g>
+<text class="lab small" x="195" y="66" text-anchor="middle">어디서 나오나</text>
+<g class="pl src small"><rect x="45" y="76" width="300" height="19" rx="9.5"/><text x="195" y="89.2" text-anchor="middle">뒤집힌 Alu 이중가닥 RNA</text></g>
+<g class="pl src small"><rect x="45" y="101" width="300" height="19" rx="9.5"/><text x="195" y="114.2" text-anchor="middle">HERV 유래 dsRNA</text></g>
+<g class="pl src small"><rect x="45" y="126" width="300" height="19" rx="9.5"/><text x="195" y="139.2" text-anchor="middle">미토콘드리아 RNA</text></g>
+<g class="pl src small"><rect x="45" y="151" width="300" height="19" rx="9.5"/><text x="195" y="164.2" text-anchor="middle">바이러스 복제 중간체</text></g>
+<g class="bx keep"><rect x="30" y="208" width="330" height="142" rx="14"/></g>
+<text class="lab small" x="195" y="228" text-anchor="middle">관용 장치 — 보이지 않게 만드는 법</text>
+<g class="pl keep small"><rect x="45" y="238" width="300" height="19" rx="9.5"/><text x="195" y="251.2" text-anchor="middle">ADAR1 — Alu를 A-to-I 편집</text></g>
+<g class="pl keep small"><rect x="45" y="264" width="300" height="19" rx="9.5"/><text x="195" y="277.2" text-anchor="middle">SAMHD1 — 세포질 응축체 유지</text></g>
+<g class="pl keep small"><rect x="45" y="290" width="300" height="19" rx="9.5"/><text x="195" y="303.2" text-anchor="middle">mRNA cap1 · cap2 · m6A 변형</text></g>
+<g class="ov ov-dis dis"><rect x="82.9" y="320" width="224.2" height="20" rx="10"/><text x="195" y="334" text-anchor="middle">ADAR 기능상실 · IFIH1 기능획득 → AGS</text></g>
+<g class="nd ifn "><rect x="40" y="380" width="310" height="38" rx="8"/><text x="195" y="403" text-anchor="middle">MDA5 · RIG-I → MAVS</text></g>
+</g>
+<path class="fl plain" d="M195,184 L195,204" marker-end="url(#naA-plain)"/>
+<path class="fl plain" d="M195,350 L195,376" marker-end="url(#naA-plain)"/>
+<g class="fg ax dna" data-fg="dna" data-in="tol dis re">
+<text class="lanet dna" x="560" y="18" text-anchor="middle">DNA 축</text>
+<text class="lanek" x="560" y="34" text-anchor="middle">self DNA</text>
+<g class="bx src"><rect x="395" y="46" width="330" height="138" rx="14"/></g>
+<text class="lab small" x="560" y="66" text-anchor="middle">어디서 나오나</text>
+<g class="pl src small"><rect x="410" y="76" width="300" height="19" rx="9.5"/><text x="560" y="89.2" text-anchor="middle">핵 DNA 조각 · micronucleus</text></g>
+<g class="pl src small"><rect x="410" y="101" width="300" height="19" rx="9.5"/><text x="560" y="114.2" text-anchor="middle">미토콘드리아 DNA (BAX·BAK 유출)</text></g>
+<g class="pl src small"><rect x="410" y="126" width="300" height="19" rx="9.5"/><text x="560" y="139.2" text-anchor="middle">LINE-1 역전사 산물</text></g>
+<g class="pl src small"><rect x="410" y="151" width="300" height="19" rx="9.5"/><text x="560" y="164.2" text-anchor="middle">R-loop · RNA:DNA 잡종</text></g>
+<g class="bx keep"><rect x="395" y="208" width="330" height="142" rx="14"/></g>
+<text class="lab small" x="560" y="228" text-anchor="middle">관용 장치 — 보이지 않게 만드는 법</text>
+<g class="pl keep small"><rect x="410" y="238" width="300" height="19" rx="9.5"/><text x="560" y="251.2" text-anchor="middle">핵 안 cGAS는 nucleosome에 결박</text></g>
+<g class="pl keep small"><rect x="410" y="264" width="300" height="19" rx="9.5"/><text x="560" y="277.2" text-anchor="middle">TREX1 · DNase II · RNase H2</text></g>
+<g class="pl keep small"><rect x="410" y="290" width="300" height="19" rx="9.5"/><text x="560" y="303.2" text-anchor="middle">cGAMP는 세포 밖에서만 분해</text></g>
+<g class="ov ov-dis dis"><rect x="436.5" y="320" width="247" height="20" rx="10"/><text x="560" y="334" text-anchor="middle">TREX1 · RNASEH2 → AGS · STING1 → SAVI</text></g>
+<g class="nd ifn "><rect x="405" y="380" width="310" height="38" rx="8"/><text x="560" y="403" text-anchor="middle">cGAS → cGAMP → STING</text></g>
+</g>
+<path class="fl plain" d="M560,184 L560,204" marker-end="url(#naA-plain)"/>
+<path class="fl plain" d="M560,350 L560,376" marker-end="url(#naA-plain)"/>
+<g class="fg ax ext" data-fg="ext" data-in="tol dis">
+<text class="lanet ext" x="925" y="18" text-anchor="middle">세포 밖 축</text>
+<text class="lanek" x="925" y="34" text-anchor="middle">extracellular</text>
+<g class="bx src"><rect x="760" y="46" width="330" height="138" rx="14"/></g>
+<text class="lab small" x="925" y="66" text-anchor="middle">어디서 나오나</text>
+<g class="pl src small"><rect x="775" y="76" width="300" height="19" rx="9.5"/><text x="925" y="89.2" text-anchor="middle">죽은 세포 조각 · microparticle</text></g>
+<g class="pl src small"><rect x="775" y="101" width="300" height="19" rx="9.5"/><text x="925" y="114.2" text-anchor="middle">호중구 NET</text></g>
+<g class="pl src small"><rect x="775" y="126" width="300" height="19" rx="9.5"/><text x="925" y="139.2" text-anchor="middle">면역복합체 속 핵산</text></g>
+<g class="bx keep"><rect x="760" y="208" width="330" height="142" rx="14"/></g>
+<text class="lab small" x="925" y="228" text-anchor="middle">관용 장치 — 보이지 않게 만드는 법</text>
+<g class="pl keep small"><rect x="775" y="238" width="300" height="19" rx="9.5"/><text x="925" y="251.2" text-anchor="middle">C1q — 죽은 세포·NET opsonin</text></g>
+<g class="pl keep small"><rect x="775" y="264" width="300" height="19" rx="9.5"/><text x="925" y="277.2" text-anchor="middle">DNASE1L3 · DNASE1</text></g>
+<g class="pl keep small"><rect x="775" y="290" width="300" height="19" rx="9.5"/><text x="925" y="303.2" text-anchor="middle">적혈구 CR1이 면역복합체 운반</text></g>
+<g class="ov ov-dis dis"><rect x="818.7" y="320" width="212.6" height="20" rx="10"/><text x="925" y="334" text-anchor="middle">C1q · DNASE1L3 → 단일유전자 루푸스</text></g>
+<g class="nd ifn "><rect x="770" y="380" width="310" height="38" rx="8"/><text x="925" y="403" text-anchor="middle">면역복합체 → pDC 엔도솜 TLR7 · TLR9</text></g>
+</g>
+<path class="fl plain" d="M925,184 L925,204" marker-end="url(#naA-plain)"/>
+<path class="fl plain" d="M925,350 L925,376" marker-end="url(#naA-plain)"/>
+<rect class="ov ov-re ring" x="42" y="73" width="306" height="25" rx="11"/>
+<rect class="ov ov-re ring" x="42" y="98" width="306" height="25" rx="11"/>
+<rect class="ov ov-re ring" x="407" y="123" width="306" height="25" rx="11"/>
+<rect class="ov ov-re ring" x="42" y="235" width="306" height="25" rx="11"/>
+<rect class="ov ov-re ring" x="407" y="261" width="306" height="25" rx="11"/>
+<g class="fg ax dna2" data-fg="dna" data-in="tol dis re">
+<g class="nd casp "><rect x="405" y="452" width="310" height="38" rx="8"/><text x="560" y="475" text-anchor="middle">AIM2 · NLRP3 → ASC → caspase-1</text></g>
+<g class="ov ov-dis dis"><rect x="381.1" y="498" width="97.8" height="20" rx="10"/><text x="430" y="512" text-anchor="middle">NLRP3 → CAPS</text></g>
+</g>
+<path class="fl casp" d="M560,418 L560,448" marker-end="url(#naA-casp)"/>
+<g class="outbox ifn"><rect x="30" y="560" width="695" height="88" rx="16"/><text class="lab" x="377.5" y="603" text-anchor="middle">제1형 interferon</text><text class="lab small" x="377.5" y="619" text-anchor="middle">ISG 전사 — 이른바 IFN signature</text></g>
+<g class="outbox casp"><rect x="760" y="560" width="330" height="88" rx="16"/><text class="lab" x="925" y="603" text-anchor="middle">IL-1β · IL-18</text><text class="lab small" x="925" y="619" text-anchor="middle">pyroptosis</text></g>
+<path class="fl ifn" d="M195,418 L195,520 L250,520 L250,556" marker-end="url(#naA-ifn)"/>
+<path class="fl ifn" d="M450,418 L450,528 L420,528 L420,556" marker-end="url(#naA-ifn)"/>
+<path class="fl ifn" d="M925,418 L925,538 L640,538 L640,556" marker-end="url(#naA-ifn)"/>
+<path class="fl casp" d="M560,490 L560,524 L880,524 L880,556" marker-end="url(#naA-casp)"/>
+<g class="ov ov-tol num"><circle cx="46" cy="596" r="10"/><text x="46" y="599.9" text-anchor="middle">1</text></g>
+<g class="ov ov-tol num"><circle cx="776" cy="596" r="10"/><text x="776" y="599.9" text-anchor="middle">2</text></g>
+</svg>
+<!--/GEN:NAS-->
+          </div>
+          <ol class="steps" data-mode="tol">
+            <li>세 축 모두 <b>원천 → 장치 → 센서</b> 순서로 읽는다. 장치가 제 일을 하면 센서는 아무것도 보지 못한다.</li>
+            <li>출력은 두 갈래다 — 제1형 interferon과 ISG 전사, 그리고 inflammasome을 거친 IL-1β · IL-18 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+          </ol>
+          <figcaption>세 축은 서로 독립이 아니다 — 미토콘드리아가 망가지면 DNA와 RNA가 함께 새고, 죽은 세포가 치워지지 않으면 세포 밖 축이 켜진다. 나란히 그린 것은 <b>장치의 문법이 축마다 다르기 때문</b>이다.</figcaption>
+        </figure>
+
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>축</th><th>주된 원천</th><th>숨기는 방법</th><th>읽는 센서</th><th>무너지면</th></tr></thead>
+            <tbody>
+              <tr data-fig="nas" data-hl="rna"><th>RNA</th><td>뒤집힌 Alu 이중체 · HERV dsRNA · 미토콘드리아 RNA</td><td>ADAR1의 A-to-I 편집 · SAMHD1의 응축체 유지 · mRNA cap1/cap2와 m6A</td><td>MDA5 · RIG-I → MAVS</td><td>AGS · Singleton–Merten 증후군</td></tr>
+              <tr data-fig="nas" data-hl="dna"><th>DNA</th><td>핵 DNA 조각 · micronucleus · 미토콘드리아 DNA · LINE-1 역전사 산물 · R-loop</td><td>핵 안 cGAS의 nucleosome 결박 · TREX1 · DNase II · RNase H2 · cGAMP의 세포외 분해</td><td>cGAS → cGAMP → STING</td><td>AGS · SAVI · COPA 증후군</td></tr>
+              <tr data-fig="nas" data-hl="ext"><th>세포 밖</th><td>죽은 세포 조각 · microparticle · 호중구 NET</td><td>C1q의 opsonin 작용 · DNASE1L3 · DNASE1 · 적혈구 CR1의 면역복합체 운반</td><td>면역복합체 → pDC 엔도솜 TLR7 · TLR9</td><td>단일유전자 루푸스</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">세포내 축과 세포외 축의 분리는 <b>Goldbach-Mansky 2025</b>의 핵심 주장이다 — 자가염증성 interferonopathy는 세포 <b>안</b>의 핵산·단백 처리 실패에서, 단일유전자 루푸스는 세포 <b>밖</b> microparticle 청소 실패에서 시작한다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></p>
+
+        <!-- ───────── 3. 네 문법 ───────── -->
+        <h2 id="grammar">관용의 네 가지 문법<small>Sequester · degrade · edit · terminate</small></h2>
+        <div class="grid2">
+          <div><h4>격리 — 닿지 못하게</h4>
+            <ul>
+              <li>핵 안의 cGAS는 nucleosome의 산성 patch에 <b>Arg236 · Arg255</b>로 결박돼 DNA 결합면이 막힌다 — 결합 친화도가 매우 높다(Kd &lt; 10 nM) <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></li>
+              <li>분열기에는 cGAS의 N-말단이 과인산화되어 염색질 반응이 억제되고, 핵 안에서는 CRL5–SPSB3가 cGAS를 분해한다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></li>
+              <li>미토콘드리아 RNA는 SUV3 · PNPase가 붙잡아 두고, BAX–BAK 미세공극이 열리거나 fumarate가 쌓이면 새어 나온다 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></li>
+            </ul>
+          </div>
+          <div><h4>분해 — 치워서</h4>
+            <ul>
+              <li>세포질에서는 TREX1, 리소좀에서는 DNase II, RNA:DNA 잡종에는 RNase H2가 기질을 없앤다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></li>
+              <li>세포 밖에서는 C1q가 죽은 세포와 NET의 opsonin으로 작동하고, DNASE1L3이 조각 속 chromatin DNA를 소화하는 <b>유일한 세포외 효소</b>다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></li>
+            </ul>
+          </div>
+          <div><h4>편집 — 모양을 바꿔서</h4>
+            <ul>
+              <li>ADAR의 A-to-I 편집이 이중가닥 Alu를 MDA5에게 보이지 않게 만든다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></li>
+              <li>mRNA의 cap1 · cap2 2′-O-메틸화와 m6A도 같은 일을 한다 — METTL3이 없으면 RLR이 켜진다 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></li>
+            </ul>
+          </div>
+          <div><h4>종료 — 켜진 뒤에 끄기</h4>
+            <ul>
+              <li>TBK1이 STING의 Ser366을 인산화하면 AP-1이 붙고 clathrin 소포 → ESCRT → 리소좀으로 분해된다 — 신호 개시와 종료가 같은 사건에 묶여 있다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></li>
+              <li>cGAMP를 분해하는 척추동물 효소(ENPP1 · ENPP3 · SMPDL3A)는 <b>전부 세포 밖에서만</b> 작동한다 — 세포 안에서 cGAMP를 없애는 숙주 효소는 아직 알려져 있지 않다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></li>
+              <li>caspase-1은 스스로를 한 번 더 잘라 활성을 끝낸다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ───────── 4. retroelement ───────── -->
+        <h2 id="retro">유전체 안에 이미 들어 있는 바이러스 — Alu · LINE-1 · HERV<small>Retroelements as self ligand</small></h2>
+        <p class="lede">이 축은 위키의 <a href="../../../index.html?q=HERV">HERV 축</a>과 곧바로 이어진다. 요점은 하나다 — <b>비자기의 상당 부분이 사실 자기 유전체에서 나온다</b>.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>요소</th><th>유전체에서 차지하는 몫</th><th>면역과의 접점</th></tr></thead>
+            <tbody>
+              <tr><th>Alu<br><small>약 300 bp SINE</small></th><td>사람 유전체의 약 10%, LINE-1과 합치면 30% 초과 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></td><td>뒤집힌 Alu가 hairpin 이중체를 만들고 MDA5가 그 길이를 따라 섬유를 형성해 IFNB1 전사를 켠다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></td></tr>
+              <tr><th>LINE-1</th><td>위와 같음</td><td>ORF1p · ORF2p와 RNP를 이뤄 세포질에서 역전사되거나 핵으로 이동한다. TREX1이 ORF1p의 proteasome 분해를 촉진해 이를 제한하고, SAMHD1은 ORF2p 발현을 낮추며 큰 stress granule로 격리한다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></td></tr>
+              <tr><th>HERV<br><small>human endogenous retrovirus</small></th><td>사람 유전체의 약 8–9% <a class="src" href="https://doi.org/10.1186/s13059-021-02357-4" target="_blank" rel="noopener">Jansz &amp; Faulkner 2021</a></td><td>ERV 유래 dsRNA가 MDA5 · RIG-I를 켠다 — DNA 메틸화 억제제와 방사선의 항종양 IFN 효과를 매개하는 것이 같은 경로다 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="vs2">
+          <div class="type"><span class="tag">이로운 쪽</span><h4>viral mimicry</h4>
+            <ul>
+              <li>DNA 메틸화 억제가 ERV 전사를 풀어 dsRNA를 만들고, 그 IFN 반응이 종양의 면역치료 감수성을 올린다 <a class="src" href="https://doi.org/10.1016/j.cell.2015.07.011" target="_blank" rel="noopener">Chiappinelli 2015</a> <a class="src" href="https://doi.org/10.1016/j.cell.2015.07.056" target="_blank" rel="noopener">Roulois 2015</a></li>
+            </ul>
+          </div>
+          <div class="state"><span class="tag">해로운 쪽</span><h4>만성 IFN 회로</h4>
+            <ul>
+              <li>같은 자극이 SLE · 류마티스에서 IFN ↔ HERV-K의 되먹임 고리를 만든다는 보고 <a class="src" href="https://doi.org/10.1186/s13100-025-00371-y" target="_blank" rel="noopener">Le 2025</a></li>
+              <li>편집이 깨지는 방향은 두 가지다 — <b>ADAR 기능상실</b>은 편집되지 않은 Alu 이중체를 쌓아 정상 MDA5를 켜고, <b>IFIH1의 AGS 변이체</b>는 편집된 Alu로도 신호 섬유를 만든다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout">
+          <h4>mouse에는 Alu가 없다</h4>
+          <p>Alu는 영장류에만 있다. AGS 원인 nuclease의 mouse 결손이 사람의 뇌 병리를 재현하지 못하는 이유로 이 점이 지목된다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a><span class="sp">mouse</span></p>
+          <p>그리고 역전사만으로 설명되지도 않는다 — AGS에서 역전사 억제제의 임상 이득은 제한적이었고, ADAR 결손 신경세포의 사멸은 <b>DNA로의 역전사를 요구하지 않았다</b> <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></p>
+        </div>
+        <div class="callout blue">
+          <h4>측정의 함정</h4>
+          <p>HERV는 반복서열이라 정렬이 어렵다 — locus 수준 정량에는 전용 도구와 T2T 참조 유전체가 필요하고, bulk 발현값은 어느 provirus에서 온 것인지 가리지 못한다 <a class="src" href="https://doi.org/10.1128/spectrum.00934-22" target="_blank" rel="noopener">Russ 2022</a></p>
+        </div>
+
+        <!-- ───────── 5. inflammasome ───────── -->
+        <h2 id="inflammasome">Inflammasome — 켜지는 게 아니라 풀리는 것<small>From cage to disc</small></h2>
+        <p class="lede">문턱을 만드는 것은 조립 구조다. 저온전자현미경 구조가 밝힌 것은 "자극이 스위치를 켠다"가 아니라 <b>"평소 잠가 둔 것이 풀린다"</b>는 문법이었다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></p>
+        <ol class="route">
+          <li style="--c:var(--inn)"><span class="lv">대기</span><h4>cage</h4><p>NLRP3는 PYD를 안쪽에 감춘 cage로 골지·막에 붙어 있다 — 사람에서는 10량체, mouse에서는 12~16량체 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a><span class="sp">mouse</span></p></li>
+          <li style="--c:var(--ly)"><span class="lv">전환</span><h4>disc</h4><p>ADP형 → ATP형 전이에서 두 덩어리가 약 85° 회전하며 10~11개 subunit의 disc로 재조립되고 ASC의 PYD 섬유가 자란다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></p></li>
+          <li style="--c:var(--st)"><span class="lv">실행</span><h4>pore와 파열</h4><p>gasdermin D의 N-말단이 31~34량체 구멍(바깥지름 약 30 nm)을 만들어 IL-1 계열을 내보내고, NINJ1이 막을 최종 파열시킨다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></p></li>
+        </ol>
+        <div class="grid2">
+          <div><h4>억제가 기본값인 센서들</h4>
+            <ul>
+              <li>NLRP1과 CARD8은 FIIND 도메인이 스스로 잘려 이미 두 조각이고, DPP9가 삼원 복합체로 올리고머화를 막고 있다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></li>
+              <li>활성은 <b>N-말단이 proteasome으로 분해될 때</b> 조각 비율이 뒤집히면서 일어난다 — "분해가 곧 활성화"라는 다른 문법 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></li>
+              <li>상류 신호는 자외선의 ZAKα–p38 ribotoxic stress, picornavirus 3C protease 절단, <i>Shigella</i> IpaH7.8, DPP8/9 억제 등이다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></li>
+            </ul>
+          </div>
+          <div><h4>자극은 여럿, 수렴은 하나</h4>
+            <ul>
+              <li>K⁺ 유출(nigericin · ATP–P2X7–TWIK2), 결정과 입자(요산 · 콜레스테롤 · 실리카 · 아밀로이드 β · hemozoin)의 리소좀 손상, 미토콘드리아 활성산소와 산화된 미토콘드리아 DNA <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></li>
+              <li>비정통 경로에서는 caspase-4/5/11의 CARD가 lipopolysaccharide에 직접 결합해 이량체가 되고, gasdermin D 절단 → K⁺ 유출 → <b>2차 NLRP3 활성</b>으로 이어진다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></li>
+              <li>보체 쪽에서도 들어온다 — 죽이지 못하는 약한 막공격복합체와 C5aR2가 NLRP3를 켠다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a> → <a href="./complement.html">보체</a></li>
+            </ul>
+          </div>
+        </div>
+        <p class="abbr-line">NLRP3가 조직에서 실제로 무엇을 하는지, 특히 당뇨병성 신장질환에서 조직세포와 면역세포의 기여가 어떻게 갈리는지는 <a href="../../nephro/dkd/index.html">신장 쪽 문서</a>에 있다 — 같은 수치를 여기 옮겨 적지 않는다.</p>
+
+        <!-- ───────── 6. interferonopathy ───────── -->
+        <h2 id="ifnopathy">고장을 네 갈래로 나누면<small>Four ways to make too much interferon</small></h2>
+        <p class="lede"><b>Goldbach-Mansky 2025</b>는 자가염증성 interferonopathy를 IFN이 만들어지는 기전에 따라 네 군으로 나눈다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>군</th><th>무엇이 고장나나</th><th>대표 유전자</th><th>특징</th></tr></thead>
+            <tbody>
+              <tr><th>① 세포 안 핵산 축적</th><td>핵산을 치우거나 편집하는 장치</td><td>TREX1 · RNASEH2A/B/C · SAMHD1 · ADAR · IFIH1 · LSM11 · RNU7-1</td><td>AGS 스펙트럼. <b>RNASEH2B</b>가 AGS의 절반 이상이고, 이 경우 IFN signature가 없을 수도 있다</td></tr>
+              <tr><th>② STING 활성 지속</th><td>STING의 자리와 회수</td><td>STING1 기능획득 · COPA · ARF1</td><td>SAVI의 약 70%가 폐 섬유화로 가고 <b>p.V155M</b>이 가장 중증. COPA 변이는 di-lysine motif를 없애 활성 STING의 골지 → 소포체 회수를 막는다</td></tr>
+              <tr><th>③ 단백질 항상성 결함</th><td>proteasome</td><td>20S proteasome 구성 유전자</td><td>잘못 접힌 IL-24가 ERAD로 세포질에 나와 <b>PKR</b>을 켠다 — 핵산이 아닌 단백질 센서가 IFN을 켜는 통로</td></tr>
+              <tr><th>④ IFNAR 신호 종료 실패</th><td>신호를 끄는 장치</td><td>STAT2 · USP18 · ISG15</td><td>억제 복합체가 깨져 STAT2 인산화가 지속된다</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h4>세포 밖 축은 다른 질환이 된다</h4>
+          <p>소아 SLE의 약 7%가 단일유전자성이고, 원인은 대개 <b>세포 밖</b> 청소 장치다 — C1QA/B/C · C1R/S · DNASE1L3 · DNASE1 · TLR7 기능획득 등 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></p>
+          <p>후천적 자가항체가 같은 표현형을 흉내 낸다 — <b>anti-C1q 항체가 SLE 환자의 30–48%</b>, anti-DNASE1L3 항체가 산발성 SLE·신염의 50% 초과에서 검출된다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a>. 보체 유전자 쪽 위험 구조는 <a href="../../autoimmune/general/index.html">자가면역 문서</a>에 있다.</p>
+        </div>
+
+        <!-- ───────── 7. IFN signature ───────── -->
+        <h2 id="signature">IFN signature를 읽을 때 조심할 것<small>Reading the readout</small></h2>
+        <ul class="rules">
+          <li>ISG는 IFN-γ로도 올라가고 TNF가 일부 유전자(특히 CXCL10)를 증폭하므로, <b>ISG와 NF-κB 유도 유전자의 비율</b>을 함께 보는 층화 지표가 제안됐다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></li>
+          <li>건강한 사람에게도 tonic signature가 있고, 신경퇴행성 질환과 고령의 중추신경계에는 전신 염증 없이 국소 IFN이 있다 — 혈액과 조직에 각각 다른 정규화 기준이 필요하다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></li>
+          <li>ANA는 interferonopathy에서 대개 부수적 소견이다 — anti-dsDNA는 SLE의 70–98%에서 나오지만 단일유전자 interferonopathy에서는 드물다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></li>
+          <li>IFN을 만드는 세포가 pDC만은 아니다 — 말초혈 단핵세포에서 pDC를 제거해도 IFN 생산은 약 40%만 줄었다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></li>
+        </ul>
+
+        <!-- ───────── 8. 갈리는 지점 ───────── -->
+        <h2 id="flag">갈리는 지점<small>Where the evidence splits</small></h2>
+        <div class="flag">
+          <h4>NEK7이 사람의 NLRP3 활성에 필수인가</h4>
+          <p><span class="side">근거 A</span>mouse 세포와 개체에서 NEK7은 NLRP3 활성에 필수이고, 구조적으로도 cage 해체를 설명한다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a><span class="sp">mouse</span></p>
+          <p><span class="side">근거 B</span>사람 세포주에서는 priming 중 IKKβ 활성으로 NLRP3가 trans-골지에 모이면 NEK7 없이도 활성된다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></p>
+          <p><span class="side">판단</span>종과 priming 조건에 따라 달라지는 것으로 본다. NEK7을 표적으로 삼는 전략은 사람 세포·조직에서 재검증이 필요하고, mouse 결론을 사람 표적성의 근거로 쓰지 않는다.</p>
+        </div>
+        <div class="flag">
+          <h4>itaconate는 항염인가 전염증인가</h4>
+          <p><span class="side">근거 A</span>대식세포에서 IRG1 유래 itaconate는 염증을 누른다 — 신장에서 NLRP3를 끄고 섬유화를 막았다는 보고가 있다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></p>
+          <p><span class="side">근거 B</span>조직 상주 폐포 대식세포에서는 같은 itaconate가 lipopolysaccharide 유도 전염증 cytokine과 NLRP3 활성을 오히려 <b>촉진</b>한다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></p>
+          <p><span class="side">판단</span>세포와 조직 상주성에 따라 달라지는 것으로 본다. itaconate를 일반적인 항염 수단으로 전제하지 않고, 신장 쪽 근거는 그 조직 맥락에 한정해 읽는다 → <a href="../../nephro/dkd/index.html">당뇨병성 신장질환</a></p>
+        </div>
+        <div class="flag">
+          <h4>NINJ1은 구멍을 만드나, 막을 잃게 하나</h4>
+          <p><span class="side">근거 A</span>NINJ1 섬유와 고리가 막에 구멍을 만든다는 모델 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></p>
+          <p><span class="side">근거 B</span>막 조각을 용해해 잃게 한다는 모델 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></p>
+          <p><span class="side">판단</span>아직 정리 전 단계로 두고, 어느 모델도 확정적으로 쓰지 않는다.</p>
+        </div>
+
+        <!-- ───────── 9. 한계 ───────── -->
+        <h2 id="limit">근거와 한계<small>What we do not know</small></h2>
+        <ul class="rules">
+          <li>미토콘드리아 DNA가 새는 경로는 여럿인데(BAX/BAK 대공극 · VDAC · 미토콘드리아 유래 소포 · fumarate), <b>어느 경로가 어떤 반응을 만드는지</b>는 정리되지 않았다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></li>
+          <li>세포 안에서 cGAMP를 없애는 숙주 효소가 알려져 있지 않아, 세포 내부 신호의 <b>종료 논리가 비어 있다</b> <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></li>
+          <li>미토콘드리아 손상이 어떤 맥락에서 DNA 센서를, 다른 맥락에서 RNA 센서를 쓰는지 결정 규칙이 없다 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></li>
+          <li>HERV 발현이 질환의 원인인지 IFN에 의한 결과인지 — 특히 SLE의 IFN ↔ HERV 되먹임에서 선후가 불분명하다 <a class="src" href="https://doi.org/10.1186/s13100-025-00371-y" target="_blank" rel="noopener">Le 2025</a></li>
+          <li>이 페이지의 인과 근거 대부분은 mouse 모델과 세포주에서 나왔다. 사람 조직에서 경로 활성을 재는 표준 지표는 아직 없다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></li>
+        </ul>
+
+        <a class="more" href="./complement.html">보체는 어떻게 활성화되고 무슨 일을 하나 →</a>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./sensing.html">선천면역은 무엇을 감지하나? →</a>
+          <a href="./complement.html">보체는 어떻게 활성화되고 무슨 일을 하나? →</a>
+          <a href="./effector.html">선천면역은 어떻게 죽이고, 어떻게 기억하나? →</a>
+          <a href="../../autoimmune/general/index.html">자가면역 — 공통 축 →</a>
+          <a href="../../nephro/dkd/index.html">당뇨병성 신장질환 →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener noreferrer">Zhang 2025, Annu Rev Immunol ↗</a>
+          <a href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener noreferrer">Yoneyama 2024, Immunity ↗</a>
+          <a href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener noreferrer">Fu 2024, Nat Rev Immunol ↗</a>
+          <a href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener noreferrer">Goldbach-Mansky 2025, Nat Rev Rheumatol ↗</a>
+          <a href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener noreferrer">Zou 2026, Signal Transduct Target Ther ↗</a>
+          <a href="https://doi.org/10.1186/s13059-021-02357-4" target="_blank" rel="noopener noreferrer">Jansz &amp; Faulkner 2021, Genome Biol ↗</a>
+          <a href="https://doi.org/10.1128/spectrum.00934-22" target="_blank" rel="noopener noreferrer">Russ 2022, Microbiol Spectr ↗</a>
+          <a href="https://doi.org/10.1186/s13100-025-00371-y" target="_blank" rel="noopener noreferrer">Le 2025, Mob DNA ↗</a>
+          <a href="https://doi.org/10.1016/j.cell.2015.07.011" target="_blank" rel="noopener noreferrer">Chiappinelli 2015, Cell ↗</a>
+          <a href="https://doi.org/10.1016/j.cell.2015.07.056" target="_blank" rel="noopener noreferrer">Roulois 2015, Cell ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../01-basics/basics.js"></script>
+  <script src="./innate.js"></script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="패턴인식수용체 5계열(TLR·CLR·NLR·RLR·ALR)이 세포 표면·엔도솜·세포질 중 어디에 놓이는지, 어떤 어댑터를 거쳐 NF-κB·IRF·caspase-1 세 출력으로 갈리는지. 리간드가 아니라 구획과 맥락이 자기·비자기를 가른다는 원리, 인간 유전자 결함이 만드는 표현형, 조절층과 약물 표적">
+  <title>선천면역은 무엇을 감지하나? · Immunology</title>
+  <link rel="stylesheet" href="../immunology.css">
+  <link rel="stylesheet" href="../01-basics/basics.css">
+  <link rel="stylesheet" href="./innate.css">
+</head>
+<body class="vpage">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Immunology</span></a></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="./index.html">목록</a><span>›</span><a href="./index.html">선천면역</a><span>›</span>무엇을 감지하나</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">선천면역 — 위험을 감지하고 처음 대응하기</p>
+        <h1>선천면역은 무엇을 감지하나?</h1>
+        <p class="aliases">Aliases: PRR · 패턴인식수용체 · pattern recognition receptor · TLR · CLR · NLR · RLR · ALR · cGAS · STING · MAVS · MyD88 · TRIF · ASC · PAMP · DAMP · 선천면역 감지</p>
+        <p class="definition">패턴인식수용체(PRR, pattern recognition receptor) = 재조합 없이 <b>germline 유전자에 그대로 들어 있는</b> 감지 단백질. 미생물에 흔하고 사람에게는 드문 분자 패턴을 읽는다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27105/" target="_blank" rel="noopener">Janeway 2001 · 2-3</a> · 오늘날은 TLR · CLR · NLR · RLR · ALR 다섯 계열로 정리하고, 각 계열이 세포의 <b>어느 칸</b>에 놓이는지가 분류의 중심축이다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></p>
+
+        <!-- ───────── 1. 문제 ───────── -->
+        <h2 id="problem">소수의 고정된 센서로 무한한 위협을<small>The germline problem</small></h2>
+        <p class="lede">적응면역은 수용체 유전자를 <b>재조합</b>해 개체마다 새 레퍼토리를 만든다. 선천면역에는 그 장치가 없다 — 센서의 수와 종류가 태어날 때 정해져 있다. 그러면 특이성은 어디서 오나?</p>
+        <ol class="route">
+          <li style="--c:var(--inn)"><span class="lv">감지</span><h4>recognition</h4><p>PRR 다섯 계열이 <b>구획별로 나뉘어</b> 배치된다 — 표면·엔도솜·세포질 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></p></li>
+          <li style="--c:var(--ly)"><span class="lv">증폭</span><h4>amplification</h4><p>cytokine · 보체 · inflammasome이 <b>증폭 모듈</b>로 붙어 작은 신호를 조직 규모의 반응으로 키운다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></p></li>
+          <li style="--c:var(--st)"><span class="lv">효과</span><h4>effector</h4><p>식세포 · 호중구 · NK가 실행하고, 같은 무기가 방어와 손상을 함께 만든다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></p></li>
+        </ol>
+        <div class="callout blue">
+          <h4>이 페이지가 답하려는 것</h4>
+          <p>센서 자체에는 자기·비자기를 가르는 능력이 없다. <b>어디에 놓여 있는지</b>와 <b>그 분자가 원래 거기 있으면 안 되는지</b>가 특이성을 만든다. 그래서 이 페이지는 <b>감지</b>만 다루고, 증폭과 효과는 옆 문서로 넘긴다.</p>
+          <p>자기 성분이 잘못된 칸에 나타났을 때 → <a href="./sterile.html">자기 핵산과 무균 염증</a> · 보체라는 증폭 장치 → <a href="./complement.html">보체</a> · 실행과 기억 → <a href="./effector.html">선천 effector와 기억</a></p>
+        </div>
+
+        <!-- ───────── 2. 지도 ───────── -->
+        <h2 id="map">한 장 지도 — 계열이 놓인 칸과 도착하는 곳<small>Compartment map</small></h2>
+        <p class="lede">위 버튼 → 출력별 경로만 남김. 아래 표의 행에 마우스를 올리면 그림의 해당 계열이 강조된다.</p>
+        <figure class="fig" id="prrFig">
+          <div class="fig-tools">
+            <div class="seg" role="group" aria-label="보기 선택">
+              <button type="button" data-prmode="none" aria-pressed="true">전체</button>
+              <button type="button" data-prmode="nfkb" aria-pressed="false">NF-κB · 전염증</button>
+              <button type="button" data-prmode="ifn" aria-pressed="false">IRF · 제1형 IFN</button>
+              <button type="button" data-prmode="casp" aria-pressed="false">caspase-1 · IL-1</button>
+            </div>
+            <div class="legend static">
+              <span><i style="--c:#b0643c"></i>NF-κB 축</span>
+              <span><i style="--c:#3f6f8f"></i>IRF 축</span>
+              <span><i style="--c:#b24f4f"></i>inflammasome 축</span>
+              <span><i style="--c:#7b5aa6"></i>Syk–CARD9</span>
+            </div>
+          </div>
+          <div class="fig-scroll">
+            <!--GEN:PRR-->
+<svg class="prr" data-mode="none" viewBox="0 0 1160 680" role="img" aria-labelledby="prT prD" xmlns="http://www.w3.org/2000/svg">
+<title id="prT">패턴인식수용체 5계열의 자리와 출력 — 세포 표면·엔도솜·세포질</title>
+<desc id="prD">세포 표면에 TLR과 CLR, 엔도솜 안쪽 면에 핵산을 읽는 TLR, 세포질에 NLR·RLR·ALR과 cGAS가 놓인다. 어댑터(MyD88·TRIF·RIP2·Syk·MAVS·STING·ASC)를 지나 NF-κB로 가는 전염증 cytokine, IRF로 가는 제1형 interferon, caspase-1으로 가는 IL-1β·IL-18과 pyroptosis 세 갈래로 갈린다.</desc>
+<defs><marker id="inA-ifn" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#3f6f8f"/></marker><marker id="inA-nfkb" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b0643c"/></marker><marker id="inA-casp" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b24f4f"/></marker><marker id="inA-clr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7b5aa6"/></marker><marker id="inA-plain" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7d857c"/></marker><marker id="inA-keep" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#2f7f73"/></marker></defs>
+<rect class="zone out" x="0" y="0" width="1160" height="100"/>
+<rect class="zone cyto" x="0" y="122" width="1160" height="558"/>
+<text class="zlab" x="1148" y="24" text-anchor="end">세포 바깥</text>
+<g class="mem"><rect x="0" y="100" width="1160" height="22"/><line x1="0" y1="105" x2="1160" y2="105"/><line x1="0" y1="117" x2="1160" y2="117"/></g>
+<text class="zlab" x="1148" y="115" text-anchor="end">세포막</text>
+<text class="zlab" x="10" y="146" text-anchor="start">세포질</text>
+<g class="organ endo"><ellipse cx="196" cy="326" rx="152" ry="66"/><ellipse class="inner" cx="196" cy="326" rx="132" ry="48"/></g>
+<text class="olab" x="196" y="272" text-anchor="middle">엔도솜 · 리소좀</text>
+<g class="organ mito"><rect x="700" y="214" width="200" height="58" rx="28"/><path class="cristae" d="M728,224 L748,262 M766,224 L786,262 M804,224 L824,262 M842,224 L862,262"/></g>
+<text class="olab" x="692" y="206" text-anchor="end">미토콘드리아 바깥막</text>
+<g class="organ er"><path d="M946,224 C1000,212 1082,232 1152,220 L1152,286 C1084,298 1002,278 946,290 Z"/></g>
+<text class="olab" x="940" y="206" text-anchor="end">소포체 → 골지</text>
+<g class="organ nuc"><rect x="40" y="574" width="760" height="78" rx="26"/></g>
+<text class="olab big" x="420" y="604" text-anchor="middle">핵 — 전사 시작</text>
+<text class="olab small" x="420" y="625" text-anchor="middle">제1형 interferon · 전염증 cytokine · chemokine 유전자</text>
+<g class="outbox casp"><rect x="836" y="568" width="296" height="84" rx="16"/><text class="lab" x="984" y="609" text-anchor="middle">IL-1β · IL-18 방출</text><text class="lab small" x="984" y="625" text-anchor="middle">gasdermin D 구멍 → pyroptosis</text></g>
+<g class="fg hub" data-fg="hub" data-in="nfkb"><g class="nd nfkb "><rect x="85" y="486" width="330" height="36" rx="8"/><text x="250" y="508" text-anchor="middle">NF-κB</text></g></g>
+<g class="fg hub" data-fg="hub" data-in="ifn"><g class="nd ifn "><rect x="490" y="486" width="300" height="36" rx="8"/><text x="640" y="508" text-anchor="middle">IRF3 · IRF7</text></g></g>
+<g class="fg hub" data-fg="hub" data-in="casp"><g class="nd casp "><rect x="844" y="486" width="280" height="36" rx="8"/><text x="984" y="508" text-anchor="middle">ASC → caspase-1</text></g><g class="ov ov-casp num"><circle cx="830" cy="504" r="10"/><text x="830" y="507.9" text-anchor="middle">3</text></g></g>
+<path class="fl nfkb" d="M250,522 L250,570" marker-end="url(#inA-nfkb)"/>
+<path class="fl ifn" d="M640,522 L640,550 L520,550 L520,570" marker-end="url(#inA-ifn)"/>
+<path class="fl casp" d="M984,522 L984,564" marker-end="url(#inA-casp)"/>
+<g class="fg tlr-s" data-fg="tlr-s" data-in="nfkb"><g class="pl lig"><rect x="6" y="6" width="228" height="19" rx="9.5"/><text x="120" y="19.2" text-anchor="middle">세균 lipopolysaccharide (LPS)</text></g><g class="pl lig"><rect x="6" y="29" width="228" height="19" rx="9.5"/><text x="120" y="42.2" text-anchor="middle">lipopeptide · lipoteichoic acid</text></g><g class="pl lig"><rect x="6" y="52" width="228" height="19" rx="9.5"/><text x="120" y="65.2" text-anchor="middle">flagellin</text></g><g class="rcp"><path class="lrr" d="M100,88 a19,19 0 0 1 38,0"/><rect class="ch" x="104" y="86" width="11" height="82" rx="5"/><rect class="ch" x="126" y="86" width="11" height="82" rx="5"/></g><rect class="dom nfkb" x="96" y="150" width="49" height="18" rx="5"/><text class="domt" x="120" y="163" text-anchor="middle">TIR</text><g class="nd nfkb "><rect x="25" y="188" width="190" height="28" rx="8"/><text x="120" y="206" text-anchor="middle">MyD88 → IRAK4</text></g><rect class="ov ov-rx " x="14" y="2" width="212" height="68" rx="12"/><g class="ov ov-nfkb num"><circle cx="32" cy="202" r="10"/><text x="32" y="205.9" text-anchor="middle">1</text></g></g>
+<path class="fl nfkb" d="M120,216 L120,240 L28,240 L28,468 L170,468 L170,482" marker-end="url(#inA-nfkb)"/>
+<g class="fg clr" data-fg="clr" data-in="nfkb"><g class="pl lig"><rect x="262" y="6" width="208" height="19" rx="9.5"/><text x="366" y="19.2" text-anchor="middle">곰팡이 β-glucan</text></g><g class="pl lig"><rect x="262" y="29" width="208" height="19" rx="9.5"/><text x="366" y="42.2" text-anchor="middle">미생물 mannose · 당쇄</text></g><g class="pl lig"><rect x="262" y="52" width="208" height="19" rx="9.5"/><text x="366" y="65.2" text-anchor="middle">죽은 세포가 드러내는 당쇄</text></g><g class="rcp"><circle class="lec" cx="366" cy="88" r="15"/><rect class="ch" x="360" y="92" width="12" height="76" rx="5"/></g><rect class="dom clr" x="342" y="150" width="49" height="18" rx="5"/><text class="domt" x="366" y="163" text-anchor="middle">ITAM</text><g class="nd clr "><rect x="278" y="188" width="176" height="28" rx="8"/><text x="366" y="206" text-anchor="middle">Syk → CARD9</text></g><g class="ov ov-nfkb num"><circle cx="262" cy="202" r="10"/><text x="262" y="205.9" text-anchor="middle">2</text></g></g>
+<path class="fl nfkb" d="M366,216 L366,462 L300,462 L300,482" marker-end="url(#inA-nfkb)"/>
+<g class="fg nlr" data-fg="nlr" data-in="nfkb casp"><g class="pl lig"><rect x="479" y="130" width="222" height="19" rx="9.5"/><text x="590" y="143.2" text-anchor="middle">세균 peptidoglycan 조각</text></g><g class="nd nfkb "><rect x="481" y="158" width="218" height="28" rx="8"/><text x="590" y="176" text-anchor="middle">NOD1 · NOD2 → RIP2</text></g><g class="ov ov-nfkb num"><circle cx="466" cy="172" r="10"/><text x="466" y="175.9" text-anchor="middle">3</text></g><g class="pl lig"><rect x="509" y="318" width="262" height="19" rx="9.5"/><text x="640" y="331.2" text-anchor="middle">K⁺ 유출 · 결정 · 산화 미토콘드리아 DNA</text></g><g class="nd casp "><rect x="520" y="348" width="240" height="28" rx="8"/><text x="640" y="366" text-anchor="middle">NLRP3 · NLRC4 · pyrin</text></g><rect class="ov ov-rx " x="512" y="344" width="256" height="36" rx="10"/><g class="ov ov-casp num"><circle cx="494" cy="300" r="10"/><text x="494" y="303.9" text-anchor="middle">1</text></g></g>
+<path class="fl nfkb" d="M500,186 L500,470 L396,470 L396,482" marker-end="url(#inA-nfkb)"/>
+<path class="fl casp" d="M640,376 L640,456 L900,456 L900,482" marker-end="url(#inA-casp)"/>
+<g class="fg tlr-e" data-fg="tlr-e" data-in="ifn nfkb"><rect class="ch" x="111" y="286" width="10" height="28" rx="4"/><rect class="dom ifn" x="108" y="310" width="16" height="12" rx="4"/><text class="olab" x="116" y="344" text-anchor="middle">TLR3</text><text class="olab small" x="116" y="357" text-anchor="middle">dsRNA</text><rect class="ch" x="191" y="286" width="10" height="28" rx="4"/><rect class="dom ifn" x="188" y="310" width="16" height="12" rx="4"/><text class="olab" x="196" y="344" text-anchor="middle">TLR7 · TLR8</text><text class="olab small" x="196" y="357" text-anchor="middle">ssRNA</text><rect class="ch" x="273" y="286" width="10" height="28" rx="4"/><rect class="dom ifn" x="270" y="310" width="16" height="12" rx="4"/><text class="olab" x="278" y="344" text-anchor="middle">TLR9</text><text class="olab small" x="278" y="357" text-anchor="middle">CpG DNA</text><g class="nd ifn "><rect x="84" y="412" width="224" height="28" rx="8"/><text x="196" y="430" text-anchor="middle">MyD88 · TRIF</text></g><rect class="ov ov-rx " x="80" y="280" width="128" height="46" rx="12"/><g class="ov ov-ifn num"><circle cx="330" cy="300" r="10"/><text x="330" y="303.9" text-anchor="middle">1</text></g></g>
+<path class="fl ifn" d="M196,440 L196,444 L520,444 L520,482" marker-end="url(#inA-ifn)"/>
+<path class="fl nfkb dash" d="M196,440 L196,476 L230,476 L230,482" marker-end="url(#inA-nfkb)"/>
+<g class="fg rlr" data-fg="rlr" data-in="ifn"><g class="gly rna"><path d="M776,36 Q780,28 784,36 Q788,44 792,36 Q796,28 800,36 Q804,44 808,36 Q812,28 816,36 Q820,44 824,36"/><path class="two" transform="translate(0 7)" d="M776,36 Q780,28 784,36 Q788,44 792,36 Q796,28 800,36 Q804,44 808,36 Q812,28 816,36 Q820,44 824,36"/></g><g class="pl lig"><rect x="671" y="56" width="258" height="19" rx="9.5"/><text x="800" y="69.2" text-anchor="middle">짧은 dsRNA + 5′-삼인산 · 긴 dsRNA</text></g><g class="nd ifn "><rect x="689" y="148" width="222" height="28" rx="8"/><text x="800" y="166" text-anchor="middle">RIG-I · MDA5 · LGP2</text></g><g class="nd ifn "><rect x="736" y="228" width="128" height="30" rx="8"/><text x="800" y="247" text-anchor="middle">MAVS</text></g><g class="ov ov-ifn num"><circle cx="668" cy="162" r="10"/><text x="668" y="165.9" text-anchor="middle">2</text></g></g>
+<path class="fl ifn" d="M800,75 L800,144" marker-end="url(#inA-ifn)"/>
+<path class="fl ifn" d="M800,176 L800,224" marker-end="url(#inA-ifn)"/>
+<path class="fl ifn" d="M740,274 L740,446 L700,446 L700,478" marker-end="url(#inA-ifn)"/>
+<g class="fg alr" data-fg="alr" data-in="ifn casp"><g class="gly dna"><line x1="1006" y1="31" x2="1054" y2="31"/><line x1="1006" y1="41" x2="1054" y2="41"/><line class="rung" x1="1012" y1="31" x2="1012" y2="41"/><line class="rung" x1="1020" y1="31" x2="1020" y2="41"/><line class="rung" x1="1028" y1="31" x2="1028" y2="41"/><line class="rung" x1="1036" y1="31" x2="1036" y2="41"/><line class="rung" x1="1044" y1="31" x2="1044" y2="41"/></g><g class="pl lig"><rect x="905" y="56" width="250" height="19" rx="9.5"/><text x="1030" y="69.2" text-anchor="middle">세포질 dsDNA · 유출된 미토콘드리아 DNA</text></g><g class="nd ifn "><rect x="969" y="134" width="122" height="28" rx="8"/><text x="1030" y="152" text-anchor="middle">cGAS</text></g><g class="pl small"><rect x="978" y="172" width="104" height="19" rx="9.5"/><text x="1030" y="185.2" text-anchor="middle">cGAMP</text></g><g class="nd ifn "><rect x="964" y="242" width="132" height="30" rx="8"/><text x="1030" y="261" text-anchor="middle">STING</text></g><g class="nd ifn "><rect x="934" y="318" width="192" height="28" rx="8"/><text x="1030" y="336" text-anchor="middle">TBK1 → IRF3</text></g><g class="nd casp "><rect x="794" y="392" width="192" height="28" rx="8"/><text x="890" y="410" text-anchor="middle">AIM2 · IFI16</text></g><rect class="ov ov-rx " x="962" y="130" width="136" height="36" rx="10"/><rect class="ov ov-rx " x="958" y="238" width="144" height="38" rx="10"/><g class="ov ov-ifn num"><circle cx="948" cy="148" r="10"/><text x="948" y="151.9" text-anchor="middle">3</text></g><g class="ov ov-ifn num"><circle cx="944" cy="256" r="10"/><text x="944" y="259.9" text-anchor="middle">4</text></g><g class="ov ov-casp num"><circle cx="780" cy="406" r="10"/><text x="780" y="409.9" text-anchor="middle">2</text></g></g>
+<path class="fl ifn" d="M1030,75 L1030,130" marker-end="url(#inA-ifn)"/>
+<path class="fl ifn" d="M1030,191 L1030,238" marker-end="url(#inA-ifn)"/>
+<path class="fl ifn" d="M1030,272 L1030,314" marker-end="url(#inA-ifn)"/>
+<path class="fl ifn" d="M1030,346 L1030,434 L760,434 L760,482" marker-end="url(#inA-ifn)"/>
+<path class="fl casp" d="M890,420 L890,452 L1040,452 L1040,482" marker-end="url(#inA-casp)"/>
+</svg>
+<!--/GEN:PRR-->
+          </div>
+          <ol class="steps" data-mode="nfkb">
+            <li>표면 TLR은 <b>TIR</b>(Toll/IL-1 receptor) 도메인으로 MyD88을 부르고 IRAK4를 거쳐 NF-κB를 켠다 — 사람에서 <b>IRAK4 결손</b>은 세균 감염 취약으로 나타난다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+            <li>CLR은 <b>ITAM</b>(immunoreceptor tyrosine-based activation motif)을 통해 Syk–CARD9로 간다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+            <li>NOD1 · NOD2는 세균 peptidoglycan 조각을 세포질에서 읽고 RIP2를 거친다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+          </ol>
+          <ol class="steps" data-mode="ifn">
+            <li>엔도솜 TLR3 · TLR7/8 · TLR9는 <b>삼켜서 분해한</b> 핵산만 만난다 — 칸이 곧 안전장치 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+            <li>RIG-I는 <b>짧은 dsRNA에 5′-삼인산</b>이 붙은 것을, MDA5는 <b>긴 dsRNA</b>를 읽고, LGP2는 CARD가 없이 MDA5 섬유 형성을 돕는다 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></li>
+            <li>cGAS는 세포질 dsDNA에 <b>2:2로 결합</b>하는 것이 최소 활성 단위이고, 45 bp를 넘으면 협동적 올리고머와 상분리로 증폭된다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></li>
+            <li>STING은 소포체에서 골지로 옮겨 가야 신호가 되고, TBK1이 Ser366을 인산화하면 IRF3가 붙는다 — <b>같은 인산화가 분해로 가는 표식</b>이기도 해서 개시와 종료가 한 묶음이다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></li>
+          </ol>
+          <ol class="steps" data-mode="casp">
+            <li>NLRP3는 평소 PYD를 안쪽에 감춘 <b>cage</b> 상태로 막에 붙어 있다가, 자극을 받으면 10~11개 subunit의 <b>disc</b>로 재조립된다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></li>
+            <li>ALR인 AIM2 · IFI16은 세포질 DNA를 직접 읽어 같은 ASC 어댑터로 들어간다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+            <li>ASC 섬유에 모인 caspase-1이 IL-1β · IL-18을 자르고, gasdermin D가 구멍을 만들어 내보낸다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></li>
+          </ol>
+          <figcaption>그림은 다섯 계열의 <b>자리</b>와 <b>도착점</b>만 보여준다. 실제로는 한 세포가 여러 계열을 동시에 쓰고, 어느 조합이 켜지느냐가 반응의 성격을 정한다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a>. cGAS는 다섯 계열 분류에는 들어가지 않지만 같은 칸에서 DNA를 읽는 센서라 함께 그렸다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></figcaption>
+        </figure>
+
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>계열</th><th>자리</th><th>대표 수용체</th><th>읽는 것</th><th>어댑터</th><th>주 출력</th></tr></thead>
+            <tbody>
+              <tr data-fig="prr" data-hl="tlr-s"><th>TLR<br><small>Toll-like receptor</small></th><td>세포 표면</td><td>TLR1/2/4/5/6</td><td>lipopolysaccharide · lipopeptide · flagellin</td><td>MyD88 → IRAK4</td><td>NF-κB</td></tr>
+              <tr data-fig="prr" data-hl="tlr-e"><th>TLR<br><small>엔도솜</small></th><td>엔도솜 · 리소좀</td><td>TLR3 · TLR7/8 · TLR9</td><td>dsRNA · ssRNA · CpG DNA</td><td>MyD88 · TRIF</td><td>제1형 IFN + NF-κB</td></tr>
+              <tr data-fig="prr" data-hl="clr"><th>CLR<br><small>C-type lectin receptor</small></th><td>세포 표면</td><td>Dectin-1 계열 등</td><td>곰팡이 β-glucan · mannose 당쇄</td><td>Syk → CARD9</td><td>NF-κB</td></tr>
+              <tr data-fig="prr" data-hl="nlr"><th>NLR<br><small>NOD-like receptor</small></th><td>세포질</td><td>NOD1 · NOD2 / NLRP3 · NLRC4</td><td>peptidoglycan 조각 / K⁺ 유출 · 결정 · 산화 미토콘드리아 DNA</td><td>RIP2 / ASC → caspase-1</td><td>NF-κB / IL-1β · IL-18</td></tr>
+              <tr data-fig="prr" data-hl="rlr"><th>RLR<br><small>RIG-I-like receptor</small></th><td>세포질</td><td>RIG-I · MDA5 · LGP2</td><td>짧은 dsRNA + 5′-삼인산 / 긴 dsRNA</td><td>MAVS</td><td>제1형 IFN</td></tr>
+              <tr data-fig="prr" data-hl="alr"><th>ALR · cGAS<br><small>AIM2-like receptor</small></th><td>세포질</td><td>AIM2 · IFI16 / cGAS</td><td>세포질 dsDNA</td><td>ASC / STING → TBK1</td><td>IL-1β · IL-18 / 제1형 IFN</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">다섯 계열 구분과 구획 배치는 <b>Zou 2026</b>의 정리를 따랐다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a> · RIG-I/MDA5 리간드 규칙은 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a> · cGAS-STING 쪽은 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a> · inflammasome 조립은 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></p>
+
+        <!-- ───────── 3. 구획 ───────── -->
+        <h2 id="place">칸이 곧 문법이다<small>Location is the rule</small></h2>
+        <p class="lede">핵산에는 "내 것"이라는 표식이 없다. 그래서 핵산 센서의 특이성은 <b>그 핵산이 있으면 안 되는 자리에 있다</b>는 사실에서 나온다.</p>
+        <div class="cases">
+          <div style="--c:var(--inn)"><span class="lv">세포 표면</span><h4>바깥에 있는 미생물</h4>
+            <p>표면 TLR과 CLR은 세포 밖에 그대로 노출된 미생물 구조를 읽는다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></p>
+            <p>대식세포는 mannose 수용체 · scavenger 수용체 · CD14 같은 수용체로 병원체 표면을 잡아 삼킨다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27105/" target="_blank" rel="noopener">Janeway 2001 · 2-3</a></p>
+          </div>
+          <div style="--c:var(--ly)"><span class="lv">엔도솜</span><h4>삼켜서 분해한 것</h4>
+            <p>핵산을 읽는 TLR3 · TLR7/8 · TLR9는 세포 표면이 아니라 엔도솜 안쪽 면에 있다 — 밖에 떠다니는 자기 핵산과 만나지 않게 하는 배치 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></p>
+            <p>이 배치가 무너지는 자리가 루푸스다 — 치워지지 못한 면역복합체가 pDC의 엔도솜 TLR7 · TLR9에 닿아 제1형 interferon을 계속 만든다 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></p>
+          </div>
+          <div style="--c:var(--st)"><span class="lv">세포질</span><h4>들어왔거나 새어 나온 것</h4>
+            <p>세포질에 dsRNA나 dsDNA가 있다는 것 자체가 신호다 — 침입한 바이러스이거나, 자기 핵산이 제자리를 벗어난 것 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></p>
+            <p>그래서 세포질 센서 쪽에는 별도의 관용 장치가 층층이 붙어 있다 → <a href="./sterile.html">자기 핵산과 무균 염증</a></p>
+          </div>
+        </div>
+
+        <!-- ───────── 4. PAMP·DAMP ───────── -->
+        <h2 id="damp">같은 센서, 다른 출처 — PAMP와 DAMP<small>PAMP vs DAMP</small></h2>
+        <p class="lede">병원체 유래 패턴(PAMP, pathogen-associated molecular pattern)과 손상 유래 신호(DAMP, damage-associated molecular pattern)는 <b>같은 수용체</b>로 들어온다. 무엇이 켜지느냐가 아니라 <b>무엇이 그 자리에 왔느냐</b>가 다를 뿐이다.</p>
+        <div class="vs2">
+          <div class="type"><span class="tag">PAMP</span><h4>미생물에서</h4>
+            <ul>
+              <li>세균 lipopolysaccharide · lipopeptide · flagellin · peptidoglycan 조각 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+              <li>곰팡이 β-glucan과 mannose 당쇄 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+              <li>바이러스 복제 중간체 dsRNA, copy-back 전사체의 5′-삼인산 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></li>
+            </ul>
+          </div>
+          <div class="state"><span class="tag">DAMP</span><h4>자기 성분에서</h4>
+            <ul>
+              <li>세포질로 새어 나온 미토콘드리아 DNA — BAX · BAK 대공극, VDAC, 미토콘드리아 유래 소포 등 경로가 여럿 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></li>
+              <li>요산 · 콜레스테롤 · 실리카 같은 결정과 입자가 리소좀을 깨뜨릴 때 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></li>
+              <li>내재 retroelement에서 나온 dsRNA — 편집 장치가 무너지면 자기 RNA가 비자기처럼 읽힌다 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></li>
+              <li>자외선이 만드는 ribotoxic stress는 ZAKα–p38을 거쳐 NLRP1을 켠다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ───────── 5. 고장 목록 ───────── -->
+        <h2 id="human">사람의 고장 목록이 곧 질환 목록<small>What human genetics shows</small></h2>
+        <p class="lede">감지 장치의 <b>기능상실</b>은 감염 취약으로, <b>기능획득</b>은 자가염증으로 나타난다. 같은 유전자에서 방향이 반대인 표현형이 나오는 것이 이 축의 특징이다.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>유전자 · 경로</th><th>방향</th><th>표현형</th><th>출처</th></tr></thead>
+            <tbody>
+              <tr><th>IRAK4 · IRF7</th><td>기능상실</td><td>감염 취약 — 1차 면역결핍으로 분류</td><td><a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></td></tr>
+              <tr><th>NADPH oxidase (CGD)</th><td>기능상실</td><td>식세포가 삼켜도 죽이지 못함 — 만성 육아종병</td><td><a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></td></tr>
+              <tr><th>IFIH1 (MDA5) · DDX58 (RIG-I)</th><td>기능상실</td><td>enterovirus · influenza 중증화</td><td><a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></td></tr>
+              <tr><th>IFIH1 · DDX58</th><td>기능획득</td><td>Aicardi–Goutières 증후군 · Singleton–Merten 증후군 — 다만 IFIH1 기능획득 보유자의 약 20%는 증상이 없다</td><td><a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></td></tr>
+              <tr><th>STING1</th><td>기능획득</td><td>SAVI — cGAMP가 붙지 않아도 IFNB1 전사가 켜진다</td><td><a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a></td></tr>
+              <tr><th>NLRP3</th><td>기능획득</td><td>CAPS — cryopyrin 관련 주기성 증후군</td><td><a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></td></tr>
+              <tr><th>NLRP1 · CARD8</th><td>기능획득</td><td>피부 자가염증 — 사람 각질세포에서 특히 두드러진다</td><td><a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></td></tr>
+              <tr><th>MEFV (pyrin)</th><td>기능획득</td><td>가족성 지중해열</td><td><a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h4>약 만들 때의 교훈</h4>
+          <p>같은 유전자의 기능상실과 기능획득이 <b>반대 방향 표현형</b>을 만든다는 것은, 그 경로를 막는 약과 켜는 약이 동시에 개발된다는 뜻이다 — 자가염증에서는 억제, 종양에서는 활성화가 목표가 된다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a></p>
+        </div>
+
+        <!-- ───────── 6. 조절층 ───────── -->
+        <h2 id="layer">출력을 바꾸는 층들<small>Regulatory layers</small></h2>
+        <p class="lede">같은 자극, 같은 수용체라도 출력이 달라진다. <b>Zou 2026</b>은 그 이유를 전사 아래의 여러 층으로 정리한다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></p>
+        <div class="grid2">
+          <div><h4>분자 층</h4>
+            <ul>
+              <li><b>후성유전</b> — DNA 메틸화와 TET2, H3K4 메틸화, JMJD3의 H3K27 탈메틸화, 그리고 <b>H3K18 lactylation</b> <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+              <li><b>대체 splicing</b> — MyD88-S · miniMAVS · pmSTING · IRAK1c 같은 isoform이 같은 경로를 거꾸로 돌린다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+              <li><b>mRNA 안정성</b> — TTP · HuR · Regnase-1 · m6A가 IFNB1과 DUSP1을 양방향으로 조절 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+              <li><b>대사</b> — succinate–HIF-1α · PKM2 · itaconate · mevalonate · glutaminolysis · IDO–kynurenine–AhR <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+            </ul>
+          </div>
+          <div><h4>사람 층 — 성별과 나이</h4>
+            <ul>
+              <li>X 염색체에 면역 유전자가 약 50개 있고, X 유전자의 15–23%가 X 불활성화를 피한다 — TLR7이 양쪽 대립유전자에서 발현되면 제1형 IFN의 문턱이 낮아진다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+              <li>여성은 호중구가 조금 더 많고, 남성은 nonclassical monocyte가 약 3배 많다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+              <li>신생아는 pDC의 IFN-α/β 생산이 낮고 보체 농도도 낮다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a> → <a href="../01-basics/ontogeny.html">면역 발생과 영아기</a></li>
+              <li>고령에서는 호중구 이동과 NET이 흐트러진다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout blue">
+          <h4>splicing이 감염 표현형을 바꾼 예</h4>
+          <p><b>OAS1</b>의 rs10774671은 alternative splicing으로 nonsense-mediated decay를 일으켜 COVID-19 입원 위험과 연결된다 — 감지 경로의 변이가 sQTL을 통해 질환으로 이어지는 교과서적 사례 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></p>
+        </div>
+
+        <!-- ───────── 7. 약물 ───────── -->
+        <h2 id="drug">이 경로를 겨냥한 약<small>Targeting the sensors</small></h2>
+        <p class="lede">상표명 대신 <b>무엇을 표적으로 삼는지</b>만 적는다.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>표적</th><th>단계</th><th>쓰이는 자리</th></tr></thead>
+            <tbody>
+              <tr><th>IL-1 수용체 · IL-1β</th><td>승인</td><td>자가염증 증후군 · 통풍 등</td></tr>
+              <tr><th>TNF</th><td>승인</td><td>자가면역 염증</td></tr>
+              <tr><th>TLR7 작용제</th><td>승인</td><td>국소 면역 자극</td></tr>
+              <tr><th>NLRP3</th><td>개발</td><td>자가염증 · 대사 염증</td></tr>
+              <tr><th>cGAS · STING</th><td>개발</td><td>억제는 자가염증, 활성화는 종양 — 방향이 반대</td></tr>
+              <tr><th>IRAK4 · TLR7/8</th><td>개발</td><td>자가면역</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">표의 승인·개발 구분과 표적 목록은 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a>의 약물 표를, cGAS·STING의 양방향 개발은 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a>를 따랐다. 개별 약 이름과 적응증은 이 페이지에 두지 않는다 — 시간이 지나면 틀리기 때문.</p>
+
+        <!-- ───────── 8. 근거와 한계 ───────── -->
+        <h2 id="limit">근거와 한계<small>What we do not know</small></h2>
+        <ul class="rules">
+          <li>감지·조절 장치의 인과 근거는 대부분 <b>mouse</b>에서 나왔다 — 예를 들어 <i>Trex1</i> 결손 mouse의 치명적 자가염증이 <i>cGas</i> · <i>Sting1</i> 동시 결손으로 완전히 구제된다 <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a><span class="sp">mouse</span></li>
+          <li>사람 조직에서 센서 활성을 정량하는 <b>표준 지표가 없다</b> <a class="src" href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener">Zhang 2025</a> <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></li>
+          <li>RLR 유전변이의 임상 연관은 대부분 <b>단일 코호트 · 단일 집단</b>이며 재현되지 않은 채로 남아 있다 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></li>
+          <li>AIM2 · pyrin · NLRP6의 전장 구조가 아직 없어, 조립 논리를 구조로 설명하지 못하는 센서가 남아 있다 <a class="src" href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener">Fu 2024</a></li>
+          <li><b>Zou 2026</b>은 총설이라 개별 사실은 인용 문헌에 의존한다 — 이 페이지의 서술도 같은 한계를 물려받는다.</li>
+        </ul>
+        <div class="flag">
+          <h4>집단 간에 방향이 엇갈리는 변이</h4>
+          <p><span class="side">근거 A</span><b>IFIH1 rs3747517</b>이 중국인 코호트에서 SLE 위험 인자로 보고됐다 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></p>
+          <p><span class="side">근거 B</span>같은 변이가 이집트 소아 코호트에서는 보호적, 브라질 코호트에서는 연관이 없었다 <a class="src" href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener">Yoneyama 2024</a></p>
+          <p><span class="side">판단</span>효과 방향의 <b>집단 비전이성</b>으로 다룬다 — 단일 집단 결과로 기전 해석을 확정하지 않는다.</p>
+        </div>
+
+        <a class="more" href="./sterile.html">자기 성분은 왜 보통 문제가 안 되나 →</a>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./sterile.html">자기 성분은 왜 보통 문제가 안 되고, 언제 염증이 되나? →</a>
+          <a href="./complement.html">보체는 어떻게 활성화되고 무슨 일을 하나? →</a>
+          <a href="./effector.html">선천면역은 어떻게 죽이고, 어떻게 기억하나? →</a>
+          <a href="../01-basics/cytokine.html">면역세포는 무엇으로 서로 신호를 주고받나? →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27105/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 방어의 최전선 (2-1~2-4) ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27122/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 유도되는 선천 반응 (2-19~2-24) ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener noreferrer">Zou 2026, Signal Transduct Target Ther ↗</a>
+          <a href="https://doi.org/10.1016/j.immuni.2024.03.003" target="_blank" rel="noopener noreferrer">Yoneyama 2024, Immunity ↗</a>
+          <a href="https://doi.org/10.1146/annurev-immunol-101721-032910" target="_blank" rel="noopener noreferrer">Zhang 2025, Annu Rev Immunol ↗</a>
+          <a href="https://doi.org/10.1038/s41577-024-00995-w" target="_blank" rel="noopener noreferrer">Fu 2024, Nat Rev Immunol ↗</a>
+          <a href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener noreferrer">Goldbach-Mansky 2025, Nat Rev Rheumatol ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../01-basics/basics.js"></script>
+  <script src="./innate.js"></script>
+</body>
+</html>

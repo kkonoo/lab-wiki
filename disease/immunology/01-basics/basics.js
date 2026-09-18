@@ -204,4 +204,17 @@
       });
     });
   }
+
+  /* ── ontogeny: 발생 타임라인 ── */
+  var on = $("svg.onto");
+  if (on) {
+    $$("[data-onmode]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var m = b.getAttribute("data-onmode");
+        on.setAttribute("data-mode", m);
+        $$("[data-onmode]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        $$(".steps").forEach(function (s) { s.classList.toggle("on", s.getAttribute("data-mode") === m); });
+      });
+    });
+  }
 })();

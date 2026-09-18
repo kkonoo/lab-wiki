@@ -67,7 +67,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-ontogeny",
               "면역 발생과 영아기",
-              "태아기의 연속적인 조혈 wave와 출생 전후 환경이 함께 만드는 면역계 — 성인의 축소판을 넘어 발달 단계별 프로그램으로 해석",
+              "수정부터 두 돌까지 한 장 타임라인(난황낭 → AGM → 태아 간 → 골수) · 태반을 건너오는 모체 IgG와 모체 세포 · 모유와 미생물 정착 · 영아기 조직별 T세포 — 성인의 축소판이 아닌 시기별 프로그램",
               "읽기",
               ""
             ]
@@ -81,38 +81,30 @@ window.IMMUNOLOGY = {
       "english": "HOW DANGER IS SENSED FIRST",
       "accent": "#315d78",
       "kuby": "Kuby 4–5장",
-      "summary": "패턴인식수용체 · 핵산 센싱·inflammasome · viral mimicry · 보체의 활성화와 기능",
+      "summary": "패턴인식수용체의 자리와 출력 · 자기 핵산 관용과 무균 염증 · 보체의 세 경로와 조절 · 선천 effector와 골수에 남는 기억",
       "groups": [
         {
-          "q": "선천면역은 무엇을 감지하고 어떻게 반응하나?",
+          "q": "선천면역은 무엇을 감지하나?",
           "note": "Kuby 4장 · 선천면역",
           "items": [
             [
-              "",
-              "패턴인식수용체",
-              "선천면역 수용체의 종류와 신호",
-              "준비 중",
+              "immunology-prr",
+              "패턴인식수용체 — 자리와 출력 지도",
+              "PRR 5계열(TLR·CLR·NLR·RLR·ALR)이 놓인 칸과 NF-κB·IRF·caspase-1 세 출력 · PAMP와 DAMP · 사람 유전자 결함이 만드는 표현형 · 조절층과 약물 표적",
+              "읽기",
               ""
-            ],
+            ]
+          ]
+        },
+        {
+          "q": "자기 성분은 왜 보통 문제가 안 되고, 언제 염증이 되나?",
+          "note": "Kuby 4장 연결 · 핵산 센싱과 무균 염증",
+          "items": [
             [
-              "",
-              "핵산 센싱과 sterile inflammation",
-              "cGAS-STING·AIM2·TLR",
-              "wiki 문서 있음",
-              ""
-            ],
-            [
-              "",
-              "NLRP3 inflammasome",
-              "inflammasome 활성과 염증",
-              "wiki 문서 있음",
-              ""
-            ],
-            [
-              "",
-              "HERV와 viral mimicry",
-              "내재 레트로바이러스의 면역자극",
-              "wiki 문서 있음",
+              "immunology-sterile-inflammation",
+              "자기 핵산 관용과 무균 염증",
+              "RNA·DNA·세포 밖 세 축의 관용 장치와 무너지는 자리(AGS·SAVI·COPA·단일유전자 루푸스) · Alu·LINE-1·HERV retroelement 축 · inflammasome 조립과 pyroptosis · IFN signature 해석",
+              "읽기",
               ""
             ]
           ]
@@ -122,24 +114,23 @@ window.IMMUNOLOGY = {
           "note": "Kuby 5장 · 보체계",
           "items": [
             [
-              "",
-              "보체 활성 경로",
-              "고전·렉틴·대체 경로",
-              "준비 중",
+              "immunology-complement",
+              "보체 — 세 경로와 합류점, 조절과 우회",
+              "고전·렉틴·대체 경로와 C3 전환효소 · 옵소닌·아나필라톡신·막공격복합체 · 1q32.2 RCA 조절 단백과 비정통 활성 · complotype과 세포내 보체 · 표적별 약물",
+              "읽기",
               ""
-            ],
+            ]
+          ]
+        },
+        {
+          "q": "선천면역은 어떻게 죽이고, 어떻게 기억하나?",
+          "note": "Kuby 4장 후반 연결 · effector와 선천 기억",
+          "items": [
             [
-              "",
-              "Complement C4",
-              "자가면역 위험과 연결된 보체 유전자",
-              "wiki 문서 있음",
-              "../autoimmune/general/index.html"
-            ],
-            [
-              "",
-              "Complosome",
-              "세포내 보체와 세포 대사",
-              "wiki 문서 있음",
+              "immunology-innate-effector",
+              "선천 effector와 골수에 남는 기억",
+              "식작용과 호흡폭발 · 호중구의 상태 스펙트럼과 NET · NK의 missing-self와 KIR 다양성 · 골수 조혈전구세포에 남는 trained immunity와 판정 기준",
+              "읽기",
               ""
             ]
           ]

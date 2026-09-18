@@ -1,0 +1,174 @@
+/* Immunology 02-innate — 그림 전용 규칙
+   공통 틀은 ../immunology.css, 공통 문서 스타일은 ../01-basics/basics.css */
+:root{
+  --c-ifn:#3f6f8f; --c-nfkb:#b0643c; --c-casp:#b24f4f;
+  --c-clr:#7b5aa6; --c-keep:#2f7f73; --c-plain:#7d857c;
+  --c-cls:#3f6f8f; --c-lec:#7b5aa6; --c-alt:#b0643c;
+  --c-mac:#b0643c; --c-neu:#3f6f8f; --c-nk:#2f7f73;
+  --c-tol:#2f7f73; --c-dis:#b24f4f; --c-re:#7b5aa6;
+  --c-reg:#2f7f73; --c-def:#2f7f73; --c-dmg:#b24f4f; --c-trim:#6f3a55;
+}
+
+/* ── 공통 ── */
+svg.prr,svg.nas,svg.comp,svg.eff{display:block;width:100%;height:auto}
+svg.prr{min-width:1000px} svg.nas{min-width:950px} svg.comp{min-width:1040px} svg.eff{min-width:900px}
+/* 02의 그림은 01보다 넓다 — 화면이 넓으면 본문 칸을 늘려 가로 스크롤을 줄인다 */
+@media (min-width:1460px){ .vpage .container{width:min(1440px,calc(100% - 40px))} }
+@media (min-width:1700px){ .vpage .container{width:min(1560px,calc(100% - 40px))} }
+.prr text,.nas text,.comp text,.eff text{font-family:"Pretendard","Noto Sans KR",-apple-system,"Segoe UI",sans-serif}
+
+.zone.out{fill:#f1eee6}
+.zone.cyto{fill:#fbfbf7}
+.mem rect{fill:#efe7d8;stroke:#d9cdb6;stroke-width:1}
+.mem line{stroke:#d1c2a6;stroke-width:1.2}
+.zlab{font-size:11px;font-weight:800;letter-spacing:.08em;fill:#8a918a}
+
+.lab{font-size:12px;font-weight:700;fill:#2d352f;paint-order:stroke;stroke:#fff;stroke-width:3.2px;stroke-linejoin:round}
+.lab.big{font-size:13.5px;font-weight:800}
+.lab.small{font-size:10.5px;font-weight:600;fill:#5d665e}
+.lab.tiny{font-size:9.5px;font-weight:600;fill:#5d665e}
+.olab{font-size:11px;font-weight:750;fill:#6d756c;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.olab.big{font-size:13px;font-weight:800;fill:#3d4640}
+.olab.small{font-size:9.8px;font-weight:600;fill:#8a918a}
+.lanet{font:800 14px Georgia,"Noto Serif KR",serif;fill:#3d4640}
+.lanek{font-size:9.5px;font-weight:750;letter-spacing:.14em;fill:#9aa19a}
+.domt{font-size:9px;font-weight:800;fill:#fff}
+
+/* 세포소기관 */
+.organ.endo ellipse{fill:#e9eef1;stroke:#a9bcc7;stroke-width:1.6}
+.organ.endo .inner{fill:#fbfbf7;stroke:#c7d5dd;stroke-width:1.2}
+.organ.mito rect{fill:#f3e6dd;stroke:#c89b7e;stroke-width:1.5}
+.organ.mito .cristae{fill:none;stroke:#c89b7e;stroke-width:1.4;stroke-linecap:round}
+.organ.er path{fill:#ece7f2;stroke:#b3a3c9;stroke-width:1.5}
+.organ.nuc rect,.organ.nuc2 rect{fill:#f2ede4;stroke:#cfc7b8;stroke-width:1.5;stroke-dasharray:5 4}
+.nucleo{fill:#ddd3c2;stroke:#b9ab94;stroke-width:1.2}
+.nline{fill:none;stroke:#b9ab94;stroke-width:1.6}
+
+/* 노드 · pill · 상자 */
+.nd rect{stroke:#fff;stroke-width:1.2}
+.nd text{font-size:11.5px;font-weight:700;fill:#fff}
+.nd.ifn rect{fill:var(--c-ifn)} .nd.nfkb rect{fill:var(--c-nfkb)} .nd.casp rect{fill:var(--c-casp)}
+.nd.clr rect{fill:var(--c-clr)} .nd.keep rect{fill:var(--c-keep)} .nd.plain rect{fill:var(--c-plain)}
+.nd.cls rect{fill:var(--c-cls)} .nd.lec rect{fill:var(--c-lec)} .nd.alt rect{fill:var(--c-alt)}
+
+.pl rect{fill:#fff;stroke:#cdd3c9;stroke-width:1}
+.pl text{font-size:10.5px;font-weight:650;fill:#3d4640}
+.pl.small text{font-size:9.6px;font-weight:600}
+.pl.lig rect{fill:#fdfaf3;stroke:#ddceb2}
+.pl.keep rect{fill:#edf5f2;stroke:#9ec5ba} .pl.keep text{fill:#2c5b52}
+.pl.warn rect{fill:#fbefee;stroke:#ddb3b0} .pl.warn text{fill:#8d4340}
+.pl.re rect{fill:#f2edf7;stroke:#c1b0d6} .pl.re text{fill:#5b467a}
+.pl.reg rect{fill:#edf5f2;stroke:#9ec5ba} .pl.reg text{fill:#2c5b52}
+.pl.alt rect{fill:#fbefee;stroke:#ddb3b0} .pl.alt text{fill:#8d4340}
+.pl.ops rect{fill:#fdf3ec;stroke:#e0bd9d} .pl.ops text{fill:#8a5a30}
+.pl.ana rect{fill:#f3eef8;stroke:#c3b2d8} .pl.ana text{fill:#5b467a}
+.pl.arm rect{fill:#fbfbf7;stroke:#d5dbd2}
+.pl.trim rect{fill:#f6eff3;stroke:#cdb4c2} .pl.trim text{fill:#6f3a55}
+
+.bx rect,.outbox rect{fill:#fff;stroke:#cdd3c9;stroke-width:1.4}
+.bx.trig rect{fill:#f3f1ea;stroke:#ccc7b6}
+.bx.join rect{fill:#eef2ea;stroke:#9fb09a;stroke-width:1.8}
+.bx.keep rect{fill:#f3f9f7;stroke:#9ec5ba}
+.bx.re rect{fill:#f7f3fb;stroke:#c1b0d6}
+.bx.regbox rect{fill:#f3f9f7;stroke:#9ec5ba;stroke-dasharray:5 4}
+.bx.altbox rect{fill:#fbf3f2;stroke:#ddb3b0;stroke-dasharray:5 4}
+.bx.lanebox rect{fill:#fdfdfa;stroke:#d5dbd2}
+.bx.bm rect{fill:#f8f2f5;stroke:#cdb4c2;stroke-width:1.8}
+.outbox.ifn rect{fill:#eef3f7;stroke:var(--c-ifn)}
+.outbox.casp rect{fill:#fbefee;stroke:var(--c-casp)}
+.outbox.keep rect{fill:#edf5f2;stroke:var(--c-keep)}
+.outbox.ops rect{fill:#fdf3ec;stroke:#c89060}
+.outbox.ana rect{fill:#f3eef8;stroke:#9b84b8}
+
+/* 수용체 · glyph */
+.rcp .lrr{fill:none;stroke:#9aa39a;stroke-width:4;stroke-linecap:round}
+.rcp .ch,.ch{fill:#dfe3dc;stroke:#a9b2a6;stroke-width:1}
+.rcp .lec{fill:#efe7f4;stroke:#a68cc2;stroke-width:1.6}
+.dom{stroke:#fff;stroke-width:1.1}
+.dom.nfkb{fill:var(--c-nfkb)} .dom.clr{fill:var(--c-clr)} .dom.ifn{fill:var(--c-ifn)}
+.gly.dna line{stroke:#6d756c;stroke-width:1.6}
+.gly.dna .rung{stroke:#a9b2a6;stroke-width:1.2}
+.gly.rna path{fill:none;stroke:#4f7d97;stroke-width:1.8}
+.gly.rna .two{stroke:#8fb0c2}
+
+/* 화살표 */
+.fl{fill:none;stroke-width:2.1}
+.fl.ifn{stroke:var(--c-ifn)} .fl.nfkb{stroke:var(--c-nfkb)} .fl.casp{stroke:var(--c-casp)}
+.fl.clr{stroke:var(--c-clr)} .fl.keep{stroke:var(--c-keep)} .fl.plain{stroke:var(--c-plain)}
+.fl.cls{stroke:var(--c-cls)} .fl.lec{stroke:var(--c-lec)} .fl.alt{stroke:var(--c-alt)}
+.fl.dash{stroke-dasharray:6 4}
+.fl.brake{stroke:#2f7f73;stroke-width:1.6;stroke-dasharray:3 3;marker-end:none}
+.fl.loop{stroke:var(--c-plain);stroke-width:1.8;stroke-dasharray:5 4}
+.fl.back{stroke-width:2.4;stroke-dasharray:7 4}
+
+/* 모드 오버레이 */
+.ov{opacity:0;transition:opacity .3s;pointer-events:none}
+.ov-rx{fill:none;stroke:#b24f4f;stroke-width:2;stroke-dasharray:4 3}
+.dis rect{fill:#b24f4f;stroke:#fff;stroke-width:1.5}
+.dis text{font-size:10px;font-weight:750;fill:#fff}
+.num circle{fill:#3d4640;stroke:#fff;stroke-width:2}
+.num text{font-size:11px;font-weight:800;fill:#fff}
+.ov-ifn.num circle{fill:var(--c-ifn)} .ov-nfkb.num circle{fill:var(--c-nfkb)}
+.ov-casp.num circle{fill:var(--c-casp)} .ov-tol.num circle{fill:var(--c-tol)}
+.ov-re.num circle{fill:var(--c-re)} .ov-reg.num circle{fill:var(--c-reg)}
+.ov-alt.num circle{fill:var(--c-alt)} .ov-def.num circle{fill:var(--c-def)}
+.ov-dmg.num circle{fill:var(--c-dmg)} .ov-trim.num circle{fill:var(--c-trim)}
+
+svg[data-mode="ifn"] .ov-ifn,svg[data-mode="nfkb"] .ov-nfkb,svg[data-mode="casp"] .ov-casp,
+svg[data-mode="tol"] .ov-tol,svg[data-mode="dis"] .ov-dis,svg[data-mode="re"] .ov-re,
+svg[data-mode="reg"] .ov-reg,svg[data-mode="alt"] .ov-alt,svg[data-mode="rx"] .ov-rx,
+svg[data-mode="def"] .ov-def,svg[data-mode="dmg"] .ov-dmg,svg[data-mode="trim"] .ov-trim{opacity:1}
+
+.fg{transition:opacity .25s}
+svg[data-mode="ifn"] .fg:not([data-in~="ifn"]),
+svg[data-mode="nfkb"] .fg:not([data-in~="nfkb"]),
+svg[data-mode="casp"] .fg:not([data-in~="casp"]),
+svg[data-mode="tol"] .fg:not([data-in~="tol"]),
+svg[data-mode="dis"] .fg:not([data-in~="dis"]),
+svg[data-mode="re"] .fg:not([data-in~="re"]),
+svg[data-mode="reg"] .fg:not([data-in~="reg"]),
+svg[data-mode="alt"] .fg:not([data-in~="alt"]),
+svg[data-mode="def"] .fg:not([data-in~="def"]),
+svg[data-mode="dmg"] .fg:not([data-in~="dmg"]),
+svg[data-mode="trim"] .fg:not([data-in~="trim"]){opacity:.22}
+svg.hot .fg:not(.on){opacity:.2}
+svg .fg.on{opacity:1 !important}
+.prr .fg.on .nd rect,.comp .fg.on .nd rect{stroke:#2d352f;stroke-width:2}
+
+/* 경로 색 (보체) */
+.comp .lanet.cls{fill:var(--c-cls)} .comp .lanet.lec{fill:var(--c-lec)} .comp .lanet.alt{fill:var(--c-alt)}
+.eff .lanet.mac{fill:var(--c-mac)} .eff .lanet.neu{fill:var(--c-neu)} .eff .lanet.nk{fill:var(--c-nk)}
+
+/* 본문 쪽 보조 */
+.steps[data-mode="ifn"]{--sc:var(--c-ifn)} .steps[data-mode="nfkb"]{--sc:var(--c-nfkb)}
+.steps[data-mode="casp"]{--sc:var(--c-casp)} .steps[data-mode="tol"]{--sc:var(--c-tol)}
+.steps[data-mode="dis"]{--sc:var(--c-dis)} .steps[data-mode="re"]{--sc:var(--c-re)}
+.steps[data-mode="reg"]{--sc:var(--c-reg)} .steps[data-mode="alt"]{--sc:var(--c-alt)}
+.steps[data-mode="rx"]{--sc:#b24f4f}
+.steps[data-mode="def"]{--sc:var(--c-def)} .steps[data-mode="dmg"]{--sc:var(--c-dmg)}
+.steps[data-mode="trim"]{--sc:var(--c-trim)}
+
+.vtable tr.on{background:var(--green-soft)}
+.vtable tr[data-fig]{cursor:default}
+.flag{border-left:3px solid #b24f4f;background:#fdf6f5;padding:12px 16px;margin:16px 0 0;border-radius:0 8px 8px 0}
+.flag h4{margin:0 0 5px;font:700 .86rem "Pretendard","Noto Sans KR",sans-serif;color:#8d4340}
+.flag p{margin:0;font-size:.83rem}
+.flag p+p{margin-top:6px}
+.flag .side{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;color:#8d4340;border:1px solid #ddb3b0;border-radius:999px;padding:0 7px;margin-right:6px;vertical-align:1px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid2>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.grid2 h4{margin:0 0 6px;font:700 .96rem Georgia,"Noto Serif KR",serif}
+.grid2 ul{margin:0;padding-left:18px;font-size:.84rem}
+.grid2 li{margin:4px 0}
+@media (max-width:980px){.grid2{grid-template-columns:1fr}}
+
+/* 추가 */
+.ov-rx.ring,.ring{fill:none;stroke:#7b5aa6;stroke-width:2.2;stroke-dasharray:5 3}
+.ov-re.ring{stroke:#7b5aa6}
+.bx.src rect{fill:#fdfaf3;stroke:#ddceb2}
+.pl.src rect{fill:#fff;stroke:#ddceb2}
+.nas .lanet.rna{fill:#3f6f8f} .nas .lanet.dna{fill:#b0643c} .nas .lanet.ext{fill:#2f7f73}
+
+/* 그림 그룹 식별용 클래스 — 자바스크립트·선택자 훅, 별도 스타일 없음 */
+.fg.hub,.fg.tlr-s,.fg.tlr-e,.fg.clr,.fg.nlr,.fg.rlr,.fg.alr,
+.fg.ax,.fg.dna2,.fg.lane,.fg.lane2,.fg.alt2,.fg.reg,.fg.re,.fg.trim{cursor:default}

@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="보체의 세 활성 경로(고전·렉틴·대체)가 C3 전환효소에서 합류해 옵소닌·아나필라톡신·막공격복합체를 만드는 과정, 표면에 국한되는 이유, RCA 조절 단백, 전환효소를 건너뛰는 비정통 활성, complotype과 세포내 보체, 표적별 약물 지형">
+  <title>보체는 어떻게 활성화되고 무슨 일을 하나? · Immunology</title>
+  <link rel="stylesheet" href="../immunology.css">
+  <link rel="stylesheet" href="../01-basics/basics.css">
+  <link rel="stylesheet" href="./innate.css">
+</head>
+<body class="vpage">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Immunology</span></a></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="./index.html">목록</a><span>›</span><a href="./index.html">선천면역</a><span>›</span>보체</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">선천면역 — 위험을 감지하고 처음 대응하기</p>
+        <h1>보체는 어떻게 활성화되고 무슨 일을 하나?</h1>
+        <p class="aliases">Aliases: complement · 보체 · C3 · C5 · C3 convertase · C3 전환효소 · MAC · 막공격복합체 · classical pathway · lectin pathway · alternative pathway · 고전 경로 · 렉틴 경로 · 대체 경로 · C1q · MBL · MASP · factor H · factor B · factor D · CD55 · CD59 · anaphylatoxin · opsonin · complotype · complosome · PNH</p>
+        <p class="definition">보체(complement) = 혈장에 늘 떠 있으면서 병원체를 만나면 <b>순차적인 단백 분해</b>로 조립되는 선천면역 효과 시스템. 원래는 항체의 작용을 "보충한다"는 뜻에서 붙은 이름이다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27100/" target="_blank" rel="noopener">Janeway 2001 · 2-5</a> · 세 경로가 <b>C3 전환효소</b>에서 합류하고, 출력은 옵소닌 · 아나필라톡신 · 막공격복합체 세 가지다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></p>
+
+        <!-- ───────── 1. 지도 ───────── -->
+        <h2 id="map">한 장 지도 — 세 갈래 입구, 하나의 합류점<small>Three entries, one junction</small></h2>
+        <p class="lede">시작하는 방법은 셋이지만, 일단 <b>C3 전환효소</b>가 만들어지면 그다음은 같다. 위 버튼 → 조절 단백이 어디를 멈추는지, 전환효소를 건너뛰는 길이 무엇인지, 약이 어디를 겨냥하는지.</p>
+        <figure class="fig" id="compFig">
+          <div class="fig-tools">
+            <div class="seg" role="group" aria-label="보기 선택">
+              <button type="button" data-comode="none" aria-pressed="true">전체</button>
+              <button type="button" data-comode="reg" aria-pressed="false">조절 단백</button>
+              <button type="button" data-comode="alt" aria-pressed="false">비정통 활성</button>
+              <button type="button" data-comode="rx" aria-pressed="false">약물 표적</button>
+            </div>
+            <div class="legend static">
+              <span><i style="--c:#3f6f8f"></i>고전 경로</span>
+              <span><i style="--c:#7b5aa6"></i>렉틴 경로</span>
+              <span><i style="--c:#b0643c"></i>대체 경로</span>
+              <span><i style="--c:#2f7f73"></i>조절 단백</span>
+            </div>
+          </div>
+          <div class="fig-scroll">
+            <!--GEN:COMP-->
+<svg class="comp" data-mode="none" viewBox="0 0 1260 748" role="img" aria-labelledby="coT coD" xmlns="http://www.w3.org/2000/svg">
+<title id="coT">보체의 세 활성 경로와 합류점, 조절 단백, 비정통 활성, 세 가지 출력</title>
+<desc id="coD">고전·렉틴·대체 경로가 각각 다른 방식으로 시작해 C3 전환효소에서 합류한다. C3가 잘려 C3a와 C3b가 되고, C3b가 쌓이면 C5 전환효소가 만들어져 C5a와 C5b가 나오며 C5b-9 막공격복합체로 끝난다. 왼쪽에 각 단계를 멈추는 조절 단백, 오른쪽에 전환효소를 건너뛰는 비정통 활성, 아래에 옵소닌·아나필라톡신·막공격복합체 세 출력이 있다.</desc>
+<defs><marker id="coA-ifn" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#3f6f8f"/></marker><marker id="coA-nfkb" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b0643c"/></marker><marker id="coA-casp" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b24f4f"/></marker><marker id="coA-clr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7b5aa6"/></marker><marker id="coA-plain" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7d857c"/></marker><marker id="coA-keep" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#2f7f73"/></marker></defs>
+<g class="fg lane cls" data-fg="cls" data-in="rx">
+<text class="lanet cls" x="380" y="20" text-anchor="middle">고전 경로</text>
+<text class="lanek" x="380" y="36" text-anchor="middle">classical</text>
+<g class="bx trig"><rect x="235" y="48" width="290" height="48" rx="10"/><text class="lab small" x="380" y="76.5" text-anchor="middle">면역복합체 · 죽은 세포 표면 · C-reactive protein</text></g>
+<g class="nd cls "><rect x="235" y="118" width="290" height="34" rx="8"/><text x="380" y="139" text-anchor="middle">C1q – C1r – C1s</text></g>
+<rect class="ov ov-rx " x="229" y="112" width="302" height="46" rx="11"/>
+<g class="nd cls "><rect x="282" y="178" width="196" height="32" rx="8"/><text x="380" y="198" text-anchor="middle">C4b2a</text></g>
+<path class="fl cls" d="M380,96 L380,114" marker-end="url(#coA-cls)"/>
+<path class="fl cls" d="M380,152 L380,174" marker-end="url(#coA-cls)"/>
+</g>
+<g class="fg lane lec" data-fg="lec" data-in="rx">
+<text class="lanet lec" x="700" y="20" text-anchor="middle">렉틴 경로</text>
+<text class="lanek" x="700" y="36" text-anchor="middle">lectin</text>
+<g class="bx trig"><rect x="555" y="48" width="290" height="48" rx="10"/><text class="lab small" x="700" y="76.5" text-anchor="middle">미생물 표면의 mannose 등 당쇄 패턴</text></g>
+<g class="nd lec "><rect x="555" y="118" width="290" height="34" rx="8"/><text x="700" y="139" text-anchor="middle">MBL · ficolin · collectin – MASP</text></g>
+<rect class="ov ov-rx " x="549" y="112" width="302" height="46" rx="11"/>
+<g class="nd lec "><rect x="602" y="178" width="196" height="32" rx="8"/><text x="700" y="198" text-anchor="middle">C4b2a</text></g>
+<path class="fl lec" d="M700,96 L700,114" marker-end="url(#coA-lec)"/>
+<path class="fl lec" d="M700,152 L700,174" marker-end="url(#coA-lec)"/>
+</g>
+<g class="fg lane alt" data-fg="alt" data-in="rx">
+<text class="lanet alt" x="1020" y="20" text-anchor="middle">대체 경로</text>
+<text class="lanek" x="1020" y="36" text-anchor="middle">alternative</text>
+<g class="bx trig"><rect x="875" y="48" width="290" height="48" rx="10"/><text class="lab small" x="1020" y="76.5" text-anchor="middle">C3의 자연 가수분해 — 늘 조금씩 돌아감</text></g>
+<g class="nd alt "><rect x="875" y="118" width="290" height="34" rx="8"/><text x="1020" y="139" text-anchor="middle">C3(H₂O) · factor B · factor D</text></g>
+<rect class="ov ov-rx " x="869" y="112" width="302" height="46" rx="11"/>
+<g class="nd alt "><rect x="922" y="178" width="196" height="32" rx="8"/><text x="1020" y="198" text-anchor="middle">C3bBb</text></g>
+<path class="fl alt" d="M1020,96 L1020,114" marker-end="url(#coA-alt)"/>
+<path class="fl alt" d="M1020,152 L1020,174" marker-end="url(#coA-alt)"/>
+</g>
+<g class="bx join"><rect x="200" y="238" width="880" height="48" rx="12"/><text class="lab" x="640" y="266.5" text-anchor="middle">C3 전환효소 — 세 경로가 여기서 만난다</text></g>
+<path class="fl cls" d="M380,210 L380,224 L420,224 L420,234" marker-end="url(#coA-cls)"/>
+<path class="fl lec" d="M700,210 L700,224 L640,224 L640,234" marker-end="url(#coA-lec)"/>
+<path class="fl alt" d="M1020,210 L1020,224 L860,224 L860,234" marker-end="url(#coA-alt)"/>
+<g class="nd plain "><rect x="552" y="308" width="176" height="34" rx="8"/><text x="640" y="329" text-anchor="middle">C3</text></g>
+<rect class="ov ov-rx " x="540" y="302" width="200" height="46" rx="11"/>
+<path class="fl plain" d="M640,286 L640,304" marker-end="url(#coA-plain)"/>
+<g class="pl ana"><rect x="367" y="364" width="166" height="19" rx="9.5"/><text x="450" y="377.2" text-anchor="middle">C3a</text></g>
+<g class="pl ops"><rect x="725" y="364" width="210" height="19" rx="9.5"/><text x="830" y="377.2" text-anchor="middle">C3b — 표면에 결합</text></g>
+<rect class="ov ov-rx " x="360" y="358" width="180" height="31" rx="15"/>
+<path class="fl plain" d="M600,342 L500,360" marker-end="url(#coA-plain)"/>
+<path class="fl plain" d="M680,342 L780,360" marker-end="url(#coA-plain)"/>
+<path class="fl loop" d="M935,368 C1020,356 1026,246 1002,214" marker-end="url(#coA-plain)"/>
+<text class="olab small" x="1046" y="300" text-anchor="start">증폭 고리</text>
+<g class="nd plain "><rect x="509" y="408" width="262" height="34" rx="8"/><text x="640" y="429" text-anchor="middle">C5 전환효소</text></g>
+<path class="fl plain" d="M830,384 L830,396 L700,396 L700,404" marker-end="url(#coA-plain)"/>
+<g class="nd plain "><rect x="552" y="468" width="176" height="34" rx="8"/><text x="640" y="489" text-anchor="middle">C5</text></g>
+<rect class="ov ov-rx " x="540" y="462" width="200" height="46" rx="11"/>
+<path class="fl plain" d="M640,442 L640,464" marker-end="url(#coA-plain)"/>
+<g class="pl ana"><rect x="367" y="524" width="166" height="19" rx="9.5"/><text x="450" y="537.2" text-anchor="middle">C5a</text></g>
+<g class="pl ops"><rect x="747" y="524" width="166" height="19" rx="9.5"/><text x="830" y="537.2" text-anchor="middle">C5b</text></g>
+<rect class="ov ov-rx " x="360" y="518" width="180" height="31" rx="15"/>
+<path class="fl plain" d="M600,502 L500,520" marker-end="url(#coA-plain)"/>
+<path class="fl plain" d="M680,502 L790,520" marker-end="url(#coA-plain)"/>
+<g class="nd casp "><rect x="684" y="572" width="292" height="34" rx="8"/><text x="830" y="593" text-anchor="middle">C5b-9 막공격복합체 (MAC)</text></g>
+<path class="fl plain" d="M830,543 L830,568" marker-end="url(#coA-plain)"/>
+<g class="fg reg" data-fg="reg" data-in="reg"><g class="bx regbox"><rect x="10" y="100" width="172" height="396" rx="14"/></g><text class="lab" x="96" y="124" text-anchor="middle">조절 단백</text><text class="lanek" x="96" y="140" text-anchor="middle">brake</text><g class="pl reg small"><rect x="20" y="156" width="152" height="19" rx="9.5"/><text x="96" y="169.2" text-anchor="middle">C1 억제자 (C1-INH)</text></g><g class="pl reg small"><rect x="20" y="204" width="152" height="19" rx="9.5"/><text x="96" y="217.2" text-anchor="middle">C4BP · CR1 · CD46</text></g><g class="pl reg small"><rect x="20" y="256" width="152" height="19" rx="9.5"/><text x="96" y="269.2" text-anchor="middle">factor H · factor I</text></g><g class="pl reg small"><rect x="20" y="304" width="152" height="19" rx="9.5"/><text x="96" y="317.2" text-anchor="middle">CD55 (DAF) · CR1</text></g><g class="pl reg small"><rect x="20" y="352" width="152" height="19" rx="9.5"/><text x="96" y="365.2" text-anchor="middle">carboxypeptidase</text></g><text class="olab small" x="96" y="400" text-anchor="middle">대부분 1번 염색체</text><text class="olab small" x="96" y="414" text-anchor="middle">1q32.2의 RCA 무리</text><text class="olab small" x="96" y="440" text-anchor="middle">병원체는 이 조절자를</text><text class="olab small" x="96" y="454" text-anchor="middle">가로채 자기 표면에 붙인다</text><g class="pl reg small"><rect x="532" y="578" width="128" height="19" rx="9.5"/><text x="596" y="591.2" text-anchor="middle">CD59</text></g><g class="ov ov-reg num"><circle cx="28" cy="166" r="10"/><text x="28" y="169.9" text-anchor="middle">1</text></g><g class="ov ov-reg num"><circle cx="28" cy="266" r="10"/><text x="28" y="269.9" text-anchor="middle">2</text></g><g class="ov ov-reg num"><circle cx="534" cy="588" r="10"/><text x="534" y="591.9" text-anchor="middle">3</text></g></g>
+<path class="fl brake" d="M182,166 L234,142"/>
+<path class="fl brake" d="M182,214 L282,200"/>
+<path class="fl brake" d="M182,266 L200,258"/>
+<path class="fl brake" d="M182,314 L200,276"/>
+<path class="fl brake" d="M182,362 L366,372"/>
+<path class="fl brake" d="M660,588 L686,586"/>
+<g class="fg alt2" data-fg="alt2" data-in="alt"><g class="bx altbox"><rect x="1024" y="330" width="226" height="232" rx="14"/></g><text class="lab" x="1137" y="354" text-anchor="middle">비정통 활성</text><text class="lanek" x="1137" y="370" text-anchor="middle">전환효소 우회</text><g class="pl alt small"><rect x="1034" y="384" width="206" height="19" rx="9.5"/><text x="1137" y="397.2" text-anchor="middle">thrombin · plasmin</text></g><g class="pl alt small"><rect x="1034" y="416" width="206" height="19" rx="9.5"/><text x="1137" y="429.2" text-anchor="middle">kallikrein · 응고인자</text></g><g class="pl alt small"><rect x="1034" y="448" width="206" height="19" rx="9.5"/><text x="1137" y="461.2" text-anchor="middle">neutrophil elastase</text></g><g class="pl alt small"><rect x="1034" y="480" width="206" height="19" rx="9.5"/><text x="1137" y="493.2" text-anchor="middle">cathepsin L (세포내)</text></g><g class="pl alt small"><rect x="1034" y="512" width="206" height="19" rx="9.5"/><text x="1137" y="525.2" text-anchor="middle">세균 protease</text></g><g class="ov ov-alt num"><circle cx="1038" cy="344" r="10"/><text x="1038" y="347.9" text-anchor="middle">1</text></g></g>
+<path class="fl casp dash" d="M1024,392 L990,392 L990,322 L736,322" marker-end="url(#coA-casp)"/>
+<path class="fl casp dash" d="M1024,490 L976,490 L976,482 L736,482" marker-end="url(#coA-casp)"/>
+<g class="outbox ana"><rect x="24" y="636" width="388" height="92" rx="16"/><text class="lab" x="218" y="681" text-anchor="middle">아나필라톡신</text><text class="lab small" x="218" y="697" text-anchor="middle">C3a · C5a → 혈관 투과성 · 세포 동원</text></g>
+<g class="outbox ops"><rect x="432" y="636" width="388" height="92" rx="16"/><text class="lab" x="626" y="681" text-anchor="middle">옵소닌</text><text class="lab small" x="626" y="697" text-anchor="middle">C3b · C4b → CR1 · CR3 → 식세포가 삼킴</text></g>
+<g class="outbox casp"><rect x="840" y="636" width="396" height="92" rx="16"/><text class="lab" x="1038" y="681" text-anchor="middle">막공격복합체</text><text class="lab small" x="1038" y="697" text-anchor="middle">용해 · 약한 MAC은 NLRP3를 켠다</text></g>
+<path class="fl plain" d="M450,543 L450,600 L218,600 L218,632" marker-end="url(#coA-plain)"/>
+<path class="fl plain" d="M935,374 L998,374 L998,618 L626,618 L626,632" marker-end="url(#coA-plain)"/>
+<path class="fl casp" d="M976,600 L1038,632" marker-end="url(#coA-casp)"/>
+</svg>
+<!--/GEN:COMP-->
+          </div>
+          <ol class="steps" data-mode="reg">
+            <li>조절 단백 대부분은 1번 염색체 <b>1q32.2</b>의 RCA 유전자 무리에 모여 있다 — factor H 계열 · C4BP · CD46 · CD55 · CR1 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></li>
+            <li>액상에서는 C1 억제자와 carboxypeptidase가, 막에서는 CD46 · CD55 · CD59가 맡는다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></li>
+            <li>CD59는 마지막 단계에서 막공격복합체의 조립을 막는다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27100/" target="_blank" rel="noopener">Janeway 2001 · 2-14</a></li>
+          </ol>
+          <ol class="steps" data-mode="alt">
+            <li>thrombin · plasmin · kallikrein 같은 응고·섬유소분해 protease, 호중구 elastase, 세균 protease가 <b>C3와 C5를 직접</b> 자를 수 있다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></li>
+            <li>리소좀의 cathepsin L은 세포 <b>안에서</b> C3를 자른다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></li>
+            <li>표면에 C3b가 아주 빽빽하면 삼원 C5 전환효소 없이도 C5가 활성된다 — C5를 막는 치료 중에 감염 자극이 오면 나타나는 breakthrough 용혈의 설명 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></li>
+          </ol>
+          <figcaption>대체 경로는 자극이 없어도 <b>늘 조금씩 돌아간다</b> — C3의 자연 가수분해(tick-over)가 출발점이다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27100/" target="_blank" rel="noopener">Janeway 2001 · 2-9</a>. 그래서 보체에서 중요한 질문은 "무엇이 켜나"가 아니라 <b>"무엇이 이것을 자기 세포에서 멈추나"</b>가 된다.</figcaption>
+        </figure>
+
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>경로</th><th>무엇이 시작하나</th><th>인식 분자</th><th>C3 전환효소</th></tr></thead>
+            <tbody>
+              <tr data-fig="comp" data-hl="cls"><th>고전<br><small>classical</small></th><td>항체가 붙은 면역복합체, 죽은 세포 표면, C-reactive protein</td><td>C1q – C1r – C1s</td><td>C4b2a</td></tr>
+              <tr data-fig="comp" data-hl="lec"><th>렉틴<br><small>lectin</small></th><td>미생물 표면의 mannose 등 당쇄 패턴</td><td>MBL · ficolin · collectin – MASP</td><td>C4b2a</td></tr>
+              <tr data-fig="comp" data-hl="alt"><th>대체<br><small>alternative</small></th><td>C3의 자연 가수분해 — 자극 없이 상시</td><td>C3(H₂O) · factor B · factor D</td><td>C3bBb</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">세 경로의 이름과 순서는 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27100/" target="_blank" rel="noopener">Janeway 2001 · 2-5~2-10</a>, 오늘날의 확장(비정통 활성 · 세포내 보체 · 조직 프로그램 조절)은 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a>를 따랐다.</p>
+
+        <!-- ───────── 2. 표면 ───────── -->
+        <h2 id="surface">왜 병원체 표면에만 붙나<small>Why it stays on the surface</small></h2>
+        <p class="lede">보체가 혈장 전체를 굳히지 않는 이유는 두 가지다 — <b>반응성이 몇 microsecond 만에 사라지고</b>, 자기 세포에는 브레이크가 붙어 있다.</p>
+        <div class="cases">
+          <div style="--c:var(--inn)"><span class="lv">1</span><h4>시작한 자리에 갇힌다</h4>
+            <p>보체 활성은 그것이 시작된 표면에 대체로 국한된다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27100/" target="_blank" rel="noopener">Janeway 2001 · 2-8</a></p>
+          </div>
+          <div style="--c:var(--ly)"><span class="lv">2</span><h4>C3b가 계속 쌓인다</h4>
+            <p>표면에 붙은 C3 전환효소는 <b>많은 수의 C3b 조각</b>을 그 표면에 깔고, 그것이 C5 전환효소 활성으로 이어진다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27100/" target="_blank" rel="noopener">Janeway 2001 · 2-10</a></p>
+          </div>
+          <div style="--c:var(--st)"><span class="lv">3</span><h4>자기 세포에는 브레이크가 있다</h4>
+            <p>조절 단백이 세 경로 모두를 제어해 숙주를 보호한다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27100/" target="_blank" rel="noopener">Janeway 2001 · 2-14</a> — 병원체는 이 조절자를 가로채거나(factor H 포획) 바이러스 동족체를 써서 흉내 낸다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></p>
+          </div>
+        </div>
+
+        <!-- ───────── 3. 출력 ───────── -->
+        <h2 id="output">세 가지 출력이 하는 일<small>Opsonin · anaphylatoxin · MAC</small></h2>
+        <div class="grid2">
+          <div><h4>옵소닌 — 표시해서 먹게 한다</h4>
+            <ul>
+              <li>표면에 결합한 C3b가 병원체의 최종 파괴를 예약한다 — 식세포가 보체 수용체로 알아보고 삼킨다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27100/" target="_blank" rel="noopener">Janeway 2001 · 2-11</a></li>
+              <li>식세포가 삼킨 뒤에는 phagolysosome에서 과산화수소 · 초과산화물 · 일산화질소가 만들어진다 — 이른바 호흡폭발 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27105/" target="_blank" rel="noopener">Janeway 2001 · 2-4</a> → <a href="./effector.html">선천 effector</a></li>
+            </ul>
+          </div>
+          <div><h4>아나필라톡신 — 사람을 부른다</h4>
+            <ul>
+              <li>C3a와 특히 C5a가 식세포를 불러 모으고, 혈관 투과성을 높이며, 감염 자리의 세포를 활성화한다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27100/" target="_blank" rel="noopener">Janeway 2001 · 2-12</a></li>
+              <li>C5aR2는 β-arrestin을 통해 C5aR1을 억제하면서도 NLRP3와 HMGB1은 올린다 — 한 수용체 쌍 안에 양방향이 들어 있다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></li>
+            </ul>
+          </div>
+          <div><h4>막공격복합체 — 직접 뚫는다</h4>
+            <ul>
+              <li>말단 보체 단백이 중합해 지질 이중층에 구멍을 만든다 — 다만 이 기전이 실제로 결정적인 것은 주로 <i>Neisseria</i> 같은 일부 세균에 대해서다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27100/" target="_blank" rel="noopener">Janeway 2001 · 2-13</a></li>
+              <li>죽이지 못할 만큼 <b>약한 막공격복합체</b>는 오히려 NLRP3를 켜서 IL-1β · IL-18을 내게 한다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a> → <a href="./sterile.html">inflammasome</a></li>
+            </ul>
+          </div>
+          <div><h4>면역 효과기를 넘어서</h4>
+            <ul>
+              <li>같은 단백들이 배아 신경관 세포 이동, 간 재생, 중추신경계 시냅스 가지치기, 미생물군 균형에도 관여한다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></li>
+              <li>간 재생에서는 Kupffer 세포의 C3aR · C5aR1이 IL-6 · TNF를 내고 간세포가 다시 세포주기에 들어간다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout blue">
+          <h4>급성기 반응과의 연결</h4>
+          <p>감염 부위의 대식세포가 낸 cytokine이 간에서 급성기 단백을 만들게 하는데, 그중 C-reactive protein과 mannan-binding lectin은 <b>병원체에는 붙고 숙주 세포에는 붙지 않는</b> 분자다 — 적응면역이 준비되기 전에 옵소닌 역할을 한다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27122/" target="_blank" rel="noopener">Janeway 2001 · 2-24</a></p>
+        </div>
+
+        <!-- ───────── 4. complotype ───────── -->
+        <h2 id="complotype">유전형이 그대로 표현형이 된다<small>Complotype</small></h2>
+        <p class="lede">흔한 변이와 희귀 변이가 함께 만드는 <b>개인별 기저 보체 활성</b>을 complotype이라 부른다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a>. 우리 랩 언어로는 SNP 패널로 잘 잡히지 않는 구조·다중대립 유전형 문제가 그대로 들어 있는 축이다.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>변이</th><th>무엇이 달라지나</th><th>표현형</th></tr></thead>
+            <tbody>
+              <tr><th>factor H <b>Y402H</b></th><td>산화 지질 epitope와 glycosaminoglycan 결합이 떨어진다</td><td>연령관련 황반변성 위험 상승 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></td></tr>
+              <tr><th>factor H 변이의 <b>위치</b></th><td>C-말단이냐 N-말단이냐</td><td>비정형 용혈요독증후군과 C3 사구체병증으로 갈린다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></td></tr>
+              <tr><th><b>PIGA</b> 체세포 변이</th><td>GPI 고정 CD55 · CD59가 사라진다</td><td>발작성 야간혈색소뇨증 — 막공격복합체 매개 혈관내 용혈 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></td></tr>
+              <tr><th><b>C4</b> copy number</th><td>MHC 안의 구조변이 — C4A와 C4B의 복제수가 사람마다 다르다</td><td>자가면역과 정신질환에서 <b>반대 방향</b>으로 작용한다. 수치와 성차는 <a href="../../autoimmune/general/index.html">자가면역 문서</a>에 <a class="src" href="https://doi.org/10.1038/nature16549" target="_blank" rel="noopener">Sekar 2016</a> <a class="src" href="https://doi.org/10.1038/s41586-020-2277-x" target="_blank" rel="noopener">Kamitaki 2020</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h4>표적 층위가 표현형을 바꾼 사례 — 발작성 야간혈색소뇨증</h4>
+          <p>C5를 막으면 혈관내 용혈은 멈추지만, 표면에 C3b가 계속 쌓여 간·비장의 대식세포가 CR3로 잡아먹는 <b>혈관외 용혈</b>이 드러난다. 그래서 C3를 막는 쪽이 양쪽을 덮는다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></p>
+        </div>
+
+        <!-- ───────── 5. complosome ───────── -->
+        <h2 id="complosome">세포 안에서도 작동한다 — complosome<small>Intracellular complement</small></h2>
+        <ul class="rules">
+          <li>보체 기능은 <b>전신 · 국소 세포외 · 세포내</b> 세 구획으로 나뉘며, 세포내 보체는 면역세포뿐 아니라 fibroblast · 내피 · 상피에서도 미토콘드리아 호흡 · 해당과정 · autophagy · 유전자 전사를 조절한다 <a class="src" href="https://doi.org/10.1038/s41581-023-00704-1" target="_blank" rel="noopener">West &amp; Kemper 2023</a></li>
+          <li>CD4 T세포에서 C3aR–mTORC1과 C5aR1–NLRP3–IL-1β 축이 TH1 반응을, 활막 fibroblast에서는 염증 priming을 조절한다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></li>
+          <li>다만 이 주장 대부분은 <b>세포 실험 기반</b>이다 — 조직 안에서 세포내 보체를 정량하거나 선택적으로 차단하는 방법은 아직 초기 단계다 <a class="src" href="https://doi.org/10.1038/s41581-023-00704-1" target="_blank" rel="noopener">West &amp; Kemper 2023</a></li>
+          <li>신장이 보체 탈조절에 유독 취약한 이유는 그 종설에서도 미해결로 남겨져 있다 <a class="src" href="https://doi.org/10.1038/s41581-023-00704-1" target="_blank" rel="noopener">West &amp; Kemper 2023</a> → <a href="../../nephro/dkd/index.html">신장 쪽 문서</a></li>
+        </ul>
+
+        <!-- ───────── 6. 약물 ───────── -->
+        <h2 id="drug">이 경로를 겨냥한 약<small>Targeting complement</small></h2>
+        <p class="lede">보체는 선천면역에서 <b>실제로 약이 여러 개 나온</b> 드문 축이다. 여기서도 상표명 없이 표적만 적는다.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>표적</th><th>단계</th><th>주로 쓰이는 자리</th></tr></thead>
+            <tbody>
+              <tr><th>C5</th><td>승인</td><td>발작성 야간혈색소뇨증 · 비정형 용혈요독증후군</td></tr>
+              <tr><th>C3</th><td>승인</td><td>발작성 야간혈색소뇨증 · 지도모양위축</td></tr>
+              <tr><th>C1s</th><td>승인</td><td>한랭응집소병</td></tr>
+              <tr><th>C5a 수용체(C5aR1)</th><td>승인</td><td>ANCA 연관 혈관염</td></tr>
+              <tr><th>factor B · factor D</th><td>개발</td><td>대체 경로를 상류에서 막는 전략</td></tr>
+              <tr><th>MASP-2 · C1q</th><td>개발</td><td>렉틴 경로 · 고전 경로 선택적 차단</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="abbr-line">승인·개발 구분과 표적 목록은 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a>의 표를 따랐다. 국소로 보내는 전략(안구 내 투여, 손상 조직만 겨냥하는 융합 단백, 생체재료 표면 코팅)도 함께 정리돼 있다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></p>
+
+        <!-- ───────── 7. 갈리는 지점 ───────── -->
+        <h2 id="flag">갈리는 지점<small>Where the evidence splits</small></h2>
+        <div class="flag">
+          <h4>종양에서 보체는 방어인가 촉진인가</h4>
+          <p><span class="side">근거 A</span>항체 매개 세포독성과 막공격복합체가 종양세포를 죽이고, 방사선·화학요법 뒤의 C3a · C5a가 effector T세포 반응을 돕는다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></p>
+          <p><span class="side">근거 B</span>같은 종설이, C3 또는 C5aR1을 막으면 골수유래 억제세포 침윤이 줄고 CD8 반응이 회복돼 면역관문 차단 효과가 올라간 여러 모델을 함께 인용한다. 신장암·폐암에서 보체 과활성 전사 서명은 예후가 나쁘다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></p>
+          <p><span class="side">판단</span>종양 유형 · 단계 · 면역 조성 · 치료 조합에 따라 방향이 바뀌는 <b>맥락 의존</b>으로 본다. 단일 방향을 가정하고 보체를 표적하지 않는다.</p>
+        </div>
+        <div class="flag">
+          <h4>C3a 수용체 — 차단할 것인가, 언제 차단할 것인가</h4>
+          <p><span class="side">근거</span>허혈성 뇌졸중에서 C3aR은 급성기에는 유해하고 후기에는 회복을 돕는다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></p>
+          <p><span class="side">판단</span>질문이 "차단하느냐"가 아니라 <b>"언제 차단하느냐"</b>로 바뀐다. 시점을 고정하지 않은 결과는 그대로 비교하지 않는다.</p>
+        </div>
+
+        <!-- ───────── 8. 한계 ───────── -->
+        <h2 id="limit">근거와 한계<small>What we do not know</small></h2>
+        <ul class="rules">
+          <li>complotype이나 국소 대 전신 기여를 <b>환자 단위로 재는 표준</b>이 없어, COVID-19 · 루푸스 신염 · 류마티스에서 결과가 엇갈렸다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></li>
+          <li>COVID-19에서 10종 이상의 보체 약물이 시험됐지만 결과가 일관되지 않았고, 환자를 나눌 biomarker가 확립되지 않았다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></li>
+          <li>장기간 C3를 억제했을 때의 감염 안전성은 관찰이 진행 중이다 — 유전적 C3 결핍의 표현형과 약리적 억제가 같지 않다는 근거(잔여 우회 활성)가 쌓이고 있다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a></li>
+          <li>세포내 보체의 <b>생체 내 정량</b>이 어렵다는 한계는 그대로 남아 있다 <a class="src" href="https://doi.org/10.1038/s41581-023-00704-1" target="_blank" rel="noopener">West &amp; Kemper 2023</a></li>
+        </ul>
+
+        <a class="more" href="./effector.html">선천면역은 어떻게 죽이고, 어떻게 기억하나 →</a>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./sensing.html">선천면역은 무엇을 감지하나? →</a>
+          <a href="./sterile.html">자기 성분은 왜 보통 문제가 안 되고, 언제 염증이 되나? →</a>
+          <a href="./effector.html">선천면역은 어떻게 죽이고, 어떻게 기억하나? →</a>
+          <a href="../../autoimmune/general/index.html">자가면역 — C4와 성차 →</a>
+          <a href="../../nephro/dkd/index.html">당뇨병성 신장질환 →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27100/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 보체계와 선천면역 (2-5~2-14) ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27122/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 급성기 반응 (2-24) ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener noreferrer">Mastellos 2024, Nat Rev Immunol ↗</a>
+          <a href="https://doi.org/10.1038/s41581-023-00704-1" target="_blank" rel="noopener noreferrer">West &amp; Kemper 2023, Nat Rev Nephrol ↗</a>
+          <a href="https://doi.org/10.1038/nature16549" target="_blank" rel="noopener noreferrer">Sekar 2016, Nature ↗</a>
+          <a href="https://doi.org/10.1038/s41586-020-2277-x" target="_blank" rel="noopener noreferrer">Kamitaki 2020, Nature ↗</a>
+          <a href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener noreferrer">Zou 2026, Signal Transduct Target Ther ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../01-basics/basics.js"></script>
+  <script src="./innate.js"></script>
+</body>
+</html>

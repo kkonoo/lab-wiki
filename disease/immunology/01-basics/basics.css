@@ -322,7 +322,7 @@ svg.lnmap{display:block;width:100%;height:auto;min-width:720px}
 .cases h4{margin:2px 0 6px;font:700 .96rem Georgia,"Noto Serif KR",serif}
 .cases p{margin:0 0 6px;font-size:.8rem;color:#37423a}
 .cases p:last-child{margin-bottom:0}
-.cases .sp{display:inline-block;font-size:.66rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 6px;margin-left:4px}
+.sp{display:inline-block;font-size:.66rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 6px;margin-left:4px;vertical-align:1px;white-space:nowrap}
 @media (max-width:980px){.cases{grid-template-columns:1fr}}
 .legend.static span{display:inline-flex}
 .lnmap .rg.on{opacity:1 !important}
@@ -372,3 +372,45 @@ svg.cyto{display:block;width:100%;height:auto;min-width:860px}
 .steps[data-mode="jak"]{--sc:#3f6f8f} .steps[data-mode="nfkb"]{--sc:#b0643c} .steps[data-mode="rx"]{--sc:#b24f4f}
 /* 분화 조건 표에서 쓰는 작은 표식 */
 .tag-mouse{display:inline-block;margin-left:5px;padding:0 6px;border-radius:999px;background:#efe7d8;color:#6b5a3e;font-size:.68rem;font-weight:700;vertical-align:1px}
+
+/* ── ontogeny: 발생 타임라인 (basics.css 뒤에 이어 붙임) ── */
+svg.onto{display:block;width:100%;height:auto;min-width:880px}
+.onto .era{fill:#f3f1ea;stroke:#e2ded2;stroke-width:1}
+.onto .era.fet{fill:#f7f4ec}
+.onto .era.inf{fill:#eef3f0}
+.onto .era-lab{font-size:11.5px;font-weight:800;letter-spacing:.06em;fill:var(--muted);paint-order:stroke;stroke:#fff;stroke-width:3px}
+.onto .lname{font-size:11px;font-weight:800;letter-spacing:.04em}
+.onto .lname.hema{fill:#b0643c}.onto .lname.cells{fill:#3f6f8f}
+.onto .lname.mat{fill:#7b5aa6}.onto .lname.post{fill:#2f7f73}
+.onto .bar rect{stroke:#fff;stroke-width:1.2}
+.onto .bar.hema rect{fill:#b0643c}.onto .bar.cells rect{fill:#3f6f8f}
+.onto .bar.mat rect{fill:#7b5aa6}.onto .bar.post rect{fill:#2f7f73}
+.onto .bl{font-size:11px;font-weight:700}
+.onto .bl.in{fill:#fff}
+.onto .bl.in.sub{font-size:9.5px;font-weight:600;fill:#fff;fill-opacity:.75}
+.onto .bl.out{fill:#3d4640;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.onto .iggl{font-size:10px;font-weight:700;fill:#7b5aa6;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.onto .igg{fill:none;stroke:#7b5aa6;stroke-width:2.4;stroke-dasharray:5 3}
+.onto .igg-fill{fill:url(#onIgG);stroke:none}
+.onto .birth{fill:none;stroke:#6f3a55;stroke-width:1.6;stroke-dasharray:4 4}
+.onto .birthlab rect{fill:#6f3a55}
+.onto .birthlab text{font-size:11px;font-weight:800;fill:#fff}
+.onto .axis{fill:none;stroke:#b7bdb4;stroke-width:1.2}
+.onto .tick{stroke:#b7bdb4;stroke-width:1.2}
+.onto .tk{font-size:10.5px;font-weight:700;fill:#3d4640}
+.onto .tk.small{font-size:9.5px;font-weight:600;fill:var(--muted)}
+.onto .lab.small{font-size:10px;font-weight:600;fill:#7b5aa6}
+.onto .ln,.onto .bar{transition:opacity .25s}
+.onto .ov{opacity:0;transition:opacity .3s;pointer-events:none}
+.onto[data-mode="hema"] .ov-hema,.onto[data-mode="mat"] .ov-mat,.onto[data-mode="post"] .ov-post{opacity:1}
+.onto[data-mode="hema"] .bar:not(.hema),.onto[data-mode="mat"] .bar:not(.mat),.onto[data-mode="post"] .bar:not(.post){opacity:.25}
+.onto[data-mode="hema"] .iggwrap,.onto[data-mode="post"] .iggwrap{opacity:.25}
+.onto .iggwrap{transition:opacity .25s}
+.onto.hot .bar:not(.on){opacity:.2}
+.onto .bar.on rect{stroke:#3d4640;stroke-width:2}
+.onto .num circle{fill:#3d4640;stroke:#fff;stroke-width:2}
+.onto .num text{font-size:11px;font-weight:800;fill:#fff}
+.onto .ov-hema.num circle{fill:#b0643c}
+.onto .ov-mat.num circle{fill:#7b5aa6}
+.onto .ov-post.num circle{fill:#2f7f73}
+.steps[data-mode="hema"]{--sc:#b0643c} .steps[data-mode="mat"]{--sc:#7b5aa6} .steps[data-mode="post"]{--sc:#2f7f73}

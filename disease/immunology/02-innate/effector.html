@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="선천 effector 세 축 — 식세포의 식작용과 호흡폭발, 호중구의 상태 스펙트럼과 NET, NK의 missing-self와 KIR 다양성. 같은 무기가 방어와 손상을 함께 만드는 구조, 그리고 골수 조혈전구세포에 남는 trained immunity와 그 판정 기준">
+  <title>선천면역은 어떻게 죽이고, 어떻게 기억하나? · Immunology</title>
+  <link rel="stylesheet" href="../immunology.css">
+  <link rel="stylesheet" href="../01-basics/basics.css">
+  <link rel="stylesheet" href="./innate.css">
+</head>
+<body class="vpage">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Immunology</span></a></div>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="./index.html">목록</a><span>›</span><a href="./index.html">선천면역</a><span>›</span>effector와 기억</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">선천면역 — 위험을 감지하고 처음 대응하기</p>
+        <h1>선천면역은 어떻게 죽이고, 어떻게 기억하나?</h1>
+        <p class="aliases">Aliases: 선천 effector · phagocytosis · 식작용 · 호흡폭발 · respiratory burst · neutrophil · 호중구 · NET · neutrophil extracellular trap · granulopoiesis · circadian aging · NK · natural killer · missing-self · licensing · education · KIR · HLA-E · trained immunity · TRIM · 훈련면역 · central trained immunity · HSPC</p>
+        <p class="definition">선천 effector = 감지와 증폭 뒤에 실제로 <b>죽이고 치우는</b> 세포들. 핵심은 이들의 무기가 병원체와 조직을 가리지 않는다는 것이다 — 같은 활성산소 · 과립 · 그물이 방어와 손상을 함께 만든다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a> · 그리고 항원 특이성이 없는데도 <b>기억이 남는다</b> — 그 자리는 골수다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></p>
+
+        <!-- ───────── 1. 지도 ───────── -->
+        <h2 id="map">한 장 지도 — 같은 무기, 두 결과, 그리고 되먹임<small>Same weapons, two outcomes</small></h2>
+        <p class="lede">위 버튼 → <b>기억</b>을 누르면 골수로 내려가는 되먹임 고리가 남는다. 표의 행에 마우스를 올리면 그림의 해당 세포가 강조된다.</p>
+        <figure class="fig" id="effFig">
+          <div class="fig-tools">
+            <div class="seg" role="group" aria-label="보기 선택">
+              <button type="button" data-efmode="none" aria-pressed="true">전체</button>
+              <button type="button" data-efmode="def" aria-pressed="false">방어</button>
+              <button type="button" data-efmode="dmg" aria-pressed="false">손상</button>
+              <button type="button" data-efmode="trim" aria-pressed="false">기억</button>
+            </div>
+            <div class="legend static">
+              <span><i style="--c:#b0643c"></i>대식세포</span>
+              <span><i style="--c:#3f6f8f"></i>호중구</span>
+              <span><i style="--c:#2f7f73"></i>NK 세포</span>
+              <span><i style="--c:#6f3a55"></i>골수 · 기억</span>
+            </div>
+          </div>
+          <div class="fig-scroll">
+            <!--GEN:EFF-->
+<svg class="eff" data-mode="none" viewBox="0 0 1060 620" role="img" aria-labelledby="efT efD" xmlns="http://www.w3.org/2000/svg">
+<title id="efT">선천 effector 세 축이 같은 무기로 방어와 손상을 함께 만들고, 그 신호가 골수에 기억으로 남는 흐름</title>
+<desc id="efD">감염과 무균 손상이 대식세포·호중구·NK를 부른다. 세 세포의 무기는 병원체를 없애는 방어와 조직손상·자가항원 노출을 동시에 만든다. 같은 자리에서 나온 IL-1β·GM-CSF·interferon이 골수의 조혈전구세포를 다시 프로그램하고, 몇 주에서 몇 달 뒤 더 강하게 반응하는 myeloid 세포가 공급된다.</desc>
+<defs><marker id="efA-ifn" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#3f6f8f"/></marker><marker id="efA-nfkb" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b0643c"/></marker><marker id="efA-casp" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#b24f4f"/></marker><marker id="efA-clr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7b5aa6"/></marker><marker id="efA-plain" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#7d857c"/></marker><marker id="efA-keep" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#2f7f73"/></marker></defs>
+<g class="bx trig"><rect x="350" y="8" width="360" height="44" rx="12"/><text class="lab" x="530" y="34.5" text-anchor="middle">감염 · 무균 손상</text></g>
+<g class="fg lane2 mac" data-fg="mac" data-in="def dmg trim">
+<g class="bx lanebox"><rect x="30" y="88" width="312" height="154" rx="14"/></g>
+<text class="lanet mac" x="186" y="112" text-anchor="middle">대식세포</text>
+<text class="lanek" x="186" y="128" text-anchor="middle">macrophage</text>
+<g class="pl arm"><rect x="46" y="142" width="280" height="19" rx="9.5"/><text x="186" y="155.2" text-anchor="middle">식작용 → phagolysosome</text></g>
+<g class="pl arm"><rect x="46" y="170" width="280" height="19" rx="9.5"/><text x="186" y="183.2" text-anchor="middle">활성산소 · 일산화질소</text></g>
+<g class="pl arm"><rect x="46" y="198" width="280" height="19" rx="9.5"/><text x="186" y="211.2" text-anchor="middle">cytokine · chemokine 분비</text></g>
+</g>
+<path class="fl plain" d="M530,52 L530,70 L186,70 L186,84" marker-end="url(#efA-plain)"/>
+<path class="fl keep" d="M124,242 L94,296" marker-end="url(#efA-keep)"/>
+<path class="fl casp" d="M248,242 L278,296" marker-end="url(#efA-casp)"/>
+<g class="fg lane2 neu" data-fg="neu" data-in="def dmg trim">
+<g class="bx lanebox"><rect x="374" y="88" width="312" height="154" rx="14"/></g>
+<text class="lanet neu" x="530" y="112" text-anchor="middle">호중구</text>
+<text class="lanek" x="530" y="128" text-anchor="middle">neutrophil</text>
+<g class="pl arm"><rect x="390" y="142" width="280" height="19" rx="9.5"/><text x="530" y="155.2" text-anchor="middle">과립 단백 방출</text></g>
+<g class="pl arm"><rect x="390" y="170" width="280" height="19" rx="9.5"/><text x="530" y="183.2" text-anchor="middle">활성산소 폭발</text></g>
+<g class="pl arm"><rect x="390" y="198" width="280" height="19" rx="9.5"/><text x="530" y="211.2" text-anchor="middle">NET — DNA 그물</text></g>
+</g>
+<path class="fl plain" d="M530,52 L530,70 L530,70 L530,84" marker-end="url(#efA-plain)"/>
+<path class="fl keep" d="M468,242 L438,296" marker-end="url(#efA-keep)"/>
+<path class="fl casp" d="M592,242 L622,296" marker-end="url(#efA-casp)"/>
+<g class="fg lane2 nk" data-fg="nk" data-in="def dmg trim">
+<g class="bx lanebox"><rect x="718" y="88" width="312" height="154" rx="14"/></g>
+<text class="lanet nk" x="874" y="112" text-anchor="middle">NK 세포</text>
+<text class="lanek" x="874" y="128" text-anchor="middle">natural killer</text>
+<g class="pl arm"><rect x="734" y="142" width="280" height="19" rx="9.5"/><text x="874" y="155.2" text-anchor="middle">MHC class I 확인 (missing-self)</text></g>
+<g class="pl arm"><rect x="734" y="170" width="280" height="19" rx="9.5"/><text x="874" y="183.2" text-anchor="middle">perforin · granzyme</text></g>
+<g class="pl arm"><rect x="734" y="198" width="280" height="19" rx="9.5"/><text x="874" y="211.2" text-anchor="middle">CD16 — 항체 매개 살해</text></g>
+</g>
+<path class="fl plain" d="M530,52 L530,70 L874,70 L874,84" marker-end="url(#efA-plain)"/>
+<path class="fl keep" d="M812,242 L782,296" marker-end="url(#efA-keep)"/>
+<path class="fl casp" d="M936,242 L966,296" marker-end="url(#efA-casp)"/>
+<g class="bx outbox keep"><rect x="20" y="300" width="496" height="100" rx="14"/></g>
+<text class="lab big" x="268" y="326" text-anchor="middle">방어</text>
+<text class="lab small" x="268" y="350" text-anchor="middle">병원체 제거 · 상처 복구 · 종양·노화세포 감시</text>
+<text class="lab small" x="268" y="372" text-anchor="middle">호중구는 내부 상처 흉터 기질의 상당 부분을 만든다</text>
+<g class="ov ov-def num"><circle cx="40" cy="324" r="10"/><text x="40" y="327.9" text-anchor="middle">1</text></g>
+<g class="bx outbox casp"><rect x="544" y="300" width="496" height="100" rx="14"/></g>
+<text class="lab big" x="792" y="326" text-anchor="middle">손상</text>
+<text class="lab small" x="792" y="350" text-anchor="middle">혈전염증 · 장기손상 · 자가항원 노출</text>
+<text class="lab small" x="792" y="372" text-anchor="middle">종양에서는 면역억제 · 전이 촉진 쪽으로</text>
+<g class="ov ov-dmg num"><circle cx="564" cy="324" r="10"/><text x="564" y="327.9" text-anchor="middle">1</text></g>
+<g class="fg trim" data-fg="bm" data-in="trim">
+<g class="bx bm"><rect x="140" y="456" width="780" height="136" rx="20"/></g>
+<text class="lab big" x="530" y="484" text-anchor="middle">골수 — 조혈전구세포(HSPC)가 다시 프로그램된다</text>
+<g class="pl trim small"><rect x="174" y="500" width="272" height="19" rx="9.5"/><text x="310" y="513.2" text-anchor="middle">IL-1 수용체 신호가 있어야 성립</text></g>
+<g class="pl trim small"><rect x="174" y="526" width="272" height="19" rx="9.5"/><text x="310" y="539.2" text-anchor="middle">해당과정 · mevalonate 대사 전환</text></g>
+<g class="pl trim small"><rect x="614" y="500" width="272" height="19" rx="9.5"/><text x="750" y="513.2" text-anchor="middle">H3K27ac · H3K4me · H3K18 lactylation</text></g>
+<g class="pl trim small"><rect x="614" y="526" width="272" height="19" rx="9.5"/><text x="750" y="539.2" text-anchor="middle">골수계 쪽으로 기운 전구세포가 늘어남</text></g>
+<text class="lab small" x="530" y="572" text-anchor="middle">몇 주에서 몇 달 뒤까지 더 강하게 반응하는 myeloid 세포를 공급</text>
+<g class="ov ov-trim num"><circle cx="166" cy="474" r="10"/><text x="166" y="477.9" text-anchor="middle">2</text></g>
+</g>
+<path class="fl casp" d="M530,402 L530,452" marker-end="url(#efA-casp)"/>
+<text class="olab small" x="518" y="432" text-anchor="end">IL-1β · GM-CSF · interferon</text>
+<path class="fl keep back" d="M920,524 C1006,524 1022,246 950,246" marker-end="url(#efA-keep)"/>
+<text class="olab small" x="1054" y="386" text-anchor="end">다시 공급</text>
+</svg>
+<!--/GEN:EFF-->
+          </div>
+          <ol class="steps" data-mode="trim">
+            <li>염증 자리에서 나온 IL-1β · GM-CSF · 제1형/제2형 interferon이 골수의 조혈전구세포를 다시 프로그램한다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></li>
+            <li>그 결과 몇 주에서 몇 달 뒤까지 <b>더 강하게 반응하는 myeloid 세포</b>가 공급된다 — 이것이 central trained immunity <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></li>
+          </ol>
+          <figcaption>세 세포를 나란히 둔 것은 무기가 달라서가 아니라 <b>같은 문제를 다르게 푸는 방식</b>을 보여주기 위해서다 — 삼켜서 안에서, 밖에 뿌려서, 그리고 상대의 MHC class I을 확인해서.</figcaption>
+        </figure>
+
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>세포</th><th>주된 무기</th><th>방어 쪽</th><th>손상 쪽</th></tr></thead>
+            <tbody>
+              <tr data-fig="eff" data-hl="mac"><th>대식세포</th><td>식작용 → phagolysosome · 활성산소와 일산화질소 · cytokine 분비</td><td>삼켜서 안에서 죽이고, 염증을 시작하고 조직 복구를 마무리한다</td><td>만성 염증의 공급원 · 종양에서는 면역억제 쪽으로</td></tr>
+              <tr data-fig="eff" data-hl="neu"><th>호중구</th><td>과립 단백 · 활성산소 폭발 · NET</td><td>세균·곰팡이 제거, 그리고 조직 복구 — 혈관재생 프로그램까지 켠다</td><td>혈전염증 · 장기손상 · 자가항원 노출</td></tr>
+              <tr data-fig="eff" data-hl="nk"><th>NK 세포</th><td>MHC class I 확인 · perforin과 granzyme · CD16 매개 항체 의존 살해</td><td>바이러스 감염세포 · 종양 · 노화세포 제거</td><td>종양미세환경에서 저세포독성 상태로 전환 · 이식 혈관손상</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 2. 식세포 ───────── -->
+        <h2 id="phago">삼켜서 안에서 죽인다<small>Phagocytosis</small></h2>
+        <ul class="rules">
+          <li>식세포는 병원체를 막으로 싸인 phagosome에 넣고, 리소좀과 융합시켜 phagolysosome을 만든다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27105/" target="_blank" rel="noopener">Janeway 2001 · 2-4</a></li>
+          <li>거기서 과산화수소 · 초과산화물 · 일산화질소 같은 독성 산물이 만들어져 삼킨 미생물을 죽인다 — 호흡폭발 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27105/" target="_blank" rel="noopener">Janeway 2001 · 2-4</a></li>
+          <li>활성화된 대식세포는 IL-1 · IL-6 · IL-12 · TNF-α를 내보내, 국소적으로는 감염을 가두고 전신적으로는 반응을 조율한다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27122/" target="_blank" rel="noopener">Janeway 2001 · 2-19</a></li>
+          <li>TNF-α는 내피세포에 selectin과 ICAM을 올려 호중구가 혈관 밖으로 나오게 한다 — 구르고, 단단히 붙고, 빠져나가는 여러 단계 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27122/" target="_blank" rel="noopener">Janeway 2001 · 2-21</a></li>
+          <li>chemokine은 세포외 기질을 따라 농도 기울기를 만들어 호중구와 단핵구를 감염 자리로 부른다 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27122/" target="_blank" rel="noopener">Janeway 2001 · 2-20</a> → <a href="../01-basics/cytokine.html">cytokine과 신호</a></li>
+          <li>삼키는 능력이 있어도 죽이지 못하면 병이 된다 — NADPH oxidase 결손(만성 육아종병)이 그 예다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+        </ul>
+
+        <!-- ───────── 3. 호중구 ───────── -->
+        <h2 id="neutrophil">호중구는 아형이 아니라 상태다<small>State, not subset</small></h2>
+        <p class="lede">단일세포와 이미징으로 보면 고정된 아형보다 <b>성숙 단계 · 시간 · 조직 맥락에 따른 상태</b>가 설명력이 크다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a>. 우리 랩 언어로는 <a href="../01-basics/cells.html">cell type 대 cell state</a> 문제의 전형이다.</p>
+        <div class="grid2">
+          <div><h4>계통 지정과 기능 성숙이 분리된다</h4>
+            <ul>
+              <li>발생 축은 proNeu1/2 → preNeu → immNeu → matNeu로 이어진다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a></li>
+              <li>전사인자 GFI1의 zinc finger 5는 계통 지정을, zinc finger 6은 기능 성숙을 맡는다 — 그래서 중증 선천성 호중구감소증 모델에서는 <b>수가 회복돼도 기능은 회복되지 않는다</b> <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a><span class="sp">mouse</span></li>
+              <li>사람에서 G-CSF 치료가 수치는 올리지만 감염 취약성을 없애지 못하는 현상과 맞물린다 — "세포 수 = 기능"이라는 가정을 깨는 근거 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a></li>
+            </ul>
+          </div>
+          <div><h4>하루 동안에도 달라진다</h4>
+            <ul>
+              <li>Bmal1–CXCL2/CXCR2(자가분비 촉진)와 혈중 CXCL12/CXCR4(억제)의 균형으로 "aged ↔ fresh"가 오간다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a><span class="sp">mouse</span></li>
+              <li>aged 쪽은 방어와 혈전염증이 모두 강하고, fresh 쪽은 조직 침투가 좋다. NET을 만드는 능력도 골수에서 나온 직후가 가장 높다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a></li>
+              <li>혈중에 최소 세 상태(염증형 · ISG형 · circadian aging형)가 mouse와 사람 양쪽에서 재현된다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a></li>
+            </ul>
+          </div>
+          <div><h4>면역이 아닌 일도 한다</h4>
+            <ul>
+              <li>조직별 chromatin 각인으로 혈관재생 프로그램(Apelin · ADAMTS · VEGF-A)을 켠다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a></li>
+              <li>중피에서 기존 기질을 실어 와 내부 상처 흉터 기질의 약 80%를 공급한다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a><span class="sp">mouse</span></li>
+            </ul>
+          </div>
+          <div><h4>NET의 두 얼굴</h4>
+            <ul>
+              <li>병원체를 붙잡고 곰팡이 균사처럼 삼킬 수 없는 큰 상대를 죽인다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a></li>
+              <li>동시에 혈전염증과 장기손상을 만들고, 류마티스의 citrulline화 펩타이드나 루푸스의 자기 DNA–IFN 축처럼 <b>자가항원을 노출</b>한다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a> → <a href="./sterile.html">세포 밖 축</a></li>
+              <li>보체와 서로를 증폭한다 — C5a · C3a가 호중구를 부르고, NET이 다시 보체를 켠다 <a class="src" href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener">Mastellos 2024</a> → <a href="./complement.html">보체</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout">
+          <h4>NET을 마커로 쓸 때</h4>
+          <p>조직에서 NET을 특이적으로 검출하는 도구가 부족하고, citrulline화 의존성이 맥락마다 다르다 — 죽상경화 병변에서는 histone citrulline화가 필요하지 않았다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a>. 마커 자체가 아직 논쟁 중이라는 뜻이다.</p>
+        </div>
+
+        <!-- ───────── 4. NK ───────── -->
+        <h2 id="nk">NK — 없는 것을 보고 죽인다<small>Missing-self and education</small></h2>
+        <p class="lede">NK는 MHC class I의 <b>부재나 감소</b>를 위험 신호로 읽고, 활성 수용체와 억제 수용체의 합으로 살해를 결정한다. 반응 문턱은 발생기에 자기 MHC class I에 노출되며 조정되는데 이를 교육(education) 또는 licensing이라 한다 <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a></p>
+        <div class="vs2">
+          <div class="type"><span class="tag">규칙</span><h4>missing-self</h4>
+            <ul>
+              <li>억제 축은 긴 세포질 꼬리를 가진 KIR(ITIM–SHP-1/2), CD94/NKG2A–HLA-E, TIGIT · PD-1 · TIM-3 · LAG-3 등이다 — HLA-E는 여러 HLA의 leader peptide를 대신 읽는 "정상성 검사"에 가깝다 <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a></li>
+              <li>활성 축에서 CD16만이 단독으로 살해를 켤 수 있고, NKp30/44/46 · NKG2D · DNAM-1은 상승작용을 요구한다 <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a></li>
+            </ul>
+          </div>
+          <div class="state"><span class="tag">예외</span><h4>교육되지 않은 NK가 더 쓸모 있을 때</h4>
+            <ul>
+              <li>KIR이 없는 unlicensed NK는 사람 CD56<sup>bright</sup>의 62%, CD56<sup>dim</sup>의 26%를 차지한다 <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a></li>
+              <li>이들은 MHC class I이 충분한 표적을 오히려 잘 죽인다 — MHC class I을 흉내 내 억제 수용체를 속이는 바이러스에 대한 방어를 이쪽이 맡는다 <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a><span class="sp">mouse</span></li>
+              <li>"규칙 하나로 설명되지 않는다"는 것이 이 축의 요점이다.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout blue">
+          <h4>KIR 다양성 — 우리 랩의 genotyping 문제와 같은 형태</h4>
+          <p>KIR은 19q13.4의 16개 유전자로, IPD-KIR에 2024년 기준 <b>2,238개 대립유전자</b>가 등록돼 있고 개인마다 유전자 수가 6~16개로 달라진다. 저자들은 이를 "NK 레퍼토리를 정하는 단일 최대 요인"이라고 표현한다 <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a></p>
+          <p>SNP 연관으로는 잡히지 않는 구조·다중대립 유전형이라는 점에서 HLA imputation이나 구조변이 imputation과 같은 문제다 — 대규모 코호트에서 KIR 대립형을 정확히 부르는 파이프라인은 아직 흔치 않다 <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a></p>
+        </div>
+        <ul class="rules">
+          <li>단일세포로 보면 말초혈 NK가 세 집단으로 갈린다 — NK1(CD56<sup>dim</sup>·KIR<sup>+</sup>), NK2(CD56<sup>bright</sup>·KIR<sup>−</sup>, 대부분의 종양에서 증가), NK3(NKG2C<sup>high</sup> CD57<sup>+</sup>, 사람 cytomegalovirus에서 클론 확장) <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a></li>
+          <li>TGF-β와 activin은 NK를 ILC1과 비슷한 저세포독성 상태로 되돌리고, IL-12/15/18 사전활성은 memory-like NK를 만든다 <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a></li>
+          <li>노화세포는 MHC class I과 HLA-E를 올려 NKG2A 억제를 걸고, <b>HLA-E를 차단하면 제거가 회복된다</b> — 노화 조직에 노화세포가 쌓이는 이유의 면역 쪽 후보 설명 <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a></li>
+          <li>호중구는 NET · ARG1 · 활성산소로 NK를 억제하고 NKp46을 잘라낸다 — 두 effector가 서로를 누른다 <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a></li>
+        </ul>
+
+        <!-- ───────── 5. 기억 ───────── -->
+        <h2 id="trim">항원 특이성 없이 기억한다 — trained immunity<small>Where innate memory lives</small></h2>
+        <p class="lede">단핵구의 수명은 며칠인데 BCG나 β-glucan의 효과는 1년 넘게 간다. 이 역설의 답이 <b>기억의 자리가 장수하는 조혈전구세포</b>라는 것이었다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></p>
+        <div class="grid2">
+          <div><h4>어디에 남나</h4>
+            <ul>
+              <li>골수 조혈전구세포에서 일어나면 <b>central TRIM</b>, 조직 상주 대식세포나 NK에서 직접 일어나면 <b>peripheral TRIM</b> <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></li>
+              <li>IL-1 수용체 신호가 필수다 — 조혈전구세포에서만 <i>Il1r</i>을 없애면 성립하지 않는다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a><span class="sp">mouse</span></li>
+              <li>대사(해당과정–mTOR–HIF-1α, mevalonate/콜레스테롤 합성, glutaminolysis)와 후성유전(H3K27ac · H3K4me1/3)이 함께 바뀐다. BCG 뒤 <b>H3K18 lactylation</b>이 90일까지 IL1B · CXCL9 enhancer에 남는다 <a class="src" href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener">Zou 2026</a></li>
+            </ul>
+          </div>
+          <div><h4>인과는 어떻게 보였나</h4>
+            <ul>
+              <li>골수이식 전달 실험이 핵심이다 — 치주염으로 훈련된 골수가 naive mouse의 관절염을 12주 뒤에도 악화시켰고, 반대 방향도 성립했다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a><span class="sp">mouse</span></li>
+              <li>심근경색 → 죽상경화, 뇌허혈 → 심장 섬유화, 심부전 → 신장·근육 취약으로도 전달된다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a><span class="sp">mouse</span></li>
+              <li>사람 근거는 BCG 접종 뒤 3개월 이상 지속되는 단핵구 과반응, 중증 COVID-19 1년 뒤에도 남은 조혈전구세포의 염증 기억, 치주염 치료 2개월 뒤에도 남는 myeloid 과반응 등이다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></li>
+              <li><b>IL1B rs16944</b>가 훈련 강도 및 질환 위험과 연동된다는 관찰은 자극 후 단일세포 반응 QTL 설계로 그대로 옮길 수 있다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout">
+          <h4>무엇이 trained immunity가 아닌가</h4>
+          <p>판정하려면 <b>기저로 돌아온 뒤 다시 자극</b>했을 때 더 강하게 반응해야 하고, 후성유전·전사·기능 지표가 함께 있어야 한다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></p>
+          <p>그래서 만성 염증 환자에게서 관찰되는 지속적 활성이나 접종 직후의 반응은 trained immunity가 아니다 — 논문을 읽을 때 먼저 걸러야 할 기준이다.</p>
+        </div>
+        <ul class="rules">
+          <li>방향은 자극이 아니라 맥락이 정한다는 쪽에 저자들이 무게를 둔다 — 감염 방어와 항암에서는 유익하고, 동반질환 · 죽상경화 · 상처치유 장애에서는 유해하다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></li>
+          <li>기억 T세포가 myeloid를 켜는 축과는 다르다 — 여기서는 <b>myeloid 계보 자체가 바뀐다</b>. 같은 IL-1 축을 쓰면서도 기억의 소재지가 다르다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></li>
+        </ul>
+
+        <!-- ───────── 6. 갈리는 지점 ───────── -->
+        <h2 id="flag">갈리는 지점<small>Where the evidence splits</small></h2>
+        <div class="flag">
+          <h4>BCG가 COVID-19를 막는가</h4>
+          <p><span class="side">근거 A</span>노인 대상 시험에서 BCG가 호흡기 감염, 특히 바이러스성 감염을 크게 줄였고, 소규모 관찰연구에서 COVID-19 발생 감소가 보고됐다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></p>
+          <p><span class="side">근거 B</span>더 큰 위약대조 시험들에서는 SARS-CoV-2 감염 수 감소가 재현되지 않았다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></p>
+          <p><span class="side">판단</span>"trained immunity가 유도된다"(ex vivo 재자극과 후성유전 근거)와 "특정 임상 종말점을 개선한다"를 분리한다. 감염 수 감소는 null 쪽에 무게를 두고, 중증도·사망률은 미결로 남긴다. 소규모 관찰 결과를 근거로 쓰지 않는다.</p>
+        </div>
+        <div class="flag">
+          <h4>PAD4를 막는 것이 이로운가</h4>
+          <p><span class="side">근거 A</span>루푸스와 죽상경화 모델에서 PAD4 차단은 보호적이었다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a><span class="sp">mouse</span></p>
+          <p><span class="side">근거 B</span><i>Aspergillus</i> 감염에서는 PAD4 결손 mouse가 오히려 병원체 부담이 낮았다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a><span class="sp">mouse</span></p>
+          <p><span class="side">판단</span>방어와 손상이 아직 분리되지 않았다. NET을 "막으면 좋은 것"으로 단순화하지 않는다.</p>
+        </div>
+
+        <!-- ───────── 7. 한계 ───────── -->
+        <h2 id="limit">근거와 한계<small>What we do not know</small></h2>
+        <ul class="rules">
+          <li>호중구 상태의 다양성이 세포 내재 프로그램인지 환경 유도인지 결론이 없다 — 계통 추적이 필요하다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a></li>
+          <li>상태–질환 연관의 사람 근거는 대부분 관찰·소규모이고, 인과 개입은 mouse 기반이다 <a class="src" href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener">Aroca-Crevillén 2024</a><span class="sp">mouse</span></li>
+          <li>NK에는 T세포와 달리 <b>탈진의 표준 정의가 없어</b> 면역관문 차단 반응을 해석하기 어렵다 <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a></li>
+          <li>NK 아형 NK1 · NK2 · NK3 사이의 전환 가능성과 "치료에 맞는 상태"가 미확정이다 <a class="src" href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener">Chen 2024</a></li>
+          <li>trained immunity에서 대사 재프로그래밍과 후성유전 기억이 <b>항상 같이 가지는 않는다</b>는 보고가 나와, 두 층을 등치시키던 가정이 흔들린다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></li>
+          <li>사람에서 조혈전구세포를 반복 채취해 본 연구는 드물고, 대부분 ex vivo 재자극과 전사체 기반이다 <a class="src" href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener">Hajishengallis 2025</a></li>
+        </ul>
+
+        <a class="more" href="../03-adaptive-recognition/index.html">03 적응면역 — 인식과 발달로 →</a>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./sensing.html">선천면역은 무엇을 감지하나? →</a>
+          <a href="./sterile.html">자기 성분은 왜 보통 문제가 안 되고, 언제 염증이 되나? →</a>
+          <a href="./complement.html">보체는 어떻게 활성화되고 무슨 일을 하나? →</a>
+          <a href="../01-basics/cells.html">면역세포의 종류와 상태는 어떻게 구분하나? →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27105/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 식작용과 호흡폭발 (2-4) ↗</a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK27122/" target="_blank" rel="noopener noreferrer">Janeway 2001 · 염증 반응과 세포 동원 (2-19~2-22) ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1146/annurev-pathmechdis-051222-015009" target="_blank" rel="noopener noreferrer">Aroca-Crevillén 2024, Annu Rev Pathol Mech Dis ↗</a>
+          <a href="https://doi.org/10.1038/s41392-024-02005-w" target="_blank" rel="noopener noreferrer">Chen 2024, Signal Transduct Target Ther ↗</a>
+          <a href="https://doi.org/10.1038/s41577-025-01132-x" target="_blank" rel="noopener noreferrer">Hajishengallis 2025, Nat Rev Immunol ↗</a>
+          <a href="https://doi.org/10.1038/s41392-026-02920-0" target="_blank" rel="noopener noreferrer">Zou 2026, Signal Transduct Target Ther ↗</a>
+          <a href="https://doi.org/10.1038/s41577-023-00926-1" target="_blank" rel="noopener noreferrer">Mastellos 2024, Nat Rev Immunol ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../01-basics/basics.js"></script>
+  <script src="./innate.js"></script>
+</body>
+</html>
