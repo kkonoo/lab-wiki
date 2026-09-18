@@ -183,4 +183,25 @@
       });
     });
   }
+
+  /* ── cytokine: 수용체 계열 지도 ── */
+  var cy = $("svg.cyto");
+  if (cy) {
+    var hiC = highlighter(cy, ".cg[data-cg]", "data-cg");
+    var crows = function (k) { $$('tr[data-fig="cyto"]').forEach(function (tr) { tr.classList.toggle("on", !!k && k.indexOf(tr.getAttribute("data-hl")) >= 0); }); };
+    bindTriggers("cyto", function (k) { hiC(k); crows(k); });
+    $$(".cg[data-cg]", cy).forEach(function (g) {
+      var k = [g.getAttribute("data-cg")];
+      g.addEventListener("mouseenter", function () { hiC(k); crows(k); });
+      g.addEventListener("mouseleave", function () { hiC(null); crows(null); });
+    });
+    $$("[data-cymode]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var m = b.getAttribute("data-cymode");
+        cy.setAttribute("data-mode", m);
+        $$("[data-cymode]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        $$(".steps").forEach(function (s) { s.classList.toggle("on", s.getAttribute("data-mode") === m); });
+      });
+    });
+  }
 })();

@@ -48,13 +48,13 @@ window.IMMUNOLOGY = {
           ]
         },
         {
-          "q": "인식은 어떻게 세포 반응과 양방향 소통으로 이어지나?",
+          "q": "면역세포는 무엇으로 서로 신호를 주고받나?",
           "note": "Kuby 3장 · 인식과 반응",
           "items": [
             [
               "immunology-recognition",
-              "인식·신호·cytokine",
-              "항원 인식·공동자극·cytokine의 조합과 memory T세포의 되먹임을 함께 보는 선천–적응 연결",
+              "cytokine과 신호 — 수용체 계열 지도",
+              "cytokine 수용체 계열과 신호 경로(JAK-STAT · NF-κB · SMAD · GPCR) · 작용 거리와 pleiotropy·redundancy · CD4 T세포 분화를 정하는 조합 · chemokine 주소 · 치료 표적",
               "읽기",
               ""
             ]

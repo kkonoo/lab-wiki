@@ -191,45 +191,83 @@ window.IMMUNOLOGY_BASICS = {
     ],
     [
       "immunology-recognition",
-      "인식은 어떻게 세포 반응과 양방향 소통으로 이어지나?",
+      "면역세포는 무엇으로 서로 신호를 주고받나?",
       [
-        "PRR",
-        "MHC",
         "cytokine",
-        "costimulation",
-        "공동자극",
+        "사이토카인",
+        "chemokine",
+        "interleukin",
+        "JAK",
+        "STAT",
+        "JAK-STAT",
+        "NF-κB",
+        "SMAD",
+        "GPCR",
+        "TIR",
+        "MyD88",
+        "TRAF",
         "TNFSF",
         "TNFRSF",
         "CD40L",
-        "memory T",
-        "수용체",
-        "리간드"
+        "수용체 계열",
+        "공유 사슬",
+        "γc",
+        "gp130",
+        "three-signal",
+        "신호 3",
+        "Th1",
+        "Th2",
+        "Th17",
+        "Treg",
+        "Tfh",
+        "pleiotropy",
+        "redundancy",
+        "CCR7",
+        "CXCL13",
+        "IL7R",
+        "JAK 억제제",
+        "memory T"
       ],
       "basics",
-      "항원 인식·공동자극·cytokine의 조합과 memory T세포의 되먹임을 함께 보는 선천–적응 연결",
+      "cytokine 수용체 계열과 신호 경로(JAK-STAT · NF-κB · SMAD · GPCR) · 작용 거리와 pleiotropy·redundancy · CD4 T세포 분화를 정하는 조합 · chemokine 주소 · 치료 표적",
       [
         [
-          "인식과 활성화 맥락",
+          "인식에서 신호로",
           [
-            "PRR — 미생물 구조 등을 감지하는 선천면역의 인식 축",
-            "MHC–peptide 제시 — T세포에 항원 정보를 전달하는 축",
-            "항원 제시만이 아니라 공동자극·priming cytokine을 함께 읽는 three-signal 틀"
+            "신호 1 항원 · 신호 2 공동자극 · 신호 3 cytokine — PRR은 02장, MHC는 03장, 활성화·기억은 04장",
+            "CD8 T세포: IL-12 또는 I형 IFN이 없으면 작동·기억 대신 결실·무반응 (Curtsinger 2010, mouse)"
           ]
         ],
         [
-          "DC가 전달하는 정보",
+          "작용 거리와 겹침",
           [
-            "조직 내 감지와 DC 성숙 → 이차 림프기관에서의 T세포 priming",
-            "cytokine 조합 — 활성화 이후 반응의 성격을 조율하는 신호",
-            "DC 아형과 조직 맥락에 따른 서로 다른 반응 성향"
+            "autocrine · paracrine · endocrine — 분비 세포 자신, 이웃, 혈류 건너까지",
+            "cytokine niche 30–150 µm(시험관) · 생체 80–120 µm — 소비하는 세포 밀도가 범위를 정함 (Oyler-Yaniv 2017, mouse)",
+            "pleiotropy와 redundancy의 이유 = 수용체 분포 · 신호 경로 공유 · 수용체 사슬 공유 (Ozaki 2002)"
           ]
         ],
         [
-          "memory T세포의 되먹임",
+          "수용체 계열 지도",
           [
-            "재활성화된 memory T세포의 cytokine과 표면 리간드 → myeloid 세포의 반응 조절",
-            "TNFSF 리간드와 TNFRSF 수용체의 접촉 신호 — 적응면역에서 선천면역으로 이어지는 소통 사례",
-            "미생물 PRR 리간드 없이도 가능한 myeloid 활성화 — 세부 기전은 실험 맥락에 따라 해석, Warrick 2025"
+            "Class I(γc·βc·gp130) · Class II(인터페론·IL-10) → JAK-STAT",
+            "IL-1 수용체(TIR → MyD88 → NF-κB) · TNF 수용체(삼량체 · TRAF · death domain)",
+            "TGF-β 수용체(Ser/Thr → SMAD) · chemokine 수용체(GPCR → integrin 활성·이동)"
+          ]
+        ],
+        [
+          "조합이 정하는 것",
+          [
+            "Th1 IL-12 · Th2 IL-4 · Th17 TGF-β+IL-6 · iTreg TGF-β+IL-2 — STAT과 전사인자까지 (Zhu 2010, 주로 mouse·시험관)",
+            "분화한 세포의 산물이 같은 분화를 다시 밀어주는 되먹임 · TGF-β 농도가 Th17/Treg 갈림길",
+            "memory T세포 → myeloid 선천 염증 지시 (Warrick 2025 · McDaniel 2022, mouse)"
+          ]
+        ],
+        [
+          "데이터와 치료로",
+          [
+            "PBMC3k 마커 IL7R·CCR7 = cytokine·chemokine 수용체",
+            "cytokine niche 차이 = 단일세포 자료의 비유전적 변이 원천 (Oyler-Yaniv 2017)",
+            "차단(TNF-α·IL-6·IL-17·IL-23) · JAK 억제제 · cytokine 자체를 약으로 (Saxton 2023 · Virtanen 2024)"
           ]
         ]
       ],
@@ -321,8 +359,36 @@ window.IMMUNOLOGY_BASICS = {
     ],
     "immunology-recognition": [
       [
+        "Ozaki & Leonard 2002, J Biol Chem",
+        "https://doi.org/10.1074/jbc.R200003200"
+      ],
+      [
+        "Altan-Bonnet & Mukherjee 2019, Nat Rev Immunol",
+        "https://doi.org/10.1038/s41577-019-0131-x"
+      ],
+      [
+        "Oyler-Yaniv 2017, Immunity",
+        "https://doi.org/10.1016/j.immuni.2017.03.011"
+      ],
+      [
+        "Zhu, Yamane & Paul 2010, Annu Rev Immunol",
+        "https://doi.org/10.1146/annurev-immunol-030409-101212"
+      ],
+      [
+        "Griffith, Sokol & Luster 2014, Annu Rev Immunol",
+        "https://doi.org/10.1146/annurev-immunol-032713-120145"
+      ],
+      [
+        "Wang, Zhao & Wan 2023, Cell Mol Immunol",
+        "https://doi.org/10.1038/s41423-023-01036-7"
+      ],
+      [
         "Warrick 2025, Annu Rev Immunol",
         "https://doi.org/10.1146/annurev-immunol-083122-040624"
+      ],
+      [
+        "Saxton, Glassman & Garcia 2023, Nat Rev Drug Discov",
+        "https://doi.org/10.1038/s41573-022-00557-6"
       ]
     ],
     "immunology-ontogeny": [
@@ -356,6 +422,14 @@ window.IMMUNOLOGY_BASICS = {
     "hev": {
       "key": "hev",
       "definition": "혈액의 순환 면역세포가 림프절로 들어오는 특수 혈관"
+    },
+    "chemokine": {
+      "key": "chemokine",
+      "definition": "면역세포의 이동 방향을 정하는 cytokine · 수용체는 7회 막관통 GPCR"
+    },
+    "jak-stat": {
+      "key": "jak",
+      "definition": "cytokine 수용체에 붙은 JAK이 STAT을 인산화해 핵으로 보내는 신호 경로"
     },
     "tnfsf": {
       "key": "tnfsf",
@@ -423,7 +497,8 @@ window.IMMUNOLOGY_BASICS = {
   "articlePages": {
     "immunology-overview": "01-basics/overview.html",
     "immunology-cell-identity": "01-basics/cells.html",
-    "immunology-lymph-node": "01-basics/lymph-node.html"
+    "immunology-lymph-node": "01-basics/lymph-node.html",
+    "immunology-recognition": "01-basics/cytokine.html"
   }
 };
 window.IMMUNOLOGY = {
@@ -477,13 +552,13 @@ window.IMMUNOLOGY = {
           ]
         },
         {
-          "q": "인식은 어떻게 세포 반응과 양방향 소통으로 이어지나?",
+          "q": "면역세포는 무엇으로 서로 신호를 주고받나?",
           "note": "Kuby 3장 · 인식과 반응",
           "items": [
             [
               "immunology-recognition",
-              "인식·신호·cytokine",
-              "항원 인식·공동자극·cytokine의 조합과 memory T세포의 되먹임을 함께 보는 선천–적응 연결",
+              "cytokine과 신호 — 수용체 계열 지도",
+              "cytokine 수용체 계열과 신호 경로(JAK-STAT · NF-κB · SMAD · GPCR) · 작용 거리와 pleiotropy·redundancy · CD4 T세포 분화를 정하는 조합 · chemokine 주소 · 치료 표적",
               "읽기",
               ""
             ]

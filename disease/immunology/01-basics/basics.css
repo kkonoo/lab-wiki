@@ -326,3 +326,49 @@ svg.lnmap{display:block;width:100%;height:auto;min-width:720px}
 @media (max-width:980px){.cases{grid-template-columns:1fr}}
 .legend.static span{display:inline-flex}
 .lnmap .rg.on{opacity:1 !important}
+
+/* ── cytokine: 수용체 계열 → 신호 경로 (basics.css 뒤에 이어 붙임) ── */
+svg.cyto{display:block;width:100%;height:auto;min-width:860px}
+.cyto .mem rect{fill:#efe7d8;stroke:#d9cdb6;stroke-width:1}
+.cyto .mem line{stroke:#d1c2a6;stroke-width:1.2}
+.cyto .nuc rect{fill:#f2ede4;stroke:#cfc7b8;stroke-width:1.4;stroke-dasharray:5 4}
+.cyto .endbox rect{fill:#e7f1ee;stroke:#8fb9ae;stroke-width:1.4}
+.cyto .lab{font-size:12px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:3.2px;stroke-linejoin:round}
+.cyto .lab.small{font-size:10px;font-weight:600;fill:var(--muted)}
+.cyto .chip rect:not(.ov){fill:#fff;stroke:var(--line);stroke-width:1}
+.cyto .cyc{font-size:10.5px;font-weight:600;fill:#3d4640}
+.cyto .cyn{font-size:11px;font-weight:700;fill:#fff}
+.cyto .cyt{font-size:9.5px;font-weight:700;fill:#fff}
+.cyto .chain{fill:#dfe3dc;stroke:#a9b2a6;stroke-width:1}
+.cyto .chain.shared{fill:#cfe0ea;stroke:#6f95ab}
+.cyto .ig{fill:#f1e3d8;stroke:#c29b7e;stroke-width:1}
+.cyto .tm7{fill:none;stroke:#7fa79c;stroke-width:7;stroke-linejoin:round;stroke-linecap:round}
+.cyto .gprot{fill:#2f7f73;fill-opacity:.65;stroke:#fff;stroke-width:1.2}
+.cyto .lig{stroke:#fff;stroke-width:1.5}
+.cyto .lig.jak{fill:#3f6f8f}.cyto .lig.nfkb{fill:#b0643c}.cyto .lig.smad{fill:#7b5aa6}.cyto .lig.move{fill:#2f7f73}
+.cyto .lig3{fill:#b0643c;stroke:#fff;stroke-width:1.5}
+.cyto .jakdot{fill:#3f6f8f;stroke:#fff;stroke-width:1.2}
+.cyto .dom{stroke:#fff;stroke-width:1.2}
+.cyto .dom.nfkb{fill:#b0643c}.cyto .dom.smad{fill:#7b5aa6}.cyto .dom.die{fill:#b24f4f}
+.cyto .node rect:not(.ov){stroke:#fff;stroke-width:1.2}
+.cyto .node.jak rect:not(.ov){fill:#3f6f8f}.cyto .node.nfkb rect:not(.ov){fill:#b0643c}
+.cyto .node.smad rect:not(.ov){fill:#7b5aa6}.cyto .node.move rect:not(.ov){fill:#2f7f73}.cyto .node.die rect:not(.ov){fill:#b24f4f}
+.cyto .flowline{fill:none;stroke-width:2.2}
+.cyto .flowline.jak{stroke:#3f6f8f}.cyto .flowline.nfkb{stroke:#b0643c}
+.cyto .flowline.smad{stroke:#7b5aa6}.cyto .flowline.move{stroke:#2f7f73}.cyto .flowline.die{stroke:#b24f4f}
+.cyto .cg{transition:opacity .25s}
+.cyto .ov{opacity:0;transition:opacity .3s;pointer-events:none}
+.cyto[data-mode="jak"] .ov-jak,.cyto[data-mode="nfkb"] .ov-nfkb,.cyto[data-mode="rx"] .ov-rx{opacity:1}
+.cyto[data-mode="jak"] .cg:not([data-in~="jak"]),.cyto[data-mode="nfkb"] .cg:not([data-in~="nfkb"]),.cyto[data-mode="rx"] .cg:not([data-in~="rx"]){opacity:.3}
+.cyto.hot .cg:not(.on){opacity:.2}
+.cyto .cg.on{opacity:1 !important}
+.cyto .ov-rx{fill:none;stroke-width:2;stroke-dasharray:4 3}
+.cyto .ov-rx.block{stroke:#b24f4f}
+.cyto .ov-rx.drug{stroke:#2f7f73}
+.cyto .num circle{fill:#3d4640;stroke:#fff;stroke-width:2}
+.cyto .num text{font-size:11px;font-weight:800;fill:#fff}
+.cyto .ov-jak.num circle{fill:#3f6f8f}
+.cyto .ov-nfkb.num circle{fill:#b0643c}
+.steps[data-mode="jak"]{--sc:#3f6f8f} .steps[data-mode="nfkb"]{--sc:#b0643c} .steps[data-mode="rx"]{--sc:#b24f4f}
+/* 분화 조건 표에서 쓰는 작은 표식 */
+.tag-mouse{display:inline-block;margin-left:5px;padding:0 6px;border-radius:999px;background:#efe7d8;color:#6b5a3e;font-size:.68rem;font-weight:700;vertical-align:1px}
