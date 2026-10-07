@@ -323,4 +323,4 @@ function filter(q){const terms=q.trim().toLowerCase().split(/\s+/).filter(Boolea
 inputs.forEach(input=>input.addEventListener('input',()=>filter(input.value)));
 document.querySelectorAll('form').forEach(form=>form.addEventListener('submit',e=>{e.preventDefault();filter(form.querySelector('input').value);}));
 document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();inputs[0].focus();}});
-</script></body></html>
+</script><script src="../../../assets/js/feedback.js"></script></body></html>
