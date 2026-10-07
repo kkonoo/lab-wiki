@@ -40,6 +40,7 @@ wiki/site-meta/<질환>.md            유지보수 레이어  ← 비공개
 ```
 
 `index.html`은 `data.js` → `disease-page.js` 순서로 로드한다.
+"여기 헷갈려요" 피드백 버튼은 `disease-page.js`가 `assets/js/feedback.js`를 불러와 붙인다 — `index.html`에서 할 일 없음(규칙은 `feedback.js` 첫 주석).
 `fetch`가 아니라 `<script src>`를 쓰는 이유: `file://`로 열어도 동작해야 하기 때문(CORS 회피).
 
 `data.js`는 `window.DISEASE`에 아래를 넣는다.

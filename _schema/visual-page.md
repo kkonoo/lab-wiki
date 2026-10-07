@@ -93,10 +93,8 @@ site/disease/<대>/<질환>/<섹션>/data.js       articleRows·paperLinks·glos
 
 ### "여기 헷갈려요" 버튼
 
-`article-page.js`가 오른쪽 아래에 학생 피드백 버튼을 만든다. 문서 HTML에서 할 일은 없다.
-- 보낸 내용(페이지·절·선택한 문장·내용·이름(선택))은 Apps Script 웹 앱을 거쳐 Google Sheet에 쌓인다. 받는 쪽 코드는 `tools/feedback.gs`, 주소는 `article-page.js`의 `FEEDBACK_URL`.
-- `FEEDBACK_URL`이 비어 있으면 버튼이 생기지 않는다.
-- 2026-10-07 면역학 문서에서 시험 운영 시작. 이 시점에 `article-page.js`를 쓰는 문서가 면역학 28개뿐이라 경로 조건은 따로 두지 않았다 — §8의 8문서가 공용 자산으로 옮겨 오면 버튼도 같이 붙는다.
+`article-page.js`가 사이트 공용 `assets/js/feedback.js`를 불러와 오른쪽 아래에 학생 피드백 버튼을 만든다. 문서 HTML에서 할 일은 없다.
+붙이는 규칙·주소(`FEEDBACK_URL`)·받는 쪽 코드는 `assets/js/feedback.js` 첫 주석이 SSOT다.
 
 ---
 

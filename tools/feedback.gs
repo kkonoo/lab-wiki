@@ -1,6 +1,6 @@
 /* "여기 헷갈려요" 받는 쪽 — Google Sheet에 붙인 Apps Script (확장 프로그램 → Apps Script에 붙여넣기)
    배포: 배포 → 새 배포 → 유형 "웹 앱" · 실행 사용자 "나" · 액세스 권한 "모든 사용자"
-   배포 URL(…/exec)을 assets/js/article-page.js 의 FEEDBACK_URL에 넣는다.
+   배포 URL(…/exec)을 assets/js/feedback.js 의 FEEDBACK_URL에 넣는다.
    코드를 고친 뒤에는 "배포 관리 → 수정 → 새 버전"으로 다시 배포해야 반영된다(URL은 그대로). */
 
 // 시트 메뉴(확장 프로그램 → Apps Script)에서 만든 스크립트면 비워 둔다.

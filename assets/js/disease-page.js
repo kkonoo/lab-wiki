@@ -267,3 +267,10 @@
   window.addEventListener("hashchange", handleRoute);
   handleRoute();
 })();
+
+/* "여기 헷갈려요" 버튼 — 사이트 공용 assets/js/feedback.js를 불러온다 */
+(function () {
+  var s = document.createElement("script");
+  s.src = new URL("feedback.js", document.currentScript.src).href;
+  document.body.appendChild(s);
+})();
