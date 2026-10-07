@@ -1,0 +1,492 @@
+/* Immunology 01-basics — 그림 중심 문서(overview.html · cells.html) 전용
+   공통 틀(topbar·breadcrumb·article·aside·footer)은 ../immunology.css */
+:root{
+  --my:#b0643c; --ly:#3f6f8f;            /* 계통: 골수계 · 림프계 */
+  --inn:#b0643c; --ada:#3f6f8f;          /* 역할: 선천 · 적응 (계통 색과 일부러 같은 색) */
+  --il:#7b5aa6; --non:#a8a69e; --prog:#8e948c; --st:#6f3a55;
+  --mono-f:ui-monospace,Menlo,Consolas,"DejaVu Sans Mono",monospace;
+}
+.vpage .container,.vpage .topbar-inner{width:min(1240px,calc(100% - 40px))}
+.vpage .article-layout{grid-template-columns:minmax(0,1fr) 250px;gap:34px}
+.vpage .article{padding:clamp(22px,3.2vw,42px)}
+.vpage .article h1{font-size:clamp(1.9rem,4vw,2.8rem)}
+.vpage .article h2{margin-top:46px}
+.vpage .article h2 small{display:block;margin-top:3px;font:700 .72rem/1.3 "Pretendard","Noto Sans KR",sans-serif;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.vpage .breadcrumb a{color:var(--green);text-decoration:none}
+.lede{color:var(--muted);margin:0 0 16px;max-width:78ch;font-size:.95rem}
+.lede b{color:var(--ink)}
+code,.mono{font-family:var(--mono-f);font-size:.9em}
+a.src{display:inline-block;margin-left:5px;padding:0 6px;border:1px solid #cddbe4;border-radius:999px;font-size:.68rem;line-height:1.55;color:var(--blue);text-decoration:none;white-space:nowrap;vertical-align:1px;background:#f5f9fb}
+a.src:hover{background:#e6f0f5}
+
+/* ── figure ── */
+.fig{margin:0 0 8px;background:#fbfcf9;border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px}
+.fig-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.fig figcaption{margin:10px 2px 0;font-size:.78rem;color:var(--muted);line-height:1.65}
+.fig-tools{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin:0 0 10px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:#fff}
+.seg button{border:0;background:none;border-radius:999px;padding:6px 14px;font-size:.8rem;font-weight:650;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.seg button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.76rem;color:var(--muted)}
+.legend span{display:none;align-items:center}
+.legend[data-show="lin"] [data-mode="lin"],.legend[data-show="role"] [data-mode="role"]{display:inline-flex}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c);margin-right:6px}
+.mapinfo{min-height:1.7em;margin:8px 4px 0;font-size:.83rem;color:var(--muted)}
+.mapinfo b{color:var(--ink)}
+.mapinfo em{font-style:normal;padding:0 7px;border-radius:999px;background:#eef0ec;color:var(--ink);margin:0 2px;font-size:.76rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0;align-items:center}
+.chips .chip-h{font-size:.7rem;font-weight:800;letter-spacing:.1em;color:var(--muted);margin-right:4px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 11px;font-size:.79rem;color:var(--ink);cursor:pointer;line-height:1.5}
+.chip small{color:var(--muted);margin-left:5px;font-size:.72rem}
+.chip,.see{white-space:nowrap}
+.chip:hover,.chip.on,.chip:focus-visible{border-color:var(--green);background:var(--green-soft);outline:none}
+
+.abbrbox{margin:12px 0 0;padding:10px 0 0;border-top:1px dashed var(--line)}
+.abbrbox .chip-h{font-size:.7rem;font-weight:800;letter-spacing:.1em;color:var(--muted)}
+.abbr{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px 18px;margin:6px 0 0;font-size:.76rem}
+.abbr div{display:flex;gap:8px;align-items:baseline;min-width:0}
+.abbr dt{flex:0 0 66px;font-family:var(--mono-f);font-weight:700;color:var(--green)}
+.abbr dd{margin:0;color:var(--muted)}
+.abbr-src{margin:6px 0 0;font-size:.7rem;color:var(--muted)}
+.abbr-line{margin:-8px 0 16px;font-size:.76rem;color:var(--muted)}
+.abbr-line b{font-family:var(--mono-f);color:var(--green);font-weight:700}
+
+/* ── 세포 glyph (계통도 · 흐름도 공용) ── */
+svg .cell .cy{fill:var(--c);fill-opacity:.15;stroke:var(--c);stroke-opacity:.8;stroke-width:1.3;transition:fill .35s,stroke .35s}
+svg .cell .nu{fill:var(--c);fill-opacity:.8;transition:fill .35s}
+svg .cell .nu.faint{fill-opacity:.32}
+svg .cell .gr{fill:var(--c);transition:fill .35s}
+svg .cell .lk{fill:none;stroke:var(--c);stroke-opacity:.8;stroke-width:1.6}
+svg .cell .ring{fill:none;stroke:var(--c);stroke-opacity:.5;stroke-dasharray:3 3}
+svg .cell .rbc{fill:var(--c);fill-opacity:.4;stroke:var(--c);stroke-width:1.2;transition:fill .35s,stroke .35s}
+svg .cell .pal{fill:#fff;fill-opacity:.6}
+svg .cell .vac{fill:#fff;fill-opacity:.9}
+svg .cell .rcp{fill:none;stroke:var(--c);stroke-width:1.3;stroke-linecap:round;stroke-opacity:.9}
+svg text{font-family:"Pretendard","Noto Sans KR",-apple-system,"Segoe UI",sans-serif}
+svg .nm{font-size:12.5px;font-weight:650;fill:var(--ink)}
+svg .nm.big{font-size:14px;font-weight:800}
+svg .sb{font-size:10.5px;fill:var(--muted)}
+
+/* ── 1. 조혈 계통도 ── */
+svg.hmap{display:block;width:100%;height:auto;min-width:720px}
+.hmap .band.bm{fill:#f3eee7}
+.hmap .band.blood{fill:#f8eeee}
+.hmap .band.tissue{fill:#ecf1ea}
+.hmap .band.thymus{fill:#e8eef2;stroke:#c3cfd8;stroke-dasharray:4 3}
+.hmap .bandlab{font-size:10.5px;font-weight:750;letter-spacing:.08em;fill:#8a918a}
+.hmap .bandlab.small{font-size:10px;letter-spacing:.02em;fill:#6d8594}
+.hmap .lineagelab{font-size:11px;font-weight:750;transition:fill .3s}
+.hmap .lineagelab.my{fill:var(--my)} .hmap .lineagelab.ly{fill:var(--ly)}
+.hmap.role .lineagelab{fill:#aab1a9}
+.hmap .edge{fill:none;stroke:#b5bcb4;stroke-width:1.5;transition:opacity .2s,stroke .2s}
+.hmap .edge.dashed{stroke-dasharray:4 4}
+.hmap .cell{--c:var(--prog);cursor:pointer;transition:opacity .2s;outline:none}
+.hmap .cell.st{--c:var(--st)} .hmap .cell.my{--c:var(--my)} .hmap .cell.ly{--c:var(--ly)}
+.hmap.role .cell.prog{--c:var(--prog)} .hmap.role .cell.non{--c:var(--non)}
+.hmap.role .cell.inn{--c:var(--inn)} .hmap.role .cell.ada{--c:var(--ada)} .hmap.role .cell.il{--c:var(--il)}
+.hmap.hot .cell:not(.on){opacity:.16}
+.hmap.hot .edge:not(.on){opacity:.1}
+.hmap.hot .edge.on{stroke:#6d756c;stroke-width:2}
+.hmap .cell.on .cy,.hmap .cell.on .rbc{stroke-width:2.2}
+.hmap .rolenote text{font-size:10.5px;font-weight:650;fill:var(--green);opacity:0;transition:opacity .3s}
+.hmap.role .rolenote text{opacity:1}
+.hmap.hot .rolenote text{opacity:0}
+
+/* ── 2. 선천 ↔ 적응 ── */
+svg.flow{display:block;width:100%;height:auto;min-width:720px}
+.flow .lane.inn{fill:rgba(176,100,60,.07);stroke:rgba(176,100,60,.3)}
+.flow .lane.ada{fill:rgba(63,111,143,.07);stroke:rgba(63,111,143,.3)}
+.flow .lanet{font:800 15px Georgia,"Noto Serif KR",serif}
+.flow .lanet.inn{fill:var(--inn)} .flow .lanet.ada{fill:var(--ada)}
+.flow .lanek{font-size:9.5px;font-weight:750;letter-spacing:.16em;fill:#9aa19a}
+.flow .cell.inn{--c:var(--inn)} .flow .cell.ada{--c:var(--ada)} .flow .cell.path{--c:#7d857c}
+.flow .nm{font-size:12px}
+.flow .sb.dark{fill:var(--ink);font-size:11px}
+.flow .tiny{font-size:10px;fill:var(--muted)}
+.flow .farrow{fill:none;stroke:#9aa19a;stroke-width:1.6}
+.flow .farrow.strong{stroke:#7d857c;stroke-width:2}
+.flow .fback{fill:none;stroke:var(--green);stroke-width:1.8;stroke-dasharray:6 4}
+.flow .backlab{font-size:11.5px;font-weight:700;fill:var(--green)}
+.flow .bug{fill:#8f978e;fill-opacity:.5;stroke:#6f776e;stroke-width:1.1}
+.flow .abY{fill:none;stroke:var(--ada);stroke-width:2.4;stroke-linecap:round}
+.flow .lnode{fill:#eef2ea;stroke:#9fb09a;stroke-width:1.4}
+
+/* ── 표 ── */
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+.vtable{width:100%;border-collapse:collapse;font-size:.84rem;min-width:620px}
+.vtable th,.vtable td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+.vtable thead th{font-size:.7rem;letter-spacing:.06em;color:var(--muted);font-weight:750;text-transform:uppercase;border-bottom:1.5px solid var(--ink);white-space:nowrap}
+.vtable tbody th{font-weight:700;white-space:nowrap}
+.vtable tbody tr:last-child>*{border-bottom:0}
+.vtable td.inn{background:rgba(176,100,60,.045)} .vtable td.ada{background:rgba(63,111,143,.045)}
+.vtable tr[data-hl]{cursor:default}
+.vtable tr[data-hl]:hover>*,.vtable tr.on>*{background:var(--green-soft)}
+.vtable .ko{display:block;font-weight:400;color:var(--muted);font-size:.78rem}
+.vtable a.next{color:var(--green);font-weight:700;text-decoration:none}
+
+/* ── 탭 ── */
+.tablist{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 18px}
+.tablist button{font:650 .88rem/1.35 "Pretendard","Noto Sans KR",sans-serif;color:var(--muted);cursor:pointer;background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 16px;text-align:left}
+.tablist button:hover{color:var(--ink);border-color:#bcc4bd}
+.tablist button[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tablist button small{display:block;font-size:.7rem;font-weight:400;opacity:.75;margin-top:1px}
+[role="tabpanel"][hidden]{display:none}
+.panelhd{font:700 1.1rem Georgia,"Noto Serif KR",serif;margin:0 0 6px}
+.subhd{font:700 .98rem Georgia,"Noto Serif KR",serif;margin:26px 0 8px}
+
+/* ── 용어 공식 ── */
+.fixlist{border:1px solid var(--line);border-radius:10px;background:#fff;padding:2px 16px}
+.fix{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:12px 0;border-top:1px solid #edf0ec}
+.fix:first-child{border-top:0}
+.fix code{font-size:.84rem;line-height:1.6;display:block;color:var(--ink);font-weight:600}
+.fix .why{grid-column:1;margin:0;font-size:.8rem;color:var(--muted)}
+.fix .see{grid-column:2;grid-row:1 / 3;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;font-size:.74rem;color:var(--green);cursor:pointer;white-space:nowrap}
+.fix .see:hover,.fix .see:focus-visible{background:var(--green-soft);border-color:var(--green);outline:none}
+
+/* ── 장소 · 시간 ── */
+.route{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.route li{position:relative;background:#fff;border:1px solid var(--line);border-top:3px solid var(--c,#8e948c);border-radius:10px;padding:13px 15px}
+.route li:not(:last-child)::after{content:"→";position:absolute;right:-15px;top:50%;transform:translateY(-50%);color:#aab1a9}
+.route .lv{font-size:.66rem;font-weight:800;letter-spacing:.12em;color:var(--muted)}
+.route h4{margin:2px 0 6px;font:700 .98rem Georgia,"Noto Serif KR",serif}
+.route p{margin:0;font-size:.8rem;color:var(--muted)}
+.route p b{color:var(--ink);font-weight:650}
+.moves{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:7px}
+.moves li{font-size:.84rem;padding-left:18px;position:relative}
+.moves li::before{content:"↻";position:absolute;left:0;color:var(--green)}
+.tl{list-style:none;margin:4px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:relative}
+.tl::before{content:"";position:absolute;left:14px;right:8%;top:14px;height:2px;background:linear-gradient(90deg,#dccbd4,#6f3a55)}
+.tl li{position:relative;padding:32px 12px 0 0}
+.tl li::before{content:"";position:absolute;top:8px;left:8px;width:10px;height:10px;border-radius:50%;background:#fff;border:3px solid var(--green)}
+.tl li.adult::before{background:var(--green)}
+.tl .when{display:block;font-family:var(--mono-f);font-size:.72rem;font-weight:700;color:var(--green)}
+.tl h4{margin:3px 0 4px;font:700 .92rem Georgia,"Noto Serif KR",serif}
+.tl p{margin:0;font-size:.78rem;color:var(--muted);line-height:1.55}
+.more{display:inline-block;margin-top:14px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px 13px;color:var(--green);font-weight:650;font-size:.84rem;text-decoration:none}
+.more:hover{border-color:var(--green);background:var(--green-soft)}
+
+/* ── callout ── */
+.callout{border-left:3px solid var(--rust);background:#fdf8f6;padding:12px 16px;margin:16px 0 0;border-radius:0 8px 8px 0}
+.callout.blue{border-left-color:var(--blue);background:#f5f9fb}
+.callout h4{margin:0 0 5px;font:700 .86rem "Pretendard","Noto Sans KR",sans-serif}
+.callout p{margin:0;font-size:.83rem}
+.callout p+p{margin-top:6px}
+.callout b{color:var(--rust)} .callout.blue b{color:var(--blue)}
+
+/* ── cells: 혈액 분획 ── */
+svg.tubes{display:block;width:100%;height:auto;min-width:720px}
+.tubes .tubet{font-size:12.5px;font-weight:750;fill:var(--ink)}
+.tubes .glass{fill:none;stroke:#8f978e;stroke-width:1.6}
+.tubes .cap{fill:#d3d8d2;stroke:#8f978e;stroke-width:1.2}
+.tubes .ly.plasma{fill:#efd78c} .tubes .ly.buffy{fill:#fcfbf4;stroke:#d9d0b8;stroke-width:1}
+.tubes .ly.rbc{fill:#a8433d} .tubes .ly.serum{fill:#f2e2a4} .tubes .ly.clot{fill:#7a2b28}
+.tubes .ly.pbmc{fill:#fffdf5;stroke:#dfd3b3;stroke-width:1} .tubes .ly.ficoll{fill:#e2ebee} .tubes .ly.pellet{fill:#943933}
+.tubes .leader{fill:none;stroke:#a3aaa2;stroke-width:1}
+.tubes .nm{font-size:13px}
+.tubes .sb{font-size:11px}
+.tubes .layer{transition:opacity .2s}
+.tubes.hot .layer:not(.on){opacity:.18}
+
+/* ── cells: 분모 사다리 ── */
+.ladder2{display:grid;gap:22px;margin-top:6px}
+.step{position:relative;display:grid;grid-template-columns:168px minmax(0,1fr);gap:8px 20px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.step+.step::before{content:"↓ " attr(data-gap);position:absolute;top:-19px;left:18px;font-size:.7rem;color:var(--muted)}
+.step .den .no{font-family:var(--mono-f);font-size:.7rem;color:var(--green);font-weight:700}
+.step .den b{display:block;font:700 1rem/1.3 Georgia,"Noto Serif KR",serif;margin:2px 0 3px}
+.step .den small{display:block;color:var(--muted);font-size:.74rem;line-height:1.5}
+.bars{display:grid;gap:4px}
+.rrow{display:grid;grid-template-columns:132px minmax(0,1fr) 100px;gap:10px;align-items:center;font-size:.8rem}
+.rrow .rl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rrow.lymph .rl{font-weight:750;color:var(--blue)}
+.rtrack{position:relative;height:11px;background:#eef0ec;border-radius:6px}
+.rtrack i{position:absolute;top:0;bottom:0;left:calc(var(--a) * 1%);width:max(4px,calc((var(--b) - var(--a)) * 1%));background:var(--c,#8e948c);border-radius:6px;opacity:.9}
+.rtrack i.pt{width:11px;height:11px;margin-left:-5.5px;border-radius:50%;box-shadow:0 0 0 2px #fff,0 0 0 3px var(--c)}
+.rv{font-family:var(--mono-f);font-size:.72rem;color:var(--muted);text-align:right;white-space:nowrap}
+.rrow.lymph .rv{color:var(--blue);font-weight:700}
+.ticks{display:grid;grid-template-columns:132px minmax(0,1fr) 100px;gap:10px;font-family:var(--mono-f);font-size:.64rem;color:#9aa19a}
+.ticks>div{position:relative;height:14px}
+.ticks>div>span{position:absolute;transform:translateX(-50%);left:calc(var(--x) * 1%)}
+.stack{display:flex;height:20px;border-radius:6px;overflow:hidden;margin:2px 0 4px;background:#eef0ec}
+.stack span{flex:0 0 calc(var(--p) * 1%);background:var(--c);border-right:1px solid #fff}
+.stepnote{grid-column:2;margin:4px 0 0;font-size:.76rem;color:var(--muted)}
+.stepnote b{color:var(--ink)}
+
+/* ── cells: PBMC3k ── */
+.sc-fig{display:grid;grid-template-columns:minmax(250px,.95fr) minmax(0,1.05fr);gap:16px;align-items:start}
+svg.umap{display:block;width:100%;height:auto}
+.umap .umapbg{fill:#fff;stroke:var(--line)}
+.umap .cl{fill:none;stroke:var(--c);stroke-width:2.4;stroke-linecap:round;stroke-opacity:.78;transition:stroke-opacity .2s}
+.umap.hot .cl:not(.on){stroke-opacity:.06}
+.umap .cllab{font-size:9.5px;font-weight:750;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round;transition:opacity .2s}
+.umap.hot .cllab:not(.on){opacity:.2}
+.umap .axis path{fill:none;stroke:#9aa19a;stroke-width:1}
+.umap .axis text{font-size:7.5px;fill:#9aa19a}
+[data-cl="cd4t"]{--c:#3f6f8f} [data-cl="cd8t"]{--c:#79a3c2} [data-cl="nk"]{--c:#2f8b7d} [data-cl="b"]{--c:#8a4f7d}
+[data-cl="cd14"]{--c:#b0643c} [data-cl="cd16"]{--c:#d59c52} [data-cl="dc"]{--c:#9a8a2e} [data-cl="mk"]{--c:#9a9d96}
+.clist{display:grid;gap:2px}
+.clist .head{display:grid;grid-template-columns:14px minmax(0,1fr) 108px;gap:10px;font-size:.66rem;letter-spacing:.08em;font-weight:750;color:var(--muted);padding:0 8px 4px;border-bottom:1.5px solid var(--ink);text-transform:uppercase}
+.crow{display:grid;grid-template-columns:14px minmax(0,1fr) 108px;gap:1px 10px;align-items:center;padding:6px 8px;border-radius:8px}
+.crow:hover,.crow.on{background:var(--green-soft)}
+.crow .sw{width:12px;height:12px;border-radius:3px;background:var(--c)}
+.crow .cn{font-weight:650;font-size:.84rem}
+.crow .cn small{font-weight:400;color:var(--muted);margin-left:5px;font-size:.72rem}
+.crow .num{text-align:right;font-family:var(--mono-f);font-size:.74rem;white-space:nowrap}
+.crow .mk{grid-column:2;font-family:var(--mono-f);font-size:.7rem;color:var(--muted)}
+.crow .bar{grid-column:2 / 4;height:5px;background:#eef0ec;border-radius:3px;position:relative;margin-top:3px}
+.crow .bar i{position:absolute;inset:0 auto 0 0;width:calc(var(--p) * 2%);background:var(--c);border-radius:3px}
+.clist .foot{font-size:.7rem;color:var(--muted);padding:6px 8px 0}
+
+/* ── type vs state ── */
+.vs2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vs2>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.vs2 .tag{display:inline-block;font-size:.7rem;font-weight:750;padding:1px 9px;border-radius:999px;margin-bottom:6px}
+.vs2 .type .tag{background:#e6eef3;color:var(--blue)} .vs2 .state .tag{background:#f6e9e3;color:var(--rust)}
+.vs2 h4{margin:0 0 6px;font:700 .98rem Georgia,"Noto Serif KR",serif}
+.vs2 ul{margin:0;padding-left:18px;font-size:.84rem}
+.vs2 li{margin:4px 0}
+.rules{margin:6px 0 0;padding-left:20px;font-size:.88rem}
+.rules li{margin:5px 0}
+.stamp{color:#9aa19a}
+
+@media (max-width:820px){
+  .vpage .article-layout{grid-template-columns:minmax(0,1fr);gap:20px}
+}
+@media (max-width:980px){
+  .route,.vs2{grid-template-columns:1fr}
+  .route li:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-17px;transform:translateX(-50%)}
+  .tl{grid-template-columns:1fr;gap:10px}
+  .tl::before{left:12px;right:auto;top:10px;bottom:10px;width:2px;height:auto;background:linear-gradient(180deg,#dccbd4,#6f3a55)}
+  .tl li{padding:0 0 0 30px}
+  .tl li::before{top:4px;left:6px}
+  .sc-fig{grid-template-columns:1fr}
+}
+@media (max-width:700px){
+  .fix{grid-template-columns:1fr}
+  .fix .see{grid-column:1;grid-row:auto;justify-self:start}
+  .step{grid-template-columns:1fr}
+  .stepnote{grid-column:1}
+  .rrow,.ticks{grid-template-columns:96px minmax(0,1fr) 78px;gap:8px}
+}
+.vpage .related-list a{color:var(--green);font-size:.87rem;text-decoration:none;line-height:1.45}
+.vpage .related-list a:hover{text-decoration:underline}
+
+/* ── 림프절 단면 ── */
+svg.lnmap{display:block;width:100%;height:auto;min-width:720px}
+.lnmap .cortex{fill:#f6efe6}
+.lnmap .tz{fill:#e4ecf1}
+.lnmap .med{fill:#cfe0e8}
+.lnmap .cord{fill:none;stroke:#c98f76;stroke-width:8;stroke-linecap:round;opacity:.45}
+.lnmap .scs{fill:none;stroke:#cfe0e8;stroke-width:40}
+.lnmap .capsule{fill:none;stroke:#7f8b93;stroke-width:2.4}
+.lnmap .fol{fill:#efdce6;stroke:#b98aa2;stroke-width:1.2}
+.lnmap .gc{fill:#dcb8ca;stroke:#a86f8b;stroke-width:1;stroke-dasharray:3 2}
+.lnmap .fdc{fill:none;stroke:#8a4f7d;stroke-width:1.2;stroke-linecap:round;stroke-opacity:.35}
+.lnmap .hev ellipse{fill:#fff;stroke:#b24f4f;stroke-width:3.4}
+.lnmap .hev circle{fill:#b24f4f}
+.lnmap .lvessel{fill:none;stroke:#8fb3c4;stroke-width:14;stroke-linecap:round}
+.lnmap .lvessel-in{fill:none;stroke:#d9e8ef;stroke-width:9;stroke-linecap:round}
+.lnmap .artery{fill:none;stroke:#c05b5b;stroke-width:6;stroke-linecap:round}
+.lnmap .vein{fill:none;stroke:#7c6aa6;stroke-width:6;stroke-linecap:round}
+.lnmap .leader{fill:none;stroke:#8f978e;stroke-width:1}
+.lnmap .lab{font-size:12px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round}
+.lnmap .lab.in{fill:#3d4640}
+.lnmap .lab.small{font-size:10px;font-weight:600;fill:var(--muted)}
+.lnmap .lab.side{font-size:11.5px}
+.lnmap .rg{transition:opacity .25s}
+.lnmap .ov{opacity:0;transition:opacity .3s;pointer-events:none}
+.lnmap[data-mode="lymph"] .ov-lymph,.lnmap[data-mode="blood"] .ov-blood,.lnmap[data-mode="act"] .ov-act{opacity:1}
+.lnmap[data-mode="lymph"] .rg:not([data-in~="lymph"]),.lnmap[data-mode="blood"] .rg:not([data-in~="blood"]),.lnmap[data-mode="act"] .rg:not([data-in~="act"]){opacity:.32}
+.lnmap.hot .rg:not(.on){opacity:.18}
+.lnmap .ln-l{fill:none;stroke:#2f7f73;stroke-width:2.6}
+.lnmap .ln-b{fill:none;stroke:#b24f4f;stroke-width:2.6}
+.lnmap .ln-b.thin{stroke-width:1.3;stroke-opacity:.6}
+.lnmap .ln-a{fill:none;stroke:#6f3a55;stroke-width:2.6}
+.lnmap .dashed{stroke-dasharray:6 4}
+.lnmap .dotted{stroke-dasharray:1.5 3.5;stroke-linecap:round}
+.lnmap .dcg path{fill:#2f7f73;fill-opacity:.25;stroke:#2f7f73;stroke-width:2}
+.lnmap .burst path{fill:#6f3a55}
+.lnmap .gcring{fill:none;stroke:#6f3a55;stroke-width:2.4}
+.lnmap .num circle{stroke:#fff;stroke-width:2}
+.lnmap .num text{font-size:11px;font-weight:800;fill:#fff}
+.lnmap .ov-lymph.num circle{fill:#2f7f73} .lnmap .ov-blood.num circle{fill:#b24f4f} .lnmap .ov-act.num circle{fill:#6f3a55}
+.steps{display:none;margin:12px 2px 0;padding:0;list-style:none;counter-reset:st}
+.steps.on{display:grid;gap:5px}
+.steps li{position:relative;padding-left:26px;font-size:.84rem}
+.steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:2px;width:18px;height:18px;border-radius:50%;background:var(--sc);color:#fff;font-size:.68rem;font-weight:800;display:grid;place-items:center}
+.steps[data-mode="lymph"]{--sc:#2f7f73} .steps[data-mode="blood"]{--sc:#b24f4f} .steps[data-mode="act"]{--sc:#6f3a55}
+.steps li b{font-weight:700}
+.cases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.cases>div{background:#fff;border:1px solid var(--line);border-top:3px solid var(--c,#8e948c);border-radius:10px;padding:13px 15px}
+.cases .lv{font-size:.66rem;font-weight:800;letter-spacing:.1em;color:var(--muted)}
+.cases h4{margin:2px 0 6px;font:700 .96rem Georgia,"Noto Serif KR",serif}
+.cases p{margin:0 0 6px;font-size:.8rem;color:#37423a}
+.cases p:last-child{margin-bottom:0}
+.sp{display:inline-block;font-size:.66rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 6px;margin-left:4px;vertical-align:1px;white-space:nowrap}
+@media (max-width:980px){.cases{grid-template-columns:1fr}}
+.legend.static span{display:inline-flex}
+.lnmap .rg.on{opacity:1 !important}
+
+/* ── cytokine: 수용체 계열 → 신호 경로 (basics.css 뒤에 이어 붙임) ── */
+svg.cyto{display:block;width:100%;height:auto;min-width:860px}
+.cyto .mem rect{fill:#efe7d8;stroke:#d9cdb6;stroke-width:1}
+.cyto .mem line{stroke:#d1c2a6;stroke-width:1.2}
+.cyto .nuc rect{fill:#f2ede4;stroke:#cfc7b8;stroke-width:1.4;stroke-dasharray:5 4}
+.cyto .endbox rect{fill:#e7f1ee;stroke:#8fb9ae;stroke-width:1.4}
+.cyto .lab{font-size:12px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:3.2px;stroke-linejoin:round}
+.cyto .lab.small{font-size:10px;font-weight:600;fill:var(--muted)}
+.cyto .chip rect:not(.ov){fill:#fff;stroke:var(--line);stroke-width:1}
+.cyto .cyc{font-size:10.5px;font-weight:600;fill:#3d4640}
+.cyto .cyn{font-size:11px;font-weight:700;fill:#fff}
+.cyto .cyt{font-size:9.5px;font-weight:700;fill:#fff}
+.cyto .chain{fill:#dfe3dc;stroke:#a9b2a6;stroke-width:1}
+.cyto .chain.shared{fill:#cfe0ea;stroke:#6f95ab}
+.cyto .ig{fill:#f1e3d8;stroke:#c29b7e;stroke-width:1}
+.cyto .tm7{fill:none;stroke:#7fa79c;stroke-width:7;stroke-linejoin:round;stroke-linecap:round}
+.cyto .gprot{fill:#2f7f73;fill-opacity:.65;stroke:#fff;stroke-width:1.2}
+.cyto .lig{stroke:#fff;stroke-width:1.5}
+.cyto .lig.jak{fill:#3f6f8f}.cyto .lig.nfkb{fill:#b0643c}.cyto .lig.smad{fill:#7b5aa6}.cyto .lig.move{fill:#2f7f73}
+.cyto .lig3{fill:#b0643c;stroke:#fff;stroke-width:1.5}
+.cyto .jakdot{fill:#3f6f8f;stroke:#fff;stroke-width:1.2}
+.cyto .dom{stroke:#fff;stroke-width:1.2}
+.cyto .dom.nfkb{fill:#b0643c}.cyto .dom.smad{fill:#7b5aa6}.cyto .dom.die{fill:#b24f4f}
+.cyto .node rect:not(.ov){stroke:#fff;stroke-width:1.2}
+.cyto .node.jak rect:not(.ov){fill:#3f6f8f}.cyto .node.nfkb rect:not(.ov){fill:#b0643c}
+.cyto .node.smad rect:not(.ov){fill:#7b5aa6}.cyto .node.move rect:not(.ov){fill:#2f7f73}.cyto .node.die rect:not(.ov){fill:#b24f4f}
+.cyto .flowline{fill:none;stroke-width:2.2}
+.cyto .flowline.jak{stroke:#3f6f8f}.cyto .flowline.nfkb{stroke:#b0643c}
+.cyto .flowline.smad{stroke:#7b5aa6}.cyto .flowline.move{stroke:#2f7f73}.cyto .flowline.die{stroke:#b24f4f}
+.cyto .cg{transition:opacity .25s}
+.cyto .ov{opacity:0;transition:opacity .3s;pointer-events:none}
+.cyto[data-mode="jak"] .ov-jak,.cyto[data-mode="nfkb"] .ov-nfkb,.cyto[data-mode="rx"] .ov-rx{opacity:1}
+.cyto[data-mode="jak"] .cg:not([data-in~="jak"]),.cyto[data-mode="nfkb"] .cg:not([data-in~="nfkb"]),.cyto[data-mode="rx"] .cg:not([data-in~="rx"]){opacity:.3}
+.cyto.hot .cg:not(.on){opacity:.2}
+.cyto .cg.on{opacity:1 !important}
+.cyto .ov-rx{fill:none;stroke-width:2;stroke-dasharray:4 3}
+.cyto .ov-rx.block{stroke:#b24f4f}
+.cyto .ov-rx.drug{stroke:#2f7f73}
+.cyto .num circle{fill:#3d4640;stroke:#fff;stroke-width:2}
+.cyto .num text{font-size:11px;font-weight:800;fill:#fff}
+.cyto .ov-jak.num circle{fill:#3f6f8f}
+.cyto .ov-nfkb.num circle{fill:#b0643c}
+.steps[data-mode="jak"]{--sc:#3f6f8f} .steps[data-mode="nfkb"]{--sc:#b0643c} .steps[data-mode="rx"]{--sc:#b24f4f}
+/* 분화 조건 표에서 쓰는 작은 표식 */
+.tag-mouse{display:inline-block;margin-left:5px;padding:0 6px;border-radius:999px;background:#efe7d8;color:#6b5a3e;font-size:.68rem;font-weight:700;vertical-align:1px}
+
+/* ── ontogeny: 발생 타임라인 (basics.css 뒤에 이어 붙임) ── */
+svg.onto{display:block;width:100%;height:auto;min-width:880px}
+.onto .era{fill:#f3f1ea;stroke:#e2ded2;stroke-width:1}
+.onto .era.fet{fill:#f7f4ec}
+.onto .era.inf{fill:#eef3f0}
+.onto .era-lab{font-size:11.5px;font-weight:800;letter-spacing:.06em;fill:var(--muted);paint-order:stroke;stroke:#fff;stroke-width:3px}
+.onto .lname{font-size:11px;font-weight:800;letter-spacing:.04em}
+.onto .lname.hema{fill:#b0643c}.onto .lname.cells{fill:#3f6f8f}
+.onto .lname.mat{fill:#7b5aa6}.onto .lname.post{fill:#2f7f73}
+.onto .bar rect{stroke:#fff;stroke-width:1.2}
+.onto .bar.hema rect{fill:#b0643c}.onto .bar.cells rect{fill:#3f6f8f}
+.onto .bar.mat rect{fill:#7b5aa6}.onto .bar.post rect{fill:#2f7f73}
+.onto .bl{font-size:11px;font-weight:700}
+.onto .bl.in{fill:#fff}
+.onto .bl.in.sub{font-size:9.5px;font-weight:600;fill:#fff;fill-opacity:.75}
+.onto .bl.out{fill:#3d4640;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.onto .iggl{font-size:10px;font-weight:700;fill:#7b5aa6;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.onto .igg{fill:none;stroke:#7b5aa6;stroke-width:2.4;stroke-dasharray:5 3}
+.onto .igg-fill{fill:url(#onIgG);stroke:none}
+.onto .birth{fill:none;stroke:#6f3a55;stroke-width:1.6;stroke-dasharray:4 4}
+.onto .birthlab rect{fill:#6f3a55}
+.onto .birthlab text{font-size:11px;font-weight:800;fill:#fff}
+.onto .axis{fill:none;stroke:#b7bdb4;stroke-width:1.2}
+.onto .tick{stroke:#b7bdb4;stroke-width:1.2}
+.onto .tk{font-size:10.5px;font-weight:700;fill:#3d4640}
+.onto .tk.small{font-size:9.5px;font-weight:600;fill:var(--muted)}
+.onto .lab.small{font-size:10px;font-weight:600;fill:#7b5aa6}
+.onto .ln,.onto .bar{transition:opacity .25s}
+.onto .ov{opacity:0;transition:opacity .3s;pointer-events:none}
+.onto[data-mode="hema"] .ov-hema,.onto[data-mode="mat"] .ov-mat,.onto[data-mode="post"] .ov-post{opacity:1}
+.onto[data-mode="hema"] .bar:not(.hema),.onto[data-mode="mat"] .bar:not(.mat),.onto[data-mode="post"] .bar:not(.post){opacity:.25}
+.onto[data-mode="hema"] .iggwrap,.onto[data-mode="post"] .iggwrap{opacity:.25}
+.onto .iggwrap{transition:opacity .25s}
+.onto.hot .bar:not(.on){opacity:.2}
+.onto .bar.on rect{stroke:#3d4640;stroke-width:2}
+.onto .num circle{fill:#3d4640;stroke:#fff;stroke-width:2}
+.onto .num text{font-size:11px;font-weight:800;fill:#fff}
+.onto .ov-hema.num circle{fill:#b0643c}
+.onto .ov-mat.num circle{fill:#7b5aa6}
+.onto .ov-post.num circle{fill:#2f7f73}
+.steps[data-mode="hema"]{--sc:#b0643c} .steps[data-mode="mat"]{--sc:#7b5aa6} .steps[data-mode="post"]{--sc:#2f7f73}
+
+/* 별칭·약어는 문서 맨 아래 접이식으로 — 검색 색인은 그대로 이 블록을 읽는다 */
+.aliases-fold{margin:26px 0 0;border-top:1px solid var(--line);padding-top:10px}
+.aliases-fold summary{cursor:pointer;list-style:none;color:var(--muted);font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.aliases-fold summary::-webkit-details-marker{display:none}
+.aliases-fold summary::before{content:"+ ";font-weight:700}
+.aliases-fold[open] summary::before{content:"− "}
+.aliases-fold summary:hover{color:var(--green)}
+.aliases-fold .aliases{margin:10px 0 0;font-size:.78rem;line-height:1.7}
+
+/* 그림 그룹 식별용 클래스 — 자바스크립트·선택자 훅, 별도 스타일 없음
+   (03에서 짧은 이름이 공용 규칙과 충돌해 글자가 흰색으로 렌더된 사고가 있어, 훅은 반드시 여기 선언해 둔다) */
+.hmap .bands,.hmap .edges,.tubes .tube,.cyto .rx-drug,.cyto .rx-block,.onto .eras,.onto .emb{cursor:default}
+
+/* ── 문서 목차 (basics.js가 article의 h2를 읽어 본문 왼쪽에 생성) ── */
+/* 목차가 있는 문서만 3단(목차·본문·사이드바)으로 넓힌다. body.has-toc는 basics.js가 붙인다. */
+.vpage.has-toc .container,.vpage.has-toc .topbar-inner{width:min(1560px,calc(100% - 40px))}
+.vpage.has-toc .article-layout{grid-template-columns:200px minmax(0,1fr) 250px}
+.toc-box{position:sticky;top:84px;align-self:start}
+.toc-box h3{margin-bottom:8px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li{margin:1px 0}
+.toc a{display:flex;gap:7px;align-items:baseline;padding:5px 9px;border-radius:7px;
+  font-size:.83rem;line-height:1.45;color:var(--muted);text-decoration:none;
+  transition:background .15s,color .15s}
+.toc a:hover{background:var(--green-soft);color:var(--ink)}
+.toc a:focus-visible{outline:2px solid var(--green);outline-offset:1px}
+.toc a .n{flex:none;min-width:11px;font-size:.71rem;font-weight:800;color:#b3bab2}
+.toc a.on{color:var(--ink);font-weight:700;background:var(--green-soft)}
+.toc a.on .n{color:var(--muted)}
+/* 상단 고정 헤더(min-height 64px) 아래로 내려오도록 */
+.vpage .article h2{scroll-margin-top:84px}
+/* 본문이 좁아지는 폭에서는 목차를 접고 원래 2단으로 되돌린다 */
+@media (max-width:1280px){
+  .vpage.has-toc .container,.vpage.has-toc .topbar-inner{width:min(1240px,calc(100% - 40px))}
+  .vpage.has-toc .article-layout{grid-template-columns:minmax(0,1fr) 250px}
+  .toc-box{display:none}
+}
+@media (max-width:820px){
+  .vpage.has-toc .article-layout{grid-template-columns:minmax(0,1fr)}
+}
+
+/* ── "여기 헷갈려요" (article-page.js가 FEEDBACK_URL이 있을 때만 생성) ── */
+.fb-btn{position:fixed;right:20px;bottom:20px;z-index:30;display:inline-flex;align-items:center;gap:7px;
+  padding:8px 15px 8px 9px;border:1px solid var(--line);border-radius:999px;background:var(--surface);
+  color:var(--ink);font-size:.84rem;font-weight:650;cursor:pointer;box-shadow:var(--shadow)}
+.fb-btn:hover,.fb-btn[aria-expanded="true"]{border-color:var(--green);color:var(--green)}
+.fb-btn:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.fb-q{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;font-size:.78rem;font-weight:800}
+.fb-panel{position:fixed;right:20px;bottom:68px;z-index:45;width:min(360px,calc(100vw - 32px));max-height:calc(100vh - 150px);overflow:auto;
+  display:grid;gap:10px;padding:14px 16px 16px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);
+  box-shadow:0 18px 45px rgba(24,33,27,.16);font-size:.84rem}
+.fb-panel[hidden]{display:none}
+.fb-hd{display:flex;align-items:center;justify-content:space-between}
+.fb-hd b{font-size:.95rem}
+.fb-x{border:0;background:none;font-size:1.3rem;line-height:1;color:var(--muted);cursor:pointer;padding:2px 4px}
+.fb-panel label{display:grid;gap:4px;font-weight:650;color:var(--ink)}
+.fb-panel label small{font-weight:500;color:var(--muted)}
+.fb-panel select,.fb-panel textarea,.fb-panel input{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:#fff;font:inherit;font-weight:400;color:var(--ink)}
+.fb-panel textarea{resize:vertical;min-height:84px}
+.fb-panel select:focus,.fb-panel textarea:focus,.fb-panel input:focus{outline:2px solid var(--green-soft);border-color:var(--green)}
+.fb-quote{display:flex;gap:8px;align-items:flex-start;padding:7px 9px;border-left:3px solid var(--green);background:var(--green-soft);border-radius:0 7px 7px 0;color:var(--muted);font-size:.8rem}
+.fb-quote[hidden]{display:none}
+.fb-quote span{flex:1;max-height:5.4em;overflow:auto}
+.fb-quote button{flex:none;border:0;background:none;color:var(--green);font-size:.75rem;font-weight:700;cursor:pointer;padding:0}
+.fb-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.fb-note{margin:0;color:var(--muted);font-size:.75rem}
+.fb-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.fb-status{color:var(--muted);font-size:.78rem}
+.fb-row button{border:0;border-radius:999px;padding:7px 18px;background:var(--ink);color:#fff;font-weight:700;cursor:pointer}
+.fb-row button:disabled{opacity:.5;cursor:default}
+@media (max-width:820px){
+  .fb-btn{right:14px;bottom:14px}
+  .fb-panel{right:16px;left:16px;bottom:62px;width:auto}
+}
+@media print{.fb-btn,.fb-panel{display:none!important}}

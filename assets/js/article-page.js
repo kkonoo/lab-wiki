@@ -1,0 +1,419 @@
+/* Immunology 01-basics — overview.html · cells.html 상호작용 (의존성 없음) */
+(function () {
+  "use strict";
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  /* 상단 검색 → 대문 전체 검색 (wiki/site/index.html?q=) */
+  var SCRIPT_BASE = (document.currentScript && document.currentScript.src) || location.href;
+  var form = $("#topSearchForm"), input = $("#topSearch");
+  if (form) form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var v = input.value.trim();
+    if (v) location.href = new URL("../../../index.html?q=" + encodeURIComponent(v), SCRIPT_BASE).href;
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "/" && input && document.activeElement.tagName !== "INPUT") { e.preventDefault(); input.focus(); }
+  });
+
+  /* 탭 */
+  $$('[role="tablist"]').forEach(function (list) {
+    var tabs = $$('[role="tab"]', list);
+    function show(t, push) {
+      tabs.forEach(function (x) {
+        var on = x === t;
+        x.setAttribute("aria-selected", on ? "true" : "false");
+        x.tabIndex = on ? 0 : -1;
+        document.getElementById(x.getAttribute("aria-controls")).hidden = !on;
+      });
+      if (push) history.replaceState(null, "", "#" + t.id);
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener("click", function () { show(t, true); });
+      t.addEventListener("keydown", function (e) {
+        var n = e.key === "ArrowRight" ? tabs[(i + 1) % tabs.length] : e.key === "ArrowLeft" ? tabs[(i - 1 + tabs.length) % tabs.length] : null;
+        if (n) { e.preventDefault(); n.focus(); show(n, true); }
+      });
+    });
+    var init = tabs.filter(function (t) { return t.id === location.hash.slice(1); })[0];
+    if (init) show(init, false);
+  });
+
+  /* 그림 강조: svg 안의 [attr] 토큰과 keys가 겹치면 .on */
+  function highlighter(svg, sel, attr) {
+    var els = $$(sel, svg);
+    return function (keys) {
+      if (!keys || !keys.length) {
+        svg.classList.remove("hot");
+        els.forEach(function (el) { el.classList.remove("on"); });
+        return;
+      }
+      svg.classList.add("hot");
+      els.forEach(function (el) {
+        var t = (el.getAttribute(attr) || "").split(/\s+/);
+        el.classList.toggle("on", t.some(function (k) { return keys.indexOf(k) >= 0; }));
+      });
+    };
+  }
+
+  function bindTriggers(figName, hi, onShow) {
+    var pinned = null, pinBtn = null, timer = null;
+    function keysOf(el) { return el.getAttribute("data-hl").split(/\s+/); }
+    function rest() { hi(pinned); if (onShow) onShow(null); }
+    $$('[data-fig="' + figName + '"][data-hl]').forEach(function (el) {
+      el.addEventListener("mouseenter", function () { hi(keysOf(el)); });
+      el.addEventListener("mouseleave", rest);
+      el.addEventListener("focus", function () { hi(keysOf(el)); });
+      el.addEventListener("blur", rest);
+      if (el.tagName === "BUTTON") el.addEventListener("click", function () {
+        var same = pinBtn === el;
+        if (pinBtn) pinBtn.classList.remove("on");
+        clearTimeout(timer);
+        pinned = same ? null : keysOf(el);
+        pinBtn = same ? null : el;
+        if (pinBtn) pinBtn.classList.add("on");
+        hi(pinned);
+        if (el.classList.contains("see")) {           /* 그림이 화면 밖일 때 */
+          var fig = document.getElementById(figName + "Fig");
+          if (fig) fig.scrollIntoView({ behavior: "smooth", block: "center" });
+          timer = setTimeout(function () { if (pinBtn === el) { el.classList.remove("on"); pinned = pinBtn = null; hi(null); } }, 4000);
+        }
+      });
+    });
+  }
+
+  /* ── overview: 조혈 계통도 ── */
+  var map = $("svg.hmap");
+  if (map) {
+    var hiMap = (function () {
+      var h1 = highlighter(map, ".cell[data-k]", "data-k"), h2 = highlighter(map, ".edge[data-k]", "data-k");
+      return function (k) { h1(k); h2(k); };
+    })();
+    var PARENT = { cmp: "hsc", clp: "hsc", mep: "cmp", gmp: "cmp", rbc: "mep", mk: "mep", plt: "mk",
+      neut: "gmp", eos: "gmp", baso: "gmp", mono: "gmp", dc: "gmp", mast: "gmp", mac: "mono", tdc: "dc",
+      nk: "clp", b: "clp", thy: "clp", t: "thy", nkt: "thy", plasma: "b", efft: "t" };
+    var LIN = { st: "줄기세포", my: "골수계", ly: "림프계" };
+    var ROLE = { inn: "선천", ada: "적응", il: "innate-like", non: "산소 운반·지혈", prog: "전구 단계" };
+    var PLACE = { hsc: "골수", cmp: "골수", clp: "골수", mep: "골수", gmp: "골수", mk: "골수", thy: "흉선",
+      mast: "조직", mac: "조직", tdc: "조직 → 림프절", plasma: "조직·림프기관", efft: "조직·림프기관" };
+    var FULL = { hsc: "hematopoietic stem cell", cmp: "common myeloid progenitor", clp: "common lymphoid progenitor",
+      mep: "megakaryocyte–erythrocyte progenitor", gmp: "granulocyte–macrophage progenitor", nk: "natural killer", nkt: "natural killer T" };
+    var info = $("#mapInfo"), infoDefault = info ? info.innerHTML : "";
+    function lineage(k) { var o = [k]; while (PARENT[o[o.length - 1]]) o.push(PARENT[o[o.length - 1]]); return o; }
+    function describe(g) {
+      if (!info) return;
+      if (!g) { info.innerHTML = infoDefault; return; }
+      var k = g.getAttribute("data-k"), c = g.classList, nm = $(".nm", g), sb = $(".sb", g);
+      var lin = ["st", "my", "ly"].filter(function (x) { return c.contains(x); })[0];
+      var role = ["inn", "ada", "il", "non", "prog"].filter(function (x) { return c.contains(x); })[0];
+      var name = k === "thy" ? "Thymocyte" : k === "mk" ? "Megakaryocyte" : (nm ? nm.textContent : k);
+      var ko = k === "thy" ? "흉선세포" : k === "mk" ? "거핵세포" : (sb ? sb.textContent : "");
+      info.innerHTML = "<b>" + name + "</b>" + (FULL[k] ? " " + FULL[k] + " ·" : "") + " " + ko + " · 계통 <em>" + LIN[lin] + "</em> · 역할 <em>" + ROLE[role] +
+        "</em> · 장소 <em>" + (PLACE[k] || "혈액") + "</em> · 경로 <em>" + lineage(k).reverse().map(function (x) { return x.toUpperCase(); }).join(" → ") + "</em>";
+    }
+    $$(".cell[data-k]", map).forEach(function (g) {
+      var k = g.getAttribute("data-k");
+      g.addEventListener("mouseenter", function () { hiMap(lineage(k)); describe(g); });
+      g.addEventListener("mouseleave", function () { hiMap(null); describe(null); });
+      g.addEventListener("click", function () { hiMap(lineage(k)); describe(g); });
+    });
+    bindTriggers("map", hiMap);
+
+    var legend = $("#mapLegend");
+    $$("[data-mode]", $("#mapMode")).forEach(function (b) {
+      b.addEventListener("click", function () {
+        var role = b.getAttribute("data-mode") === "role";
+        map.classList.toggle("role", role);
+        if (legend) legend.setAttribute("data-show", role ? "role" : "lin");
+        $$("[data-mode]", $("#mapMode")).forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      });
+    });
+  }
+
+  /* ── cells: 채혈관 ── */
+  var tubes = $("svg.tubes");
+  if (tubes) {
+    var hiT = highlighter(tubes, ".layer[data-layer]", "data-layer");
+    bindTriggers("tubes", function (k) {
+      hiT(k);
+      $$('tr[data-fig="tubes"]').forEach(function (tr) {
+        tr.classList.toggle("on", !!k && tr.getAttribute("data-hl") === k.join(" "));
+      });
+    });
+    $$(".layer[data-layer]", tubes).forEach(function (g) {
+      var ks = g.getAttribute("data-layer").split(/\s+/);
+      g.addEventListener("mouseenter", function () {
+        hiT([ks[ks.length - 1]]);
+        $$('tr[data-fig="tubes"]').forEach(function (tr) { tr.classList.toggle("on", ks.indexOf(tr.getAttribute("data-hl")) >= 0); });
+      });
+      g.addEventListener("mouseleave", function () { hiT(null); $$('tr[data-fig="tubes"]').forEach(function (tr) { tr.classList.remove("on"); }); });
+    });
+  }
+
+  /* ── cells: UMAP ── */
+  var umap = $("svg.umap");
+  if (umap) {
+    var hiU = highlighter(umap, "[data-cl]", "data-cl");
+    $$(".crow[data-cl]").forEach(function (row) {
+      var k = [row.getAttribute("data-cl")];
+      row.addEventListener("mouseenter", function () { hiU(k); });
+      row.addEventListener("mouseleave", function () { hiU(null); });
+      row.addEventListener("focus", function () { hiU(k); });
+      row.addEventListener("blur", function () { hiU(null); });
+    });
+  }
+
+  /* ── lymph-node: 단면 ── */
+  var ln = $("svg.lnmap");
+  if (ln) {
+    var hiL = highlighter(ln, ".rg[data-rg]", "data-rg");
+    var rows = function (k) { $$('tr[data-fig="ln"]').forEach(function (tr) { tr.classList.toggle("on", !!k && k.indexOf(tr.getAttribute("data-hl")) >= 0); }); };
+    bindTriggers("ln", function (k) { hiL(k); rows(k); });
+    $$(".rg[data-rg]", ln).forEach(function (g) {
+      var k = [g.getAttribute("data-rg")];
+      g.addEventListener("mouseenter", function () { hiL(k); rows(k); });
+      g.addEventListener("mouseleave", function () { hiL(null); rows(null); });
+    });
+    $$("[data-lnmode]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var m = b.getAttribute("data-lnmode");
+        ln.setAttribute("data-mode", m);
+        $$("[data-lnmode]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        $$(".steps").forEach(function (s) { s.classList.toggle("on", s.getAttribute("data-mode") === m); });
+      });
+    });
+  }
+
+  /* ── cytokine: 수용체 계열 지도 ── */
+  var cy = $("svg.cyto");
+  if (cy) {
+    var hiC = highlighter(cy, ".cg[data-cg]", "data-cg");
+    var crows = function (k) { $$('tr[data-fig="cyto"]').forEach(function (tr) { tr.classList.toggle("on", !!k && k.indexOf(tr.getAttribute("data-hl")) >= 0); }); };
+    bindTriggers("cyto", function (k) { hiC(k); crows(k); });
+    $$(".cg[data-cg]", cy).forEach(function (g) {
+      var k = [g.getAttribute("data-cg")];
+      g.addEventListener("mouseenter", function () { hiC(k); crows(k); });
+      g.addEventListener("mouseleave", function () { hiC(null); crows(null); });
+    });
+    $$("[data-cymode]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var m = b.getAttribute("data-cymode");
+        cy.setAttribute("data-mode", m);
+        $$("[data-cymode]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        $$(".steps").forEach(function (s) { s.classList.toggle("on", s.getAttribute("data-mode") === m); });
+      });
+    });
+  }
+
+  /* ── ontogeny: 발생 타임라인 ── */
+  var on = $("svg.onto");
+  if (on) {
+    $$("[data-onmode]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var m = b.getAttribute("data-onmode");
+        on.setAttribute("data-mode", m);
+        $$("[data-onmode]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        $$(".steps").forEach(function (s) { s.classList.toggle("on", s.getAttribute("data-mode") === m); });
+      });
+    });
+  }
+})();
+
+/* 문서 목차 — article의 h2[id]를 읽어 본문 왼쪽에 Contents 상자를 만든다.
+   문서 HTML은 건드리지 않는다. h2의 <small>(영문 부제)은 목차에서 뺀다. */
+(function () {
+  "use strict";
+  var article = document.querySelector(".vpage .article");
+  var layout = document.querySelector(".vpage .article-layout");
+  if (!article || !layout) return;
+
+  var hs = Array.prototype.slice.call(article.querySelectorAll("h2[id]"));
+  if (hs.length < 3) return;                       /* 너무 짧은 문서엔 두지 않음 */
+
+  var box = document.createElement("div");
+  box.className = "aside-box toc-box";
+  var h3 = document.createElement("h3");
+  h3.textContent = "Contents";
+  var nav = document.createElement("nav");
+  nav.className = "toc";
+  nav.setAttribute("aria-label", "문서 목차");
+  var ol = document.createElement("ol");
+
+  var links = hs.map(function (h, i) {
+    var c = h.cloneNode(true);
+    var sm = c.querySelector("small");
+    if (sm) sm.parentNode.removeChild(sm);
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    a.href = "#" + h.id;
+    var n = document.createElement("span");
+    n.className = "n";
+    n.textContent = String(i + 1);
+    a.appendChild(n);
+    a.appendChild(document.createTextNode((c.textContent || "").replace(/\s+/g, " ").trim()));
+    li.appendChild(a);
+    ol.appendChild(li);
+    return a;
+  });
+
+  nav.appendChild(ol);
+  box.appendChild(h3);
+  box.appendChild(nav);
+  layout.insertBefore(box, article);
+  document.body.classList.add("has-toc");   /* 3단 레이아웃 전환 — CSS의 .vpage.has-toc */
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  links.forEach(function (a, i) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      hs[i].scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      if (history.replaceState) history.replaceState(null, "", "#" + hs[i].id);
+    });
+  });
+
+  /* 지금 읽고 있는 절 표시 */
+  var ticking = false;
+  function spy() {
+    ticking = false;
+    var cur = 0;
+    for (var i = 0; i < hs.length; i++) {
+      if (hs[i].getBoundingClientRect().top <= 130) cur = i;
+    }
+    if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 4) {
+      cur = hs.length - 1;                          /* 문서 끝에서는 마지막 절 */
+    }
+    links.forEach(function (a, i) {
+      a.classList.toggle("on", i === cur);
+      if (i === cur) { a.setAttribute("aria-current", "true"); } else { a.removeAttribute("aria-current"); }
+    });
+  }
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(spy);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+  spy();
+})();
+
+/* "여기 헷갈려요" — 오른쪽 아래 버튼. 보낸 내용은 Google Sheet(Apps Script 웹 앱)에 쌓이고
+   /ingest-inbox가 읽어 "흔한 오해" 블록을 보강한다. 받는 쪽 코드는 tools/feedback.gs.
+   FEEDBACK_URL이 비어 있으면 버튼을 만들지 않는다. */
+(function () {
+  "use strict";
+  var FEEDBACK_URL = "";
+  var article = document.querySelector(".vpage .article");
+  if (!FEEDBACK_URL || !article) return;
+
+  var hs = Array.prototype.slice.call(article.querySelectorAll("h2[id]"));
+  function label(h) {
+    var c = h.cloneNode(true), sm = c.querySelector("small");
+    if (sm) sm.parentNode.removeChild(sm);
+    return (c.textContent || "").replace(/\s+/g, " ").trim();
+  }
+
+  var btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "fb-btn";
+  btn.setAttribute("aria-expanded", "false");
+  btn.setAttribute("aria-controls", "fbPanel");
+  btn.innerHTML = '<span class="fb-q" aria-hidden="true">?</span>여기 헷갈려요';
+
+  var form = document.createElement("form");
+  form.className = "fb-panel";
+  form.id = "fbPanel";
+  form.hidden = true;
+  form.innerHTML =
+    '<div class="fb-hd"><b>여기 헷갈려요</b><button type="button" class="fb-x" aria-label="닫기">×</button></div>' +
+    '<label>어느 부분?<select name="section"><option value="">문서 전체</option></select></label>' +
+    '<div class="fb-quote" hidden><span></span><button type="button">빼기</button></div>' +
+    '<label>무엇이 헷갈렸나요?<textarea name="message" rows="4" maxlength="2000" required ' +
+      'placeholder="예: 그림의 이 화살표가 무엇을 뜻하는지 모르겠어요"></textarea></label>' +
+    '<label><span>이름 <small>(선택)</small></span><input name="who" maxlength="40" autocomplete="name"></label>' +
+    '<input name="website" class="fb-hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+    '<p class="fb-note">보낸 내용은 PI만 보고, 이 교재를 고치는 데 씁니다.</p>' +
+    '<div class="fb-row"><span class="fb-status" role="status"></span><button type="submit">보내기</button></div>';
+
+  var sel = form.querySelector("select"), msg = form.querySelector("textarea"), who = form.querySelector('[name="who"]');
+  var quoteBox = form.querySelector(".fb-quote"), status = form.querySelector(".fb-status"), send = form.querySelector('[type="submit"]');
+  hs.forEach(function (h) {
+    var o = document.createElement("option");
+    o.value = h.id;
+    o.textContent = label(h);
+    sel.appendChild(o);
+  });
+  try { who.value = localStorage.getItem("fb-name") || ""; } catch (e) {}
+
+  /* 본문에서 문장을 골라 둔 채 버튼을 누르면 그 문장을 같이 보낸다 */
+  var quote = "";
+  function grabSelection() {
+    var s = window.getSelection && window.getSelection();
+    var t = s ? String(s).replace(/\s+/g, " ").trim() : "";
+    if (t && s.anchorNode && article.contains(s.anchorNode)) quote = t.slice(0, 500);
+  }
+  function showQuote() {
+    quoteBox.hidden = !quote;
+    quoteBox.querySelector("span").textContent = quote ? "“" + quote + "”" : "";
+  }
+  quoteBox.querySelector("button").addEventListener("click", function () { quote = ""; showQuote(); });
+
+  function open() {
+    var cur = -1;                                    /* 목차 스파이와 같은 기준 — 지금 읽던 절 */
+    for (var i = 0; i < hs.length; i++) if (hs[i].getBoundingClientRect().top <= 130) cur = i;
+    if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 4) cur = hs.length - 1;
+    sel.value = cur >= 0 ? hs[cur].id : "";
+    showQuote();
+    status.textContent = "";
+    form.hidden = false;
+    btn.setAttribute("aria-expanded", "true");
+    msg.focus();
+  }
+  function close() {
+    form.hidden = true;
+    btn.setAttribute("aria-expanded", "false");
+    btn.focus();
+  }
+  btn.addEventListener("pointerdown", grabSelection);
+  btn.addEventListener("click", function () {
+    if (!form.hidden) { close(); return; }
+    if (!quote) grabSelection();
+    open();
+  });
+  form.querySelector(".fb-x").addEventListener("click", close);
+  form.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var text = msg.value.trim();
+    if (!text) { msg.focus(); return; }
+    var name = who.value.trim();
+    try { localStorage.setItem("fb-name", name); } catch (err) {}
+    var opt = sel.options[sel.selectedIndex];
+    send.disabled = true;
+    status.textContent = "보내는 중…";
+    fetch(FEEDBACK_URL, {                            /* text/plain 본문이라 CORS preflight가 없다 */
+      method: "POST",
+      body: JSON.stringify({
+        page: location.pathname + (sel.value ? "#" + sel.value : ""),
+        title: document.title,
+        section: sel.value ? opt.textContent : "",
+        quote: quote,
+        message: text,
+        name: name,
+        website: form.querySelector(".fb-hp").value
+      })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d.ok) throw new Error("rejected");
+      msg.value = "";
+      quote = "";
+      status.textContent = "고마워요. 잘 받았어요!";
+      setTimeout(function () { if (!form.hidden) close(); }, 1500);
+    }).catch(function () {
+      status.textContent = "보내지 못했어요. 잠시 뒤 다시 눌러 주세요.";
+    }).then(function () { send.disabled = false; });
+  });
+
+  document.body.appendChild(btn);
+  document.body.appendChild(form);
+})();

@@ -29,6 +29,8 @@ reference: wiki/site/disease/autoimmune/ra/
 
 ## 1. 파일 구성
 
+> **다른 레이아웃**: 그림·토글이 본문의 절반 이상인 문서는 `data.js`의 `body[]`로 표현이 안 된다. 그런 문서는 **시각 페이지**(질문 1개 = 정적 HTML 1개)로 만들고 `_schema/visual-page.md`를 따른다. 문체(§4)·수치(§5) 규칙은 두 레이아웃에 똑같이 적용된다.
+
 ```
 site/assets/css/disease.css        공통 스타일       — 질환 무관
 site/assets/js/disease-page.js     공통 렌더 로직    — 질환 무관
