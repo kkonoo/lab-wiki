@@ -3,6 +3,9 @@
    배포 URL(…/exec)을 assets/js/article-page.js 의 FEEDBACK_URL에 넣는다.
    코드를 고친 뒤에는 "배포 관리 → 수정 → 새 버전"으로 다시 배포해야 반영된다(URL은 그대로). */
 
+// 시트 메뉴(확장 프로그램 → Apps Script)에서 만든 스크립트면 비워 둔다.
+// script.google.com에서 따로 만든 프로젝트면 시트 주소의 /d/ 와 /edit 사이 값을 넣는다.
+const SHEET_ID = "";
 const SHEET_NAME = "피드백";
 const HEADER = ["시각", "페이지", "문서", "절", "선택한 문장", "내용", "이름", "처리"];
 const MAX = { page: 300, title: 200, section: 200, quote: 500, message: 2000, name: 40 };
@@ -26,7 +29,7 @@ function doPost(e) {
 }
 
 function sheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SHEET_ID ? SpreadsheetApp.openById(SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
   let sh = ss.getSheetByName(SHEET_NAME);
   if (!sh) {
     sh = ss.insertSheet(SHEET_NAME);

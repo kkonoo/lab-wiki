@@ -302,7 +302,7 @@
    FEEDBACK_URL이 비어 있으면 버튼을 만들지 않는다. */
 (function () {
   "use strict";
-  var FEEDBACK_URL = "";
+  var FEEDBACK_URL = "https://script.google.com/macros/s/AKfycbwoXViRD661mk35I6uZB1hORGK9u6VQPtT4u-HJCcAU1bQdfN5aElVRKja9XFFegu5U/exec";
   var article = document.querySelector(".vpage .article");
   if (!FEEDBACK_URL || !article) return;
 
