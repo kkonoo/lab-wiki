@@ -8,20 +8,21 @@
 | | data.js 구동 페이지 | **시각 페이지** |
 |---|---|---|
 | 구조 | `index.html` 껍데기 + `data.js` + `disease-page.js` | 질문 1개 = **정적 HTML 1개** |
-| 쓰는 곳 | 질환 8곳 (`autoimmune/ra` 등) | immunology 28문서, aging·autoimmune/general·cancer/brca·cancer/general·neuro/general·virus |
+| 쓰는 곳 | 질환 8곳 (`autoimmune/ra` 등) | immunology 28문서, aging·autoimmune/general·cancer/brca·cancer/general·neuro/general·virus · 방법론 SPA 도메인(gwas — §9) |
 | 스키마 | `_schema/disease-page.md` | **이 문서** |
 | 언제 쓰나 | 질문 30~35개를 한 틀로 찍어낼 때 | 그림·상호작용이 본문의 절반 이상일 때 |
 
-시각 페이지는 **SVG 도해와 토글·hover 연동이 본문인** 문서다. `data.js`의 `body[]` 배열로는 표현이 안 되므로 HTML을 직접 쓴다. 대신 검색 색인·용어 hover·섹션 목록은 `data.js`가 계속 담당한다.
+시각 페이지는 **SVG 도해와 토글·hover 연동이 본문인** 문서다. `data.js`의 `body[]` 배열로는 표현이 안 되므로 HTML을 직접 쓴다. 대신 검색 색인·용어 hover·섹션 목록은 `data.js`가 계속 담당한다(용어 카드 SPA에 붙는 시각 페이지는 예외 — §9).
 
 ---
 
 ## 1. 파일 구성
 
 ```
+site/assets/css/base.css · spa.css    공용 토큰·틀 · 용어 카드 틀  ← 먼저 로드 (색·글꼴·로드 순서는 _schema/design.md)
 site/assets/css/article.css          시각 페이지 공용 스타일   ← 질환 무관
 site/assets/js/article-page.js       시각 페이지 공용 동작     ← 질환 무관
-site/disease/<대>/<질환>/<질환>.css    질환 공통 토큰·topbar
+site/disease/<대>/<질환>/<질환>.css    질환 전용 규칙 + 옛 색 이름 별칭(body)
 site/disease/<대>/<질환>/glossary.js  hover 용어
 site/disease/<대>/<질환>/<섹션>/<질문>.html   문서 본체
 site/disease/<대>/<질환>/<섹션>/<섹션>.css    그 섹션 전용 규칙·훅 목록
@@ -67,7 +68,7 @@ site/disease/<대>/<질환>/<섹션>/data.js       articleRows·paperLinks·glos
 1. `body`에 `vpage` — 모든 공용 규칙의 진입점
 2. `.article-layout` > `.article` + `.aside` — 이 셋이 있어야 3단 레이아웃이 성립한다
 3. **`h2`마다 `id`** — 목차와 스크롤 스파이가 이것만 본다. 없는 h2는 목차에서 사라진다
-4. 스크립트 순서 `article-page.js` → `data.js` → `glossary.js`
+4. 스크립트 순서 `article-page.js` → `data.js` → `glossary.js` (SPA 도메인은 `data.js` 없이 `article-page.js` → `../glossary.js` — §9.3)
 
 `h2`의 `<small>`은 영문 부제 자리다. 목차에서는 자동으로 빠진다.
 
@@ -78,8 +79,8 @@ site/disease/<대>/<질환>/<섹션>/data.js       articleRows·paperLinks·glos
 `article-page.js`가 `article`의 `h2[id]`를 읽어 **본문 왼쪽**에 만든다. **HTML에 목차 마크업을 쓰지 않는다** — 새 문서에서 할 일은 h2에 `id`를 다는 것뿐이다.
 
 - **h2가 3개 미만이면 만들지 않는다.** `.article-layout`이 없는 문서(섹션 index 등)도 그냥 지나간다.
-- 목차가 생기면 `body.vpage`에 `has-toc`가 붙고 `.article-layout`이 `200px · 본문 · 250px` 3단이 된다. 이때만 `.container`·`.topbar-inner` 폭이 1240 → 1560px로 넓어진다(1680px 기준 본문 956 → 1042px).
-- 고정 헤더(64px)와 겹치지 않도록 `.vpage .article h2{scroll-margin-top:84px}`. **목차 클릭 후 해당 h2의 `top`이 정확히 84px**인 것이 검사 기준이다.
+- 목차가 생기면 `body.vpage`에 `has-toc`가 붙고 `.article-layout`이 `200px · 본문 · 250px` 3단이 된다. 이때만 `.container`·`.topbar-inner` 본문 폭이 1240 → 1560px로 넓어진다(`max-width`에 좌우 여백 48px를 더해 둔다).
+- 고정 헤더(72px, `--header-h`)와 겹치지 않도록 `.vpage .article h2{scroll-margin-top:calc(var(--header-h) + 20px)}`. **목차 클릭 후 해당 h2의 `top`이 92px**(±1, 소수점)인 것이 검사 기준이다(2026-10-18 상단 바 64 → 72px, 84 → 92px).
 - **표시는 음영만.** 항목 앞 세로 accent 막대·활성 번호 강조색은 쓰지 않는다(2026-09-18 결정).
 - 스크롤 스파이는 rAF throttle, 현재 절에 `.on` + `aria-current="true"`. `prefers-reduced-motion`을 존중한다.
 
@@ -115,7 +116,7 @@ site/disease/<대>/<질환>/<섹션>/data.js       articleRows·paperLinks·glos
 3. `<title>`·`description`·breadcrumb 교체
 4. 본문 작성 — **h2마다 `id`**. 문체는 스키마 §4
 5. 그림이 필요하면 생성기에 `build_*`를 추가하고 `GEN` 마커로 주입
-6. `data.js`에 `articleRows`·`paperLinks`·`glossaryTerms`·`articlePages` 추가
+6. `data.js`에 `articleRows`·`paperLinks`·`glossaryTerms`·`articlePages` 추가 (SPA 도메인은 SPA의 `articlePages`에 등록 — §9.4)
 7. 검색 색인 재생성 (`tools/build-search-index.js`)
 8. §6 검사
 9. `site-meta/<질환>.md`와 `log.md` 갱신
@@ -137,13 +138,13 @@ tr -dc '\000' < wiki/site/assets/css/article.css | wc -c
 ```
 
 - **jsdom**: 목차 항목 수 = `h2[id]` 수 · 죽은 앵커 0 · 콘솔 오류 0 · `GEN` 구간과 `STAMP` 정상 · 내부 링크 무결성(`#`뿐 아니라 `?` 쿼리도 벗길 것)
-- **Chromium 1440 / 1680 / 1920px**: 목차 sticky · 클릭 후 h2 `top` = 84px · 스파이 인덱스 일치 · 가로 넘침 0 · 모드 토글 동작(450ms 대기)
+- **Chromium 1440 / 1680 / 1920px**: 목차 sticky · 클릭 후 h2 `top` = 92px · 스파이 인덱스 일치 · 가로 넘침 0 · 모드 토글 동작(450ms 대기)
 - **좁은 폭 1280 / 820px**: 목차 `display:none` + 컬럼 원복
 
 ### 검사에서 걸리는 오탐
 
 - **smooth scroll은 600ms로 안 끝난다.** 먼 거리는 1.2초까지 걸려 이동 중간값이 찍힌다 — `scrollY`가 멈출 때까지 폴링한 뒤 측정한다.
-- **문서 마지막 절은 `top` 84px에 못 온다.** 스크롤이 바닥에 닿기 때문이다. `scrollY == scrollHeight - innerHeight`면 통과로 처리한다.
+- **문서 마지막 절은 `top` 92px에 못 온다.** 스크롤이 바닥에 닿기 때문이다. `scrollY == scrollHeight - innerHeight`면 통과로 처리한다.
 - **favicon `ERR_FILE_NOT_FOUND`**: 미러에 `site/assets/img/`를 안 담았을 때 늘 뜬다.
 - Playwright에서 `route('**://**', abort)`로 외부 요청을 막으면 `file://`까지 막힌다 — `/^https?:/`로 한정한다.
 - 그림 자동 검사(viewBox 이탈·상자 폭 초과·글자 겹침)는 **절대 0이 목표가 아니다.** 작은 glyph rect를 오인해 기준선에서도 100건 넘게 나온다. **전후 diff에서 "신규 0건"**을 본다.
@@ -183,3 +184,62 @@ immunology 밖의 시각 페이지는 **아직 inline `<style>`**로 되어 있�
 2. **inline `<style>`을 `article.css`와 대조**한다. 같은 클래스명에 다른 값을 쓰고 있으면 공용 규칙으로 갈아타는 순간 렌더가 바뀐다. 문서마다 남겨야 하는 규칙은 섹션 CSS(`<질환>.css`)로 빼고, 공용과 겹치는 것만 지운다.
 3. 훅 클래스가 `g-` 없이 짧은 이름을 쓰고 있으면 공용 CSS와 충돌한다(§4).
 4. 한 문서씩 옮기고 그때마다 §6 검사를 돌린다. 8개를 한 번에 바꾸면 어느 문서에서 깨졌는지 못 찾는다.
+
+---
+
+## 9. 용어 카드 SPA에 붙이는 시각 페이지 (gwas → omics · single-cell)
+
+gwas처럼 **용어 카드 SPA**(`<도메인>/index.html` 안 inline `sections`·`articles`)가 있는 도메인에, 그림을 봐야 이해되는 방법론만 골라 시각 페이지를 붙인다. 첫 적용 도메인은 gwas(2026-10-18 결정).
+
+### 9.1 언제 만드나
+
+- 그림·상호작용 없이는 핵심 구분이 안 되는 방법만 — 예: coloc(H3 vs H4) · fine-mapping(credible set·PIP) · regional plot·LD · MR(IV 가정).
+- 나머지는 카드로 충분하다. 도메인 전체를 교과서로 옮기지 않는다 — 그림 생성기는 논문이 바뀔 때마다 같이 고쳐야 하는 유지 비용이다.
+
+### 9.2 경로
+
+```
+site/gwas/
+├─ index.html              SPA(용어 카드). articlePages로 시각 페이지를 가리킨다
+├─ glossary.js             용어 사전 SSOT — SPA와 시각 페이지가 같이 로드
+├─ gwas.css                (첫 시각 페이지 때 신설) 공통 토큰·topbar·.glossary-term
+└─ <NN-섹션>/<id>.html       예: 03-postgwas/coloc.html
+   └─ <섹션>.css · <섹션>.js   섹션 전용 그림 훅(§4, g- 접두사)
+```
+
+- 폴더 = SPA `sections`의 number + key(`postgwas` → `03-postgwas`). key가 도메인명과 겹치면 english 라벨 — gwas의 02는 `02-association`.
+- 파일명 = SPA article id(`coloc` → `coloc.html`).
+- 공용 자산 상대 깊이는 `../../assets/`(질환 시각 페이지는 `../../../`). 복사해 시작할 때 가장 먼저 고친다.
+- 그림 생성기는 `wiki/site-meta/<도메인>-figures/*.py` → `GEN` 마커(§4). 데이터는 **seed 고정 시뮬레이션** — 논문 그림을 옮겨 그리지 않는다.
+- 도메인 유지보수 레이어는 `wiki/site-meta/<도메인>.md`(gwas → `site-meta/gwas.md`).
+
+### 9.3 §1·§2 계약과 다른 점
+
+- **섹션 `data.js` 없음.** 섹션 목록은 SPA가 그리므로 `articleRows`가 필요 없고, `article-page.js`는 window 데이터를 읽지 않는다. Key papers는 aside에 정적으로 쓴다.
+- 스크립트 순서 = `../../assets/js/article-page.js` → `../glossary.js`.
+- 검색 색인은 정적 HTML 경로(h1·`meta description`·`h2[id]`)로 잡힌다 → `tools/build-search-index.js` 재실행만.
+
+### 9.4 용어 카드 ↔ 시각 페이지
+
+immunology는 `articlePages`에 등록된 id를 열면 시각 페이지로 **이동**한다(카드 대체, `immunology-page.js`). SPA 도메인은 카드를 **남긴다** — 카드 = 논문 읽다 찾는 1분 요약, 시각 페이지 = 학습용.
+
+| 위치 | 동작 |
+|---|---|
+| SPA `articlePages` | `index.html` inline `const articlePages = { coloc: "03-postgwas/coloc.html" }` — **파일이 생긴 뒤에** 등록(빈 링크 금지) |
+| SPA 섹션 목록 | 등록된 항목에 `그림` 배지(`.deep-badge`, 도메인 주조색) |
+| SPA 카드 | 정의 바로 아래 "그림으로 깊게 보기 →"(`.deep-link`) |
+| 시각 페이지 breadcrumb | `HaLab Wiki › GWAS › Post-GWAS › <제목>` — 섹션은 `../index.html#section/<key>` |
+| 시각 페이지 aside | 첫 상자 "1분 요약" → `../index.html#article/<id>` · Related는 시각 페이지가 있으면 그쪽, 없으면 카드 |
+| hover 용어 | `<도메인>/glossary.js` 하나. 용어 추가는 `terms`에만(정규식은 키에서 길이순 자동 생성). `body.vpage`면 본문에 직접 붙이고 `html[data-glossary]`에 개수를 남긴다 |
+
+### 9.5 노션 Method documents에서 올 때
+
+학생이 노션에 쓴 method 노트가 시각 페이지의 출발점이 될 수 있다. 흡수 절차는 `CLAUDE.md` §9.5. 이 스키마에서 지킬 것은 둘이다.
+
+- 노션 문장·이미지를 옮기지 않는다 — 근거는 노션이 인용한 논문, 그림은 생성기로 새로 그린다.
+- 노션 URL은 `site/`에 넣지 않는다 → `site-meta/<도메인>.md` 매핑 표(`CLAUDE.md` §11.1과 같은 이유 — HTML은 view-source로 전부 공개).
+
+### 9.6 검사 추가분
+
+- SPA: `articlePages`의 경로가 모두 실제 파일 · 등록 id 카드에 `.deep-link` 1개 · 섹션 목록 배지 수 = 그 섹션의 등록 수 · 콘솔 오류 0
+- 시각 페이지: `html[data-glossary]` > 0 · breadcrumb·"1분 요약" 링크가 SPA 라우트(`#section/…`·`#article/…`)로 열림

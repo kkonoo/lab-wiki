@@ -21,11 +21,11 @@ const ROOT = path.resolve(__dirname, "..");
 const OUT = path.join(ROOT, "assets/js/search-index.js");
 
 const DOMAINS = [
-  { key: "gwas", label: "GWAS", color: "var(--blue)" },
-  { key: "omics", label: "Omics", color: "var(--rust)" },
-  { key: "single-cell", label: "Single-cell", color: "var(--green)" },
-  { key: "multi-omics", label: "Multi-omics", color: "var(--gold)" },
-  { key: "disease", label: "Disease", color: "var(--plum)" },
+  { key: "gwas", label: "GWAS", color: "var(--c-gwas)" },
+  { key: "omics", label: "Omics", color: "var(--c-omics)" },
+  { key: "single-cell", label: "Single-cell", color: "var(--c-sc)" },
+  { key: "multi-omics", label: "Multi-omics", color: "var(--c-mo)" },
+  { key: "disease", label: "Disease", color: "var(--c-disease)" },
 ];
 const SKIP = new Set(["index.html", "index.old.html"]);          // 대문 자체
 const items = [], pages = [], seenPage = new Set(), log = [];

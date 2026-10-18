@@ -1,14 +1,14 @@
-/* Immunology 01-basics — 그림 중심 문서(overview.html · cells.html) 전용
-   공통 틀(topbar·breadcrumb·article·aside·footer)은 ../immunology.css */
+/* 시각 페이지(body.vpage) 공용 — 레이아웃 규칙 SSOT는 site/_schema/visual-page.md
+   로드 순서: base.css → spa.css → <도메인>.css → article.css. 공통 틀(상단 바·경로·용어 카드·옆 칸·바닥)은 base.css · spa.css */
 :root{
   --my:#b0643c; --ly:#3f6f8f;            /* 계통: 골수계 · 림프계 */
   --inn:#b0643c; --ada:#3f6f8f;          /* 역할: 선천 · 적응 (계통 색과 일부러 같은 색) */
   --il:#7b5aa6; --non:#a8a69e; --prog:#8e948c; --st:#6f3a55;
   --mono-f:ui-monospace,Menlo,Consolas,"DejaVu Sans Mono",monospace;
 }
-.vpage .container,.vpage .topbar-inner{width:min(1240px,calc(100% - 40px))}
+.vpage .container,.vpage .topbar-inner{max-width:calc(1240px + 48px)}   /* 본문 폭 1240 + 좌우 여백 24×2 */
 .vpage .article-layout{grid-template-columns:minmax(0,1fr) 250px;gap:34px}
-.vpage .article{padding:clamp(22px,3.2vw,42px)}
+.vpage .article{padding:0}
 .vpage .article h1{font-size:clamp(1.9rem,4vw,2.8rem)}
 .vpage .article h2{margin-top:46px}
 .vpage .article h2 small{display:block;margin-top:3px;font:700 .72rem/1.3 "Pretendard","Noto Sans KR",sans-serif;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
@@ -97,7 +97,7 @@ svg.hmap{display:block;width:100%;height:auto;min-width:720px}
 svg.flow{display:block;width:100%;height:auto;min-width:720px}
 .flow .lane.inn{fill:rgba(176,100,60,.07);stroke:rgba(176,100,60,.3)}
 .flow .lane.ada{fill:rgba(63,111,143,.07);stroke:rgba(63,111,143,.3)}
-.flow .lanet{font:800 15px Georgia,"Noto Serif KR",serif}
+.flow .lanet{font:800 15px var(--sans)}
 .flow .lanet.inn{fill:var(--inn)} .flow .lanet.ada{fill:var(--ada)}
 .flow .lanek{font-size:9.5px;font-weight:750;letter-spacing:.16em;fill:#9aa19a}
 .flow .cell.inn{--c:var(--inn)} .flow .cell.ada{--c:var(--ada)} .flow .cell.path{--c:#7d857c}
@@ -132,8 +132,8 @@ svg.flow{display:block;width:100%;height:auto;min-width:720px}
 .tablist button[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
 .tablist button small{display:block;font-size:.7rem;font-weight:400;opacity:.75;margin-top:1px}
 [role="tabpanel"][hidden]{display:none}
-.panelhd{font:700 1.1rem Georgia,"Noto Serif KR",serif;margin:0 0 6px}
-.subhd{font:700 .98rem Georgia,"Noto Serif KR",serif;margin:26px 0 8px}
+.panelhd{font:700 1.1rem var(--sans);margin:0 0 6px}
+.subhd{font:700 .98rem var(--sans);margin:26px 0 8px}
 
 /* ── 용어 공식 ── */
 .fixlist{border:1px solid var(--line);border-radius:10px;background:#fff;padding:2px 16px}
@@ -149,19 +149,19 @@ svg.flow{display:block;width:100%;height:auto;min-width:720px}
 .route li{position:relative;background:#fff;border:1px solid var(--line);border-top:3px solid var(--c,#8e948c);border-radius:10px;padding:13px 15px}
 .route li:not(:last-child)::after{content:"→";position:absolute;right:-15px;top:50%;transform:translateY(-50%);color:#aab1a9}
 .route .lv{font-size:.66rem;font-weight:800;letter-spacing:.12em;color:var(--muted)}
-.route h4{margin:2px 0 6px;font:700 .98rem Georgia,"Noto Serif KR",serif}
+.route h4{margin:2px 0 6px;font:700 .98rem var(--sans)}
 .route p{margin:0;font-size:.8rem;color:var(--muted)}
 .route p b{color:var(--ink);font-weight:650}
 .moves{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:7px}
 .moves li{font-size:.84rem;padding-left:18px;position:relative}
 .moves li::before{content:"↻";position:absolute;left:0;color:var(--green)}
 .tl{list-style:none;margin:4px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:relative}
-.tl::before{content:"";position:absolute;left:14px;right:8%;top:14px;height:2px;background:linear-gradient(90deg,#dccbd4,#6f3a55)}
+.tl::before{content:"";position:absolute;left:14px;right:8%;top:14px;height:2px;background:linear-gradient(90deg,var(--theme-line),var(--theme))}
 .tl li{position:relative;padding:32px 12px 0 0}
 .tl li::before{content:"";position:absolute;top:8px;left:8px;width:10px;height:10px;border-radius:50%;background:#fff;border:3px solid var(--green)}
 .tl li.adult::before{background:var(--green)}
 .tl .when{display:block;font-family:var(--mono-f);font-size:.72rem;font-weight:700;color:var(--green)}
-.tl h4{margin:3px 0 4px;font:700 .92rem Georgia,"Noto Serif KR",serif}
+.tl h4{margin:3px 0 4px;font:700 .92rem var(--sans)}
 .tl p{margin:0;font-size:.78rem;color:var(--muted);line-height:1.55}
 .more{display:inline-block;margin-top:14px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:8px 13px;color:var(--green);font-weight:650;font-size:.84rem;text-decoration:none}
 .more:hover{border-color:var(--green);background:var(--green-soft)}
@@ -193,7 +193,7 @@ svg.tubes{display:block;width:100%;height:auto;min-width:720px}
 .step{position:relative;display:grid;grid-template-columns:168px minmax(0,1fr);gap:8px 20px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
 .step+.step::before{content:"↓ " attr(data-gap);position:absolute;top:-19px;left:18px;font-size:.7rem;color:var(--muted)}
 .step .den .no{font-family:var(--mono-f);font-size:.7rem;color:var(--green);font-weight:700}
-.step .den b{display:block;font:700 1rem/1.3 Georgia,"Noto Serif KR",serif;margin:2px 0 3px}
+.step .den b{display:block;font:700 1rem/1.3 var(--sans);margin:2px 0 3px}
 .step .den small{display:block;color:var(--muted);font-size:.74rem;line-height:1.5}
 .bars{display:grid;gap:4px}
 .rrow{display:grid;grid-template-columns:132px minmax(0,1fr) 100px;gap:10px;align-items:center;font-size:.8rem}
@@ -242,7 +242,7 @@ svg.umap{display:block;width:100%;height:auto}
 .vs2>div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
 .vs2 .tag{display:inline-block;font-size:.7rem;font-weight:750;padding:1px 9px;border-radius:999px;margin-bottom:6px}
 .vs2 .type .tag{background:#e6eef3;color:var(--blue)} .vs2 .state .tag{background:#f6e9e3;color:var(--rust)}
-.vs2 h4{margin:0 0 6px;font:700 .98rem Georgia,"Noto Serif KR",serif}
+.vs2 h4{margin:0 0 6px;font:700 .98rem var(--sans)}
 .vs2 ul{margin:0;padding-left:18px;font-size:.84rem}
 .vs2 li{margin:4px 0}
 .rules{margin:6px 0 0;padding-left:20px;font-size:.88rem}
@@ -256,7 +256,7 @@ svg.umap{display:block;width:100%;height:auto}
   .route,.vs2{grid-template-columns:1fr}
   .route li:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-17px;transform:translateX(-50%)}
   .tl{grid-template-columns:1fr;gap:10px}
-  .tl::before{left:12px;right:auto;top:10px;bottom:10px;width:2px;height:auto;background:linear-gradient(180deg,#dccbd4,#6f3a55)}
+  .tl::before{left:12px;right:auto;top:10px;bottom:10px;width:2px;height:auto;background:linear-gradient(180deg,var(--theme-line),var(--theme))}
   .tl li{padding:0 0 0 30px}
   .tl li::before{top:4px;left:6px}
   .sc-fig{grid-template-columns:1fr}
@@ -319,7 +319,7 @@ svg.lnmap{display:block;width:100%;height:auto;min-width:720px}
 .cases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .cases>div{background:#fff;border:1px solid var(--line);border-top:3px solid var(--c,#8e948c);border-radius:10px;padding:13px 15px}
 .cases .lv{font-size:.66rem;font-weight:800;letter-spacing:.1em;color:var(--muted)}
-.cases h4{margin:2px 0 6px;font:700 .96rem Georgia,"Noto Serif KR",serif}
+.cases h4{margin:2px 0 6px;font:700 .96rem var(--sans)}
 .cases p{margin:0 0 6px;font-size:.8rem;color:#37423a}
 .cases p:last-child{margin-bottom:0}
 .sp{display:inline-block;font-size:.66rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 6px;margin-left:4px;vertical-align:1px;white-space:nowrap}
@@ -430,9 +430,9 @@ svg.onto{display:block;width:100%;height:auto;min-width:880px}
 
 /* ── 문서 목차 (basics.js가 article의 h2를 읽어 본문 왼쪽에 생성) ── */
 /* 목차가 있는 문서만 3단(목차·본문·사이드바)으로 넓힌다. body.has-toc는 basics.js가 붙인다. */
-.vpage.has-toc .container,.vpage.has-toc .topbar-inner{width:min(1560px,calc(100% - 40px))}
+.vpage.has-toc .container,.vpage.has-toc .topbar-inner{max-width:calc(1560px + 48px)}
 .vpage.has-toc .article-layout{grid-template-columns:200px minmax(0,1fr) 250px}
-.toc-box{position:sticky;top:84px;align-self:start}
+.toc-box{position:sticky;top:calc(var(--header-h) + 20px);align-self:start}
 .toc-box h3{margin-bottom:8px}
 .toc ol{list-style:none;margin:0;padding:0}
 .toc li{margin:1px 0}
@@ -445,10 +445,10 @@ svg.onto{display:block;width:100%;height:auto;min-width:880px}
 .toc a.on{color:var(--ink);font-weight:700;background:var(--green-soft)}
 .toc a.on .n{color:var(--muted)}
 /* 상단 고정 헤더(min-height 64px) 아래로 내려오도록 */
-.vpage .article h2{scroll-margin-top:84px}
+.vpage .article h2{scroll-margin-top:calc(var(--header-h) + 20px)}   /* 72 + 20 = 92px */
 /* 본문이 좁아지는 폭에서는 목차를 접고 원래 2단으로 되돌린다 */
 @media (max-width:1280px){
-  .vpage.has-toc .container,.vpage.has-toc .topbar-inner{width:min(1240px,calc(100% - 40px))}
+  .vpage.has-toc .container,.vpage.has-toc .topbar-inner{max-width:calc(1240px + 48px)}
   .vpage.has-toc .article-layout{grid-template-columns:minmax(0,1fr) 250px}
   .toc-box{display:none}
 }

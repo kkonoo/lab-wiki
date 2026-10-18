@@ -1,0 +1,172 @@
+/* ===========================================================
+   HaLab Wiki — 공용 토큰. 모든 페이지가 가장 먼저 로드한다.
+   - 레이아웃 원형: halab-site(halab.knu.ac.kr) — 흰 바탕 · 72px 상단 바 · 진한 머리 띠 · 16px 카드
+   - 글꼴: Pretendard 하나, 위계는 굵기(800 / 700 / 600 / 400)
+   - 색: 사이트 = HaLab 초록. 도메인마다 주조색 하나(body[data-domain]) — slide-gallery 테마에서 가져옴
+         GWAS forest · Omics crimson · Single-cell wine · Multi-omics plum · Diseases blue
+   - 강조는 한 화면에 한 곳, 단계는 같은 색의 옅은 명도로(slide-gallery "PPT 기본 팁")
+   - 밝은 화면 고정. 다크 모드는 그림(SVG)·CSS에 박힌 색을 토큰으로 옮긴 뒤에 넣는다
+   - 규칙 SSOT: site/_schema/design.md (색표 · 로드 순서 · 틀 · 검사)
+   =========================================================== */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+:root {
+  color-scheme: only light;   /* only = 삼성 인터넷이 강제로 어둡게 바꾸지 않게 (그림 색 보호) */
+
+  --bg: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-2: #F5F7F6;
+  --line: #E1E6E3;
+  --line-2: #EDF0EE;
+  --text: #17201B;
+  --body: #3A443F;
+  --muted: #5C6762;
+  --faint: #8E9993;
+  --mark: #FFF1B8;
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --maxw: 1200px;
+  --header-h: 72px;
+  --shadow: 0 10px 30px rgba(15, 30, 22, .08);
+  --sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --mono: D2Coding, ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* 도메인 색 — 허브 카드·검색 결과처럼 "다른 도메인"을 가리킬 때 */
+  --c-site: #1B7445;
+  --c-gwas: #1F5236;
+  --c-omics: #B0283C;
+  --c-sc: #7A1F3D;
+  --c-mo: #7A2E6B;
+  --c-disease: #2563C9;
+
+  /* 지금 페이지의 주조색 — 기본은 사이트 초록 */
+  --theme: var(--c-site);
+  --theme-soft: #E7F2EB;
+  --theme-line: #C6DFCF;
+  --theme-deep: #0B2117;
+  --theme-deep-2: #0F2D1F;
+  --theme-glow: #1C5A37;
+  --theme-hi: #B9E07A;
+  --grad: linear-gradient(90deg, #1B7445, #4F7320);
+}
+
+body[data-domain="gwas"] {
+  --theme: var(--c-gwas); --theme-soft: #E9EEEB; --theme-line: #C8D6CD;
+  --theme-deep: #0E2418; --theme-deep-2: #13301F; --theme-glow: #2B6B45; --theme-hi: #B9E07A;
+  --grad: linear-gradient(90deg, #1F5236, #5E7F25);
+}
+body[data-domain="omics"] {
+  --theme: var(--c-omics); --theme-soft: #F7EAEC; --theme-line: #ECC7CD;
+  --theme-deep: #2A0A10; --theme-deep-2: #3A0F18; --theme-glow: #8A2033; --theme-hi: #FFB8C2;
+  --grad: linear-gradient(90deg, #B0283C, #C2531F);
+}
+body[data-domain="single-cell"] {
+  --theme: var(--c-sc); --theme-soft: #F2E9EC; --theme-line: #DFC4CE;
+  --theme-deep: #230913; --theme-deep-2: #320E1D; --theme-glow: #6B1E3A; --theme-hi: #F6B0C6;
+  --grad: linear-gradient(90deg, #7A1F3D, #B8323F, #C2531F);
+}
+body[data-domain="multi-omics"] {
+  --theme: var(--c-mo); --theme-soft: #F2EAF0; --theme-line: #DEC6D9;
+  --theme-deep: #220C1F; --theme-deep-2: #31122D; --theme-glow: #6A2860; --theme-hi: #EEB8E1;
+  --grad: linear-gradient(90deg, #7A2E6B, #C0405E);
+}
+body[data-domain="disease"] {
+  --theme: var(--c-disease); --theme-soft: #E9F0FB; --theme-line: #C8D9F4;
+  --theme-deep: #0A1A33; --theme-deep-2: #0D2547; --theme-glow: #1F4F9E; --theme-hi: #9CC2FF;
+  --grad: linear-gradient(90deg, #2563C9, #0E7C8A, #0D7A5A);
+}
+
+/* ---------- 기본 요소 ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  letter-spacing: -.005em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select, textarea { font: inherit; letter-spacing: inherit; }
+mark { background: var(--mark); color: inherit; border-radius: 2px; padding: 0 2px; }
+:focus-visible { outline: 2px solid var(--theme); outline-offset: 2px; }
+
+/* ===========================================================
+   공용 틀 — 상단 바 · 도메인 내비 · 바닥 (모든 페이지 같은 모양)
+   =========================================================== */
+.container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+/* 상단 바 */
+.topbar { position: sticky; top: 0; z-index: 30; background: var(--bg); border-bottom: 1px solid var(--line); }
+.topbar-inner {
+  max-width: var(--maxw); height: var(--header-h); margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; gap: 18px;
+}
+.brand-group { display: flex; flex: 0 1 auto; align-items: center; gap: 4px; min-width: 0; overflow: hidden; white-space: nowrap; }
+.brand-group > * { flex: none; }
+.brand {
+  border: 0; background: none; padding: 0; color: var(--text); cursor: pointer; text-decoration: none;
+  font-size: 17px; font-weight: 700; letter-spacing: -.01em; white-space: nowrap;
+}
+.brand-home { display: inline-flex; align-items: center; gap: 10px; }
+.brand-home .mark { width: 34px; height: 34px; object-fit: contain; flex: none; }
+.brand-domain { margin-left: 6px; color: var(--muted); font-weight: 600; }
+.brand-domain span { color: inherit; }
+.brand-domain:last-child { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--theme); }
+/* 가운데 경로(/ Human diseases / Neuro …)는 도메인 내비와 겹치므로 숨기고 지금 페이지 이름만 남긴다 */
+.brand-domain:not(:last-child) { display: none; }
+.brand-domain:hover { color: var(--theme); }
+
+.domain-nav { display: flex; flex: none; align-items: center; margin-left: auto; }
+.domain-nav a {
+  display: block; padding: 24px 11px; color: var(--muted); text-decoration: none;
+  font-size: 15px; font-weight: 600; white-space: nowrap; transition: color .15s;
+}
+.domain-nav a:hover { color: var(--text); }
+.domain-nav a[aria-current="page"] { color: var(--theme); box-shadow: inset 0 -2px 0 var(--theme); }
+
+.top-search { position: relative; flex: 0 1 260px; margin-left: 8px; }
+.top-search input {
+  width: 100%; height: 40px; padding: 0 40px 0 14px;
+  border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-2);
+  color: var(--text); font-size: 14.5px; outline: none; transition: border-color .15s, background .15s;
+}
+.top-search input::placeholder { color: var(--faint); }
+.top-search input:focus { border-color: var(--theme); background: var(--surface); box-shadow: 0 0 0 3px var(--theme-soft); }
+.keycap {
+  position: absolute; right: 10px; top: 10px; padding: 0 6px;
+  border: 1px solid var(--line); border-radius: 5px; background: var(--surface);
+  color: var(--faint); font-size: 12px; line-height: 18px;
+}
+
+.brand-home .name { display: flex; flex-direction: column; line-height: 1.2; }
+.brand-home .name small { color: var(--muted); font-size: 12px; font-weight: 500; letter-spacing: 0; }
+.lab-link {
+  flex: none; margin-left: 10px; padding: 7px 13px; border: 1px solid var(--line); border-radius: var(--radius-sm);
+  color: var(--muted); font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap;
+}
+.lab-link:hover { border-color: var(--theme); color: var(--theme); }
+
+/* 바닥 */
+footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--muted); font-size: 13.5px; }
+footer .container { display: flex; justify-content: space-between; gap: 20px; }
+
+
+@media (max-width: 1080px) {
+  .domain-nav { display: none; }
+  .top-search { margin-left: auto; }
+}
+@media (max-width: 600px) {
+  .container, .topbar-inner { padding: 0 16px; }
+  .topbar-inner { gap: 10px; }
+  .brand-home .mark { width: 30px; height: 30px; }
+  .brand-domain:last-child { max-width: 34vw; }
+  .top-search { flex-basis: 150px; }
+  .keycap { display: none; }
+  footer .container { flex-direction: column; }
+}

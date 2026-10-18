@@ -42,7 +42,7 @@ const config = window.IMMUNOLOGY;
     function categoryCards() {
       return Object.keys(sections).map(function (key) {
         const s = sections[key];
-        return '<button class="category-card" style="--accent:' + s.accent + '" data-section="' + key + '">' +
+        return '<button class="category-card" data-section="' + key + '">' +
           '<span class="category-number">' + s.number + ' · ' + s.english + '</span>' +
           '<h3>' + s.title + '</h3><p>' + s.summary + '</p><p class="kuby-map">' + s.kuby + '</p>' +
           '<span class="card-route">질문으로 살펴보기 →</span></button>';
@@ -85,7 +85,7 @@ const config = window.IMMUNOLOGY;
           '<h2>' + annotateOnce(group.q) + '</h2><p>' + annotateOnce(group.note) + '</p></div><div>' + items + '</div></section>';
       }).join("");
       app.innerHTML = '<div class="container"><nav class="breadcrumb" aria-label="현재 위치"><button data-route="home">목록</button><span>›</span>' + s.title + '</nav>' +
-        '<header class="page-header" style="border-top:4px solid ' + s.accent + '"><p class="eyebrow">' + s.number + ' · ' + s.english + '</p><h1>' + s.title + '</h1><p class="lead">' + s.summary + ' · ' + s.kuby + '</p></header>' +
+        '<header class="page-header"><p class="eyebrow">' + s.number + ' · ' + s.english + '</p><h1>' + s.title + '</h1><p class="lead">' + s.summary + ' · ' + s.kuby + '</p></header>' +
         '<div class="question-list">' + groups + '</div></div>';
       window.scrollTo(0, 0);
     }

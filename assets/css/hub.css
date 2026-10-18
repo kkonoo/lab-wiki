@@ -1,0 +1,141 @@
+/* ===========================================================
+   허브 페이지 — 첫 화면(index.html) · 도메인 목록(omics/ · single-cell/ · disease/ …)
+   base.css 다음에 로드. 카드 색은 카드마다 --accent(도메인 색 토큰 --c-*)로 받는다.
+   =========================================================== */
+
+/* ---------- 진한 머리 띠 ---------- */
+.hub-hero {
+  color: #fff; padding: 84px 0 76px;
+  background:
+    radial-gradient(1000px 520px at 88% 0%, var(--theme-glow) 0%, transparent 62%),
+    linear-gradient(160deg, var(--theme-deep) 0%, var(--theme-deep-2) 100%);
+}
+.hub-hero .back { display: inline-block; margin-bottom: 18px; color: rgba(255, 255, 255, .7); font-size: 14px; text-decoration: none; }
+.hub-hero .back:hover { color: #fff; }
+.hub-hero .eyebrow { margin: 0 0 12px; color: var(--theme-hi); font-size: 13.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.hub-hero h1 { margin: 0; font-size: clamp(40px, 6vw, 64px); font-weight: 800; letter-spacing: -.035em; line-height: 1.1; }
+.hub-hero .lead { margin: 16px 0 0; max-width: 40em; color: rgba(255, 255, 255, .78); font-size: 18px; }
+
+/* ---------- 전체 검색 ---------- */
+.search-wrap { margin-top: 34px; max-width: 720px; }
+.search-box { position: relative; }
+.search-box input {
+  width: 100%; height: 60px; padding: 0 96px 0 22px; border: 0; border-radius: 12px;
+  background: #fff; color: var(--text); font-size: 16.5px; outline: none; box-shadow: 0 12px 32px rgba(0, 0, 0, .22);
+}
+.search-box input::placeholder { color: var(--faint); }
+.search-box input:focus { box-shadow: 0 0 0 4px color-mix(in srgb, var(--theme-hi) 55%, transparent), 0 12px 32px rgba(0, 0, 0, .22); }
+input[type=search]::-webkit-search-cancel-button, input[type=search]::-webkit-search-decoration { -webkit-appearance: none; appearance: none; display: none; }
+.search-box .keycap { right: 18px; top: 20px; }
+.clear-btn { position: absolute; right: 52px; top: 18px; display: none; border: 0; background: none; color: var(--faint); cursor: pointer; font-size: 18px; line-height: 1; }
+.search-hint { margin: 12px 2px 0; color: rgba(255, 255, 255, .6); font-size: 13.5px; }
+
+.hub-main { padding-top: 48px; padding-bottom: 96px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.chip {
+  padding: 5px 13px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+  color: var(--muted); font-size: 13.5px; cursor: pointer; transition: border-color .15s, color .15s;
+}
+.chip:hover { border-color: var(--faint); color: var(--text); }
+.chip.active { border-color: var(--text); background: var(--text); color: #fff; }
+.chip .n { margin-left: 5px; opacity: .6; font-size: 12.5px; }
+.results { display: none; }
+.results.on { display: block; margin-bottom: 44px; }
+.result-meta { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
+.hit {
+  display: block; margin-bottom: 10px; padding: 16px 20px; border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: 12px; background: var(--surface); color: inherit; text-decoration: none; transition: border-color .15s, box-shadow .15s;
+}
+.hit:hover, .hit.sel { border-color: var(--accent); box-shadow: var(--shadow); }
+.hit-top { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin-bottom: 4px; }
+.badge {
+  padding: 1px 9px; border-radius: 999px; background: color-mix(in srgb, var(--accent) 10%, #fff);
+  color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .03em;
+}
+.crumb { color: var(--muted); font-size: 13px; }
+.hit h3 { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.4; }
+.hit p { margin: 5px 0 0; color: var(--muted); font-size: 14.5px; }
+.hit .alias { color: var(--faint); font-size: 13px; }
+.empty { margin-bottom: 32px; padding: 26px; border: 1px dashed var(--line); border-radius: 12px; background: var(--surface); color: var(--muted); }
+.empty b { color: var(--text); }
+.more { margin: 6px 0 0; color: var(--muted); font-size: 13.5px; }
+
+/* ---------- 도메인 카드 ---------- */
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.grid.off { display: none; }
+.card {
+  position: relative; display: flex; flex-direction: column; min-height: 220px; padding: 30px 30px 28px; overflow: hidden;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: inherit; text-decoration: none;
+  transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+.card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent, var(--theme)); }
+.card:hover { border-color: color-mix(in srgb, var(--accent, var(--theme)) 35%, var(--line)); box-shadow: var(--shadow); transform: translateY(-2px); }
+.card small { color: var(--accent, var(--theme)); font-size: 13px; font-weight: 800; letter-spacing: .06em; }
+.card h2 { margin: 10px 0 8px; font-size: 26px; font-weight: 800; letter-spacing: -.02em; line-height: 1.25; }
+.card p { margin: 0 0 24px; color: var(--muted); font-size: 15.5px; }
+.route { margin-top: auto; color: var(--accent, var(--theme)); font-size: 15px; font-weight: 600; }
+
+@media (max-width: 760px) {
+  .hub-hero { padding: 56px 0 52px; }
+  .grid { grid-template-columns: 1fr; }
+  .card { min-height: 0; padding: 24px; }
+  .search-box input { height: 54px; padding-right: 80px; }
+  .search-box .keycap { display: none; }
+  .clear-btn { right: 16px; top: 16px; }
+}
+
+/* ===========================================================
+   도메인 목록 페이지 (omics/ · single-cell/ · disease/ · disease/<대분류>/)
+   =========================================================== */
+.hub-hero .lead a { color: #fff; text-underline-offset: 3px; }
+.primary {
+  position: relative; display: block; padding: 28px 30px; overflow: hidden;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: inherit; text-decoration: none;
+  transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+.primary + .primary { margin-top: 16px; }
+.primary:hover { border-color: var(--theme-line); box-shadow: var(--shadow); transform: translateY(-2px); }
+.primary small { color: var(--theme); font-size: 13px; font-weight: 800; letter-spacing: .06em; }
+.primary h2 { margin: 8px 0 6px; font-size: 24px; font-weight: 800; letter-spacing: -.02em; line-height: 1.3; }
+.primary p { margin: 0 0 16px; color: var(--muted); font-size: 15.5px; }
+.primary .route { color: var(--theme); }
+
+.scope { margin: 0 0 28px; padding: 16px 20px; border-radius: 12px; background: var(--theme-soft); color: var(--body); font-size: 15px; }
+.map { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line); }
+.map h2 { margin: 0 0 6px; font-size: 20px; font-weight: 700; }
+.map p, .map li { color: var(--muted); font-size: 15px; }
+.map p { margin: 0 0 14px; }
+.map ul { margin: 8px 0 0; padding-left: 20px; }
+.map a { color: var(--theme); }
+.tags { display: flex; flex-wrap: wrap; gap: 9px; }
+.tag { padding: 6px 13px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface-2); font-size: 14px; }
+.tag small { margin-left: 4px; color: var(--muted); }
+.note { margin-top: 32px; padding: 18px 22px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); color: var(--muted); font-size: 14.5px; }
+.note h2 { margin: 0 0 6px; color: var(--text); font-size: 17px; font-weight: 700; }
+.note p { margin: 0; }
+.note strong { color: var(--text); }
+
+/* 묶음 + 준비 중 카드 (nephro) */
+.legend { display: flex; flex-wrap: wrap; gap: 8px; }
+.legend span { padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--muted); font-size: 13px; }
+.legend .live { border-color: var(--theme-line); color: var(--theme); }
+.group { margin-top: 44px; }
+.group-head { display: grid; grid-template-columns: 170px 1fr; gap: 24px; align-items: start; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.group-kicker { padding-top: 5px; color: var(--theme); font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.group-head h2 { margin: 0 0 4px; font-size: 21px; font-weight: 700; }
+.group-intro { margin: 0; color: var(--muted); font-size: 15px; }
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
+.cards .card { min-height: 200px; }
+.card h3 { margin: 10px 0 8px; font-size: 21px; font-weight: 700; letter-spacing: -.015em; line-height: 1.3; }
+.card.planned { background: var(--surface-2); }
+.card.planned::before { background: var(--line); }
+.card.planned small, .card.planned .route { color: var(--faint); }
+.card.planned:hover { border-color: var(--line); box-shadow: none; transform: none; }
+.wide { grid-column: 1 / -1; }
+
+@media (max-width: 760px) {
+  .primary { padding: 22px; }
+  .group-head { grid-template-columns: 1fr; gap: 4px; }
+  .cards { grid-template-columns: 1fr; }
+  .wide { grid-column: auto; }
+}

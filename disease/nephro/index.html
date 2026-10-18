@@ -8,37 +8,42 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="CKD·AKI/AKD·diabetic kidney disease·IgA nephropathy·ADPKD·kidney failure를 질환군과 임상 경로로 탐색하는 HaLab Wiki">
 <title>Nephro · HaLab Wiki</title>
-<style>
-:root{--ink:#18211b;--muted:#667168;--paper:#f7f7f2;--surface:#fff;--line:#d8ddd7;--plum:#6f3a55;--blue:#315d78;--rust:#94553b;--green:#1f5d43;--soft:#eef1ec}
-*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font-family:"Pretendard","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
-header{border-bottom:1px solid var(--line);padding:18px max(24px,calc((100% - 1080px)/2));display:flex;gap:14px;align-items:center}header a{color:var(--plum);text-decoration:none;font-size:.86rem}header span{color:#9ca49e;font-size:.86rem}
-main{width:min(1080px,calc(100% - 40px));margin:auto;padding:65px 0 78px}.eyebrow{color:var(--plum);font-size:.76rem;font-weight:800;letter-spacing:.14em}h1,h2,h3{font-family:Georgia,"Noto Serif KR",serif}h1{font-size:clamp(3rem,7vw,5rem);margin:8px 0 12px}.lead{color:var(--muted);max-width:790px;margin-bottom:0}
-.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}.legend span{padding:6px 11px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted);font-size:.76rem}.legend .live{border-color:#a8c1b0;color:var(--green)}
-.group{margin-top:50px}.group-head{display:grid;grid-template-columns:150px 1fr;gap:24px;align-items:start;padding-bottom:14px;border-bottom:1px solid var(--line)}.group-kicker{color:var(--plum);font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.group h2{font-size:1.45rem;margin:0 0 5px}.group-intro{color:var(--muted);font-size:.9rem;margin:0;max-width:710px}
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}.card{position:relative;min-height:230px;padding:26px;border:1px solid var(--line);border-top:4px solid var(--accent,var(--plum));border-radius:10px;background:var(--surface);color:inherit;text-decoration:none;box-shadow:0 9px 24px rgba(24,33,27,.04)}a.card{transition:transform .18s,box-shadow .18s,border-color .18s}a.card:hover{transform:translateY(-3px);box-shadow:0 15px 34px rgba(24,33,27,.09);border-color:#bcc7bf}a.card:focus-visible{outline:3px solid rgba(49,93,120,.28);outline-offset:3px}.card small{display:block;color:var(--accent,var(--plum));font-size:.72rem;font-weight:800;letter-spacing:.1em}.card h3{font-size:1.55rem;line-height:1.3;margin:9px 0}.card p{color:var(--muted);font-size:.88rem;margin:0 0 22px}.route{position:absolute;left:26px;bottom:22px;color:var(--accent,var(--plum));font-size:.85rem;font-weight:750}.planned{background:linear-gradient(145deg,var(--surface),var(--soft));box-shadow:none}.planned .route{color:#8a948d}.wide{grid-column:1/-1;min-height:210px}
-.note{margin-top:48px;padding:24px 26px;border-left:4px solid var(--blue);background:var(--surface)}.note h2{font-size:1.15rem;margin:0 0 7px}.note p{color:var(--muted);font-size:.88rem;margin:0}.note strong{color:var(--ink)}
-footer{border-top:1px solid var(--line);padding:22px max(20px,calc((100% - 1080px)/2));color:var(--muted);font-size:.8rem}
-@media(max-width:700px){main{width:min(100% - 28px,1080px);padding-top:45px}.group-head{grid-template-columns:1fr;gap:4px}.cards{grid-template-columns:1fr}.wide{grid-column:auto}.card{min-height:245px}}
-</style>
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/hub.css">
 </head>
-<body>
-<header><a href="../../index.html">HaLab Wiki</a><span>/</span><a href="../index.html">Human diseases</a></header>
-<main>
-  <p class="eyebrow">NEPHRO DOMAIN MAP</p>
+<body data-domain="disease">
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-group"><a class="brand brand-home" href="../../index.html"><img class="mark" src="../../assets/img/symbol.png" alt="">HaLab Wiki</a><span class="brand brand-domain">/ Nephro</span></div>
+    <nav class="domain-nav" aria-label="도메인">
+      <a href="../../gwas/index.html">GWAS</a>
+      <a href="../../omics/index.html">Omics</a>
+      <a href="../../single-cell/index.html">Single-cell</a>
+      <a href="../../multi-omics/index.html">Multi-omics</a>
+      <a href="../../disease/index.html" aria-current="page">Diseases</a>
+    </nav>
+  </div>
+</header>
+<section class="hub-hero">
+  <div class="container">
+    <p class="eyebrow">NEPHRO DOMAIN MAP</p>
   <h1>Nephro</h1>
   <p class="lead">시간축의 공통 syndrome에서 원인별 kidney disease, 유전질환, kidney failure의 치료 경로까지 연결합니다. 각 페이지는 정의·역학·기전·진단·치료·오믹스·최신 동향을 질문 단위 문서로 탐색합니다.</p>
+  </div>
+</section>
+<main class="container hub-main">
   <div class="legend" aria-label="페이지 상태"><span class="live">● 공개</span><span>○ 준비 중</span></div>
 
   <section class="group" aria-labelledby="common-title">
     <div class="group-head"><span class="group-kicker">Common syndromes</span><div><h2 id="common-title">시간축과 기능 저하</h2><p class="group-intro">급성 손상·지속되는 이상·만성 질환을 하나의 연속선으로 구분하고, 회복과 진행의 경계를 추적합니다.</p></div></div>
     <div class="cards">
-      <a class="card" style="--accent:var(--plum)" href="./ckd/index.html">
+      <a class="card" href="./ckd/index.html">
         <small>CKD · CHRONIC KIDNEY DISEASE</small>
         <h3>Chronic Kidney Disease</h3>
         <p>CGA 분류 · 세계와 한국의 역학 · nephron overload와 fibrosis · eGFR·albuminuria · RAASi·SGLT2i·KRT</p>
         <span class="route">CKD 살펴보기 →</span>
       </a>
-      <article class="card planned" style="--accent:var(--blue)" data-slug="aki">
+      <article class="card planned" data-slug="aki">
         <small>AKI / AKD · ACUTE KIDNEY INJURY</small>
         <h3>Acute Kidney Injury &amp; Disease</h3>
         <p>creatinine·urine output 기준 · 원인별 감별 · 회복과 maladaptive repair · AKI-to-CKD transition · 신독성·혈역학 관리</p>
@@ -50,13 +55,13 @@ footer{border-top:1px solid var(--line);padding:22px max(20px,calc((100% - 1080p
   <section class="group" aria-labelledby="acquired-title">
     <div class="group-head"><span class="group-kicker">Acquired causes</span><div><h2 id="acquired-title">대사·사구체 질환</h2><p class="group-intro">흔한 대사성 원인과 대표적인 면역성 사구체질환을 분리해 질환 특이 기전과 치료 표적을 다룹니다.</p></div></div>
     <div class="cards">
-      <a class="card" style="--accent:var(--rust)" href="./dkd/index.html">
+      <a class="card" href="./dkd/index.html">
         <small>DKD · DIABETIC KIDNEY DISEASE</small>
         <h3>Diabetic Kidney Disease</h3>
         <p>대사·혈역학·염증 축 · albuminuric/non-albuminuric phenotype · cardiorenal risk · SGLT2i·finerenone·GLP-1 RA</p>
         <span class="route">DKD 살펴보기 →</span>
       </a>
-      <article class="card planned" style="--accent:var(--green)" data-slug="igan">
+      <article class="card planned" data-slug="igan">
         <small>IgAN · IgA NEPHROPATHY</small>
         <h3>IgA Nephropathy</h3>
         <p>galactose-deficient IgA1 · immune complex와 mesangial injury · biopsy·Oxford MEST-C · supportive care와 표적 치료</p>
@@ -68,7 +73,7 @@ footer{border-top:1px solid var(--line);padding:22px max(20px,calc((100% - 1080p
   <section class="group" aria-labelledby="genetic-title">
     <div class="group-head"><span class="group-kicker">Genetic disease</span><div><h2 id="genetic-title">유전성 kidney disease</h2><p class="group-intro">명확한 유전축과 장기 자연사를 가진 질환을 독립 페이지로 다루고 유전상담·가족 선별과 연결합니다.</p></div></div>
     <div class="cards">
-      <article class="card planned wide" style="--accent:var(--blue)" data-slug="adpkd">
+      <article class="card planned wide" data-slug="adpkd">
         <small>ADPKD · AUTOSOMAL DOMINANT POLYCYSTIC KIDNEY DISEASE</small>
         <h3>Autosomal Dominant Polycystic Kidney Disease</h3>
         <p>PKD1/PKD2와 cyst 성장 · 영상 기반 진단·total kidney volume · 가족 선별·유전상담 · 진행 위험과 vasopressin V2 표적</p>
@@ -80,7 +85,7 @@ footer{border-top:1px solid var(--line);padding:22px max(20px,calc((100% - 1080p
   <section class="group" aria-labelledby="failure-title">
     <div class="group-head"><span class="group-kicker">Care pathway</span><div><h2 id="failure-title">Kidney failure와 치료 선택</h2><p class="group-intro">독립 원인질환이 아니라 여러 kidney disease가 도달할 수 있는 기능 상태와 치료 경로로 분리합니다.</p></div></div>
     <div class="cards">
-      <article class="card planned wide" style="--accent:var(--plum)" data-slug="kidney-failure">
+      <article class="card planned wide" data-slug="kidney-failure">
         <small>KIDNEY FAILURE · KRT</small>
         <h3>Kidney Failure &amp; Kidney Replacement Therapy</h3>
         <p>CKD G5 · 증상과 KRT 준비 · haemodialysis·peritoneal dialysis·transplantation · conservative kidney management · shared decision-making</p>
@@ -94,6 +99,6 @@ footer{border-top:1px solid var(--line);padding:22px max(20px,calc((100% - 1080p
     <p><strong>ESRD/ESKD 대신 kidney failure</strong> 사용. 원인질환과 CKD stage를 분리하고, 필요할 때 CKD G5·G5D·G5T 또는 KRT 여부를 함께 표기합니다.</p>
   </aside>
 </main>
-<footer>Updated 2026-08-06</footer>
+<footer><div class="container"><span>Updated 2026-08-06</span></div></footer>
 </body>
 </html>

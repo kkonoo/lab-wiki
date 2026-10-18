@@ -65,7 +65,7 @@
   function renderHome() {
     document.title = meta.title + " · HaLab Wiki";
     const cards = acts.map(function (act) {
-      return '<button class="card" style="--accent:' + act.accent + '" data-act="' + act.id + '">' +
+      return '<button class="card" data-act="' + act.id + '">' +
         "<small>" + act.num + " · " + esc(act.en) + "</small>" +
         "<h2>" + esc(act.title) + "</h2>" +
         "<p>" + esc(act.blurb) + "</p>" +
@@ -74,7 +74,7 @@
 
     app.innerHTML = '<section class="hero"><div class="container">' +
       '<p class="eyebrow">' + esc(meta.domain) + " disease knowledge base</p><h1>" + esc(meta.title) + "</h1>" +
-      '<p class="hero-copy">무엇인가 · 왜·어떻게 · 임상 · 연구 — 네 갈래의 질문을 따라가는 RA 지도</p>' +
+      '<p class="hero-copy">무엇인가 · 왜·어떻게 · 임상 · 연구 — 네 갈래의 질문을 따라가는 ' + esc((meta.title.match(/\(([^)]+)\)\s*$/) || [0, meta.title])[1]) + ' 지도</p>' +
       '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="' + esc(meta.title) + ' 통합 검색" placeholder="' + esc(meta.searchPlaceholder || "Search: 유병률, 진단, 치료, 유전학") + '"><span class="search-icon">⌕</span></form>' +
       '<p class="search-hint">Korean / English / acronym · 수치표 포함 검색</p></div></section>' +
       '<section class="browse"><div class="container"><div class="grid">' + cards + "</div></div></section>";
@@ -111,7 +111,7 @@
 
     app.innerHTML = '<div class="container"><nav class="breadcrumb" aria-label="현재 위치">' +
       '<button data-route="home">홈</button><span>›</span>' + esc(act.title) + "</nav>" +
-      '<header class="page-header" style="border-top:4px solid ' + act.accent + '">' +
+      '<header class="page-header">' +
       '<p class="eyebrow">' + act.num + " · " + esc(act.en) + "</p>" +
       "<h1>" + esc(act.title) + '</h1><p class="lead">' + esc(act.blurb) + "</p></header>" +
       '<div class="question-list">' + blocks + "</div>" +

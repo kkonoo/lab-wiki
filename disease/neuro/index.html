@@ -8,14 +8,26 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Neuro 질환(AD·ASD·MDD·PD)을 원인·증상·치료의 질문으로 탐색하는 HaLab Wiki">
 <title>Neuro · HaLab Wiki</title>
-<style>
-:root{--ink:#18211b;--muted:#667168;--paper:#f7f7f2;--surface:#fff;--line:#d8ddd7;--plum:#6f3a55}
-*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font-family:"Pretendard","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
-header{border-bottom:1px solid var(--line);padding:18px max(24px,calc((100% - 1080px)/2));display:flex;gap:14px;align-items:center}header a{color:var(--plum);text-decoration:none;font-size:.86rem}header span{color:#9ca49e;font-size:.86rem}
-main{width:min(1080px,calc(100% - 40px));margin:auto;padding:65px 0}.eyebrow{color:var(--plum);font-size:.76rem;font-weight:800;letter-spacing:.14em}h1,h2{font-family:Georgia,"Noto Serif KR",serif}h1{font-size:clamp(3rem,7vw,5rem);margin:8px 0 12px}.lead{color:var(--muted);max-width:720px}.primary{display:block;margin-top:42px;padding:30px;border:1px solid var(--line);border-top:4px solid var(--plum);border-radius:10px;background:var(--surface);color:inherit;text-decoration:none;box-shadow:0 12px 30px rgba(24,33,27,.05);transition:.18s}.primary:hover{transform:translateY(-3px);box-shadow:0 16px 38px rgba(24,33,27,.09)}.primary small{color:var(--plum);font-weight:800;font-size:.76rem;letter-spacing:.12em}.primary h2{font-size:2rem;margin:10px 0}.primary p{color:var(--muted)}.route{color:var(--plum);font-weight:750}.map{margin-top:46px;padding-top:26px;border-top:1px solid var(--line)}.map h2{font-size:1.3rem;margin:0 0 6px}.map p{color:var(--muted);margin:0 0 16px;font-size:.9rem}.tags{display:flex;flex-wrap:wrap;gap:9px}.tag{border:1px solid var(--line);border-radius:999px;background:var(--surface);padding:7px 13px;color:var(--muted);font-size:.82rem}.tag small{color:#a6948f;font-size:.72rem;margin-left:5px}footer{border-top:1px solid var(--line);padding:22px max(20px,calc((100% - 1080px)/2));color:var(--muted);font-size:.8rem}
-</style>
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/hub.css">
 </head>
-<body><header><a href="../../index.html">HaLab Wiki</a><span>/</span><a href="../index.html">Human diseases</a></header><main><p class="eyebrow">NEURO DOMAIN MAP</p><h1>Neuro</h1><p class="lead">General에서 신경계 공통 기초를 살펴보고, 각 질환을 원인 → 증상 → 치료의 질문으로 따라갑니다. 새 질환은 wiki의 disease:neuro subtype 색인을 따라 순차적으로 추가합니다.</p>
+<body data-domain="disease"><header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-group"><a class="brand brand-home" href="../../index.html"><img class="mark" src="../../assets/img/symbol.png" alt="">HaLab Wiki</a><span class="brand brand-domain">/ Neuro</span></div>
+    <nav class="domain-nav" aria-label="도메인">
+      <a href="../../gwas/index.html">GWAS</a>
+      <a href="../../omics/index.html">Omics</a>
+      <a href="../../single-cell/index.html">Single-cell</a>
+      <a href="../../multi-omics/index.html">Multi-omics</a>
+      <a href="../../disease/index.html" aria-current="page">Diseases</a>
+    </nav>
+  </div>
+</header><section class="hub-hero">
+  <div class="container">
+    <p class="eyebrow">NEURO DOMAIN MAP</p><h1>Neuro</h1><p class="lead">General에서 신경계 공통 기초를 살펴보고, 각 질환을 원인 → 증상 → 치료의 질문으로 따라갑니다. 새 질환은 wiki의 disease:neuro subtype 색인을 따라 순차적으로 추가합니다.</p>
+  </div>
+</section>
+<main class="container hub-main">
 <a class="primary" href="./general/index.html"><small>GENERAL · NEURO</small><h2>General Neuro</h2><p>뇌 영역·세포유형 · Development · Neuroimmune / Neuroinflammation — 신경계 공통 기초</p><span class="route">General 살펴보기 →</span></a>
 <a class="primary" href="./ad/index.html"><small>AD · ALZHEIMER'S</small><h2>Alzheimer's (AD)</h2><p>원인(APOE·75 loci·microglia 수렴) · 증상·진단(MCI→치매·ATN) · 치료(amyloid 항체 논쟁)</p><span class="route">AD 살펴보기 →</span></a>
 <a class="primary" href="./asd/index.html"><small>ASD · AUTISM</small><h2>Autism (ASD)</h2><p>원인(rare·de novo·common 유전) · 증상·진단(DSM-5·조기 선별) · 병태(성체 뇌 단일세포)</p><span class="route">ASD 살펴보기 →</span></a>
@@ -24,4 +36,4 @@ main{width:min(1080px,calc(100% - 40px));margin:auto;padding:65px 0}.eyebrow{col
 
 <section class="map"><h2>다른 neuro 질환</h2><p>아래 질환은 wiki disease:neuro subtype 색인을 따라 순차적으로 추가합니다.</p>
 <div class="tags"><span class="tag">SCZ <small>준비 중</small></span></div></section>
-</main><footer>Updated 2026-09-15</footer></body></html>
+</main><footer><div class="container"><span>Updated 2026-09-15</span></div></footer></body></html>

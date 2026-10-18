@@ -32,7 +32,7 @@ reference: wiki/site/disease/autoimmune/ra/
 > **다른 레이아웃**: 그림·토글이 본문의 절반 이상인 문서는 `data.js`의 `body[]`로 표현이 안 된다. 그런 문서는 **시각 페이지**(질문 1개 = 정적 HTML 1개)로 만들고 `_schema/visual-page.md`를 따른다. 문체(§4)·수치(§5) 규칙은 두 레이아웃에 똑같이 적용된다.
 
 ```
-site/assets/css/disease.css        공통 스타일       — 질환 무관
+site/assets/css/disease.css        질환 전용 스타일 — base.css → spa.css 다음에 로드(_schema/design.md)
 site/assets/js/disease-page.js     공통 렌더 로직    — 질환 무관
 site/disease/<대>/<질환>/index.html  껍데기 34줄
 site/disease/<대>/<질환>/data.js     질환별 내용     ← 새 질환은 이것만 쓴다
@@ -70,7 +70,7 @@ window.DISEASE = (function () {
 | C | 03 | 임상 | 진단·분류 / 치료·미충족 수요 |
 | D | 04 | 연구 | 유전학·오믹스 / 최신 동향 |
 
-색은 site 팔레트를 따른다 — A `#6f3a55` · B `#315d78` · C `#94553b` · D `#1f5d43`.
+`accent`는 데이터에만 남아 있고 렌더하지 않는다 — 질환 페이지 색은 도메인 주조색(blue) 하나다(2026-10-18, `_schema/design.md` §2).
 
 ### 섹션 (`sections`)
 

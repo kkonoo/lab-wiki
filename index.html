@@ -8,81 +8,78 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="HaLab Wiki — GWAS · Omics · Single-cell · Multi-omics · Human diseases 전체를 한 번에 검색하는 laboratory knowledge base">
 <title>HaLab Wiki</title>
-<style>
-:root{--ink:#18211b;--muted:#667168;--paper:#f7f7f2;--surface:#fff;--line:#d8ddd7;--green:#1f5d43;--green-soft:#e7f0ea;--blue:#315d78;--rust:#94553b;--gold:#936f21;--plum:#6f3a55;--shadow:0 14px 35px rgba(24,33,27,.08)}
-*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font-family:"Pretendard","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
-button,input{font:inherit}
-header{border-bottom:1px solid var(--line);padding:21px max(24px,calc((100% - 1120px)/2));font-family:Georgia,serif;font-weight:700}
-main{width:min(1120px,calc(100% - 40px));margin:auto;padding:84px 0}
-.eyebrow{color:var(--green);font-size:.76rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
-h1,h2{font-family:Georgia,"Noto Serif KR",serif}h1{margin:8px 0 15px;font-size:clamp(3rem,8vw,6.4rem);letter-spacing:-.055em;line-height:1}.lead{max-width:620px;color:var(--muted)}
-
-/* ---- search ---- */
-.search-wrap{margin-top:40px;max-width:760px}
-.search-box{position:relative}
-.search-box input{width:100%;height:64px;border:1px solid #bac6bd;border-radius:9px;background:var(--surface);box-shadow:var(--shadow);padding:0 96px 0 20px;color:var(--ink);font-size:1.03rem;outline:none}
-input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none;appearance:none;display:none}
-.search-box input:focus{border-color:var(--green);box-shadow:0 0 0 4px var(--green-soft),var(--shadow)}
-.keycap{position:absolute;right:18px;top:20px;border:1px solid var(--line);border-radius:4px;color:var(--muted);background:var(--paper);padding:1px 7px;font-size:.75rem}
-.clear-btn{position:absolute;right:52px;top:19px;display:none;border:0;background:none;color:var(--muted);cursor:pointer;font-size:1.1rem;line-height:1}
-.search-hint{margin:11px 2px 0;color:var(--muted);font-size:.83rem}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
-.chip{border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted);padding:5px 13px;font-size:.82rem;cursor:pointer;transition:.15s}
-.chip:hover{border-color:var(--green);color:var(--ink)}
-.chip.active{background:var(--ink);border-color:var(--ink);color:#fff}
-.chip .n{opacity:.6;margin-left:5px;font-size:.76rem}
-
-/* ---- results ---- */
-.results{margin-top:34px;display:none}
-.results.on{display:block}
-.result-meta{color:var(--muted);font-size:.85rem;margin:0 0 14px}
-.hit{display:block;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:9px;background:var(--surface);padding:16px 18px;margin-bottom:10px;text-decoration:none;color:inherit;transition:.14s}
-.hit:hover,.hit.sel{border-color:var(--accent);box-shadow:var(--shadow);transform:translateY(-1px)}
-.hit.sel{outline:2px solid var(--green-soft)}
-.hit-top{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:5px}
-.badge{color:var(--accent);border:1px solid currentColor;border-radius:999px;padding:1px 9px;font-size:.71rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
-.crumb{color:var(--muted);font-size:.78rem}
-.hit h3{font-family:Georgia,"Noto Serif KR",serif;margin:0;font-size:1.12rem;line-height:1.35}
-.hit p{margin:6px 0 0;color:var(--muted);font-size:.89rem}
-.hit .alias{margin:6px 0 0;color:var(--muted);font-size:.78rem;opacity:.85}
-mark{background:#fbeeb0;color:inherit;border-radius:2px;padding:0 1px}
-.empty{border:1px dashed var(--line);border-radius:9px;padding:26px;color:var(--muted);background:var(--surface)}
-.empty b{color:var(--ink)}
-.more{margin:6px 0 0;color:var(--muted);font-size:.82rem}
-
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:44px}
-.grid.off{display:none}
-.card{display:block;min-height:260px;padding:28px;border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:10px;background:var(--surface);color:inherit;text-decoration:none;transition:.18s}
-.card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.card small{color:var(--accent);font-weight:800}.card h2{font-size:2rem;margin:17px 0 9px}.card p{color:var(--muted);margin:0}.route{display:block;margin-top:32px;color:var(--accent);font-weight:750}
-footer{border-top:1px solid var(--line);padding:22px max(20px,calc((100% - 1120px)/2));color:var(--muted);font-size:.8rem}
-@media(max-width:700px){main{padding-top:55px}.grid{grid-template-columns:1fr;margin-top:32px}.search-box input{height:56px;padding-right:80px}.keycap{display:none}.clear-btn{right:16px;top:16px}}
-</style>
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/hub.css">
 </head>
-<body><header>HaLab Wiki</header><main>
-<p class="eyebrow">Knowledge domains</p><h1>HaLab Wiki</h1>
-<p class="lead">질문을 따라 개념의 구조를 찾는 연구실 공부 가이드</p>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand brand-home" href="./index.html"><img class="mark" src="assets/img/symbol.png" alt=""><span class="name">HaLab Wiki<small>Genomic Medicine Lab · KNU</small></span></a>
+    <nav class="domain-nav" aria-label="도메인">
+      <a href="./gwas/index.html">GWAS</a>
+      <a href="./omics/index.html">Omics</a>
+      <a href="./single-cell/index.html">Single-cell</a>
+      <a href="./multi-omics/index.html">Multi-omics</a>
+      <a href="./disease/index.html">Diseases</a>
+    </nav>
+    <a class="lab-link" href="https://halab.knu.ac.kr" target="_blank" rel="noopener">HaLab ↗</a>
+  </div>
+</header>
 
-<div class="search-wrap">
-  <form class="search-box" id="searchForm" role="search" autocomplete="off">
-    <input id="q" type="search" aria-label="위키 전체 검색" placeholder="전체 검색 — 예: PRS, ATAC-seq, APOE, fine-mapping, 자가항체">
-    <button class="clear-btn" id="clearBtn" type="button" aria-label="검색어 지우기">✕</button>
-    <span class="keycap">/</span>
-  </form>
-  <p class="search-hint" id="hint">어느 도메인인지 몰라도 용어만 입력하면 GWAS · Omics · Single-cell · Multi-omics · Disease 등 전체 도메인에서 검색</p>
+<section class="hub-hero">
+  <div class="container">
+    <p class="eyebrow">Knowledge domains</p>
+    <h1>HaLab Wiki</h1>
+    <p class="lead">질문을 따라 개념의 구조를 찾는 연구실 공부 가이드</p>
+    <div class="search-wrap">
+      <form class="search-box" id="searchForm" role="search" autocomplete="off">
+        <input id="q" type="search" aria-label="위키 전체 검색" placeholder="전체 검색 — 예: PRS, ATAC-seq, APOE, fine-mapping, 자가항체">
+        <button class="clear-btn" id="clearBtn" type="button" aria-label="검색어 지우기">✕</button>
+        <span class="keycap">/</span>
+      </form>
+      <p class="search-hint" id="hint">어느 도메인인지 몰라도 용어만 입력하면 GWAS · Omics · Single-cell · Multi-omics · Disease 등 전체 도메인에서 검색</p>
+    </div>
+  </div>
+</section>
+
+<main class="container hub-main">
   <div class="chips" id="chips" hidden></div>
-</div>
+  <section class="results" id="results" aria-live="polite"></section>
+  <div class="grid" id="grid">
+    <a class="card" style="--accent:var(--c-gwas)" href="./gwas/index.html">
+      <small>01 · GENETICS</small>
+      <h2>GWAS</h2>
+      <p>Genetics Basics · Association · Post-GWAS · Resources</p>
+      <span class="route">GWAS 살펴보기 →</span>
+    </a>
+    <a class="card" style="--accent:var(--c-omics)" href="./omics/index.html">
+      <small>02 · OMICS</small>
+      <h2>Omics</h2>
+      <p>Bulk modality별 measurement와 analysis knowledge map</p>
+      <span class="route">Omics 살펴보기 →</span>
+    </a>
+    <a class="card" style="--accent:var(--c-sc)" href="./single-cell/index.html">
+      <small>03 · SINGLE-CELL</small>
+      <h2>Single-cell Genomics</h2>
+      <p>Cell 또는 nucleus 단위의 transcriptomics와 epigenomics</p>
+      <span class="route">Single-cell 살펴보기 →</span>
+    </a>
+    <a class="card" style="--accent:var(--c-mo)" href="./multi-omics/index.html">
+      <small>04 · MULTI-OMICS</small>
+      <h2>Multi-omics</h2>
+      <p>Paired · Unpaired · Mosaic · Latent factors · Bridge integration</p>
+      <span class="route">Multi-omics 살펴보기 →</span>
+    </a>
+    <a class="card" style="--accent:var(--c-disease)" href="./disease/index.html">
+      <small>05 · DISEASE</small>
+      <h2>Human diseases</h2>
+      <p>질환별 정의 · 원인 · 증상 · 연구</p>
+      <span class="route">Human diseases 살펴보기 →</span>
+    </a>
+  </div>
+</main>
 
-<section class="results" id="results" aria-live="polite"></section>
-
-<div class="grid" id="grid">
-<a class="card" style="--accent:var(--blue)" href="./gwas/index.html"><small>01 · GENETICS</small><h2>GWAS</h2><p>Genetics Basics · Association · Post-GWAS · Resources</p><span class="route">GWAS 살펴보기 →</span></a>
-<a class="card" style="--accent:var(--rust)" href="./omics/index.html"><small>02 · OMICS</small><h2>Omics</h2><p>Bulk modality별 measurement와 analysis knowledge map</p><span class="route">Omics 살펴보기 →</span></a>
-<a class="card" style="--accent:var(--green)" href="./single-cell/index.html"><small>03 · SINGLE-CELL</small><h2>Single-cell Genomics</h2><p>Cell 또는 nucleus 단위의 transcriptomics와 epigenomics</p><span class="route">Single-cell 살펴보기 →</span></a>
-<a class="card" style="--accent:var(--gold)" href="./multi-omics/index.html"><small>04 · MULTI-OMICS</small><h2>Multi-omics</h2><p>Paired · Unpaired · Mosaic · Latent factors · Bridge integration</p><span class="route">Multi-omics 살펴보기 →</span></a>
-<a class="card" style="--accent:var(--plum)" href="./disease/index.html"><small>05 · DISEASE</small><h2>Human diseases</h2><p>질환별 정의 · 원인 · 증상 · 연구</p><span class="route">Human diseases 살펴보기 →</span></a>
-</div>
-</main><footer>Updated 2026-09-17</footer>
-
+<footer><div class="container"><span>HaLab · Genomic Medicine Lab, Kyungpook National University</span><span>Updated 2026-09-17</span></div></footer>
 <script src="./assets/js/search-index.js" defer></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
