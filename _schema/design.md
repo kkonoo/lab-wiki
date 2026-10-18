@@ -39,6 +39,7 @@ assets/css/spa.css       용어 카드 SPA(gwas · omics/* · single-cell/* · m
 assets/css/hub.css       허브(index.html)와 도메인 목록(omics/ · single-cell/ · disease/ · disease/<대분류>/)
 assets/css/disease.css   disease-page.js 질환 8곳 전용(4블록 카드 · 수치 표 · 모순 상자)
 disease/immunology/immunology.css   면역학 전용(visual-tabs · term-table …) + 옛 색 이름 별칭
+gwas/gwas.css            GWAS 시각 페이지 공용 — 옛 색 이름 별칭(article.css용). SPA는 안 씀
 assets/css/article.css   시각 페이지(body.vpage) 공용 — visual-page.md
 assets/css/feedback.css  "여기 헷갈려요" 버튼 — --theme을 따른다
 ```
@@ -50,6 +51,7 @@ assets/css/feedback.css  "여기 헷갈려요" 버튼 — --theme을 따른다
 | 질환 8곳 | `base` → `spa` → `disease` |
 | 면역학 SPA | `base` → `spa` → `immunology` |
 | 면역학 시각 페이지 | `base` → `spa` → `immunology` → `article` → 섹션 css |
+| GWAS 시각 페이지 | `base` → `spa` → `gwas` → `article` → 섹션 css |
 
 `assets/css/styles.css`는 어느 페이지도 링크하지 않는 옛 사본이다.
 

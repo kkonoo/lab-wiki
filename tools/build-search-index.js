@@ -221,7 +221,8 @@ for (const abs of walk(ROOT).sort()) {
   if (/const\s+(articles|articleRows)\s*=\s*[\[{]/.test(html)) { inlinePage(abs, html); continue; }
   if (/disease-page\.js/.test(html) && fs.existsSync(path.join(path.dirname(abs), "data.js"))) { if (diseasePage(abs, html)) continue; }
   if (/<p class="aliases">|<h2[^>]*id="/i.test(html) || /brainmap|class="tabs"/.test(html)) {
-    const parentHub = path.join(path.dirname(abs), "index.html");
+    let parentHub = path.join(path.dirname(abs), "index.html");
+    if (!fs.existsSync(parentHub)) parentHub = path.join(path.dirname(abs), "..", "index.html");   // 섹션 index가 없는 SPA 시각 페이지(gwas/03-postgwas/…) → 도메인 SPA
     const p = fs.existsSync(parentHub) && abs !== parentHub ? cleanTitle(tag(fs.readFileSync(parentHub, "utf8"), "title")) : "";
     staticDoc(abs, html, p); continue;
   }

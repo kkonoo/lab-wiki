@@ -202,7 +202,7 @@ gwas처럼 **용어 카드 SPA**(`<도메인>/index.html` 안 inline `sections`�
 site/gwas/
 ├─ index.html              SPA(용어 카드). articlePages로 시각 페이지를 가리킨다
 ├─ glossary.js             용어 사전 SSOT — SPA와 시각 페이지가 같이 로드
-├─ gwas.css                (첫 시각 페이지 때 신설) 공통 토큰·topbar·.glossary-term
+├─ gwas.css                시각 페이지 공용 — article.css용 옛 색 이름 별칭(토큰·상단 바·.glossary-term은 base·spa가 맡음)
 └─ <NN-섹션>/<id>.html       예: 03-postgwas/coloc.html
    └─ <섹션>.css · <섹션>.js   섹션 전용 그림 훅(§4, g- 접두사)
 ```
@@ -210,7 +210,8 @@ site/gwas/
 - 폴더 = SPA `sections`의 number + key(`postgwas` → `03-postgwas`). key가 도메인명과 겹치면 english 라벨 — gwas의 02는 `02-association`.
 - 파일명 = SPA article id(`coloc` → `coloc.html`).
 - 공용 자산 상대 깊이는 `../../assets/`(질환 시각 페이지는 `../../../`). 복사해 시작할 때 가장 먼저 고친다.
-- 그림 생성기는 `wiki/site-meta/<도메인>-figures/*.py` → `GEN` 마커(§4). 데이터는 **seed 고정 시뮬레이션** — 논문 그림을 옮겨 그리지 않는다.
+- 그림 생성기는 `wiki/site-meta/<도메인>-figures/*.py` → `GEN` 마커(§4). 데이터는 **seed 고정 시뮬레이션** — 논문 그림을 옮겨 그리지 않는다. 본문 문장 속 시뮬레이션 수치도 `GEN` 인라인 마커로 넣는다(예: coloc `<!--GEN:FRAG_PP-->`).
+- 좁은 화면에서 가로 스크롤되는 그림은 `.fig-scroll[data-scroll="end|center"]`로 시작 위치를 정한다(신호가 오른쪽에 있으면 빈 축부터 보인다 — coloc 390px). 동작은 지금 `gwas/03-postgwas/postgwas.js`에만 있다 — 다른 섹션에서 쓰면 공용으로 옮긴다.
 - 도메인 유지보수 레이어는 `wiki/site-meta/<도메인>.md`(gwas → `site-meta/gwas.md`).
 
 ### 9.3 §1·§2 계약과 다른 점

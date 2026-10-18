@@ -1,0 +1,19 @@
+/* ===========================================================
+   GWAS 시각 페이지 공용 — 로드 순서: base.css → spa.css → gwas.css → article.css → 섹션 css
+   (design.md §3 · visual-page.md §9.2). 용어 카드 SPA(gwas/index.html)는 이 파일을 쓰지 않는다.
+   =========================================================== */
+
+/* 옛 색 이름 → base.css 토큰. article.css가 아직 이 이름을 쓴다(immunology.css와 같은 별칭).
+   body에 둔다 — :root에 두면 body[data-domain]의 --theme(forest)이 아니라 사이트 초록으로 굳는다. */
+body {
+  --ink: var(--text);
+  --paper: var(--bg);
+  --ink-soft: var(--body);
+  --bg-soft: var(--surface-2);
+  --green: var(--theme);
+  --green-soft: var(--theme-soft);
+  --blue: var(--theme);
+  --rust: #C2531F;
+  --slate: #4F5D75;
+  --gold: #936F21;
+}
