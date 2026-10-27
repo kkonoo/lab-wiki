@@ -2007,7 +2007,7 @@
       app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
         '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' +
-        (articlePages[id] ? '<a class="deep-link" href="' + esc(articlePages[id]) + '">그림으로 깊게 보기 →</a>' : '') + body + '</article>' +
+        body + (articlePages[id] ? '<a class="deep-link" href="' + esc(articlePages[id]) + '">그림으로 깊게 보기 →</a>' : '') + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
         (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
         (papers ? '<div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">' + papers + '</div></div>' : '') +

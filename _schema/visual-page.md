@@ -228,7 +228,7 @@ immunology는 `articlePages`에 등록된 id를 열면 시각 페이지로 **이
 |---|---|
 | SPA `articlePages` | `index.html` inline `const articlePages = { coloc: "03-postgwas/coloc.html" }` — **파일이 생긴 뒤에** 등록(빈 링크 금지) |
 | SPA 섹션 목록 | 등록된 항목에 `그림` 배지(`.deep-badge`, 도메인 주조색) |
-| SPA 카드 | 정의 바로 아래 "그림으로 깊게 보기 →"(`.deep-link`) |
+| SPA 카드 | 본문 맨 아래 "그림으로 깊게 보기 →"(`.deep-link`) — 카드를 다 읽은 뒤 넘어가는 자리(2026-10-19 정의 아래 → 맨 아래) |
 | 시각 페이지 breadcrumb | `HaLab Wiki › GWAS › Post-GWAS › <제목>` — 섹션은 `../index.html#section/<key>` |
 | 시각 페이지 aside | 첫 상자 "1분 요약" → `../index.html#article/<id>` · Related는 시각 페이지가 있으면 그쪽, 없으면 카드 |
 | hover 용어 | `<도메인>/glossary.js` 하나. 용어 추가는 `terms`에만(정규식은 키에서 길이순 자동 생성). `body.vpage`면 본문에 직접 붙이고 `html[data-glossary]`에 개수를 남긴다 |
