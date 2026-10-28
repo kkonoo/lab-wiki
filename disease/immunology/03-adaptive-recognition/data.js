@@ -94,7 +94,7 @@ window.IMMUNOLOGY_RECOGNITION = {
         ["사람의 고장 목록",
          ["만들지 못하면 면역결핍 — RAG·수선 계열·ZAP70·TBX1·CHD7·MHC 발현 결손",
           "거르지 못하면 자가면역 — AIRE(APS-1)·FOXP3(IPEX)",
-          "clonal deletion의 기여는 논쟁 중 — 자가반응 세포의 존재와 질병은 다르다"]]
+          "자가반응 세포의 존재 ≠ 질병"]]
       ],
       ["immunology-b-cell-development", "immunology-antigen-presentation", "immunology-vdj-recombination"]
     ],

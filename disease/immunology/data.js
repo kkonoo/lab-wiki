@@ -142,7 +142,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-cell-death",
               "세포사 양식과 염증 — 무엇이 DAMP를 내보내나",
-              "전용 기계형과 항상성 붕괴형 2축 · 막이 터지는지가 염증을 정한다 · GSDM·MLKL 뒤의 NINJ1 최종 파열 · caspase-8 스위치 · NCCD 기준으로 본 PANoptosis(contested)·karyoptosis(preliminary) · efferocytosis와 necrotic core",
+              "전용 기계형과 항상성 붕괴형 2축 · 막이 터지는지가 염증을 정한다 · GSDM·MLKL 뒤의 NINJ1 최종 파열 · caspase-8 스위치 · NCCD 기준으로 본 PANoptosis·karyoptosis · efferocytosis와 necrotic core",
               "읽기",
               ""
             ]
@@ -254,7 +254,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-t-cell-exhaustion",
               "소진 — 프로그램과 계층",
-              "네 형질과 잃는 순서 · Tpex에서 terminal까지의 계층과 배액림프절 저장고 · 억제수용체 다섯 · TOX와 DNMT3A의 고정 · 갈리는 두 지점",
+              "네 형질과 잃는 순서 · Tpex에서 terminal까지의 계층과 배액림프절 저장고 · 억제수용체 다섯 · TOX와 DNMT3A의 고정",
               "읽기",
               ""
             ],
@@ -281,7 +281,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-germinal-center",
               "배중심과 isotype 전환",
-              "세 극과 Tfh 도움이라는 통화 · 죽임인가 분열인가 · cohesin 고리가 만드는 CSR centre · AID와 G4 논쟁 · 출구 세 갈래",
+              "세 극과 Tfh 도움이라는 통화 · cohesin 고리가 만드는 CSR centre · 출구 세 갈래",
               "읽기",
               ""
             ],
@@ -334,7 +334,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-barrier-immunity",
               "장벽면역 — 점막과 피부",
-              "피부 네 겹과 각질층 pH 층화 · 폐의 시점 의존 양면성 · 장의 분업과 Thetis cell TC IV · IgA의 시점과 대사산물 · 갈리는 두 지점",
+              "피부 네 겹과 각질층 pH 층화 · 폐의 시점 의존 양면성 · 장의 분업과 Thetis cell TC IV · IgA의 시점과 대사산물",
               "읽기",
               ""
             ],

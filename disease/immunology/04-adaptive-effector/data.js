@@ -57,8 +57,7 @@ window.IMMUNOLOGY_EXECUTION = {
           [
             "Lck가 ITAM을 인산화하고 ZAP-70이 tandem SH2로 이중 인산화 ITAM에 고친화 결합한다",
             "LAT·SLP-76 골격 위에서 PLCγ1이 켜지고 PIP2 가수분해로 칼슘이 오른다",
-            "CD45의 발현량이 Src 계열 kinase 음성조절 인산화를 용량 의존으로 바꿔 Csk와 길항하며 역치를 세운다",
-            "CD28은 두 번째 신호로 동정되었으나 신호 기전은 여전히 미해결"
+            "CD45의 발현량이 Src 계열 kinase 음성조절 인산화를 용량 의존으로 바꿔 Csk와 길항하며 역치를 세운다"
           ]
         ],
         [
@@ -134,7 +133,7 @@ window.IMMUNOLOGY_EXECUTION = {
         "Blimp1"
       ],
       "execution",
-      "네 형질과 IL-2→TNFα→IFNγ의 잃는 순서 · TCF-1⁺ progenitor에서 terminal까지의 계층과 배액림프절 저장고 · 억제수용체 다섯의 서로 다른 신호 방식 · TOX·Pdcd1 enhancer·DNMT3A가 프로그램을 고정하는 방식 · 갈리는 두 지점",
+      "네 형질과 IL-2→TNFα→IFNγ의 잃는 순서 · TCF-1⁺ progenitor에서 terminal까지의 계층과 배액림프절 저장고 · 억제수용체 다섯의 서로 다른 신호 방식 · TOX·Pdcd1 enhancer·DNMT3A가 프로그램을 고정하는 방식 · 되돌리기의 현재 성적",
       [
         [
           "고장이 아니라 프로그램",
@@ -172,10 +171,8 @@ window.IMMUNOLOGY_EXECUTION = {
           ]
         ],
         [
-          "갈리는 두 지점",
+          "되돌리기의 현재 성적",
           [
-            "TOX가 driver인가 만성 자극 하 생존 인자인가 — 결손 세포는 15일 만에 소실되고 장기 손상은 악화",
-            "자가면역의 소진 유사 자가반응 T세포가 병을 일으키나 억제하나 — 질환·조직·CD4/CD8로 층화 필요",
             "되돌리기 성적 = 흑색종 약 20% · 전체 암종 12.5% · 병용 시 중증 이상반응 최대 53% · CAR-T 최대 75% 재발"
           ]
         ]
@@ -245,7 +242,7 @@ window.IMMUNOLOGY_EXECUTION = {
         "CD40L"
       ],
       "execution",
-      "암영역·명영역·Myc⁺ 양성선택의 세 극과 Tfh 도움이라는 통화 · 선택이 죽임인가 분열인가 · cytokine이 I-promoter로 허가하고 cohesin 고리가 두 S region을 맞붙이는 CSR centre · AID 표적화의 G4 의존 논쟁 · 출구 세 갈래",
+      "암영역·명영역·Myc⁺ 양성선택의 세 극과 Tfh 도움이라는 통화 · cytokine이 I-promoter로 허가하고 cohesin 고리가 두 S region을 맞붙이는 CSR centre · 출구 세 갈래",
       [
         [
           "세 극과 선택 단서",
@@ -258,30 +255,13 @@ window.IMMUNOLOGY_EXECUTION = {
           ]
         ],
         [
-          "선택의 성격이 갈린다",
-          [
-            "죽임 쪽 근거 — 명영역 B세포의 70~90%가 암영역 재진입에 실패",
-            "분열 쪽 근거 — caspase 리포터에서 죽는 분획에 저친화가 농축되지 않고 양성선택이 분열을 수배 늘린다",
-            "판단 — 상호배타적이지 않다고 보고, 배중심마다 지배 클론이 생기는 정도의 변수로 취급"
-          ]
-        ],
-        [
           "isotype 전환은 3차원 게놈에 내장",
           [
             "I-exon promoter의 germline transcript가 받을 isotype을 지정 — IL-4는 Iγ1·Iε, TGF-β는 Iα",
             "휴지기 B세포에서 cohesin이 iEμ-Sμ와 3′IghRR에 실려 AID 없이도 CSR centre를 만든다",
             "S region을 I-SceI 부위로 치환해도 전환이 일어나 — 붙이는 일은 일반 이중가닥 절단 수선이 맡는다",
             "FAM72A가 UNG2를 분해해 충실한 염기 절단 수선을 제한 · Ku70/80·ligase IV·XRCC4 결손에서 60~80% 감소",
-            "AID는 hot spot에서도 cytidine의 약 3%만 고친다 — 조밀한 병변 다발과의 조화는 미해결"
-          ]
-        ],
-        [
-          "AID와 G4를 둘러싼 논쟁",
-          [
-            "AID는 G4에 최대 10배 높은 친화도이고 G133V knock-in은 CSR·SHM을 모두 소실시킨다",
-            "그런데 AT가 풍부한 Xenopus Sμ로 치환해도 전환이 일어나고 G 풍부도만으로 변이 빈도가 예측되지 않는다",
-            "판단 — CSR centre 모델을 따르고 G4 예측 점수를 AID 표적의 단독 대리지표로 쓰지 않는다",
-            "03의 loop extrusion이 그대로 이 모델의 뼈대 — 같은 기구가 조립과 전환에 다르게 쓰인다"
+            "AID는 hot spot에서도 cytidine의 약 3%만 고친다"
           ]
         ],
         [
@@ -357,7 +337,7 @@ window.IMMUNOLOGY_EXECUTION = {
         "MHC multimer"
       ],
       "execution",
-      "순환 기억 T세포의 수명 정량(CD4 TEM 21일에서 CD8 TEMRA 36년 초과) · Klf2·S1pr1 차단으로 정의되는 거주 프로그램과 장기별 의존성 차이 · 사람 기억 B세포 세 갈래와 다양성을 지키는 다섯 경로 · 운명이 친화도인지 시점인지",
+      "순환 기억 T세포의 수명 정량(CD4 TEM 21일에서 CD8 TEMRA 36년 초과) · Klf2·S1pr1 차단으로 정의되는 거주 프로그램과 장기별 의존성 차이 · 사람 기억 B세포 세 갈래와 다양성을 지키는 다섯 경로",
       [
         [
           "수명은 분화 정도를 따른다",
@@ -394,8 +374,7 @@ window.IMMUNOLOGY_EXECUTION = {
           [
             "기억 B세포의 존재 이유는 변이 병원체 — 장수 plasma cell 항체는 동종, 기억은 변이체 결합을 담당",
             "다양성을 남기는 다섯 경로 = 배중심 섬의 독립 진화 · 일부만 클론 버스트 · epitope masking · 후기 naive 진입 · 자가반응 클론 구제",
-            "운명 일반칙은 고친화→plasma cell, 저친화→memory이지만 5~10% 클론은 세 운명을 모두 낸다",
-            "친화도 지시인가 시간 스위치인가는 갈려 있어 \"기억 = 저친화\" 도식은 쓰지 않는다"
+            "운명 일반칙은 고친화→plasma cell, 저친화→memory이지만 5~10% 클론은 세 운명을 모두 낸다"
           ]
         ],
         [
@@ -616,14 +595,6 @@ window.IMMUNOLOGY_EXECUTION = {
             "priming된 세포 중 Foxp3⁺가 성체 10~20%인데 이유기 mouse는 약 80%",
             "IgA 전환은 배중심 이전 사건 — 배중심 B세포 한정 Tgfbr2 결손은 영향이 없다",
             "대사산물이 통화 — SCFA는 GPR43·Foxp3 CNS1, 3-oxoLCA는 TH17 억제, isoalloLCA는 Treg 증강"
-          ]
-        ],
-        [
-          "갈리는 두 지점",
-          [
-            "장에서 말초 Treg를 유도하는 항원제시세포가 cDC인가 ILC3인가 Thetis cell인가 — TC IV로 재귀속하되 계통은 미결",
-            "장 IgA의 유도 부위가 Peyer's patch인가 장간막 림프절인가 · CD4 아집단은 각각 충분하지만 어느 것도 필수가 아니다",
-            "결손 실험의 무영향을 \"불필요\"로 번역하지 않는다"
           ]
         ],
         [
@@ -964,7 +935,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-t-cell-exhaustion",
               "소진 — 프로그램과 계층",
-              "네 형질과 잃는 순서 · Tpex에서 terminal까지의 계층과 배액림프절 저장고 · 억제수용체 다섯 · TOX와 DNMT3A의 고정 · 갈리는 두 지점",
+              "네 형질과 잃는 순서 · Tpex에서 terminal까지의 계층과 배액림프절 저장고 · 억제수용체 다섯 · TOX와 DNMT3A의 고정 · 되돌리기의 현재 성적",
               "읽기",
               ""
             ],
@@ -991,7 +962,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-germinal-center",
               "배중심과 isotype 전환",
-              "세 극과 Tfh 도움이라는 통화 · 죽임인가 분열인가 · cohesin 고리가 만드는 CSR centre · AID와 G4 논쟁 · 출구 세 갈래",
+              "세 극과 Tfh 도움이라는 통화 · cohesin 고리가 만드는 CSR centre · 출구 세 갈래",
               "읽기",
               ""
             ],
@@ -1044,7 +1015,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-barrier-immunity",
               "장벽면역 — 점막과 피부",
-              "피부 네 겹과 각질층 pH 층화 · 폐의 시점 의존 양면성 · 장의 분업과 Thetis cell TC IV · IgA의 시점과 대사산물 · 갈리는 두 지점",
+              "피부 네 겹과 각질층 pH 층화 · 폐의 시점 의존 양면성 · 장의 분업과 Thetis cell TC IV · IgA의 시점과 대사산물",
               "읽기",
               ""
             ],

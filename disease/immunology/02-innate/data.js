@@ -383,7 +383,7 @@ window.IMMUNOLOGY_INNATE = {
         "동맥경화"
       ],
       "innate",
-      "전용 기계형(apoptosis·necroptosis·pyroptosis)과 항상성 붕괴형(ferroptosis) 2축 · 막이 터지는지가 염증을 정한다 · GSDM·MLKL 뒤에 오는 NINJ1 최종 파열 · caspase-8 스위치와 경로 전환 · NCCD 기준으로 본 PANoptosis(contested)와 karyoptosis(preliminary) · 죽음의 나머지 절반인 efferocytosis",
+      "전용 기계형(apoptosis·necroptosis·pyroptosis)과 항상성 붕괴형(ferroptosis) 2축 · 막이 터지는지가 염증을 정한다 · GSDM·MLKL 뒤에 오는 NINJ1 최종 파열 · caspase-8 스위치와 경로 전환 · NCCD 기준으로 본 PANoptosis와 karyoptosis · 죽음의 나머지 절반인 efferocytosis",
       [
         [
           "한 장 지도 — 두 축으로 나뉜다",
@@ -421,8 +421,8 @@ window.IMMUNOLOGY_INNATE = {
           "이름이 늘어날 때의 판정 기준",
           [
             "NCCD 기준 — 형태가 아니라 기전적·필수적 요소로 정의한다",
-            "PANoptosis는 contested — 구분할 고유 마커가 없다",
-            "karyoptosis와 2025년 신규 4종은 preliminary — 독립 재현 전",
+            "PANoptosis — 구분할 고유 마커 없음",
+            "karyoptosis·2025년 신규 4종 — 독립 재현 전",
             "종특이성 — 사람과 마우스의 necroptosis 장치가 다르고, NECSO는 사람 TRPM4에만 작동"
           ]
         ],
@@ -713,7 +713,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-cell-death",
               "세포사 양식과 염증 — 무엇이 DAMP를 내보내나",
-              "전용 기계형과 항상성 붕괴형 2축 · 막이 터지는지가 염증을 정한다 · GSDM·MLKL 뒤의 NINJ1 최종 파열 · caspase-8 스위치 · NCCD 기준으로 본 PANoptosis(contested)·karyoptosis(preliminary) · efferocytosis와 necrotic core",
+              "전용 기계형과 항상성 붕괴형 2축 · 막이 터지는지가 염증을 정한다 · GSDM·MLKL 뒤의 NINJ1 최종 파열 · caspase-8 스위치 · NCCD 기준으로 본 PANoptosis·karyoptosis · efferocytosis와 necrotic core",
               "읽기",
               ""
             ]

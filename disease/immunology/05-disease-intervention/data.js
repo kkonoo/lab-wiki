@@ -80,14 +80,6 @@ window.IMMUNOLOGY_DISEASE = {
             "IgE⁺ plasma cell → BCL2L11(BIM) 의존 apoptosis · 항원 용량 비례 제거",
             "기억의 저장소 = IgE 세포가 아니라 IgG1⁺ type 2 memory B cell"
           ]
-        ],
-        [
-          "갈리는 지점",
-          [
-            "호산구성 식도염이 IgE 매개인가 — omalizumab 실패와 식품 특이 IgG4",
-            "IL-33이 2형 유도만 하는가, 염증 해소·조직 수복에도 쓰이는가",
-            "IgE⁺ germinal center B cell의 apoptosis와 IgG1 중간체의 필수성"
-          ]
         ]
       ],
       [
@@ -177,7 +169,7 @@ window.IMMUNOLOGY_DISEASE = {
           [
             "GAP(goblet cell 통로) — 모유 EGF 때문에 생후 약 10일까지 부재 → 이유기 형성 → 성체에서는 소장 융모에 국한",
             "임상 증거 — 땅콩 조기 노출의 성공 · 이유 지연 시 celiac 증가",
-            "항원의 도달 경로와 APC 정체는 합의 부재 · 사람에서 검증된 경로 없음"
+            "항원의 도달 경로와 그것을 받는 APC는 사람 장에서 미검증"
           ]
         ]
       ],
@@ -264,14 +256,6 @@ window.IMMUNOLOGY_DISEASE = {
             "저온·정상체온 기계관류와 senolytic = 공여 장기 자체를 다루는 축",
             "이종이식 — GGTA1·B4GALNT2·CMAH 결손 + 사람 조절 유전자 → 편집 수에 따른 계단식 생존 연장"
           ]
-        ],
-        [
-          "갈리는 지점",
-          [
-            "T세포 거부를 여는 것이 direct인가 semi-direct인가",
-            "이식에서 NK가 보호적인가 파괴적인가 — 시기 의존 양면성",
-            "항체매개 거부에서 보체를 겨눌 것인가 IL-6를 겨눌 것인가"
-          ]
         ]
       ],
       [
@@ -330,7 +314,7 @@ window.IMMUNOLOGY_DISEASE = {
         "narcolepsy"
       ],
       "disease",
-      "상용 백신의 방어 매개체와 잠복기·연령이 정하는 한계 · adjuvant가 고르는 선천 인식 경로와 관용성–CD8 기억의 상충 · mRNA-LNP의 핵산 화학과 cytokine wave · sensor 미규명과 reactogenicity 분리 논쟁",
+      "상용 백신의 방어 매개체와 잠복기·연령이 정하는 한계 · adjuvant가 고르는 선천 인식 경로와 관용성–CD8 기억의 상충 · mRNA-LNP의 핵산 화학과 cytokine wave",
       [
         [
           "무엇이 방어를 매개하나",
@@ -357,14 +341,6 @@ window.IMMUNOLOGY_DISEASE = {
             "사람 germinal center 6개월 초과 유지 · 3–6개월 사이 affinity maturation 심화",
             "CD8 — 2차 접종 6개월 뒤 검출 41–65%로 개인차 큼",
             "용량 천장 50 µg → 다가백신 제약 · 반복 접종 → spike 특이 IgG4 비율 상승 → ADCC·complement 기능 저하"
-          ]
-        ],
-        [
-          "갈리는 지점과 공백",
-          [
-            "mRNA-LNP를 감지하는 sensor의 정체 — MDA5 의존 대 MAVS 비의존",
-            "immunogenicity와 reactogenicity를 분리할 수 있는가 — 염증을 끄면 반응도 소실",
-            "백신 반응 변이의 사람 유전학 거의 공백 · 사람 reactogenicity 예측 동물 모델 부재"
           ]
         ]
       ],
@@ -472,14 +448,6 @@ window.IMMUNOLOGY_DISEASE = {
             "SIN 벡터 전환 이후 중대 이상반응 0건",
             "생리적 발현 조절 부재 = 구조적 한계 · RAG1/2에는 유전자 추가 부적합"
           ]
-        ],
-        [
-          "갈리는 지점",
-          [
-            "VEXAS에서 여성은 보호되는가, 낮은 침투로 미진단인가",
-            "변이 효과를 GoF/LoF 이진값으로 주석할 수 있는가",
-            "IEI는 얼마나 흔한가 — 1/1,000–5,000 대 1/500"
-          ]
         ]
       ],
       [
@@ -566,15 +534,6 @@ window.IMMUNOLOGY_DISEASE = {
             "fludarabine → Treg 고갈 · cyclophosphamide → 상대적 보존",
             "지속 반응에 지속 B세포 무형성 불필요"
           ]
-        ],
-        [
-          "갈리는 지점",
-          [
-            "CD19 CAR T가 더 잘 듣는 이유가 깊이인가 범위인가",
-            "자가항체 감소를 리셋 지표로 쓸 수 있는가 — 고갈 범위의 지표로 재배치",
-            "조직 B세포 침윤이 나쁜 예후인가 반응 예측 신호인가",
-            "바이오마커 기반 맞춤 재투여가 고정 스케줄보다 나은가"
-          ]
         ]
       ],
       [
@@ -629,7 +588,7 @@ window.IMMUNOLOGY_DISEASE = {
         "precision immunotherapy"
       ],
       "disease",
-      "면역 kinase 표적 지도와 선택성의 역설 · 사람 LoF 표현형이 예고하는 효능과 on-target 부작용 · 마우스 예측이 빗나간 자리 · 패혈증 immunotype 층화가 만든 치료 이득과 endotype 비수렴",
+      "면역 kinase 표적 지도와 선택성의 역설 · 사람 LoF 표현형이 예고하는 효능과 on-target 부작용 · 마우스 예측이 빗나간 자리 · 패혈증 immunotype 층화가 만든 치료 이득",
       [
         [
           "선택성 ≠ 언제나 미덕",
@@ -655,14 +614,6 @@ window.IMMUNOLOGY_DISEASE = {
             "숙주 반응 지식의 거의 전부가 입원 시점 단일 채혈에서 유래",
             "ferritin·mHLA-DR 기반 세 immunotype — 대식세포활성유사증후군 약 10% · 면역마비 약 30%",
             "IL-1Ra 43% 대 위약 10% · suPAR ≥6 ng/mL 등록 시험의 28일 악화 OR 0.36"
-          ]
-        ],
-        [
-          "갈리는 지점",
-          [
-            "JAK 억제제의 MACE·VTE·악성종양 위험 크기 — 신뢰구간과 대조군의 한계",
-            "부분 억제와 완전 억제 중 무엇이 최적인가",
-            "endotype 개수·경계 미수렴 — 2·3·4·5분류 병립"
           ]
         ]
       ],
@@ -997,7 +948,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-vaccine",
               "백신 — 무엇을 켜서 방어를 만드나",
-              "방어의 상관물과 잠복기·연령의 한계 · adjuvant가 고르는 선천 경로 · mRNA-LNP의 핵산 화학과 cytokine 물결 · 센서 미규명",
+              "방어의 상관물과 잠복기·연령의 한계 · adjuvant가 고르는 선천 경로 · mRNA-LNP의 핵산 화학과 cytokine 물결",
               "읽기",
               ""
             ],
@@ -1050,7 +1001,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-drug-targets",
               "표적과 층화",
-              "kinase 표적 지도와 선택성의 역설 · 사람 기능상실 표현형이 예고하는 효능과 부작용 · 패혈증 immunotype 층화와 endotype 비수렴",
+              "kinase 표적 지도와 선택성의 역설 · 사람 기능상실 표현형이 예고하는 효능과 부작용 · 패혈증 immunotype 층화",
               "읽기",
               ""
             ]
