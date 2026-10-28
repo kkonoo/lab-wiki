@@ -3,7 +3,7 @@ window.DISEASE = (function () {
     id: "sle",
     title: "Systemic Lupus Erythematosus (SLE)",
     domain: "Autoimmune",
-    updated: "2026-08-06"
+    updated: "2026-10-28"
   };
 
   /* ── 4 blocks ────────────────────────────────────────────────────────── */
@@ -86,7 +86,7 @@ window.DISEASE = (function () {
       lead: "진료 권고 · 새 치료제와 안전성 · 새 코호트와 데이터 · 새 분석 기법",
       questions: [
         { q: "진료 권고는 최근 어떻게 바뀌었는가?", note: "EULAR 2023 update — 조기 생물학적 제제·스테로이드 감량", article: "sle-guideline-change" },
-        { q: "새 치료제와 안전성 정보는 무엇인가?", note: "anifrolumab · voclosporin · belimumab 적응 확대", article: "sle-drug-update" },
+        { q: "새 치료제와 안전성 정보는 무엇인가?", note: "anifrolumab · voclosporin · belimumab 적응 확대 · obinutuzumab", article: "sle-drug-update" },
         { q: "새 코호트·오믹스 데이터는 무엇이 생겼는가?", note: "SLE 단일세포 eQTL 자원 · 다인종 코호트", article: "sle-new-data" },
         { q: "새로 쓸 수 있게 된 분석 기법은 무엇인가?", note: "sc-eQTL · 자극조건 eQTL · CAR-T 관찰", article: "sle-new-method" }
       ] }
@@ -1028,7 +1028,7 @@ window.DISEASE = (function () {
       summary: "SLE 오믹스는 대부분 PBMC 기반 — 신장 등 표적조직의 데이터가 부족해 혈액 지표가 장기 병태를 반영하는지 검증되지 않았다",
       facts: [
         ["주 검체", "PBMC — 접근 용이 · 대부분의 오믹스가 여기 기반", "Perez 2022", "2022", false],
-        ["표적조직", "신장 · 피부 — 생검 의존 · 데이터 희소", "—", "", false],
+        ["표적조직", "신장 · 피부 — 생검 의존 · 신장은 LN biopsy 156건 단일세포 코호트(AMP) 확보 · 혈액과의 짝지음 자료는 희소", "Al Souz 2026 · Raparia 2026", "2026", false],
         ["조직 eQTL", "표적조직·자극조건 특이 유전 효과는 초기 단계", "Nishide & Kumanogoh 2024", "2024", true],
         ["일치도 추정치", "확인 필요 — 체계적 비교 연구 부족", "—", "", true]
       ],
@@ -1125,12 +1125,13 @@ window.DISEASE = (function () {
     {
       id: "sle-drug-update", section: "now",
       title: "새 치료제와 안전성 정보는 무엇인가?",
-      aliases: ["anifrolumab", "voclosporin", "belimumab", "CAR-T", "신약"],
-      summary: "type I IFN 수용체를 겨냥한 anifrolumab과 루푸스 신염용 voclosporin의 등장이 60년 신약 빈곤의 실질적 전환점 — 기전 기반 치료가 처음으로 임상에 들어온 사례",
+      aliases: ["anifrolumab", "voclosporin", "belimumab", "obinutuzumab", "REGENCY", "CAR-T", "신약"],
+      summary: "type I IFN 수용체를 겨냥한 anifrolumab과 루푸스 신염용 voclosporin의 등장이 60년 신약 빈곤의 실질적 전환점 — 기전 기반 치료가 처음으로 임상에 들어온 사례 · 2025년 obinutuzumab의 루푸스 신염 승인으로 B세포 고갈 축 추가",
       facts: [
         ["anifrolumab", "type I IFN 수용체 표적 — 신장 외 SLE", "EULAR 2023", "2023", false],
         ["voclosporin", "칼시뉴린 억제제 — 루푸스 신염 병용", "EULAR 2023", "2023", false],
         ["belimumab", "BAFF 표적 — 신장 외 SLE 및 루푸스 신염 병용", "EULAR 2023", "2023", false],
+        ["obinutuzumab", "type 2 anti-CD20 — 활동성 루푸스 신염 표준치료 병용 · FDA 승인 2025-10 · 76주 완전 신반응 46.4% vs 33.1%(REGENCY)", "Furie 2025, N Engl J Med · FDA", "2025", false],
         ["기전적 의미", "IFN 축을 직접 겨냥한 첫 승인 계열", "—", "", true],
         ["안전성 공통 이슈", "감염 — 면역억제 계열 전반", "—", "", true],
         ["CAR-T", "B세포 표적 세포치료 — 초기 관찰 단계", "—", "", true],
@@ -1140,7 +1141,8 @@ window.DISEASE = (function () {
         ["기전 기반 치료의 진입", [
           "anifrolumab — type I IFN 수용체를 겨냥 · SLE의 대표 hallmark를 직접 표적한 첫 계열",
           "belimumab — BAFF 표적으로 B세포 생존을 억제 · 신장 외 SLE와 루푸스 신염 병용 양쪽에서 근거",
-          "voclosporin — 루푸스 신염 병용에서 반응률 상승"
+          "voclosporin — 루푸스 신염 병용에서 반응률 상승",
+          "obinutuzumab — type 2 anti-CD20 · MMF·glucocorticoid 표준치료 병용 시 완전 신반응 상승 → 2025년 FDA 루푸스 신염 승인 · rituximab 무작위 시험 실패와 대비되는 더 깊은 B세포 고갈 축"
         ]],
         ["남은 문제", [
           "어떤 환자에게 IFN 표적이 들을지 고를 지표가 없음 — 표적은 생겼는데 대상이 없음",
@@ -1155,28 +1157,32 @@ window.DISEASE = (function () {
       ],
       related: ["sle-guideline-change", "sle-unmet", "sle-response-variability"],
       papers: [["EULAR 2023 update, Ann Rheum Dis", "https://doi.org/10.1136/ard-2023-224762"],
-               ["Kaul 2016, Nat Rev Dis Primers", "https://doi.org/10.1038/nrdp.2016.39"]]
+               ["Kaul 2016, Nat Rev Dis Primers", "https://doi.org/10.1038/nrdp.2016.39"],
+               ["Furie 2025, N Engl J Med (REGENCY)", "https://doi.org/10.1056/NEJMoa2410965"],
+               ["Fu 2026, Nat Rev Drug Discov", "https://doi.org/10.1038/s41573-026-01534-z"]]
     },
     {
       id: "sle-new-data", section: "now",
       title: "새 코호트·오믹스 데이터는 무엇이 생겼는가?",
-      aliases: ["cohort", "sc-eQTL", "atlas", "새 데이터", "다인종"],
-      summary: "SLE 환자 PBMC의 다인종 단일세포 eQTL 자원이 공개되어 참조 기준으로 활용 가능 — 표적조직과 국내 코호트가 남은 공백",
+      aliases: ["cohort", "sc-eQTL", "atlas", "새 데이터", "다인종", "AMP", "kidney biopsy", "lupus nephritis"],
+      summary: "SLE 환자 PBMC의 다인종 단일세포 eQTL 자원 + 루푸스 신염 신장 biopsy 156건의 단일세포 코호트(AMP) → 혈액과 표적조직 양쪽에 참조 자원 · 조직–혈액 짝지음과 국내 코호트가 남은 공백",
       facts: [
         ["sc-eQTL 자원", "SLE 환자 PBMC 8개 세포유형 cis-eQTL", "Perez 2022, Science", "2022", false],
         ["다인종 포함", "유럽계·아시아계 등 복수 ancestry 포함 설계", "Perez 2022", "2022", true],
         ["전 세계 역학", "체계적 분석·모델링 연구로 국가별 추정치 제공", "Ann Rheum Dis", "2023", false],
-        ["표적조직 데이터", "신장 등 — 여전히 희소", "—", "", false],
+        ["루푸스 신염 신장 biopsy 단일세포", "LN 156건 + healthy donor 30건 scRNA-seq(AMP) · T/NK 34,736세포 · stromal 16,187세포", "Al Souz 2026, Immunity · Raparia 2026, Ann Rheum Dis", "2026", false],
+        ["표적조직 데이터", "신장 단일세포 코호트 확보 · 피부·신경계와 혈액 짝지음 자료는 희소", "—", "", false],
         ["국내 코호트", "확인 필요 — 가용 한국인 SLE 코호트·바이오뱅크 현황", "—", "", true]
       ],
       body: [
         ["참조로 쓸 수 있게 된 것", [
           "SLE 환자 PBMC의 세포유형별 eQTL — colocalization 분석의 상대 데이터로 직접 활용 가능",
           "IFN 자극 조건의 interaction eQTL — 맥락 의존 효과 검정의 참조",
-          "전 세계 역학 모델링 연구 — 국가별 유병·발생 추정치의 기준선"
+          "전 세계 역학 모델링 연구 — 국가별 유병·발생 추정치의 기준선",
+          "루푸스 신염 신장 biopsy 단일세포 코호트 — CD8 T세포 상태 조성과 stromal(myofibroblast) 조성이 histologic chronicity index와 연관"
         ]],
         ["아직 부족한 것", [
-          "신장 등 표적조직의 단일세포·eQTL 데이터",
+          "신장 조직의 eQTL 데이터 · 신장 외 표적조직의 단일세포 데이터",
           "조직·혈액 paired 검체 — 공개 자원이 매우 드묾",
           "동아시아 기반 대규모 SLE 오믹스 코호트"
         ]],
@@ -1187,7 +1193,9 @@ window.DISEASE = (function () {
         ]]
       ],
       related: ["sle-new-method", "sle-ancestry", "sle-tissue-blood"],
-      papers: [["Perez 2022, Science", "https://doi.org/10.1126/science.abf1970"]]
+      papers: [["Perez 2022, Science", "https://doi.org/10.1126/science.abf1970"],
+               ["Al Souz 2026, Immunity", "https://doi.org/10.1016/j.immuni.2026.03.022"],
+               ["Raparia 2026, Ann Rheum Dis", "https://doi.org/10.1016/j.ard.2026.07.014"]]
     },
     {
       id: "sle-new-method", section: "now",
@@ -1199,7 +1207,7 @@ window.DISEASE = (function () {
         ["interaction eQTL", "IFN 자극 조건에서만 나타나는 유전 효과 검출", "Perez 2022", "2022", false],
         ["colocalization", "GWAS 신호와 QTL 신호의 인과변이 공유 검정", "—", "", false],
         ["구조 변이 분석", "C4 등 copy number를 SNP 배열에서 추정하는 접근", "Kamitaki 2020", "2020", true],
-        ["공간전사체", "신장 조직에의 적용 — 확인 필요", "—", "", true]
+        ["공간전사체", "루푸스 신염 biopsy Xenium(LN 6 · 정상 2) — myofibroblast 아형과 macrophage의 인접 niche 지도화 · 소표본 단계", "Raparia 2026, Ann Rheum Dis", "2026", false]
       ],
       body: [
         ["맥락 의존 효과의 측정", [
@@ -1220,7 +1228,8 @@ window.DISEASE = (function () {
       ],
       related: ["sle-new-data", "sle-variant-celltype", "sle-singlecell"],
       papers: [["Perez 2022, Science", "https://doi.org/10.1126/science.abf1970"],
-               ["Kamitaki 2020, Nature", "https://doi.org/10.1038/s41586-020-2277-x"]]
+               ["Kamitaki 2020, Nature", "https://doi.org/10.1038/s41586-020-2277-x"],
+               ["Raparia 2026, Ann Rheum Dis", "https://doi.org/10.1016/j.ard.2026.07.014"]]
     }
   ];
 

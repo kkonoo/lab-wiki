@@ -3,7 +3,7 @@ window.DISEASE = (function () {
     id: "ra",
     title: "Rheumatoid Arthritis (RA)",
     domain: "Autoimmune",
-    updated: "2026-08-05"
+    updated: "2026-10-28"
   };
 
 
@@ -337,7 +337,7 @@ window.DISEASE = (function () {
         ["최대 환경 위험인자", "흡연 (seropositive RA)", "리뷰 합의", "", false],
         ["구강", "치주염 · P. gingivalis 등 구강 미생물", "Holers 2018", "2018", true],
         ["대사", "비만 — 위험 상승 보고 · 효과 크기는 연구별 편차", "코호트 연구", "", true],
-        ["호르몬", "여성 호르몬 · 출산력 — 위험과 발병 시점 조절", "리뷰", "", true],
+        ["호르몬", "여성 호르몬 · 출산력 — 위험과 발병 시점 조절 · 짧은 생식기간·조기 폐경 → 발병 위험 증가", "Volkmann 2026, Nat Rev Rheumatol", "2026", false],
         ["직업·환경 노출", "실리카 등 흡입성 분진 — 폐 점막 경로 시사", "리뷰", "", true]
       ],
       body: [
@@ -360,7 +360,8 @@ window.DISEASE = (function () {
       ],
       related: ["ra-genetics", "ra-mucosal-origin", "ra-protective-triggers"],
       papers: [["McInnes & Schett 2011, N Engl J Med", "https://doi.org/10.1056/NEJMra1004965"],
-               ["Holers 2018, Nat Rev Rheumatol", "https://doi.org/10.1038/s41584-018-0070-0"]]
+               ["Holers 2018, Nat Rev Rheumatol", "https://doi.org/10.1038/s41584-018-0070-0"],
+               ["Volkmann 2026, Nat Rev Rheumatol", "https://doi.org/10.1038/s41584-026-01405-2"]]
     },
     {
       id: "ra-genetics", section: "risk",

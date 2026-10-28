@@ -1,5 +1,5 @@
 window.DISEASE = (function () {
-  const meta = { id:"pd", title: "Parkinson's Disease (PD)", domain: "Neuro" };
+  const meta = { id:"pd", title: "Parkinson's Disease (PD)", domain: "Neuro", updated: "2026-10-28" };
   const acts = [
     { id:"A", num:"01", en:"DEFINITION · EPIDEMIOLOGY", title:"무엇인가", accent:"#6f3a55", blurb:"임상·병리 정의 · 아형·증상 스펙트럼 · 세계와 한국의 규모 · 질병부담", sections:["def","epi"] },
     { id:"B", num:"02", en:"RISK · COURSE", title:"왜·어떻게", accent:"#315d78", blurb:"희귀·흔한 유전위험 · 환경·보호요인 · 전구기 · α-synuclein·회로·인지 진행", sections:["risk","course"] },
@@ -70,6 +70,8 @@ window.DISEASE = (function () {
     nalls:["Nalls et al. 2019, Lancet Neurol 18:1091–1102","https://doi.org/10.1016/S1474-4422(19)30320-5"],
     kim:["Kim et al. 2024, Nat Genet 56:27–36","https://doi.org/10.1038/s41588-023-01584-8"],
     akcimen:["Akçimen et al. 2026, Brain 149:awaf379","https://doi.org/10.1093/brain/awaf379"],
+    lange:["Lange et al. 2026, Lancet Neurol","https://doi.org/10.1016/S1474-4422(26)00198-5"],
+    holley:["Holley et al. 2026, Nature","https://doi.org/10.1038/s41586-026-10924-7"],
     aan:["Pringsheim et al. 2021, Neurology 97:942–957","https://doi.org/10.1212/WNL.0000000000012868"],
     elldopa:["Fahn et al. 2004, N Engl J Med 351:2498–2508","https://doi.org/10.1056/NEJMoa033447"],
     dbs:["Deuschl et al. 2006, N Engl J Med 355:896–908","https://doi.org/10.1056/NEJMoa060281"],
@@ -124,9 +126,9 @@ window.DISEASE = (function () {
       facts:[["운동","낮은 PD 위험과 관찰연관","Poewe et al.","2017",false],["카페인","낮은 PD 위험과 관찰연관","Poewe et al.","2017",false]],
       body:[["관찰 신호",["운동·카페인·높은 urate·흡연과 낮은 진단위험의 연관","농약·용제·두부손상과 높은 위험의 연관","prodromal 행동변화에 의한 역인과 가능성"]],["권고 경계",["흡연의 전신 위해 → 보호목적 권고 불가","카페인·urate의 치료효과 미확립","운동 — 전신건강·기능 유지의 별도 근거"]]], related:["ckd-riskfactors","ckd-prodromal","ckd-standard-tx"], papers:[P.poewe] },
     { id: "ckd-ancestry-risk", section:"risk", title:"ancestry에 따라 위험변이 스펙트럼은 어떻게 다른가?", aliases:["ancestry","cross-ancestry","African","GBA1","LRRK2"],
-      summary:"유럽계 90 signal·다인종 78 loci·African/African admixed 희귀변이의 서로 다른 설계 — 숫자 직접 비교 금지",
-      facts:[["다인종 GWAS","49,049 cases + 18,785 proxies + 2.46M controls","Kim et al.","2024",false],["다인종 loci","78 loci · 신규 후보 12개","Kim et al.","2024",false],["African 연구","710 cases + 11,827 controls","Akçimen et al.","2026",false],["African/African admixed GBA1 carrier","cases 4%","Akçimen et al.","2026",false]],
-      body:[["집단별 관찰",["African 표본에서 유럽·Ashkenazi 대표 GBA1 변이 미검출","유럽·아시아 대표 LRRK2 변이 미검출","ancestry별 빈도·LD·variant spectrum의 차이"]],["혼용 금지",["90 signal ≠ 78 locus — 단위·표본·LD·설계 차이","부재 관찰 ≠ 집단 전체의 절대 부재","singletons 중심 결과의 replication 필요"]]], related:["ckd-genetics","ckd-gwas","ckd-rare-variants"], papers:[P.nalls,P.kim,P.akcimen] },
+      summary:"기여 유전자는 공유 · 빈도와 변이 스펙트럼은 ancestry마다 다름(GP2 11개 ancestry 99,783명) — 유럽계 90 signal·다인종 78 loci·African 희귀변이는 설계가 달라 숫자 직접 비교 금지",
+      facts:[["다인종 GWAS","49,049 cases + 18,785 proxies + 2.46M controls","Kim et al.","2024",false],["다인종 loci","78 loci · 신규 후보 12개","Kim et al.","2024",false],["African 연구","710 cases + 11,827 controls","Akçimen et al.","2026",false],["African/African admixed GBA1 carrier","cases 4%","Akçimen et al.","2026",false],["GP2 다인종 표본","99,783명 · 11개 ancestry · PD 58,559 / control 41,224","Lange et al.","2026",false],["원인 변이 보유(PD)","전체 2.1% · African 0.4% ↔ Ashkenazi Jewish 10.7%","Lange et al.","2026",false],["GBA1 위험 변이 보유(PD)","east Asian 4.1% ↔ African 52.9% · African 대조군 37.6%","Lange et al.","2026",false],["LRRK2 위험 변이 p.R1628P·p.G2385R","east Asian PD 12.6%","Lange et al.","2026",false]],
+      body:[["집단별 관찰",["African 표본에서 유럽·Ashkenazi 대표 GBA1 변이 미검출","유럽·아시아 대표 LRRK2 변이 미검출","ancestry별 빈도·LD·variant spectrum의 차이"]],["GP2 다인종 분포",["GBA1 위험 변이 — 11개 ancestry 전부에서 검출 · 대표 변이는 집단마다 다름(Ashkenazi p.N409S · east Asian p.L483P 우세)","LRRK2 원인 변이 — Ashkenazi Jewish·Middle Eastern·European에 집중(p.G2019S 중심) · 위험 변이는 east Asian에 집중","PRKN biallelic — Ashkenazi 제외 전 ancestry · Asian 계열에서 causal LRRK2보다 흔함"]],["혼용 금지",["90 signal ≠ 78 locus — 단위·표본·LD·설계 차이","African GBA1 52.9%(Lange) ≠ 4%(Akçimen) — 전자는 intronic rs3115534-G 같은 고빈도·저효과 위험 allele 포함 · 대조군에서도 흔함 → 진단적 변이로 읽기 금지","부재 관찰 ≠ 집단 전체의 절대 부재","singletons 중심 결과의 replication 필요"]]], related:["ckd-genetics","ckd-gwas","ckd-rare-variants"], papers:[P.nalls,P.kim,P.akcimen,P.lange] },
     { id: "ckd-prodromal", section:"course", title:"운동증상 전에는 어떤 변화가 일어나는가?", aliases:["prodromal PD","RBD","hyposmia","constipation","autonomic"],
       summary:"후각저하·REM수면행동장애·변비·자율신경·기분 변화가 운동진단 전 수년간 축적되는 전구기",
       facts:[["MDS prodromal criteria","Bayesian probability framework","Berg et al.","2015/2019",false],["운동진단 핵심","bradykinesia + tremor 또는 rigidity","MDS criteria","2015",false]],
@@ -207,14 +209,14 @@ window.DISEASE = (function () {
       summary:"lixisenatide phase 2 motor signal·위장관 독성 · prasinezumab PASADENA/PADOVA 일차종점 미충족 · exenatide 논문 우려표시",
       facts:[["lixisenatide 효과차","MDS-UPDRS III 3.08점 (95% CI 0.86–5.30)","Meissner et al.","2024",false],["prasinezumab PASADENA","primary endpoint 미충족","Pagano et al.","2022",false],["exenatide phase 3","Lancet Expression of Concern","Lancet editors","2026",false]],
       body:[["효과 신호",["GLP-1 class의 약제별 불일치","anti-α-syn antibody의 exploratory subgroup 신호","class effect·disease modification 확정 금지"]],["안전성·무결성",["lixisenatide nausea 46%·vomiting 13%","prasinezumab infusion reaction 19–34%","Expression of Concern 논문을 확정 근거에서 제외"]]], related:["ckd-unmet","ckd-response-safety","ckd-guideline-change"], papers:[P.lixisenatide,P.prasinezumab], links:[["Lancet exenatide Expression of Concern","https://doi.org/10.1016/S0140-6736(26)01241-9"]] },
-    { id: "ckd-new-data", section:"now", title:"새 코호트·오믹스 데이터는 무엇이 생겼는가?", aliases:["cohort","multi-ancestry GWAS","African genetics","BRIDGE","PPMI"],
-      summary:"2.46M controls의 multi-ancestry GWAS·African/African admixed rare-variant study·한국 BRIDGE·PD cohort 인프라",
-      facts:[["다인종 총 대조","2.46 million","Kim et al.","2024",false],["African/African admixed","710 cases + 11,827 controls","Akçimen et al.","2026",false],["한국 인프라","BRIDGE·PD cohort 구축","KDCA","2025",false]],
-      body:[["확장 방향",["European 중심 common-variant에서 multi-ancestry로 확장","SNV/indel에서 CNV·STR로 확장","임상 cohort와 biobank·omics의 연결"]],["사용 조건",["phenotype·ancestry·platform metadata의 정렬","summary statistics와 개인수준 자료의 접근 차이","한국 cohort의 공개범위·추적기간·multi-omics 규모 확인 필요"]]], related:["ckd-ancestry-risk","ckd-rare-variants","ckd-multiomics"], papers:[P.kim,P.akcimen], links:[["KDCA 파킨슨병 현황 2025","https://www.kdca.go.kr/bbs/kdca/42/240708/download.do"]] },
-    { id: "ckd-new-method", section:"now", title:"새로 쓸 수 있게 된 분석 기법은 무엇인가?", aliases:["SAA","long-read","joint calling","single-cell QTL","spatial"],
-      summary:"α-syn SAA·cross-ancestry fine-mapping·long-read·joint calling·single-cell QTL·spatial의 결합",
-      facts:[["SAA 기반 분류","NSD-ISS·SynNeurGe","Lancet Neurology","2024",false],["fine-mapped causal variant","6개","Kim et al.","2024",false],["African 분석 미수행","joint calling·burden test","Akçimen et al.","2026",false]],
-      body:[["방법 사다리",["SAA → 병리 anchor·시험대상 층화","fine-mapping·QTL → locus-to-gene","long-read·joint calling → CNV·STR·rare variant 해상도"]],["검증 우선순위",["single-cell·spatial → 작동세포·조직 위치","ancestry-matched reference·replication","assay 표준화·임상 유용성·비용효과의 독립 검증"]]], related:["ckd-tests","ckd-rare-variants","ckd-multiomics"], papers:[P.nsd,P.synneur,P.kim,P.akcimen] }
+    { id: "ckd-new-data", section:"now", title:"새 코호트·오믹스 데이터는 무엇이 생겼는가?", aliases:["cohort","multi-ancestry GWAS","African genetics","BRIDGE","PPMI","GP2"],
+      summary:"2.46M controls의 multi-ancestry GWAS·GP2 11개 ancestry 99,783명 변이 보유 지도·African/African admixed rare-variant study·한국 BRIDGE·PD cohort 인프라",
+      facts:[["다인종 총 대조","2.46 million","Kim et al.","2024",false],["GP2 release 11","99,783명 · 11개 ancestry · 비European·비Ashkenazi 29.1%","Lange et al.","2026",false],["African/African admixed","710 cases + 11,827 controls","Akçimen et al.","2026",false],["한국 인프라","BRIDGE·PD cohort 구축","KDCA","2025",false]],
+      body:[["확장 방향",["European 중심 common-variant에서 multi-ancestry로 확장","SNV/indel에서 CNV·STR로 확장","임상 cohort와 biobank·omics의 연결"]],["GP2 다인종 변이 지도",["원인 변이 보유 PD 2.1% vs control 0.3% · 원인+위험 합산 PD 13.6% vs control 8.9%","ancestry별 원인 변이 수율 약 27배 차이(African 0.4% ↔ Ashkenazi Jewish 10.7%) → European 유래 변이 패널의 비European 포착력 제한","GBA1·LRRK2·PRKN 유전형 표적 시험 site의 유럽·북미 편중 → 모집 대상 변이 빈도와 불일치"]],["사용 조건",["phenotype·ancestry·platform metadata의 정렬","summary statistics와 개인수준 자료의 접근 차이","한국 cohort의 공개범위·추적기간·multi-omics 규모 확인 필요"]]], related:["ckd-ancestry-risk","ckd-rare-variants","ckd-multiomics"], papers:[P.kim,P.lange,P.akcimen], links:[["KDCA 파킨슨병 현황 2025","https://www.kdca.go.kr/bbs/kdca/42/240708/download.do"]] },
+    { id: "ckd-new-method", section:"now", title:"새로 쓸 수 있게 된 분석 기법은 무엇인가?", aliases:["SAA","long-read","joint calling","single-cell QTL","spatial","pangenome","reference bias"],
+      summary:"α-syn SAA·cross-ancestry fine-mapping·long-read·joint calling·pangenome 재매핑·single-cell QTL·spatial의 결합",
+      facts:[["SAA 기반 분류","NSD-ISS·SynNeurGe","Lancet Neurology","2024",false],["fine-mapped causal variant","6개","Kim et al.","2024",false],["African 분석 미수행","joint calling·burden test","Akçimen et al.","2026",false],["pangenome 재매핑으로 회복한 GBA1 변이","p.Leu483Pro · PD OR 2.55 · 60세 미만 발병 PD OR 7.33 · UK Biobank 재현 OR 4.91","Holley et al.","2026",false]],
+      body:[["방법 사다리",["SAA → 병리 anchor·시험대상 층화","fine-mapping·QTL → locus-to-gene","long-read·joint calling → CNV·STR·rare variant 해상도"]],["reference bias 보정",["GBA1 coding 서열 — GBAP1 pseudogene과 96% 동일 → short-read·linear reference에서 체계적 누락","pangenome graph reference + 재매핑 → 기존 callset·gnomAD에서 빠진 GBA1 p.Leu483Pro 호출","해당 영역만 targeted remapping → 기존 biobank 자료에서도 회복 가능(UK Biobank 429,193명)"]],["검증 우선순위",["single-cell·spatial → 작동세포·조직 위치","ancestry-matched reference·replication","assay 표준화·임상 유용성·비용효과의 독립 검증"]]], related:["ckd-tests","ckd-rare-variants","ckd-multiomics"], papers:[P.nsd,P.synneur,P.kim,P.akcimen,P.holley] }
   ];
 
   const glossaryTerms = {

@@ -20,6 +20,10 @@
       <a href="../multi-omics/index.html">Multi-omics</a>
       <a href="../disease/index.html">Diseases</a>
     </nav>
+    <form class="top-search" id="topSearchForm" role="search" action="../index.html">
+      <input id="topSearch" name="q" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+      <span class="keycap">/</span>
+    </form>
   </div>
 </header><section class="hub-hero">
   <div class="container">
@@ -33,4 +37,5 @@
 <a class="primary" href="./proteomics/index.html"><small>MODALITY</small><h2>Proteomics</h2><p>Measurement platforms · MS-based · Affinity-based · Analysis</p><span class="route">Proteomics 살펴보기 →</span></a>
 <a class="primary" href="./metabolomics/index.html"><small>MODALITY</small><h2>Metabolomics</h2><p>NMR · MS · Feature table · Annotation · Pathway interpretation</p><span class="route">Metabolomics 살펴보기 →</span></a>
 <a class="primary" href="./metagenomics/index.html"><small>MODALITY</small><h2>Metagenomics</h2><p>Measurement · Taxonomic/Functional Profiling · Diversity · Tools</p><span class="route">Metagenomics 살펴보기 →</span></a>
-</main><footer><div class="container"><span>Updated 2026-06-24</span></div></footer></body></html>
+</main><footer><div class="container"><span>Updated 2026-06-24</span></div></footer><script>document.addEventListener("keydown",function(e){if(e.key==="/"&&document.activeElement.tagName!=="INPUT"){e.preventDefault();document.getElementById("topSearch").focus();}});</script>
+</body></html>

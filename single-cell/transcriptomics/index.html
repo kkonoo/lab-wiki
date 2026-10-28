@@ -167,9 +167,9 @@
         ["Visualization",["UMAP/t-SNE는 neighborhood를 2D로 표현","2D distance와 cluster boundary를 정량적 증거로 과해석하지 않음","Resolution parameter와 feature choice에 따라 cluster 수가 달라짐"]]],
        ["normalization-hvg","batch-integration","cell-type-annotation"]],
 
-      ["cell-type-annotation","Cell-type annotation",["cell annotation","marker genes","reference mapping","SingleR","CellTypist"],"core",
+      ["cell-type-annotation","Cell-type annotation",["cell annotation","marker genes","reference mapping","SingleR","CellTypist","Tabula Sapiens"],"core",
        "Cluster 또는 cell의 expression pattern을 marker와 reference atlas에 비교해 biological label을 부여",
-       [["접근",["Canonical marker의 조합과 negative marker를 수동 확인","SingleR·CellTypist·scANVI 등 reference-based classifier 사용","Reference mapping과 cluster-level inspection을 함께 수행"]],
+       [["접근",["Canonical marker의 조합과 negative marker를 수동 확인","SingleR·CellTypist·scANVI 등 reference-based classifier 사용","Reference mapping과 cluster-level inspection을 함께 수행","다장기 reference 예: Tabula Sapiens 2.0 — 28개 조직 · 24 donor · 약 1.1M cells, Cell Ontology 기반 fine 182 → broad 38 cell type 2단 label(Tabula Sapiens Consortium 2026)"]],
         ["검증",["한 개 marker가 아닌 여러 gene program으로 판단","Doublet·low-quality cluster를 cell type으로 오인하지 않음","Unknown 또는 intermediate state를 억지로 기존 label에 넣지 않음"]]],
        ["reduction-clustering","ambient-doublets","donor-replicate"]],
 
@@ -489,7 +489,8 @@
   "cell-type-annotation": [
     ["Aran et al., 2019, Nat Immunol", "https://doi.org/10.1038/s41590-018-0276-y"],
     ["Domínguez Conde et al., 2022, Science", "https://doi.org/10.1126/science.abl5197"],
-    ["Abdelaal et al., 2019, Genome Biol", "https://doi.org/10.1186/s13059-019-1795-z"]
+    ["Abdelaal et al., 2019, Genome Biol", "https://doi.org/10.1186/s13059-019-1795-z"],
+    ["Tabula Sapiens Consortium, 2026, Cell", "https://doi.org/10.1016/j.cell.2026.08.010"]
   ],
   "donor-replicate": [
     ["Squair et al., 2021, Nat Commun", "https://doi.org/10.1038/s41467-021-25960-2"]

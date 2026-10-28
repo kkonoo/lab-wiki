@@ -524,7 +524,10 @@
     "aliases": [
       "ancestry",
       "population structure",
-      "population stratification"
+      "population stratification",
+      "local ancestry",
+      "admixture",
+      "Tractor"
     ],
     "section": "genetics",
     "summary": "Shared genetic history에서 생기는 population-level genetic structure",
@@ -550,7 +553,8 @@
         [
           "PCA로 major ancestry axes를 요약해 covariate로 사용",
           "Closely related sample과 population outlier를 QC 단계에서 확인",
-          "Mixed model 또는 stratified analysis로 residual structure를 조정"
+          "Mixed model 또는 stratified analysis로 residual structure를 조정",
+          "Admixed sample: local ancestry inference(RFMix 등) → ancestry background별 dosage 분할 → ancestry-specific effect 추정(Tractor; 친족 포함 코호트는 GLMM 확장 Tractor-Mix)"
         ]
       ]
     ],
@@ -607,7 +611,9 @@
     "aliases": [
       "imputation",
       "genotype imputation",
-      "imputation quality"
+      "imputation quality",
+      "low-pass WGS",
+      "GLIMPSE"
     ],
     "section": "genetics",
     "summary": "Observed genotype와 reference haplotype을 이용해 untyped variant를 추정하는 과정",
@@ -617,7 +623,8 @@
         [
           "Pre-phasing: sample genotype의 haplotype phase 추정",
           "Reference panel matching: observed haplotype과 유사한 reference segment 탐색",
-          "Imputation: untyped variant의 genotype probability 또는 dosage 계산"
+          "Imputation: untyped variant의 genotype probability 또는 dosage 계산",
+          "Low-pass WGS 입력: read의 genotype likelihood에서 바로 phasing·imputation(GLIMPSE) — individual-level reference haplotype 필요 → summary 접근만 주는 imputation server 대신 공개 panel 직접 사용"
         ]
       ],
       [
@@ -1202,7 +1209,9 @@
       "genetic correlation",
       "rg",
       "LD score regression",
-      "LDSC"
+      "LDSC",
+      "genomic SEM",
+      "genetic factor analysis"
     ],
     "section": "postgwas",
     "summary": "두 trait의 genetic effect가 genome-wide하게 공유되는 정도",
@@ -1228,7 +1237,8 @@
         [
           "Ancestry와 phenotype definition을 맞춰 비교",
           "Low heritability trait에서는 estimate가 불안정",
-          "Genome-wide sharing이 특정 locus 또는 mechanism 공유를 보장하지 않음"
+          "Genome-wide sharing이 특정 locus 또는 mechanism 공유를 보장하지 않음",
+          "Pairwise rg = 형질 쌍 단위 요약 → 여러 형질에 걸친 공유 성분은 multi-trait factor 분석(genomic SEM · genetic factor analysis)으로 분해"
         ]
       ]
     ],
@@ -1752,7 +1762,8 @@
   ],
   "ancestry": [
     ["Price et al., 2006, Nat Genet", "https://doi.org/10.1038/ng1847"],
-    ["Gurdasani et al., 2019, Nat Rev Genet", "https://doi.org/10.1038/s41576-019-0144-0"]
+    ["Gurdasani et al., 2019, Nat Rev Genet", "https://doi.org/10.1038/s41576-019-0144-0"],
+    ["Tan et al., 2026, Nat Genet", "https://doi.org/10.1038/s41588-026-02689-6"]
   ],
   "genotyping": [
     ["DePristo et al., 2011, Nat Genet", "https://doi.org/10.1038/ng.806"],
@@ -1760,7 +1771,8 @@
   ],
   "imputation": [
     ["Das et al., 2016, Nat Genet", "https://doi.org/10.1038/ng.3656"],
-    ["McCarthy et al., 2016, Nat Genet", "https://doi.org/10.1038/ng.3643"]
+    ["McCarthy et al., 2016, Nat Genet", "https://doi.org/10.1038/ng.3643"],
+    ["Rubinacci et al., 2021, Nat Genet", "https://doi.org/10.1038/s41588-020-00756-0"]
   ],
   "ld": [
     ["International HapMap Consortium, 2005, Nature", "https://doi.org/10.1038/nature04226"]
@@ -1830,7 +1842,8 @@
   ],
   "genetic-correlation": [
     ["van Rheenen et al., 2019, Nat Rev Genet", "https://doi.org/10.1038/s41576-019-0137-z"],
-    ["Bulik-Sullivan et al., 2015, Nat Genet", "https://doi.org/10.1038/ng.3211"]
+    ["Bulik-Sullivan et al., 2015, Nat Genet", "https://doi.org/10.1038/ng.3211"],
+    ["Morrison et al., 2026, Nat Genet", "https://doi.org/10.1038/s41588-026-02753-1"]
   ],
   "prs": [
     ["Ge et al., 2019, Nat Commun", "https://doi.org/10.1038/s41467-019-09718-5"],

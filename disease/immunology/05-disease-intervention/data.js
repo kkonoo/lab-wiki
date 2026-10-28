@@ -555,7 +555,7 @@ window.IMMUNOLOGY_DISEASE = {
             "depth = modality의 함수 — antibody < T cell engager < CAR T < autologous HSCT",
             "breadth = 표면 표지 — CD20 < CD19 < CD19 + BCMA",
             "정상 골수 plasma cell의 약 72%가 CD19 발현 유지",
-            "CD19–CD3 engager는 활막 B세포 완전 제거 · rituximab은 불가"
+            "CD19–CD3 engager는 활막 B세포 감소 · 고갈 깊이는 용량·biopsy 시점 의존 · 잠정 순서 CAR T > engager > anti-CD20 항체"
           ]
         ],
         [
@@ -784,6 +784,10 @@ window.IMMUNOLOGY_DISEASE = {
       [
         "McInnes & Gravallese 2021, Nat Rev Immunol",
         "https://doi.org/10.1038/s41577-021-00603-1"
+      ],
+      [
+        "Fu 2026, Nat Rev Drug Discov",
+        "https://doi.org/10.1038/s41573-026-01534-z"
       ]
     ],
     "immunology-drug-targets": [

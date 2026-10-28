@@ -1,5 +1,5 @@
 window.DISEASE = (function () {
-  const meta = { id:"ad", title: "Alzheimer's Disease (AD)", domain: "Neuro", updated: "2026-09-15", searchPlaceholder: "Search: amyloid, APOE, p-tau217, ARIA" };
+  const meta = { id:"ad", title: "Alzheimer's Disease (AD)", domain: "Neuro", updated: "2026-10-28", searchPlaceholder: "Search: amyloid, APOE, p-tau217, ARIA" };
   const acts = [
     { id:"A", num: "01", en: "DEFINITION · EPIDEMIOLOGY", title: "무엇인가", accent: "#6f3a55", blurb: "정의·생물학적 단계 · 아형·감별 · 세계와 한국의 규모 · 질병부담", sections: ["def", "epi"] },
     { id:"B", num: "02", en: "CAUSE · COURSE", title: "왜·어떻게", accent: "#315d78", blurb: "유전·비유전 위험 · APOE · amyloid·tau · microglia·혈관 · 이질적 진행", sections: ["risk", "course"] },
@@ -79,7 +79,13 @@ window.DISEASE = (function () {
     murdock: ["Murdock et al. 2024, Nature 627:149–156", "https://doi.org/10.1038/s41586-024-07132-6"],
     romero: ["Hitpass Romero et al. 2025, J Neuroinflammation 22:109", "https://doi.org/10.1186/s12974-025-03436-0"],
     lecanemabAur: ["Cummings et al. 2023, J Prev Alzheimers Dis 10:362–377", "https://doi.org/10.14283/jpad.2023.30"],
-    donanemabAur: ["Rabinovici et al. 2025, J Prev Alzheimers Dis 12:100150", "https://doi.org/10.1016/j.tjpad.2025.100150"]
+    donanemabAur: ["Rabinovici et al. 2025, J Prev Alzheimers Dis 12:100150", "https://doi.org/10.1016/j.tjpad.2025.100150"],
+    luquez: ["Luquez et al. 2026, Nature", "https://doi.org/10.1038/s41586-026-10793-0"],
+    leeMyeloid: ["Lee et al. 2026, Nat Genet", "https://doi.org/10.1038/s41588-026-02716-6"],
+    hupalo: ["Hupalo et al. 2026, Brain", "https://doi.org/10.1093/brain/awag057"],
+    kurniansyah: ["Kurniansyah et al. 2026, Nat Genet", "https://doi.org/10.1038/s41588-026-02722-8"],
+    thomassen: ["Thomassen et al. 2026, Nat Genet", "https://doi.org/10.1038/s41588-026-02713-9"],
+    nan: ["Nan et al. 2026, Nat Genet", "https://doi.org/10.1038/s41588-026-02758-w"]
   };
   const articleList = [
     { id: "ckd-definition", section: "def", title: "어떻게 정의하고 치매와 구분하는가?",
@@ -233,11 +239,11 @@ window.DISEASE = (function () {
       body: [["경로 수렴",["amyloid·tau·endocytosis의 기존 축","microglia·면역 활성화의 강화","TNF-α·LUBAC 관련 경로의 추가"]],["locus에서 기전까지",["연관 locus ≠ 인과변이·표적 유전자","fine-mapping·QTL·colocalization·기능 검증의 연쇄","proxy-AD와 ancestry 편중의 해석 제한"]]],
       related: ["ckd-heritability","ckd-prs","ckd-variant-celltype"], papers: [P.bellenguez] },
     { id: "ckd-prs", section: "omics", title: "APOE 외 polygenic risk는 무엇을 더하는가?",
-      aliases: ["PRS","GRS","polygenic risk score","83 variants","MCI conversion"],
-      summary: "APOE 외 83변이 GRS가 발병·MCI→AD 진행과 연관(HR 1.076/allele) · 예측 개선은 소폭이며 European 밖 보정 필요",
-      facts: [["GRS 구성","APOE 외 83변이","Bellenguez et al.","2022",false],["발병·진행 연관","HR 1.076/allele · P=9.23×10⁻⁴⁰","Bellenguez et al.","2022",false],["한국인 외부검증","확인 필요 — 독립 한국인 코호트 calibration","직접 분석 필요","",true]],
-      body: [["추가 정보",["APOE 단일 locus 밖의 누적 common-variant burden","발병과 MCI→AD progression의 통계적 층화","APOE와 독립적인 소폭 예측 개선"]],["임상 전제",["상대위험과 절대위험의 구분","연령·성별·가족력·biomarker 위의 증분 성능","European 모델의 한국인 적용 전 calibration·clinical utility 검증"]]],
-      related: ["ckd-gwas","ckd-ancestry-family","ckd-transferability"], papers: [P.bellenguez] },
+      aliases: ["PRS","GRS","polygenic risk score","83 variants","MCI conversion","multi-ancestry PRS","KBASE"],
+      summary: "APOE 외 83변이 GRS가 발병·MCI→AD 진행과 연관(HR 1.076/allele) · 다중조상 PRS(APOE 영역 제외)는 비European·한국인 코호트에서도 연관 재현 — 효과는 European보다 작고 calibration·증분 성능은 미검증",
+      facts: [["GRS 구성","APOE 외 83변이","Bellenguez et al.","2022",false],["발병·진행 연관","HR 1.076/allele · P=9.23×10⁻⁴⁰","Bellenguez et al.","2022",false],["다중조상 PRS(APOE ±1 Mb 제외)","ADSP OR 1.39/SD · EUR 1.52 · AFR 1.21","Kurniansyah et al.","2026",false],["한국인 코호트 연관 재현","KBASE 141 case/284 control · OR 1.65/SD · AUC 0.66(공변량 포함 모델)","Kurniansyah et al.","2026",false],["한국인 calibration·증분 성능","확인 필요 — 독립 한국인 코호트 calibration·PRS 추가의 증분 AUC","직접 분석 필요","",true]],
+      body: [["추가 정보",["APOE 단일 locus 밖의 누적 common-variant burden","발병과 MCI→AD progression의 통계적 층화","APOE와 독립적인 소폭 예측 개선","다중조상 학습 PRS → APOE dosage 보정 후에도 연관 · 부검 병리(CERAD·Braak)·CSF Aβ42·p-tau·해마 부피와도 같은 방향"]],["임상 전제",["상대위험과 절대위험의 구분","연령·성별·가족력·biomarker 위의 증분 성능","보고된 AUC = 연령·성별·APOE 등 공변량 포함 모델 값 → PRS 단독 기여 아님","European 모델의 한국인 적용 전 calibration·clinical utility 검증"]]],
+      related: ["ckd-gwas","ckd-ancestry-family","ckd-transferability"], papers: [P.bellenguez,P.kurniansyah] },
     { id: "ckd-variant-celltype", section: "omics", title: "위험변이는 어떤 세포에서 작동하는가?",
       aliases: ["microglia enrichment","caQTL","non-neuron","cell type","colocalization"],
       summary: "단일세포 발현 enrichment의 microglia 단독 유의 + cell-type caQTL의 non-neuron AD enrichment → 면역·비뉴런 작동세포 우선순위",
@@ -269,21 +275,21 @@ window.DISEASE = (function () {
       body: [["승인 지형",["lecanemab — 초기 AD·amyloid 확인 중심","donanemab — 초기 증상 AD·amyloid 확인 중심","국가별 APOE ε4·급여·접근 프로그램의 차이"]],["지속 갱신점",["허가 적응증·투여경로·MRI 일정의 사후 변경","실사용 ARIA·출혈·중단 자료","한국 급여·전국 처방량·지역 접근성"]]],
       related: ["ckd-guideline-change","ckd-antiamyloid-eligibility","ckd-aria"], papers: [P.lecanemab,P.donanemab], links: [["FDA lecanemab traditional approval","https://www.fda.gov/news-events/press-announcements/fda-converts-novel-alzheimers-disease-treatment-traditional-approval"],["FDA 2024 novel approvals","https://www.fda.gov/drugs/novel-drug-approvals-fda/novel-drug-approvals-2024"],["EMA Kisunla","https://www.ema.europa.eu/en/medicines/human/EPAR/kisunla"]] },
     { id: "ckd-new-data", section: "now", title: "새 코호트·아틀라스·QTL 자원은 무엇이 생겼는가?",
-      aliases: ["EADB","brainSCOPE","PsychENCODE","single-cell atlas","cohort","QTL"],
-      summary: "EADB 75-locus GWAS · population-scale brain scQTL/caQTL · 6영역 AD single-cell atlas의 결합",
-      facts: [["EADB GWAS","75 loci","Bellenguez et al.","2022",false],["brain scQTL","388 brains · >1.4M scQTL","Emani et al.","2024",false],["cell-type caQTL","616 donors","Zeng et al.","2024",false],["AD 다영역 atlas","6 brain regions","Mathys et al.","2024",false],["한국 AD multi-omic 공개 코호트 규모","확인 필요 — 국내 DAC·바이오뱅크 직접 조사","직접 조사 필요","",true]],
-      body: [["새 참조자원",["대규모 GWAS summary statistics","PFC 중심 population-scale scQTL·caQTL","AD 다영역 single-cell transcriptomic atlas"]],["결합의 조건",["질환·대조·뇌영역·ancestry metadata 정렬","summary statistics·원자료의 접근권 차이","한국 코호트와의 외부 재현·보정"]]],
-      related: ["ckd-gwas","ckd-singlecell","ckd-new-method"], papers: [P.bellenguez,P.emani,P.zeng,P.mathys2024] },
+      aliases: ["EADB","brainSCOPE","PsychENCODE","single-cell atlas","cohort","QTL","multi-ancestry","myeloid atlas","NeuroBioBank","GPNMB"],
+      summary: "EADB 75-locus GWAS · population-scale brain scQTL/caQTL · 6영역 AD single-cell atlas에 다인종 single-nucleus multiome·1,607 donor myeloid atlas·사후뇌 기증자 WGS가 더해진 구성",
+      facts: [["EADB GWAS","75 loci","Bellenguez et al.","2022",false],["brain scQTL","388 brains · >1.4M scQTL","Emani et al.","2024",false],["cell-type caQTL","616 donors","Zeng et al.","2024",false],["AD 다영역 atlas","6 brain regions","Mathys et al.","2024",false],["다인종 AD single-nucleus multiome","167 donors(African American 56 · white 80 · Latin 31) · 3개 피질 부위 · 약 191만 nuclei","Luquez et al.","2026",false],["인간 PFC myeloid atlas","1,607 donors · 832,505 cells/nuclei · 13 subtype","Lee et al.","2026",false],["사후뇌 기증자 WGS","9,543명 WGS + 9,663명 array · NIH NeuroBioBank","Hupalo et al.","2026",false],["한국 AD multi-omic 공개 코호트 규모","확인 필요 — 국내 DAC·바이오뱅크 직접 조사","직접 조사 필요","",true]],
+      body: [["새 참조자원",["대규모 GWAS summary statistics","PFC 중심 population-scale scQTL·caQTL","AD 다영역 single-cell transcriptomic atlas"]],["다인종·세포상태 해상도 자원",["다인종 snRNA+snATAC → GPNMB⁺ microglia 증가가 세 집단 공통 · AD dementia·cognitive decline·tangle 밀도와 연관 · 외부 코호트 재현","myeloid atlas + 세포 단위 GWAS 투영 → AD 위험이 GPNMB-high 질환연관 microglia 아형에 수렴 · 매개 분석상 PRS → plaque → 아형 확장 순서","사후뇌 기증자 WGS + 임상·신경병리 표현형 → 조직 연계 유전형 공개 자원 · APOE 연관 재현"]],["결합의 조건",["질환·대조·뇌영역·ancestry metadata 정렬","summary statistics·원자료의 접근권 차이","한국 코호트와의 외부 재현·보정"]]],
+      related: ["ckd-gwas","ckd-singlecell","ckd-new-method"], papers: [P.bellenguez,P.emani,P.zeng,P.mathys2024,P.luquez,P.leeMyeloid,P.hupalo] },
     { id: "ckd-new-method", section: "now", title: "새로 쓸 수 있게 된 분석 기법은 무엇인가?",
-      aliases: ["scQTL","caQTL","colocalization","deconvolution","spatial transcriptomics","MPRA"],
-      summary: "scQTL·caQTL·colocalization·methylation deconvolution·spatial의 결합 → 위험변이에서 세포·조직 맥락까지 연결",
-      facts: [["scQTL bulk 미검출","약 2/3","Emani et al.","2024",false],["caQTL 공유율","neuron/non-neuron 10.4%","Zeng et al.","2024",false],["methylation deconvolution","7 major brain cell types","Yap et al.","2024",false]],
-      body: [["방법 사다리",["fine-mapping·colocalization → 인과변이·표적 유전자 후보","scQTL·caQTL → 세포유형별 조절효과","single-cell·spatial·deconvolution → 조직 위치·조성·state"]],["검증 주의",["참조 atlas·뇌영역·ancestry 의존성","deconvolution의 rare cell 정확도와 조성-상태 혼동","MPRA·예측모델 결과의 내인성 기능 검증"]]],
-      related: ["ckd-variant-celltype","ckd-vascular-microglia","ckd-transferability"], papers: [P.emani,P.zeng,P.yap] },
+      aliases: ["scQTL","caQTL","colocalization","deconvolution","spatial transcriptomics","MPRA","APOE-stratified GWAS","3'aQTL","alternative polyadenylation"],
+      summary: "scQTL·caQTL·colocalization·methylation deconvolution·spatial의 결합 → 위험변이에서 세포·조직 맥락까지 연결 · APOE 층화 GWAS와 3'aQTL이 새 축으로 추가",
+      facts: [["scQTL bulk 미검출","약 2/3","Emani et al.","2024",false],["caQTL 공유율","neuron/non-neuron 10.4%","Zeng et al.","2024",false],["methylation deconvolution","7 major brain cell types","Yap et al.","2024",false],["APOE 층화 GWAS","25개 좌위 중 두 층(ε3/ε3 · ε4 보유) 공통 9개 · 층화로만 보이는 신규 신호 9개","Thomassen et al.","2026",false],["cell-type 3'aQTL","PFC snRNA-seq 379명 · 4,288 유전자의 3'UTR 선택 QTL","Nan et al.","2026",false]],
+      body: [["방법 사다리",["fine-mapping·colocalization → 인과변이·표적 유전자 후보","scQTL·caQTL → 세포유형별 조절효과","single-cell·spatial·deconvolution → 조직 위치·조성·state"]],["새 분석 축",["APOE 유전형별 층화 GWAS → APOE 배경에 따라 다른 좌위 구성·효과 크기(TMEM106B·GRN·MAPT — 주로 ε3/ε3 맥락) · 대가는 층별 검정력 감소","3'aQTL → 발현량 eQTL에 안 잡히는 3'UTR 선택 층의 위험 신호 · APOE 근접 locus는 조건부 분석 전제"]],["검증 주의",["참조 atlas·뇌영역·ancestry 의존성","deconvolution의 rare cell 정확도와 조성-상태 혼동","MPRA·예측모델 결과의 내인성 기능 검증"]]],
+      related: ["ckd-variant-celltype","ckd-vascular-microglia","ckd-transferability"], papers: [P.emani,P.zeng,P.yap,P.thomassen,P.nan] },
     { id: "ckd-transferability", section: "now", title: "인간·마우스·ancestry 전이성은 어떻게 검증하는가?",
       aliases: ["translation","mouse model","DAM","cross-ancestry","external validation"],
       summary: "마우스 DAM의 인간 부분 중첩 + European GRS 편중 → 인간 조직·다인종·독립 코호트의 단계적 재현 필수",
-      facts: [["인간–마우스 microglia","부분 중첩 · C1QB·CD14 등 불일치","Mathys et al.","2019",false],["Bellenguez GRS","European 전용","Bellenguez et al.","2022",false],["한국인 AD PRS 전이성","확인 필요 — 직접 외부검증","직접 분석 필요","",true]],
+      facts: [["인간–마우스 microglia","부분 중첩 · C1QB·CD14 등 불일치","Mathys et al.","2019",false],["Bellenguez GRS","European 전용","Bellenguez et al.","2022",false],["한국인 AD PRS 전이성","확인 필요 — 연관 재현은 KBASE 1개 코호트(OR 1.65/SD, Kurniansyah 2026) · calibration·clinical utility 외부검증 필요","직접 분석 필요","",true]],
       body: [["종간 전이",["마우스 DAM·tau 염증 신호의 인간 부분 일치","인간 사후뇌·iPSC·organoid·기능 perturbation의 삼각검증","종 보존 신호와 인간 특이 신호의 분리"]],["집단 전이",["European GWAS·QTL·atlas 편중","비유럽 ancestry의 LD·대립유전자 빈도·환경 맥락","한국인 독립 cohort의 calibration·discrimination·clinical utility"]]],
       related: ["ckd-ancestry-family","ckd-prs","ckd-new-method"], papers: [P.mathys,P.bellenguez,P.zeng] }
   ];

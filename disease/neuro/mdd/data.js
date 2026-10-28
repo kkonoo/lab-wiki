@@ -3,6 +3,7 @@ window.DISEASE = (function () {
     id:"mdd",
     title: "Major Depressive Disorder (MDD)",
     domain: "Neuro",
+    updated: "2026-10-28",
     description: "우울삽화의 임상 정의부터 다유전자 위험·전신 조절축·시냅스 가소성·최신 치료까지"
   };
 
@@ -681,21 +682,23 @@ window.DISEASE = (function () {
     {
       id: "ckd-new-method", section: "now",
       title: "새로 쓸 수 있게 된 분석 기법은 무엇인가?",
-      aliases: ["single nucleus RNA-seq", "multiomic factor", "fine mapping", "colocalization", "PRS", "분석 기법"],
-      summary: "single-nucleus·multi-omics factor·network·fine-mapping·PRS의 결합 → 조직 평균에서 세포상태·위험변이·말초 proxy를 분리하는 분석",
+      aliases: ["single nucleus RNA-seq", "multiomic factor", "fine mapping", "colocalization", "PRS", "DDx-PRS", "감별진단 PRS", "분석 기법"],
+      summary: "single-nucleus·multi-omics factor·network·fine-mapping·PRS의 결합 → 조직 평균에서 세포상태·위험변이·말초 proxy를 분리하는 분석 · 다질환 감별 PRS(DDx-PRS)에서 MDD는 감별 폭이 가장 좁은 축",
       facts: [
         ["single-nucleus 적용", "dorsolateral PFC의 neuronal·non-neuronal 상태 분해", "Daskalakis et al., Science 384:eadh3707", "2024", false],
         ["multi-omics 통합", "factor·gene network 분석", "Daskalakis et al., Science 384:eadh3707", "2024", false],
         ["European PRS", "liability variance 최대 5.8%", "Adams et al., Cell 188:640–652.e9", "2025", false],
+        ["감별진단 PRS(DDx-PRS)", "SCZ·BIP·MDD·control 4범주 사후확률 · MDD vs rest AUC 0.591 — 세 질환 중 최저(SCZ 0.655 · BIP 0.639)", "Peyrot et al., Nat Genet", "2026", false],
         ["한국인 임상 전이성", "확인 필요 — 독립 한국인 cohort의 calibration·discrimination·utility 평가", "직접 분석 필요", "", true]
       ],
       body: [
         ["세포·분자 통합", ["single-nucleus RNA-seq → 세포유형별 상태", "multi-omics factor·gene network → 층위 간 공통 축", "bulk deconvolution → 세포비율 변화와 세포내 변화의 분리"]],
         ["유전 인과화", ["multi-ancestry fine-mapping → LD 차이를 통한 후보변이 축소", "colocalization·eQTL → GWAS와 조절신호의 공유 평가", "PRS → 다수 작은 효과의 합산·외부 cohort 검증"]],
+        ["다질환 감별 PRS", ["case-control PRS + 질환 간 liability 공분산 + 임상 사전확률 → Bayes 결합 → 진단 범주별 사후확률", "MDD — control과 유전적으로 가장 가까운 질환(liability h²SNP MDD 0.09 · SCZ 0.23 · BIP 0.19) → 세 질환 중 감별 폭이 가장 좁음", "PGC European 요약통계 학습 · held-out 4개 코호트(n=11,460) 검증 · 범주 동수 test 설계 → 실제 진료 유병 구성과 다름"]],
         ["검증 기준", ["discovery와 replication의 분리", "ancestry·sex·phenotype별 calibration", "통계 설명력과 임상 효용의 구분"]]
       ],
       related: ["ckd-variant-celltype", "ckd-new-data", "ckd-ancestry-sex"],
-      papers: [["Daskalakis et al. 2024, Science 384:eadh3707", "https://doi.org/10.1126/science.adh3707"], ["Adams et al. 2025, Cell 188:640–652.e9", "https://doi.org/10.1016/j.cell.2024.12.002"]]
+      papers: [["Daskalakis et al. 2024, Science 384:eadh3707", "https://doi.org/10.1126/science.adh3707"], ["Adams et al. 2025, Cell 188:640–652.e9", "https://doi.org/10.1016/j.cell.2024.12.002"], ["Peyrot et al. 2026, Nat Genet", "https://doi.org/10.1038/s41588-026-02684-x"]]
     }
   ];
 

@@ -21,6 +21,10 @@
       <a href="../../multi-omics/index.html">Multi-omics</a>
       <a href="../../disease/index.html" aria-current="page">Diseases</a>
     </nav>
+    <form class="top-search" id="topSearchForm" role="search" action="../../index.html">
+      <input id="topSearch" name="q" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+      <span class="keycap">/</span>
+    </form>
   </div>
 </header><section class="hub-hero">
   <div class="container">
@@ -33,4 +37,5 @@
 <a class="primary" href="./sle/index.html"><small>SLE · LUPUS</small><h2>Systemic Lupus (SLE)</h2><p>원인(청소 실패·type I IFN·보체·EBV) · 증상·진단(다장기·재발–관해) · 치료(B세포·IFN 표적)</p><span class="route">SLE 살펴보기 →</span></a>
 <section class="map"><h2>다른 autoimmune 질환</h2><p>아래 질환은 wiki disease:autoimmune subtype 색인을 따라 순차적으로 추가합니다.</p>
 <div class="tags"><span class="tag">Sjögren <small>준비 중</small></span></div></section>
-</main><footer><div class="container"><span>Updated 2026-06-24</span></div></footer></body></html>
+</main><footer><div class="container"><span>Updated 2026-06-24</span></div></footer><script>document.addEventListener("keydown",function(e){if(e.key==="/"&&document.activeElement.tagName!=="INPUT"){e.preventDefault();document.getElementById("topSearch").focus();}});</script>
+</body></html>
