@@ -2,7 +2,8 @@ window.DISEASE = (function () {
   const meta = {
     id: "ckd",
     title: "Chronic Kidney Disease (CKD)",
-    domain: "Nephro"
+    domain: "Nephro",
+    updated: "2026-11-08"
   };
 
   const acts = [
@@ -24,7 +25,7 @@ window.DISEASE = (function () {
     def: { number: "01", title: "정의 · 분류", act: "A", questions: [
       { q: "CKD는 어떻게 정의하는가?", note: "신장 구조·기능 이상 → 3개월 초과 → 건강 영향", article: "ckd-definition" },
       { q: "CGA 분류는 무엇을 함께 보는가?", note: "Cause · GFR G1–G5 · Albuminuria A1–A3", article: "ckd-cga" },
-      { q: "AKI·CKD·kidney failure는 어떻게 구분하는가?", note: "급성 시간축 · 3개월 지속 · G5/KRT", article: "ckd-acute-failure" },
+      { q: "AKI·CKD·kidney failure는 어떻게 구분하는가?", note: "급성 시간축 · AKD 7–90일 · 3개월 지속 · G5/KRT", article: "ckd-acute-failure" },
       { q: "원인 중심 이름은 왜 다인자 관점으로 바뀌는가?", note: "단일 원인명 → 평생 위험 누적 → CKD with diabetes", article: "ckd-multifactorial" }
     ] },
     epi: { number: "02", title: "역학 · 질병부담", act: "A", questions: [
@@ -109,19 +110,22 @@ window.DISEASE = (function () {
     },
     {
       id: "ckd-acute-failure", section: "def", title: "AKI·CKD·kidney failure는 어떻게 구분하는가?",
-      aliases: ["AKI", "acute kidney injury", "kidney failure", "KRT"],
-      summary: "AKI는 급성 변화·CKD는 3개월 초과 지속·kidney failure는 G5 또는 KRT 맥락 — 시간축과 중증도 축의 분리",
+      aliases: ["AKI", "acute kidney injury", "AKD", "acute kidney disease", "kidney failure", "KRT", "ASSESS-AKI"],
+      summary: "AKI는 7일 이내 급성 변화·AKD는 그 뒤 7–90일·CKD는 3개월 초과 지속·kidney failure는 G5 또는 KRT 맥락 — 시간축과 중증도 축의 분리, AKI 뒤 incident CKD 위험 약 4배",
       facts: [
         ["CKD 시간축", ">3개월", "KDIGO 2024", "2024", false],
+        ["AKD 구간", "AKI 시작 뒤 7–90일", "ADQI 16 consensus (Chawla 2017)", "2017", false],
         ["G5", "GFR <15 mL/min/1.73m²", "KDIGO 2024", "2024", false],
-        ["AKI 뒤 CKD 판정", "퇴원 3개월 뒤 만성성 평가", "KDIGO 2024 Top 10 Takeaways", "2024", false]
+        ["AKI 뒤 CKD 판정", "퇴원 3개월 뒤 만성성 평가", "KDIGO 2024 Top 10 Takeaways", "2024", false],
+        ["AKI 뒤 incident CKD", "adjusted HR 3.98 (95% CI 2.51–6.31)", "ASSESS-AKI (Ikizler 2021)", "2021", false]
       ],
       body: [
-        ["서로 다른 축", ["AKI — 시간 단위의 급성 기능 변화", "CKD — 구조·기능 이상이 3개월 초과", "kidney failure — 기능 중증도·KRT 필요성의 표현"]],
-        ["연속성", ["반복 AKI → nephron capacity 감소 → CKD 위험", "CKD 위의 AKI → 남은 capacity의 추가 손실", "회복 직후 수치 → 3개월 시점 재평가 전 CKD 확정 유보"]]
+        ["서로 다른 축", ["AKI — 7일 이내의 급성 기능 변화", "AKD(acute kidney disease, 급성 신장병) — AKI 뒤 7–90일, CKD로 굳기 전 구간", "CKD — 구조·기능 이상이 3개월 초과", "kidney failure — 기능 중증도·KRT 필요성의 표현"]],
+        ["연속성", ["반복 AKI → nephron capacity 감소 → CKD 위험", "CKD 위의 AKI → 남은 capacity의 추가 손실", "회복 직후 수치 → 3개월 시점 재평가 전 CKD 확정 유보"]],
+        ["AKI 뒤 위험의 크기", ["입원 AKI 769명 vs 매칭 비AKI 769명·평균 4.5년 전향 추적 → incident CKD adjusted HR 3.98", "기존 CKD의 progression → adjusted HR 2.37 (1.28–4.39)", "AKI의 73%가 stage 1 — 경증 위주 cohort에서도 위험 상승"]]
       ],
-      related: ["ckd-definition", "ckd-nephron-endowment", "ckd-krt"],
-      papers: [["KDIGO 2024, Kidney Int", "https://doi.org/10.1016/j.kint.2023.10.018"]]
+      related: ["ckd-definition", "ckd-nephron-endowment", "ckd-krt", "ckd-new-data"],
+      papers: [["KDIGO 2024, Kidney Int", "https://doi.org/10.1016/j.kint.2023.10.018"], ["Chawla et al. 2017, Nat Rev Nephrol 13(4):241–257 (ADQI 16)", "https://doi.org/10.1038/nrneph.2017.2"], ["Ikizler et al. 2021, Kidney Int 99(2):456–465 (ASSESS-AKI)", "https://doi.org/10.1016/j.kint.2020.06.032"]]
     },
     {
       id: "ckd-multifactorial", section: "def", title: "원인 중심 이름은 왜 다인자 관점으로 바뀌는가?",
@@ -595,21 +599,23 @@ window.DISEASE = (function () {
     },
     {
       id: "ckd-new-data", section: "now", title: "새 코호트·역학 데이터는 무엇이 생겼는가?",
-      aliases: ["GBD 2023", "KNOW-CKD", "CRIC", "KORDS", "cohort"],
-      summary: "GBD 2023 성인 7.88억명·KNOW-CKD 약 4,000명 15년 추적·KORDS 2022 ESKD 134,826명 — 인구·임상·KRT 층의 보완",
+      aliases: ["GBD 2023", "KNOW-CKD", "CRIC", "KORDS", "ASSESS-AKI", "cohort"],
+      summary: "GBD 2023 성인 7.88억명·KNOW-CKD 약 4,000명 15년 추적·KORDS 2022 ESKD 134,826명·ASSESS-AKI의 AKI 뒤 incident CKD adjusted HR 3.98 — 인구·임상·KRT·AKI 이후 층의 보완",
       facts: [
         ["GBD 2023 성인 CKD", "7.88억명", "GBD 2023 CKD Collaborators", "2023", false],
         ["KNOW-CKD", "전국 14개 대학병원·약 4,000명·최장 15년", "국립보건연구원·대한신장학회", "2011–2026", false],
         ["KNOW-CKD vs CRIC", "kidney progression 위험 약 1.66배", "국립보건연구원 2026 CKD Fact Sheet", "2026", false],
-        ["KORDS ESKD", "134,826명", "대한신장학회", "2022", false]
+        ["KORDS ESKD", "134,826명", "대한신장학회", "2022", false],
+        ["ASSESS-AKI", "AKI 769 vs 매칭 비AKI 769·평균 4.5년 — incident CKD adjusted HR 3.98", "Ikizler et al., Kidney Int", "2021", false]
       ],
       body: [
-        ["세 데이터 층", ["GBD → 204개 국가·모델 기반 세계 부담", "KNOW-CKD → 한국 임상 CKD의 종단 예후", "KORDS → kidney failure·KRT 등록 현황"]],
+        ["네 데이터 층", ["GBD → 204개 국가·모델 기반 세계 부담", "KNOW-CKD → 한국 임상 CKD의 종단 예후", "KORDS → kidney failure·KRT 등록 현황", "ASSESS-AKI → 입원 AKI 뒤 kidney outcome의 전향 매칭 자료"]],
+        ["ASSESS-AKI", ["퇴원 뒤 3개월 이상 생존한 성인·4개 센터 → 사전 CKD·센터 기준 매칭", "incident CKD adjusted HR 3.98 · CKD progression 2.37 · heart failure 1.68 · 사망 1.78", "퇴원 3개월 시점 kidney function·proteinuria 보정 → heart failure 1.13·사망 1.29로 약화, 통계적 유의성 소실"]],
         ["KNOW-CKD 2026", ["중도 탈락률 20% 미만의 장기 추적", "한국 환자의 kidney progression 위험이 미국 CRIC보다 높다는 비교", "운동·골다공증·철 결핍 등 예후 연관의 임상 자료"]],
         ["자료 결합 주의", ["일반 인구 prevalence·전문병원 cohort·KRT registry → 선택 기준 상이", "1.66배 → cohort 구성·endpoint·보정의 영향", "인과 해석보다 외부 검증·국내 위험모형의 근거"]]
       ],
       related: ["ckd-prevalence", "ckd-trend", "ckd-genetic-testing"],
-      papers: [["Oh et al. 2022, J Prev Med Public Health 55(4):313–320", "https://doi.org/10.3961/jpmph.22.031"], ["GBD 2023 CKD Collaborators 2025, Lancet", "https://doi.org/10.1016/S0140-6736(25)01853-7"]],
+      papers: [["Oh et al. 2022, J Prev Med Public Health 55(4):313–320", "https://doi.org/10.3961/jpmph.22.031"], ["GBD 2023 CKD Collaborators 2025, Lancet", "https://doi.org/10.1016/S0140-6736(25)01853-7"], ["Ikizler et al. 2021, Kidney Int 99(2):456–465 (ASSESS-AKI)", "https://doi.org/10.1016/j.kint.2020.06.032"]],
       links: [["국립보건연구원 KNOW-CKD 15년 Fact Sheet 보도자료", "https://www.nih.go.kr/ko/bbs/B0000130/view.do?menuNo=300830&nttId=13230&pageIndex="]]
     },
     {

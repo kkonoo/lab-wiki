@@ -2,7 +2,8 @@ window.DISEASE = (function () {
   const meta = {
     id: "dkd",
     title: "Diabetic Kidney Disease (DKD)",
-    domain: "Nephro"
+    domain: "Nephro",
+    updated: "2026-11-08"
   };
 
   const acts = [
