@@ -1,5 +1,5 @@
 window.DISEASE = (function () {
-  const meta = { id: 'asd', title: "Autism Spectrum Disorder (ASD)", domain: "Neuro" };
+  const meta = { id: 'asd', title: "Autism Spectrum Disorder (ASD)", domain: "Neuro", updated: "2026-08-12" };
 
   const acts = [
     { id: 'A', num: "01", en: "DEFINITION · EPIDEMIOLOGY", title: "무엇인가", accent: "#6f3a55", blurb: "정의·스펙트럼 · 감별 · 세계와 한국의 유병 · 질병부담", sections: ["def", "epi"] },
