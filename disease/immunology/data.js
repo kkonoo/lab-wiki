@@ -15,7 +15,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-overview",
               "면역계의 큰 그림",
-              "조혈 계통도(계통 ↔ 역할 색 전환) · 용어 포함 관계 · 선천↔적응 연결 · 세포·장소·시간 축",
+              "조혈 계통도(계통과 역할 색 전환) · 용어 포함 관계 · 선천과 적응의 연결 · 세포·장소·시간 축",
               "읽기",
               ""
             ]
@@ -28,7 +28,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-cell-identity",
               "면역세포의 종류와 상태",
-              "혈액 분획(whole blood·plasma·serum·buffy coat·PBMC) · 분모별 세포 비율 · PBMC3k UMAP·조성 · 종류 vs 상태",
+              "혈액 분획(whole blood·plasma·serum·buffy coat·PBMC) · 분모별 세포 비율 · PBMC3k UMAP·조성 · 종류와 상태의 구분",
               "읽기",
               ""
             ]
@@ -67,7 +67,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-ontogeny",
               "면역 발생과 영아기",
-              "수정부터 두 돌까지 한 장 타임라인(난황낭 → AGM → 태아 간 → 골수) · 태반을 건너오는 모체 IgG와 모체 세포 · 모유와 미생물 정착 · 영아기 조직별 T세포 — 성인의 축소판이 아닌 시기별 프로그램",
+              "수정부터 두 돌까지 한 장 타임라인(난황낭 → AGM → 태아 간 → 골수) · 태반을 건너오는 모체 IgG와 모체 세포 · 모유와 미생물 정착 · 영아기 조직별 T세포. 성인의 축소판이 아니라 시기별 프로그램",
               "읽기",
               ""
             ]
@@ -90,7 +90,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-prr",
               "패턴인식수용체 — 자리와 출력 지도",
-              "PRR 5계열(TLR·CLR·NLR·RLR·ALR)이 놓인 칸과 NF-κB·IRF·caspase-1 세 출력 · PAMP와 DAMP · 사람 유전자 결함이 만드는 표현형 · 조절층과 약물 표적",
+              "PRR 5계열(TLR·CLR·NLR·RLR·ALR)이 놓인 자리와 NF-κB·IRF·caspase-1 세 출력 · PAMP와 DAMP · 사람 유전자 결함이 만드는 표현형 · 조절층과 약물 표적",
               "읽기",
               ""
             ]
@@ -142,7 +142,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-cell-death",
               "세포사 양식과 염증 — 무엇이 DAMP를 내보내나",
-              "전용 기계형과 항상성 붕괴형 2축 · 막이 터지는지가 염증을 정한다 · GSDM·MLKL 뒤의 NINJ1 최종 파열 · caspase-8 스위치 · NCCD 기준으로 본 PANoptosis·karyoptosis · efferocytosis와 necrotic core",
+              "전용 기계형과 항상성 붕괴형 2축 · 막이 터지는지에 따라 염증 여부가 갈림 · GSDM·MLKL 뒤의 NINJ1 최종 파열 · caspase-8 스위치 · NCCD 기준으로 본 PANoptosis·karyoptosis · efferocytosis와 necrotic core",
               "읽기",
               ""
             ]
@@ -156,7 +156,7 @@ window.IMMUNOLOGY = {
       "english": "HOW LYMPHOCYTES LEARN TO RECOGNIZE",
       "accent": "#94553b",
       "kuby": "Kuby 6–9장",
-      "summary": "항원수용체 유전자의 조립 문법 · MHC와 항원제시 · 흉선 선택 · 골수 B세포의 발달과 관용",
+      "summary": "항원수용체 유전자의 조립 규칙 · MHC와 항원제시 · 흉선 선택 · 골수 B세포의 발달과 관용",
       "groups": [
         {
           "q": "림프구 수용체의 다양성은 어떻게 만들어지나?",
@@ -164,7 +164,7 @@ window.IMMUNOLOGY = {
           "items": [
             [
               "immunology-vdj-recombination",
-              "V(D)J 재조합 — 조립의 문법과 그것을 훑는 기구",
+              "V(D)J 재조합 — 조립 규칙과 그것을 훑는 기구",
               "RSS와 12/23 규칙 · RAG의 단계적 포획과 classical NHEJ 강제 · loop extrusion이 정하는 조각 사용 빈도 · 접합부 다양성과 삽입 항체",
               "읽기",
               ""
@@ -178,7 +178,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-antigen-presentation",
               "MHC와 항원제시 경로",
-              "6단계와 두 경로(class I · class II) · 비고전 제시 분자와 교차제시 · spliced peptide와 예측의 한계 · 대립형이 곧 표현형인 이유",
+              "6단계와 두 경로(class I · class II) · 비고전 제시 분자와 교차제시 · spliced peptide와 예측의 한계 · 대립형에 따라 표현형이 갈리는 이유",
               "읽기",
               ""
             ],
@@ -197,7 +197,7 @@ window.IMMUNOLOGY = {
           "items": [
             [
               "immunology-thymic-selection",
-              "흉선 선택 — 유용한 것과 안전한 것",
+              "흉선 선택 — 유용한 세포와 안전한 세포",
               "β-selection과 DP 오디션 · cTEC 고유 peptidome과 양성선택 · 수질의 AIRE·FEZF2·mimetic cell · 삭제와 Treg·agonist 선택 · 사람의 고장 목록",
               "읽기",
               ""
@@ -211,7 +211,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-b-cell-development",
               "골수 B세포 발달과 중심 관용",
-              "전사인자 회로와 두 관문 · receptor editing · 단계별 유전자 결함 지도 · 자가반응 세포의 존재와 질병은 다르다 · 같은 회로와 B-ALL",
+              "전사인자 회로와 두 관문 · receptor editing · 단계별 유전자 결함 지도 · 자가반응 세포가 있다고 질병이 되지는 않음 · 같은 회로와 B-ALL",
               "읽기",
               ""
             ]
@@ -234,13 +234,13 @@ window.IMMUNOLOGY = {
             [
               "immunology-t-cell-activation",
               "근위 회로와 운명의 분기",
-              "Lck→ZAP-70→LAT/SLP-76→PLCγ1 · CD45와 Csk가 세우는 역치 · 느린 한 부위가 만드는 변별 · CD4 여섯 갈래와 CD8 상반쌍",
+              "Lck→ZAP-70→LAT/SLP-76→PLCγ1 · CD45와 Csk가 정하는 역치 · 느린 한 부위가 만드는 변별 · CD4 여섯 갈래와 CD8 상반쌍",
               "읽기",
               ""
             ],
             [
               "",
-              "Immunometabolism — 대사가 운명에 붙는다",
+              "Immunometabolism — 대사와 세포 운명",
               "effector의 해당과정과 memory의 지방산 산화는 T세포 문서에, 배중심 B세포의 지방산 산화는 배중심 문서에, ILC의 지질·저산소 대사는 조직 문서에 나누어 두었다",
               "문서 안에 분산",
               ""
@@ -249,7 +249,7 @@ window.IMMUNOLOGY = {
         },
         {
           "q": "만성 자극 아래 T세포는 왜 기능을 잃나?",
-          "note": "Kuby 10장 · T세포 소진 — 기전은 여기, 질환별 수치는 각 질환 페이지",
+          "note": "Kuby 10장 · T세포 소진. 기전은 여기, 질환별 수치는 각 질환 페이지",
           "items": [
             [
               "immunology-t-cell-exhaustion",
@@ -281,14 +281,14 @@ window.IMMUNOLOGY = {
             [
               "immunology-germinal-center",
               "배중심과 isotype 전환",
-              "세 극과 Tfh 도움이라는 통화 · cohesin 고리가 만드는 CSR centre · 출구 세 갈래",
+              "세 극과 Tfh 도움의 양 · cohesin 고리가 만드는 CSR centre · 출구 세 갈래",
               "읽기",
               ""
             ],
             [
               "",
-              "조립의 문법과 loop extrusion — 앞 단계",
-              "RSS 문법·RAG·NHEJ와 cohesin loop extrusion 자체는 03 문서에 두고 여기서는 되풀이하지 않는다",
+              "조립 규칙과 loop extrusion — 앞 단계",
+              "RSS 규칙·RAG·NHEJ와 cohesin loop extrusion 자체는 03 문서에 두고 여기서는 되풀이하지 않는다",
               "wiki 문서 있음",
               "./03-adaptive-recognition/diversity.html"
             ]
@@ -296,12 +296,12 @@ window.IMMUNOLOGY = {
         },
         {
           "q": "기억은 어디에 어떤 형태로 남나?",
-          "note": "Kuby 11장 · 면역기억 — 혈액 지표로 조직 방어를 예측할 수 없다",
+          "note": "Kuby 11장 · 면역기억. 혈액 지표로는 조직 방어를 예측할 수 없다",
           "items": [
             [
               "immunology-adaptive-memory",
-              "기억의 구획 — 수명·거주·B세포",
-              "CD4 TEM 21일에서 CD8 TEMRA 36년 초과까지 · Klf2·S1pr1 차단이 정의하는 거주 · 기억 B세포 세 갈래와 다양성 보험",
+              "기억의 구획 — 수명, 거주, B세포",
+              "CD4 TEM 21일에서 CD8 TEMRA 36년 초과까지 · Klf2·S1pr1 차단으로 정의되는 거주 · 기억 B세포 세 갈래와 다양성 보험",
               "읽기",
               ""
             ]
@@ -313,7 +313,7 @@ window.IMMUNOLOGY = {
           "items": [
             [
               "immunology-antibody-effector",
-              "Fc가 기능을 정한다",
+              "Fc가 정하는 기능",
               "subclass와 Asn297 당사슬이 만드는 수용체 균형 · 네 갈래 출력 · 중화가 무너진 뒤에도 남는 방어 · perforin과 Fas 리간드",
               "읽기",
               ""
@@ -334,7 +334,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-barrier-immunity",
               "장벽면역 — 점막과 피부",
-              "피부 네 겹과 각질층 pH 층화 · 폐의 시점 의존 양면성 · 장의 분업과 Thetis cell TC IV · IgA의 시점과 대사산물",
+              "피부 네 겹과 각질층 pH 층화 · 시점에 따라 달라지는 폐의 양면성 · 장의 분업과 Thetis cell TC IV · IgA의 시점과 대사산물",
               "읽기",
               ""
             ],
@@ -354,7 +354,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-tissue-immunity",
               "조직 상주세포와 구조",
-              "대식세포 두 계보와 범조직 세 집단 · niche가 정체성을 강제한다 · ILC의 세 층 · 삼차림프구조의 성숙 · 구조면역 개념 제안",
+              "대식세포 두 계보와 범조직 세 집단 · niche가 정체성을 정함 · ILC의 세 층 · 삼차림프구조의 성숙 · 구조면역 개념 제안",
               "읽기",
               ""
             ],
@@ -375,7 +375,7 @@ window.IMMUNOLOGY = {
       "english": "WHEN IMMUNITY GOES WRONG",
       "accent": "#1f5d43",
       "kuby": "Kuby 15–19장",
-      "summary": "과민반응과 2형 면역 · 관용과 관용 유도 · 이식면역 · 백신 · 면역결핍과 유전적 오류 · 자가면역의 면역 리셋 · 약물 표적과 환자 층화 — 공통 원리는 여기, 질환별 수치는 각 페이지로",
+      "summary": "과민반응과 2형 면역 · 관용과 관용 유도 · 이식면역 · 백신 · 면역결핍과 유전적 오류 · 자가면역의 면역 리셋 · 약물 표적과 환자 층화. 공통 원리는 여기에 두고 질환별 수치는 각 페이지로",
       "groups": [
         {
           "q": "과민반응과 만성염증은 어떻게 생기나?",
@@ -384,28 +384,28 @@ window.IMMUNOLOGY = {
             [
               "immunology-hypersensitivity",
               "과민반응 네 유형과 2형 회로",
-              "Gell·Coombs 네 유형과 즉시·후기반응 · 장벽 손상에서 alarmin·ILC2를 거쳐 IgE·호산구로 · IgE를 둘러싼 억제장치",
+              "Gell·Coombs 네 유형과 즉시·후기반응 · 장벽 손상에서 alarmin·ILC2를 거쳐 IgE·호산구로 · IgE를 억제하는 장치",
               "읽기",
               ""
             ],
             [
               "",
-              "Inflammaging — 나이가 만드는 만성염증",
-              "노화 × 면역 · 세포 노화와 낮은 등급의 염증",
+              "Inflammaging — 나이가 들며 생기는 만성염증",
+              "노화와 면역 · 세포 노화와 낮은 등급의 염증",
               "wiki 문서 있음",
               "../aging/index.html"
             ],
             [
               "",
               "당뇨병성 신장질환 면역대사",
-              "대사 실패가 켜는 선천면역 — 질환 수치는 그쪽에 있다",
+              "대사 실패로 켜지는 선천면역. 질환 수치는 그쪽에 있다",
               "wiki 문서 있음",
               "../nephro/dkd/index.html"
             ],
             [
               "",
               "Neuroinflammation",
-              "뇌의 만성염증 — 미세아교세포와 질환 수치",
+              "뇌의 만성염증. 미세아교세포와 질환 수치",
               "wiki 문서 있음",
               "../neuro/general/neuroinflammation.html"
             ]
@@ -413,12 +413,12 @@ window.IMMUNOLOGY = {
         },
         {
           "q": "자기 관용은 어떻게 유지되고, 어떻게 유도하나?",
-          "note": "Kuby 16장 · 면역관용 — 지키는 장치와 만들어 내는 방법",
+          "note": "Kuby 16장 · 면역관용. 지키는 장치와 만들어 내는 방법",
           "items": [
             [
               "immunology-tolerance",
               "관용의 다섯 장치와 관용 유도",
-              "중추 결실·anergy·ignorance·Treg·면역특권과 그 누수 · FOXP3 자리와 TSDR · 항원 특이 관용 유도와 경구 관용의 창",
+              "중추 결실·anergy·ignorance·Treg·면역특권과 그 누수 · FOXP3 자리와 TSDR · 항원 특이 관용 유도와 경구 관용이 가능한 시기",
               "읽기",
               ""
             ],
@@ -437,7 +437,7 @@ window.IMMUNOLOGY = {
           "items": [
             [
               "immunology-transplant",
-              "동종인식 네 경로와 끄는 손",
+              "동종인식 네 경로와 그것을 끄는 방법",
               "direct·indirect·semi-direct·inverted direct · 거부의 시간축과 DSA 음성 microvascular inflammation · 기억 T세포와 IL-15 · 이종이식 편집",
               "읽기",
               ""
@@ -446,12 +446,12 @@ window.IMMUNOLOGY = {
         },
         {
           "q": "자가면역을 억제가 아니라 종료시킬 수 있나?",
-          "note": "Kuby 16장 연결 · 자가면역 치료 축 — 기전은 여기, 질환별 수치는 각 질환 페이지",
+          "note": "Kuby 16장 연결 · 자가면역 치료 축. 기전은 여기, 질환별 수치는 각 질환 페이지",
           "items": [
             [
               "immunology-reset",
-              "면역 리셋 — 깊이 × 범위",
-              "치료의 세 단계와 승인약 0인 두 단계 · 병원성 기억의 위치 · 표면 표지가 정하는 고갈의 상한 · CAR 설계가 가르는 독성",
+              "면역 리셋 — 깊이와 범위",
+              "치료의 세 단계와 승인약 0인 두 단계 · 병원성 기억의 위치 · 표면 표지가 정하는 고갈의 상한 · CAR 설계에 따라 갈리는 독성",
               "읽기",
               ""
             ],
@@ -477,7 +477,7 @@ window.IMMUNOLOGY = {
           "items": [
             [
               "immunology-vaccine",
-              "백신 — 무엇을 켜서 방어를 만드나",
+              "백신 — 무엇을 켜서 방어가 생기나",
               "방어의 상관물과 잠복기·연령의 한계 · adjuvant가 고르는 선천 경로 · mRNA-LNP의 핵산 화학과 cytokine 물결 · 센서 미규명",
               "읽기",
               ""
@@ -497,7 +497,7 @@ window.IMMUNOLOGY = {
           "items": [
             [
               "immunology-immunodeficiency",
-              "선천 면역 오류가 알려주는 것",
+              "선천 면역 오류로 알 수 있는 것",
               "감지·중계·집행 회로 위치와 표현형의 폭 · IUIS 2024와 여섯 층의 유전 구조 · VEXAS와 체세포 모자이시즘 · 25년의 유전자치료",
               "읽기",
               ""
@@ -506,7 +506,7 @@ window.IMMUNOLOGY = {
         },
         {
           "q": "면역은 암을 어떻게 막고, 치료에 어떻게 쓰이나?",
-          "note": "Kuby 19장 · 암과 면역계 — 기전과 수치는 암 문서에 있다",
+          "note": "Kuby 19장 · 암과 면역계. 기전과 수치는 암 문서에 있다",
           "items": [
             [
               "",
@@ -531,7 +531,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-drug-targets",
               "표적과 층화",
-              "kinase 표적 지도와 선택성의 역설 · 사람 기능상실 표현형이 예고하는 효능과 부작용 · 패혈증 immunotype 층화와 endotype 비수렴",
+              "kinase 표적 지도와 선택성의 역설 · 사람 기능상실 표현형으로 예측되는 효능과 부작용 · 패혈증 immunotype 층화와 endotype 비수렴",
               "읽기",
               ""
             ]

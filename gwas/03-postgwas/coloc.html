@@ -40,11 +40,11 @@
       <article class="article">
         <p class="eyebrow">Post-GWAS — Interpretation</p>
         <h1>두 association 신호가 겹치면, 같은 causal variant일까?</h1>
-        <p class="definition">Colocalization(coloc) — 같은 locus의 두 association 신호(GWAS · eQTL 등)가 <b>하나의 causal variant를 공유</b>하는지 summary statistics만으로 평가하는 Bayesian 분석. lead SNP 하나가 아니라 구간 전체의 신호 모양을 비교 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></p>
+        <p class="definition">Colocalization(coloc) — 같은 locus의 두 association 신호(GWAS · eQTL 등)가 <b>하나의 causal variant를 공유</b>하는지 summary statistics만으로 평가하는 Bayesian 분석. lead SNP 하나가 아니라 구간 전체의 신호 모양을 비교함 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></p>
 
         <!-- ───────── 1. 겹침 ≠ 공유 ───────── -->
         <h2 id="overlap">겹친 peak ≠ 같은 변이<small>Overlap is not sharing</small></h2>
-        <p class="lede">GWAS hit 근처의 eQTL → “이 유전자가 원인” 추론의 출발점. 하지만 eQTL이 유전체·조직마다 흔해 <b>우연한 겹침</b>도 흔함 → 눈으로 겹침을 비교하는 것만으로는 부족 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a>. LD로 묶인 서로 다른 두 causal variant도 같은 자리의 peak로 보임 — 아래 두 모드는 peak 위치가 거의 같음.</p>
+        <p class="lede">GWAS hit 근처의 eQTL → “이 유전자가 원인” 추론의 출발점. 하지만 eQTL이 유전체·조직마다 흔해 <b>우연한 겹침</b>도 흔함. 눈으로 겹침을 비교하는 것만으로는 부족 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a>. LD로 묶인 서로 다른 두 causal variant도 같은 자리의 peak로 보임(아래 두 모드도 peak 위치가 거의 같음).</p>
         <figure class="fig" id="fig-regional" data-mode="h4">
           <div class="fig-tools">
             <div class="seg" data-fig="fig-regional" role="group" aria-label="시나리오">
@@ -1176,12 +1176,12 @@
           </figcaption>
         </figure>
         <div class="callout blue">
-          <h4>그림에서 볼 것 — 꼭대기의 색</h4>
-          <p><b>공유</b> → trait 2 꼭대기 점 = trait 1 lead와 r²가 높은 빨간 점 · <b>별개</b> → trait 2 꼭대기 = trait 1 lead와 r² 0.2–0.6인 점 → 같은 블록 안에서 신호 모양이 어긋남. coloc = 이 어긋남을 SNP별 Bayes factor로 수치화.</p>
+          <h4>그림에서 볼 것: 꼭대기의 색</h4>
+          <p><b>공유</b> → trait 2 꼭대기 점 = trait 1 lead와 r²가 높은 빨간 점 · <b>별개</b> → trait 2 꼭대기 = trait 1 lead와 r² 0.2–0.6인 점이어서 같은 블록 안에서 신호 모양이 어긋남. coloc은 이 어긋남을 SNP별 Bayes factor로 수치화함.</p>
         </div>
 
         <!-- ───────── 2. 다섯 가설 ───────── -->
-        <h2 id="hypotheses">다섯 가설 — 구간마다 하나씩<small>H0–H4</small></h2>
+        <h2 id="hypotheses">다섯 가설(구간마다 하나씩)<small>H0–H4</small></h2>
         <p class="lede">한 구간(locus)에서 “어느 SNP이 어느 trait의 causal인가”의 모든 배치를 나열 → 다섯 가설로 묶음 → 가설마다 사후확률 <b>PP0–PP4</b>(합 = 1) <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a> · 가설 prior ≈ SNP 하나의 prior × 배치 수 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p>
         <figure class="fig">
           <div class="fig-scroll">
@@ -1273,30 +1273,30 @@
 </svg>
 <!--/GEN:HYPO-->
           </div>
-          <figcaption>모식도 · 원 하나 = 구간 안 SNP 하나(실제 n은 수백–수천). 관심은 대개 H3 대 H4 — H0–H2가 크면 “비교할 신호가 한쪽 이상 없음”.</figcaption>
+          <figcaption>모식도 · 원 하나 = 구간 안 SNP 하나(실제 n은 수백–수천). 관심은 대개 H3 대 H4. H0–H2가 크면 비교할 신호가 한쪽 이상 없다는 뜻.</figcaption>
         </figure>
         <div class="callout">
-          <h4>핵심 가정 — trait마다 구간 안 causal variant 최대 1개</h4>
-          <p>이 가정 덕분에 LD 행렬 없이 SNP 하나씩의 summary statistics로 계산 가능 · 서로 다른 집단에서 측정한 두 trait도 비교 가능 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a>. 가정이 깨지면 → 아래 <a href="#multiple">신호가 둘 이상일 때</a>.</p>
+          <h4>가정: trait마다 구간 안 causal variant 최대 1개</h4>
+          <p>이 가정 덕분에 LD 행렬 없이 SNP 하나씩의 summary statistics로 계산 가능 · 서로 다른 집단에서 측정한 두 trait도 비교 가능 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a>. 가정이 깨지면 아래 <a href="#multiple">신호가 둘 이상일 때</a>.</p>
         </div>
 
         <!-- ───────── 3. 계산 ───────── -->
-        <h2 id="abf">계산 — SNP별 Bayes factor를 가설별로 합산<small>Approximate Bayes factors</small></h2>
-        <p class="lede">MCMC 없이 닫힌 식으로 끝나는 계산 → 유전체 전체도 몇 분 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></p>
+        <h2 id="abf">계산: SNP별 Bayes factor를 가설별로 합산<small>Approximate Bayes factors</small></h2>
+        <p class="lede">MCMC 없이 닫힌 식으로 끝나는 계산이라 유전체 전체도 몇 분 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></p>
         <div class="cases">
           <div style="--c:var(--theme)"><span class="lv">STEP 1</span><h4>SNP별 ABF</h4><p>β̂ · var(β̂) → Wakefield approximate Bayes factor(“이 SNP이 causal”의 근거) · 효과크기 prior sd W = 0.15(정량 형질) · 0.20(case-control) <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></p></div>
           <div style="--c:var(--theme)"><span class="lv">STEP 2</span><h4>가설별 합</h4><p>H1 = Σ ABF₁ · H2 = Σ ABF₂ · H4 = Σ ABF₁ᵢ·ABF₂ᵢ(같은 SNP) · H3 = ΣABF₁·ΣABF₂ − H4(서로 다른 SNP 쌍) <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></p></div>
           <div style="--c:var(--theme)"><span class="lv">STEP 3</span><h4>prior 곱 → 정규화</h4><p>각 합 × 가설 prior(위 그림 오른쪽 열) → 합이 1이 되게 나눔 → PP0–PP4 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></p></div>
         </div>
-        <h3 class="subhd">입력 — 두 trait의 같은 구간 summary statistics</h3>
+        <h3 class="subhd">입력: 두 trait의 같은 구간 summary statistics</h3>
         <div class="tblwrap">
           <table class="vtable">
             <thead><tr><th>항목</th><th>내용</th><th>주의</th></tr></thead>
             <tbody>
-              <tr><th>효과 · 분산</th><td><code>beta</code> · <code>varbeta</code></td><td><code>varbeta</code> = SE² (분산) — SE를 그대로 넣지 않기 <a class="src" href="https://chr1swallace.github.io/coloc/articles/a02_data.html" target="_blank" rel="noopener">coloc 문서</a></td></tr>
+              <tr><th>효과 · 분산</th><td><code>beta</code> · <code>varbeta</code></td><td><code>varbeta</code> = SE²(분산). SE를 그대로 넣지 않기 <a class="src" href="https://chr1swallace.github.io/coloc/articles/a02_data.html" target="_blank" rel="noopener">coloc 문서</a></td></tr>
               <tr><th>대신 p-value</th><td>p-value + MAF (+ N · case 비율)</td><td>MAF가 있으면 부호 없는 효과크기를 재구성 가능 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td></tr>
               <tr><th>형질 종류</th><td><code>type</code> = <code>quant</code> · <code>cc</code></td><td>정량 형질은 <code>sdY</code> 또는 MAF·N 필요 <a class="src" href="https://chr1swallace.github.io/coloc/articles/a02_data.html" target="_blank" rel="noopener">coloc 문서</a></td></tr>
-              <tr><th>SNP 맞추기</th><td>SNP 식별자</td><td>두 dataset에 <b>모두 있는 SNP만</b> 계산 참여 → 결과와 함께 SNP 수(<code>nsnps</code>) 기록 <a class="src" href="https://chr1swallace.github.io/coloc/articles/a02_data.html" target="_blank" rel="noopener">coloc 문서</a></td></tr>
+              <tr><th>SNP 맞추기</th><td>SNP 식별자</td><td>두 dataset에 <b>모두 있는 SNP만</b> 계산에 들어감. 결과와 함께 SNP 수(<code>nsnps</code>) 기록 <a class="src" href="https://chr1swallace.github.io/coloc/articles/a02_data.html" target="_blank" rel="noopener">coloc 문서</a></td></tr>
               <tr><th>allele 방향</th><td>—</td><td>coloc.abf 단독은 두 dataset 사이 allele 정렬 불필요 · 다중 신호를 conditioning으로 나누려면 정렬 필요 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td></tr>
             </tbody>
           </table>
@@ -1304,7 +1304,7 @@
 
         <!-- ───────── 4. prior ───────── -->
         <h2 id="prior">prior p₁ · p₂ · p₁₂와 구간 크기<small>Priors scale with the region</small></h2>
-        <p class="lede">SNP 하나의 prior — p₁(trait 1만 causal) · p₂(trait 2만) · p₁₂(둘 다) <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a>. 가설 prior는 배치 수를 곱한 값 → H1·H2·H4는 n에 비례, H3는 n²에 비례 → 같은 p₁₂라도 <b>구간을 넓히면 H3 쪽으로 기울어짐</b> <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p>
+        <p class="lede">SNP 하나의 prior는 p₁(trait 1만 causal) · p₂(trait 2만) · p₁₂(둘 다) <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a>. 가설 prior는 배치 수를 곱한 값. H1·H2·H4는 n에 비례하고 H3는 n²에 비례해서, 같은 p₁₂라도 <b>구간을 넓히면 H3 쪽으로 기울어짐</b> <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p>
         <figure class="fig">
           <div class="fig-scroll">
 <!--GEN:PRIORN-->
@@ -1361,33 +1361,33 @@
 </svg>
 <!--/GEN:PRIORN-->
           </div>
-          <figcaption>곡선 = p₁₂ / ((n−1)·p₁·p₂) — 배치 수에서 바로 나오는 값(시뮬레이션 아님) · 점 = 두 prior가 같아지는 n <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></figcaption>
+          <figcaption>곡선 = p₁₂ / ((n−1)·p₁·p₂), 배치 수에서 바로 나오는 값(시뮬레이션 아님) · 점 = 두 prior가 같아지는 n <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></figcaption>
         </figure>
         <h3 class="subhd">값 정하기</h3>
         <div class="tblwrap">
           <table class="vtable">
             <thead><tr><th>prior</th><th>근거</th><th>정리</th></tr></thead>
             <tbody>
-              <tr><th>p₁ · p₂<span class="ko">한 trait의 causal</span></th><td>GTEx whole blood eQTL(common SNP · 약 1 Mb 창) → 10⁻⁴ 근처 · GWAS Catalog 대형 연구 hit 100–1,000개 / common SNP 약 200만 → 5×10⁻⁵–5×10⁻⁴ · p = 5×10⁻⁸에서 prior 10⁻⁴ → 연관 사후확률 ≥ 0.94 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td><td>세 경로가 10⁻⁴ 크기로 수렴 → 기본값 10⁻⁴ 지지</td></tr>
-              <tr><th>p₁₂<span class="ko">두 trait 공유</span></th><td>기본값 10⁻⁵ → H3로 만든 데이터에서도 H4 지지가 나오는 경향(특히 작은 표본) → 5×10⁻⁶이 더 견고 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> <a class="src" href="https://doi.org/10.1371/journal.pgen.1012155" target="_blank" rel="noopener">Correction 2026</a></td><td>trait 쌍(조직·세포형 포함)마다 달라야 할 값 → 근거 기록 + 민감도 분석</td></tr>
+              <tr><th>p₁ · p₂<span class="ko">한 trait의 causal</span></th><td>GTEx whole blood eQTL(common SNP · 약 1 Mb 창) 에서 10⁻⁴ 근처 · GWAS Catalog 대형 연구 hit 100–1,000개 / common SNP 약 200만이면 5×10⁻⁵–5×10⁻⁴ · p = 5×10⁻⁸에서 prior 10⁻⁴이면 연관 사후확률 ≥ 0.94 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td><td>세 경로가 10⁻⁴ 크기로 수렴해서 기본값 10⁻⁴를 지지함</td></tr>
+              <tr><th>p₁₂<span class="ko">두 trait 공유</span></th><td>기본값 10⁻⁵에서는 H3로 만든 데이터에서도 H4 지지가 나오는 경향(특히 작은 표본). 5×10⁻⁶이 더 견고 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> <a class="src" href="https://doi.org/10.1371/journal.pgen.1012155" target="_blank" rel="noopener">Correction 2026</a></td><td>trait 쌍(조직·세포형 포함)마다 달라야 할 값. 근거 기록 + 민감도 분석</td></tr>
               <tr><th>p₁₂ 범위<span class="ko">q = p + p₁₂</span></th><td>상한 p₁₂ &lt; min(q₁, q₂) · 하한 q₁q₂/f &lt; p₁₂(f = 기능 유전체 비율) · 두 GWAS면 |r<sub>g</sub>|·√(q₁q₂) &lt; p₁₂ <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td><td>공유는 한쪽 causal보다 흔할 수 없음 · 독립인 두 trait의 우연한 겹침보다는 흔함</td></tr>
-              <tr><th>p₁₂ 읽기<span class="ko">조건부 비율로</span></th><td>p₁₂ = q₁|₂ × q₂ — “trait 2 causal SNP 중 trait 1에도 causal인 비율” × q₂ <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> · p₁ = 10⁻⁴일 때 p₁₂ = 10⁻⁶ ↔ trait 1 연관 SNP 100개 중 1개가 trait 2에도 연관 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></td><td>10⁻⁵ ↔ 10개 중 1개 · per-SNP ↔ per-가설 환산 앱 <a class="src" href="https://chr1swallace.shinyapps.io/coloc-priors" target="_blank" rel="noopener">coloc explorer</a></td></tr>
+              <tr><th>p₁₂ 읽기<span class="ko">조건부 비율로</span></th><td>p₁₂ = q₁|₂ × q₂, 즉 ‘trait 2 causal SNP 중 trait 1에도 causal인 비율’ × q₂ <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> · p₁ = 10⁻⁴일 때 p₁₂ = 10⁻⁶ ↔ trait 1 연관 SNP 100개 중 1개가 trait 2에도 연관 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></td><td>10⁻⁵ ↔ 10개 중 1개 · per-SNP ↔ per-가설 환산 앱 <a class="src" href="https://chr1swallace.shinyapps.io/coloc-priors" target="_blank" rel="noopener">coloc explorer</a></td></tr>
             </tbody>
           </table>
         </div>
         <div class="callout">
-          <h4>정정 주의 — Wallace 2020 Discussion의 “5×10⁻⁵”</h4>
-          <p>원문 Discussion 문장의 권장값 <b>5×10⁻⁵는 오기</b> → 2026-05-19 correction에서 <b>5×10⁻⁶</b>으로 정정 (Results 본문은 처음부터 5×10⁻⁶) · 같은 correction에서 S1 Fig도 교체 <a class="src" href="https://doi.org/10.1371/journal.pgen.1012155" target="_blank" rel="noopener">Correction 2026</a> <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p>
+          <h4>정정 주의: Wallace 2020 Discussion의 ‘5×10⁻⁵’</h4>
+          <p>원문 Discussion 문장의 권장값 <b>5×10⁻⁵는 오기</b>. 2026-05-19 correction에서 <b>5×10⁻⁶</b>으로 정정 (Results 본문은 처음부터 5×10⁻⁶) · 같은 correction에서 S1 Fig도 교체 <a class="src" href="https://doi.org/10.1371/journal.pgen.1012155" target="_blank" rel="noopener">Correction 2026</a> <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p>
         </div>
         <div class="callout blue">
-          <h4>SNP마다 다른 prior — variant-specific prior (coloc 6.0.0)</h4>
-          <p>모든 SNP에 같은 p₁·p₂ 대신 SNP별 가중치(<code>prior_weights1</code> · <code>prior_weights2</code>) · 가설 prior 총량은 그대로 유지 · 출처 6가지 중 <b>eQTL–TSS 거리 밀도</b>가 가장 나음 → GWAS–eQTL에서 쓰기를 권장 <a class="src" href="https://doi.org/10.1371/journal.pgen.1011697" target="_blank" rel="noopener">Pullin 2025</a></p>
-          <p>효과는 작음 — pQTL–eQTL 정답 비교에서 recall 최대 +0.04 · precision 최대 +0.03(0.8 기준) · 80% 넘는 locus에서 |ΔPP4| &lt; 0.01. 같은 GWAS 신호가 <i>NEK6</i>·<i>PSMB7</i> eQTL 둘 다와 colocalize → 거리 prior 적용 시 <i>PSMB7</i> PP4 0.42 · <i>NEK6</i> 0.98 → <i>NEK6</i> 쪽 · 가중치는 한 trait에만, 근거 공개 <a class="src" href="https://doi.org/10.1371/journal.pgen.1011697" target="_blank" rel="noopener">Pullin 2025</a></p>
+          <h4>SNP마다 다른 prior: variant-specific prior (coloc 6.0.0)</h4>
+          <p>모든 SNP에 같은 p₁·p₂ 대신 SNP별 가중치(<code>prior_weights1</code> · <code>prior_weights2</code>) · 가설 prior 총량은 그대로 유지 · 출처 6가지 중 <b>eQTL–TSS 거리 밀도</b>가 가장 나아서 GWAS–eQTL에서 쓰기를 권장 <a class="src" href="https://doi.org/10.1371/journal.pgen.1011697" target="_blank" rel="noopener">Pullin 2025</a></p>
+          <p>효과는 작음. pQTL–eQTL 정답 비교에서 recall 최대 +0.04 · precision 최대 +0.03(0.8 기준) · 80% 넘는 locus에서 |ΔPP4| &lt; 0.01. 같은 GWAS 신호가 <i>NEK6</i>·<i>PSMB7</i> eQTL 둘 다와 colocalize함. 거리 prior를 적용하면 <i>PSMB7</i> PP4 0.42 · <i>NEK6</i> 0.98로 <i>NEK6</i> 쪽 · 가중치는 한 trait에만, 근거 공개 <a class="src" href="https://doi.org/10.1371/journal.pgen.1011697" target="_blank" rel="noopener">Pullin 2025</a></p>
         </div>
 
         <!-- ───────── 5. 민감도 ───────── -->
-        <h2 id="sensitivity">민감도 분석 — p₁₂를 바꿔도 결론이 남는가<small>Sensitivity analysis</small></h2>
-        <p class="lede">p₁₂를 한 값으로 정하기 어려움 → 그럴듯한 범위를 훑어 결론이 유지되는지 확인 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a>. 데이터를 다시 돌릴 필요 없음 — 기존 사후확률 × (새 prior / 옛 prior) → 다시 정규화 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> · coloc <code>sensitivity()</code> <a class="src" href="https://chr1swallace.github.io/coloc/articles/a04_sensitivity.html" target="_blank" rel="noopener">coloc 문서</a></p>
+        <h2 id="sensitivity">민감도 분석: p₁₂를 바꿔도 결론이 남는가<small>Sensitivity analysis</small></h2>
+        <p class="lede">p₁₂를 한 값으로 정하기 어려우므로 그럴듯한 범위를 훑어 결론이 유지되는지 확인 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a>. 데이터를 다시 돌릴 필요 없음. 기존 사후확률 × (새 prior / 옛 prior) → 다시 정규화 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> · coloc <code>sensitivity()</code> <a class="src" href="https://chr1swallace.github.io/coloc/articles/a04_sensitivity.html" target="_blank" rel="noopener">coloc 문서</a></p>
         <figure class="fig" id="fig-sens" data-mode="robust">
           <div class="fig-tools">
             <div class="seg" data-fig="fig-sens" role="group" aria-label="locus">
@@ -3112,13 +3112,13 @@
         </figure>
         <div class="callout">
           <h4>왜 흔들리나 — LD로 묶인 SNP이 많을 때</h4>
-          <p>강한 LD로 묶인 SNP k개의 Bayes factor가 비슷 → 데이터가 “k개 중 같은 SNP(H4)”과 “k개 중 서로 다른 두 SNP(H3)”을 구분 못함 → 배치 수 k(k−1) 대 k → <b>prior가 결론을 정함</b>. 이 페이지 예: trait 1 lead와 r² ≥ 0.8인 SNP <!--GEN:FRAG_K-->90<!--/GEN:FRAG_K-->개 → PP4 <!--GEN:FRAG_PP-->0.91 → 0.50<!--/GEN:FRAG_PP-->(p₁₂ 10⁻⁵ → 10⁻⁶).</p>
-          <p>실제 사례 — <i>ANGPTL3</i> liver eQTL ↔ LDL: 강하게 연관된 변이 98개 · 신호 모양은 일치 → p₁₂를 10⁻⁵ 대신 10⁻⁶으로 쓰면 PP4 91% → 49% <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></p>
+          <p>강한 LD로 묶인 SNP k개의 Bayes factor가 비슷하면, 데이터가 k개 중 같은 SNP(H4)과 k개 중 서로 다른 두 SNP(H3)을 구분하지 못함. 배치 수만 k(k−1) 대 k로 남아서 <b>prior가 결론을 정함</b>. 이 페이지 예: trait 1 lead와 r² ≥ 0.8인 SNP <!--GEN:FRAG_K-->90<!--/GEN:FRAG_K-->개에서 PP4 <!--GEN:FRAG_PP-->0.91 → 0.50<!--/GEN:FRAG_PP-->(p₁₂ 10⁻⁵ → 10⁻⁶).</p>
+          <p>실제 사례로 <i>ANGPTL3</i> liver eQTL ↔ LDL: 강하게 연관된 변이 98개 · 신호 모양은 일치하지만 p₁₂를 10⁻⁵ 대신 10⁻⁶으로 쓰면 PP4 91% → 49% <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></p>
         </div>
 
         <!-- ───────── 6. 다중 causal ───────── -->
         <h2 id="multiple">신호가 둘 이상일 때<small>Multiple causal variants</small></h2>
-        <p class="lede">single causal 가정이 깨지면 → coloc은 사실상 두 trait의 <b>가장 강한 신호끼리</b> 비교 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> → 2차 신호의 공유를 놓침(예: trait 1의 두 번째 신호만 trait 2와 공유) <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p>
+        <p class="lede">single causal 가정이 깨지면 coloc은 사실상 두 trait의 <b>가장 강한 신호끼리</b> 비교 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> → 2차 신호의 공유를 놓침(예: trait 1의 두 번째 신호만 trait 2와 공유) <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p>
         <figure class="fig" id="fig-multi" data-mode="single">
           <div class="fig-tools">
             <div class="seg" data-fig="fig-multi" role="group" aria-label="분석 방식">
@@ -4602,25 +4602,25 @@
           <table class="vtable">
             <thead><tr><th>방법</th><th>하는 일</th><th>필요한 것</th><th>주의</th></tr></thead>
             <tbody>
-              <tr><th>conditioning<span class="ko">CoJo 방식 stepwise</span></th><td>lead SNP에 조건부 효과 재추정 → 신호별 분리 → 신호쌍마다 coloc <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td><td>부호 있는 효과 + 같은 allele 방향의 LD 행렬</td><td>불확실한 첫 lead에 조건 → 오류가 이어짐 <a class="src" href="https://doi.org/10.1371/journal.pgen.1009440" target="_blank" rel="noopener">Wallace 2021</a></td></tr>
-              <tr><th>masking</th><td>다른 lead와 LD인 SNP을 가리고 비교 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td><td>LD 정보만(부호·정렬 불필요) · p-value로도 가능</td><td>causal 변이끼리 LD면 2차 비교에서 H4를 H3로 볼 수 있음 → 2차 H3 결론은 신중히 · H3를 H4로 잘못 보는 일은 드묾 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td></tr>
+              <tr><th>conditioning<span class="ko">CoJo 방식 stepwise</span></th><td>lead SNP에 조건을 걸어 효과를 다시 추정 → 신호별 분리 → 신호쌍마다 coloc <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td><td>부호 있는 효과 + 같은 allele 방향의 LD 행렬</td><td>첫 lead가 불확실하면 그 오류가 뒤로 이어짐 <a class="src" href="https://doi.org/10.1371/journal.pgen.1009440" target="_blank" rel="noopener">Wallace 2021</a></td></tr>
+              <tr><th>masking</th><td>다른 lead와 LD인 SNP을 가리고 비교 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td><td>LD 정보만(부호·정렬 불필요) · p-value로도 가능</td><td>causal 변이끼리 LD면 2차 비교에서 H4를 H3로 볼 수 있으므로 2차 H3 결론은 신중히 · H3를 H4로 잘못 보는 일은 드묾 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td></tr>
               <tr><th>coloc-SuSiE<span class="ko"><code>coloc.susie</code></span></th><td>SuSiE fine-mapping → 신호별 95% credible set → L₁ × L₂ 쌍마다 coloc <a class="src" href="https://doi.org/10.1371/journal.pgen.1009440" target="_blank" rel="noopener">Wallace 2021</a></td><td>LD 행렬</td><td>conditioning보다 정확 · credible set을 못 찾으면 single coloc으로 대신하는 <b>hybrid</b> 권장 <a class="src" href="https://doi.org/10.1371/journal.pgen.1009440" target="_blank" rel="noopener">Wallace 2021</a></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="lede" style="margin-top:12px">자기 랩 데이터(정보 완전) × 공개 GWAS(정보 부족) 조합 → 전자는 conditioning, 후자는 masking <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> · SuSiE로도 모든 causal 변이를 찾는 것은 아님 → 놓친 신호는 비교에서 빠짐 <a class="src" href="https://doi.org/10.1371/journal.pgen.1009440" target="_blank" rel="noopener">Wallace 2021</a></p>
+        <p class="lede" style="margin-top:12px">자기 랩 데이터(정보 완전)와 공개 GWAS(정보 부족)를 함께 쓰면 전자는 conditioning, 후자는 masking <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> · SuSiE로도 모든 causal 변이를 찾는 것은 아니어서 놓친 신호는 비교에서 빠짐 <a class="src" href="https://doi.org/10.1371/journal.pgen.1009440" target="_blank" rel="noopener">Wallace 2021</a></p>
         <a class="more" href="../index.html#article/fine-mapping">fine-mapping · credible set 용어 카드 →</a>
 
         <!-- ───────── 7. 결과 읽기 ───────── -->
-        <h2 id="read">결과 읽기 — 흔한 오해<small>Reading PP0–PP4</small></h2>
+        <h2 id="read">결과 읽기의 흔한 오해<small>Reading PP0–PP4</small></h2>
         <div class="fixlist">
-          <div class="fix"><code>PP4 높음 = 원인 유전자 확정 ✗</code><p class="why">공유 변이의 근거일 뿐 — 상관이지 인과 아님 · 한 변이가 여러 유전자 발현을 바꾸면 구간의 여러 유전자가 모두 PP4 높게 나옴(예: <i>SORT1</i> 구간) <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a> · 인과 확정은 CRISPR 등 실험 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p></div>
-          <div class="fix"><code>PP4 낮음 = 공유하지 않음 ✗</code><p class="why">PP3도 낮고 PP0 · PP1 · PP2가 크면 → power 부족 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a> · 맞는 조직·상태를 측정하지 않았을 가능성 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> → PP0–PP4 다섯 값을 모두 보고</p></div>
-          <div class="fix"><code>PP4 / (PP3 + PP4)만 보고 ✗</code><p class="why">정의상 “두 trait 모두 연관”을 전제한 조건부 비율 → PP0–PP2에 몰린 locus도 높게 나올 수 있음 → 다섯 값과 함께</p></div>
-          <div class="fix"><code>기본 prior 그대로 ✗</code><p class="why">2018년 coloc 응용 논문 25편 중 22편이 기본값 사용 · p₁₂는 trait 쌍마다 달라야 함 → 선택 근거 + 민감도 분석을 결과와 함께 제시 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p></div>
-          <div class="fix"><code>구간은 넓을수록 안전 ✗</code><p class="why">SNP 수 n ↑ → H3 prior ∝ n² → 같은 p₁₂로도 H3 쪽으로 기울어짐(위 prior 그림) <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> · 옆의 독립 신호까지 들어오면 single causal 가정도 깨짐</p></div>
-          <div class="fix"><code>causal 변이가 패널에 없어도 됨 ✗</code><p class="why">causal 변이가 genotyping·imputation에서 빠지면 PP4 분산이 커지고 낮아지는 경향 · 줄어든 몫은 PP3보다 PP0–PP2로 → power 손실로 나타남 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a> · 두 dataset 공통 SNP만 쓰이므로 <span class="mono">nsnps</span> 확인 <a class="src" href="https://chr1swallace.github.io/coloc/articles/a02_data.html" target="_blank" rel="noopener">coloc 문서</a></p></div>
-          <div class="fix"><code>PP4 &gt; 0.8이 정해진 기준 ✗</code><p class="why">고정 기준 없음 — 0.8이 널리 쓰임 <a class="src" href="https://doi.org/10.1371/journal.pgen.1011697" target="_blank" rel="noopener">Pullin 2025</a> · 원 논문은 75% <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a> · 0.5 규칙 예 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> → 기준과 이유를 함께 기록</p></div>
+          <div class="fix"><code>PP4 높음 = 원인 유전자 확정 ✗</code><p class="why">공유 변이의 근거일 뿐이고 인과는 아님 · 한 변이가 여러 유전자 발현을 바꾸면 구간의 여러 유전자가 모두 PP4 높게 나옴(예: <i>SORT1</i> 구간) <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a> · 인과 확정은 CRISPR 등 실험 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p></div>
+          <div class="fix"><code>PP4 낮음 = 공유하지 않음 ✗</code><p class="why">PP3도 낮고 PP0 · PP1 · PP2가 크면 power 부족 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a> · 맞는 조직·상태를 측정하지 않았을 가능성 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> · PP0–PP4 다섯 값을 모두 보고</p></div>
+          <div class="fix"><code>PP4 / (PP3 + PP4)만 보고 ✗</code><p class="why">정의상 “두 trait 모두 연관”을 전제한 조건부 비율이어서 PP0–PP2에 몰린 locus도 높게 나올 수 있음 · 다섯 값과 함께</p></div>
+          <div class="fix"><code>기본 prior 그대로 ✗</code><p class="why">2018년 coloc 응용 논문 25편 중 22편이 기본값 사용 · p₁₂는 trait 쌍마다 달라야 함 · 선택 근거 + 민감도 분석을 결과와 함께 제시 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p></div>
+          <div class="fix"><code>구간은 넓을수록 안전 ✗</code><p class="why">SNP 수 n이 늘면 H3 prior가 n²에 비례해 커져서 같은 p₁₂로도 H3 쪽으로 기울어짐(위 prior 그림) <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> · 옆의 독립 신호까지 들어오면 single causal 가정도 깨짐</p></div>
+          <div class="fix"><code>causal 변이가 패널에 없어도 됨 ✗</code><p class="why">causal 변이가 genotyping·imputation에서 빠지면 PP4 분산이 커지고 낮아지는 경향 · 줄어든 몫은 PP3보다 PP0–PP2로 가서 power 손실로 나타남 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a> · 두 dataset 공통 SNP만 쓰이므로 <span class="mono">nsnps</span> 확인 <a class="src" href="https://chr1swallace.github.io/coloc/articles/a02_data.html" target="_blank" rel="noopener">coloc 문서</a></p></div>
+          <div class="fix"><code>PP4 &gt; 0.8이 정해진 기준 ✗</code><p class="why">고정 기준 없음. 0.8이 널리 쓰임 <a class="src" href="https://doi.org/10.1371/journal.pgen.1011697" target="_blank" rel="noopener">Pullin 2025</a> · 원 논문은 75% <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a> · 0.5 규칙 예 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a> · 기준과 이유를 함께 기록</p></div>
         </div>
 
         <!-- ───────── 8. 비교 ───────── -->
@@ -4633,13 +4633,13 @@
               <tr><th>coloc + conditioning · masking</th><td>신호 여러 개 · LD를 한쪽만 가졌을 때 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td><td>conditioning = 부호·LD / masking = LD</td><td>masking은 근사 · 2차 H3 신중</td></tr>
               <tr><th>coloc-SuSiE<span class="ko"><code>coloc.susie</code></span></th><td>신호 여러 개 <a class="src" href="https://doi.org/10.1371/journal.pgen.1009440" target="_blank" rel="noopener">Wallace 2021</a></td><td>LD 행렬</td><td>credible set 없으면 hybrid로 single coloc</td></tr>
               <tr><th>variant-specific prior<span class="ko">coloc ≥ 6.0.0</span></th><td>GWAS–eQTL · 유전자 위치 정보 활용 <a class="src" href="https://doi.org/10.1371/journal.pgen.1011697" target="_blank" rel="noopener">Pullin 2025</a></td><td>SNP별 가중치(예: eQTL–TSS 거리)</td><td>효과 작음 · 한 trait에만 권장</td></tr>
-              <tr><th>HyPrColoc</th><td>trait 3개 이상 동시 → 공유 trait 묶음(cluster) <a class="src" href="https://doi.org/10.1038/s41467-020-20885-8" target="_blank" rel="noopener">Foley 2021</a></td><td>summary statistics</td><td>trait마다 causal 최대 1개 가정 <a class="src" href="https://doi.org/10.1038/s41467-020-20885-8" target="_blank" rel="noopener">Foley 2021</a></td></tr>
-              <tr><th>eCAVIAR</th><td>두 trait의 fine-mapping 사후확률 통합 → 다중 causal 허용 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td><td>LD 행렬에 정렬된 부호 있는 효과 · 같은 집단</td><td>공유 대 별개의 prior 지정 불가 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td></tr>
-              <tr><th>SMR · HEIDI</th><td>MR 기반 → 이질성 검정으로 거름 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td><td>—</td><td>MR 가정 위의 접근 — coloc은 MR 가정 없음 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td></tr>
+              <tr><th>HyPrColoc</th><td>trait 3개 이상을 동시에 비교해 공유 trait 묶음(cluster)을 찾을 때 <a class="src" href="https://doi.org/10.1038/s41467-020-20885-8" target="_blank" rel="noopener">Foley 2021</a></td><td>summary statistics</td><td>trait마다 causal 최대 1개 가정 <a class="src" href="https://doi.org/10.1038/s41467-020-20885-8" target="_blank" rel="noopener">Foley 2021</a></td></tr>
+              <tr><th>eCAVIAR</th><td>두 trait의 fine-mapping 사후확률을 합치고 다중 causal을 허용할 때 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td><td>LD 행렬에 정렬된 부호 있는 효과 · 같은 집단</td><td>공유 대 별개의 prior 지정 불가 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td></tr>
+              <tr><th>SMR · HEIDI</th><td>MR을 기반으로 이질성 검정으로 거를 때 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td><td>—</td><td>MR 가정 위의 접근(coloc은 MR 가정 없음) <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="lede" style="margin-top:12px">coloc = <b>같은 변이를 공유하는가</b> · MR = <b>한 trait이 다른 trait의 원인인가</b> — 묻는 것이 다름 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p>
+        <p class="lede" style="margin-top:12px">coloc = <b>같은 변이를 공유하는가</b> · MR = <b>한 trait이 다른 trait의 원인인가</b>. 묻는 것이 다름 <a class="src" href="https://doi.org/10.1371/journal.pgen.1008720" target="_blank" rel="noopener">Wallace 2020</a></p>
         <a class="more" href="../index.html#article/mr">Mendelian randomization 용어 카드 →</a>
 
         <details class="aliases-fold"><summary>별칭 · 약어</summary>
@@ -4679,7 +4679,7 @@
   </main>
 
   <footer>
-    <div class="container"><span><!--GEN:STAMP-->Updated 2026-10-18<!--/GEN:STAMP--></span></div>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-09<!--/GEN:STAMP--></span></div>
   </footer>
   <script src="../../assets/js/article-page.js"></script>
   <script src="../glossary.js"></script>

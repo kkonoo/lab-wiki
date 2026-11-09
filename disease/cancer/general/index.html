@@ -33,110 +33,110 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container"><span>Updated 2026-06-30</span></div>
+    <div class="container"><span>Updated 2026-11-09</span></div>
   </footer>
 
   <script>
     const sections = {
       "cause":{"number":"01","title":"원인 — 암은 어떻게 생기는가","english":"WHAT MAKES A CANCER","accent":"#6f3a55","summary":"Hallmarks · Somatic evolution · Driver 변이 · 분자 subtype · TMB/MSI","groups":[
-        {"q":"암은 어떤 공통 능력을 획득하는가?","note":"Hallmarks of cancer — 표현형 수준의 공통 좌표계","items":[
+        {"q":"암은 어떤 공통 능력을 획득하는가?","note":"Hallmarks of cancer: 암종이 달라도 표현형 수준에서 공유되는 능력","items":[
           ["hallmarks","Hallmarks of Cancer","암이 공통으로 획득하는 8개 기능 능력과 2개 토대"],
-          ["somatic-evolution","암 = 체세포 진화","clone들이 다양화·선택되는 진화 과정"]
+          ["somatic-evolution","체세포 진화로서의 암","clone들이 다양화·선택되는 진화 과정"]
         ]},
-        {"q":"종양 유전체를 읽으면 무엇이 보이는가?","note":"TCGA 분자초상 — subtype과 driver","items":[
+        {"q":"종양 유전체를 읽으면 무엇이 보이는가?","note":"TCGA가 보여 주는 subtype과 driver","items":[
           ["molecular-subtype","분자 subtype (TCGA)","여러 플랫폼이 수렴하는 분자 분류"],
           ["cancer-drivers","Driver 변이 & SMG","적고 subtype-특이적인 추동 변이"]
         ]},
-        {"q":"변이부하는 어떻게 생기고 왜 중요한가?","note":"체세포 변이 → neoantigen → 면역인식","items":[
+        {"q":"변이부하는 어떻게 생기고 왜 중요한가?","note":"체세포 변이 → neoantigen → 면역인식 순서","items":[
           ["tmb-msi","TMB · MSI / dMMR","변이부하 기반 면역치료 예측 바이오마커"]
         ]}
       ]},
-      "progression":{"number":"02","title":"진행·미세환경 — 자라고 면역을 피하다","english":"HOW THE TUMOR GROWS AND EVADES","accent":"#315d78","summary":"Immune evasion · Immunometabolism · 단일세포·공간 종양 생태계","groups":[
-        {"q":"암은 면역을 어떻게 회피하는가?","note":"면역파괴 회피 — Hallmarks의 핵심 능력","items":[
-          ["immune-evasion","면역파괴 회피","종양이 항암 T세포 반응을 억누르는 능력"]
+      "progression":{"number":"02","title":"진행·미세환경 — 자라고 면역을 피하다","english":"HOW THE TUMOR GROWS AND EVADES","accent":"#315d78","summary":"Immune evasion · Immunometabolism · 단일세포와 공간으로 본 종양 생태계","groups":[
+        {"q":"암은 면역을 어떻게 회피하는가?","note":"Hallmarks에 포함된 면역파괴 회피 능력","items":[
+          ["immune-evasion","면역파괴 회피","종양이 항암 T세포 반응을 억제하는 능력"]
         ]},
         {"q":"미세환경의 대사가 면역을 어떻게 바꾸는가?","note":"포도당 경쟁과 checkpoint의 대사 효과","items":[
-          ["tumor-metabolism","종양미세환경의 대사","종양과 T세포의 glucose 경쟁이 면역을 좌우"]
+          ["tumor-metabolism","종양미세환경의 대사","종양과 T세포가 glucose를 두고 경쟁함"]
         ]},
         {"q":"단일세포·공간으로 종양 생태계를 어떻게 읽는가?","note":"clone · state · 공간의 결합","items":[
-          ["tumor-ecosystem-single-cell","단일세포·공간으로 본 종양 생태계","bulk가 가리던 이질성과 공간 배치를 분해"]
+          ["tumor-ecosystem-single-cell","단일세포·공간으로 본 종양 생태계","bulk에서 섞여 보이던 이질성과 공간 배치를 분해함"]
         ]}
       ]},
       "treatment":{"number":"03","title":"치료 — 면역을 종양에 겨누다","english":"TURNING IMMUNITY AGAINST THE TUMOR","accent":"#1f5d43","summary":"Immune checkpoint blockade · 차세대 modality · 예측 바이오마커","groups":[
-        {"q":"면역을 어떻게 다시 종양에 겨누는가?","note":"관문 차단에서 차세대 modality까지","items":[
-          ["checkpoint-blockade","Immune checkpoint blockade (ICI)","T세포의 brake를 제거해 항암 반응을 풀어준다"],
-          ["next-gen-immunotherapy","차세대 면역치료 modality","engager · ADC · cytokine 표적으로 확장"]
+        {"q":"면역을 어떻게 다시 종양에 겨누는가?","note":"관문 차단과 차세대 modality","items":[
+          ["checkpoint-blockade","Immune checkpoint blockade (ICI)","T세포의 brake를 제거해 항암 반응을 되살림"],
+          ["next-gen-immunotherapy","차세대 면역치료 modality","engager와 ADC, cytokine 표적으로 확장됨"]
         ]},
         {"q":"누가 면역치료에 반응하는가?","note":"예측 바이오마커의 가능성과 한계","items":[
-          ["predictive-biomarkers","면역치료 예측 바이오마커","PD-L1·TMB·MSI — 단독으로는 불완전"]
+          ["predictive-biomarkers","면역치료 예측 바이오마커","PD-L1과 TMB, MSI 모두 단독으로는 불완전함"]
         ]}
       ]}
     };
     const articleRows = [
       ["hallmarks","Hallmarks of Cancer",["hallmarks of cancer","functional capability","enabling characteristic"],"cause",
-       "정상세포가 악성 종양으로 가며 획득하는 공통 기능 능력의 집합 — 암의 방대한 복잡성을 압축한 개념틀",
-       [["8개 hallmark 능력",["증식신호 유지·성장억제 회피·세포사 저항·복제 불멸","혈관 유도(angiogenesis)·침습/전이","세포대사 재프로그램·면역파괴 회피(avoiding immune destruction)"]],
-        ["이를 가능케 하는 토대 (enabling)",["genome instability & mutation — 변이가 능력 획득의 재료","tumor-promoting inflammation — 염증이 발암을 돕는 환경","암종·subtype이 달라도 표현형 수준에서 공유되는 공통 좌표계"]]],
+       "정상세포가 악성 종양으로 가며 획득하는 공통 기능 능력의 집합. 암의 복잡성을 몇 가지 능력으로 정리한 개념틀",
+       [["8개 hallmark 능력",["증식신호 유지, 성장억제 회피, 세포사 저항, 복제 불멸","혈관 유도(angiogenesis)·침습/전이","세포대사 재프로그램·면역파괴 회피(avoiding immune destruction)"]],
+        ["이를 가능케 하는 토대 (enabling)",["genome instability & mutation: 변이가 능력 획득의 재료가 됨","tumor-promoting inflammation: 염증이 발암을 돕는 환경을 만듦","암종과 subtype이 달라도 표현형 수준에서는 공유됨"]]],
        ["somatic-evolution","tmb-msi","immune-evasion"]],
 
-      ["somatic-evolution","암 = 체세포 진화",["somatic evolution","clonal evolution","tumor heterogeneity"],"cause",
+      ["somatic-evolution","체세포 진화로서의 암",["somatic evolution","clonal evolution","tumor heterogeneity"],"cause",
        "종양 세포 집단이 유전·비유전 형질에서 다양화하고 선택을 거쳐 진행·전이·치료내성으로 가는 진화 과정",
-       [["진화로서의 암",["종양은 한 덩어리가 아니라 형질이 다양한 세포 집단(clone)들의 진화 무대","유전적 driver만으로 진행·전이·내성을 설명하기 부족 — 비유전적 기여가 큼","단일세포가 이 진화의 원자 단위(atomic unit)"]],
-        ["유전 + 비유전 두 축",["유전: copy number·SNV 등으로 clone phylogeny를 추적","비유전: epigenetic 상태(self-renewal·plasticity)가 유전형과 분리돼 전파·선택될 수 있음","같은 clone이 서로 다른 transcriptional state를 점유하기도 함"]]],
+       [["진화로서의 암",["종양은 한 덩어리가 아니라 형질이 다양한 세포 집단(clone)들로 이루어짐","유전적 driver만으로는 진행과 전이, 내성을 설명하기 부족함. 비유전적 기여가 큼","단일세포가 이 진화의 원자 단위(atomic unit)"]],
+        ["유전 + 비유전 두 축",["유전: copy number와 SNV로 clone phylogeny를 추적함","비유전: epigenetic 상태(self-renewal, plasticity)가 유전형과 분리돼 전파되고 선택되기도 함","같은 clone이 서로 다른 transcriptional state를 점유하기도 함"]]],
        ["hallmarks","tumor-ecosystem-single-cell","molecular-subtype"]],
 
       ["molecular-subtype","분자 subtype (TCGA)",["molecular subtype","TCGA","intrinsic subtype","integrative clustering"],"cause",
-       "한 종양을 여러 오믹스 플랫폼으로 동시에 읽고 통합하면 발현·변이·methylation·단백이 수렴하는 분자 subtype이 드러난다",
-       [["통합이 만드는 분류",["exome·CNV·methylation·mRNA·miRNA·protein을 한 종양에서 함께 측정","유방암(BRCA)은 825명·6 플랫폼 분석에서 통합 시 4개 주요 class 확인 — 자세한 내용은 Cancer › BRCA 페이지 참고","intrinsic subtype(luminal A/B·HER2-enriched·basal-like)이 여러 층에서 뒷받침됨"]],
-        ["임상으로의 번역",["분자 subtype이 치료를 가름 — HR+ 내분비요법, HER2+ 항HER2 치료 등","암종을 가로지르는 공통성도 드러남(BRCA basal-like ↔ high-grade serous ovarian)","subtype은 유용한 근사이지 자연적 불연속 경계는 아님 — 내부 이질성은 단일세포가 보완"]]],
+       "한 종양을 여러 오믹스 플랫폼으로 함께 측정해 통합하면 발현과 변이, methylation, 단백이 수렴하는 분자 subtype이 드러난다",
+       [["통합이 만드는 분류",["exome, CNV, methylation, mRNA, miRNA, protein을 한 종양에서 함께 측정함","유방암(BRCA)은 825명을 6개 플랫폼으로 분석해 통합했을 때 4개 주요 class가 확인됨. 자세한 내용은 Cancer › BRCA 페이지 참고","intrinsic subtype(luminal A/B·HER2-enriched·basal-like)이 여러 층에서 뒷받침됨"]],
+        ["임상으로의 번역",["분자 subtype에 따라 치료가 갈림(HR+는 내분비요법, HER2+는 항HER2 치료)","암종을 가로지르는 공통성도 드러남(BRCA basal-like ↔ high-grade serous ovarian)","subtype은 유용한 근사이지 자연적 불연속 경계는 아님. 내부 이질성은 단일세포가 보완함"]]],
        ["cancer-drivers","tmb-msi","somatic-evolution"]],
 
       ["cancer-drivers","Driver 변이 & SMG",["driver mutation","significantly mutated gene","SMG","TP53","PIK3CA"],"cause",
-       "암을 추동하는 체세포 변이는 의외로 적고 subtype별로 갈리며, 통계적으로 유의하게 자주 변이되는 유전자(SMG)로 동정한다",
-       [["driver는 적고 subtype-특이적",["유방암에서 >10% 변이 유전자는 TP53·PIK3CA·GATA3 셋뿐","나머지는 subtype별로 갈림(luminal A=PIK3CA 빈번, basal=TP53 대다수)","대장암은 WNT(APC 등)·MYC 경로 중심에 표적 가능한 amplification(ERBB2 등)"]],
-        ["변이부하의 분자적 기원",["대장암의 약 16%는 hypermutated — 대부분 MSI-H(MLH1 silencing 동반)","나머지는 MMR 유전자 또는 POLE(중합효소 교정 결손) 변이로 초고변이","driver를 passenger와 구분하는 것이 표적·바이오마커의 출발점"]]],
+       "암을 추동하는 체세포 변이는 수가 적고 subtype별로 갈린다. 통계적으로 유의하게 자주 변이되는 유전자(SMG)로 동정한다",
+       [["driver는 적고 subtype-특이적",["유방암에서 >10%로 변이되는 유전자는 TP53, PIK3CA, GATA3 셋뿐","나머지는 subtype별로 갈림(luminal A=PIK3CA 빈번, basal=TP53 대다수)","대장암은 WNT(APC 등)와 MYC 경로가 중심이고, 표적 가능한 amplification(ERBB2 등)이 있음"]],
+        ["변이부하의 분자적 기원",["대장암의 약 16%는 hypermutated이고, 대부분 MSI-H(MLH1 silencing 동반)","나머지는 MMR 유전자 또는 POLE(중합효소 교정 결손) 변이로 초고변이","driver를 passenger와 구분하는 것이 표적·바이오마커의 출발점"]]],
        ["molecular-subtype","tmb-msi","hallmarks"]],
 
       ["tmb-msi","TMB · MSI / dMMR",["tumor mutational burden","TMB","MSI","dMMR","microsatellite instability"],"cause",
        "종양의 체세포 변이 양과 그 원인을 측정해 면역치료 반응을 예측하는 유전체 바이오마커",
-       [["무엇을 재나",["TMB(tumor mutational burden) — 종양당 체세포 변이 수(mutations/Mb)","MSI/dMMR — mismatch-repair(MLH1·MSH2 등) 결손으로 변이가 폭증한 상태","dMMR은 Lynch 증후군(germline) 또는 산발성 MLH1 promoter hypermethylation으로 발생"]],
-        ["왜 중요한가",["변이↑ → neoantigen(non-self 항원)↑ → T세포가 종양을 인식하기 쉬움","dMMR 종양은 암종 불문 PD-1 차단에 반응(dMMR CRC ORR 40% vs pMMR 0%)","조직 불문(tissue-agnostic) 면역치료 적응의 유전체 근거"]]],
+       [["무엇을 재나",["TMB(tumor mutational burden): 종양당 체세포 변이 수(mutations/Mb)","MSI/dMMR: mismatch-repair(MLH1, MSH2 등) 결손으로 변이가 크게 늘어난 상태","dMMR은 Lynch 증후군(germline) 또는 산발성 MLH1 promoter hypermethylation으로 발생"]],
+        ["왜 중요한가",["변이가 많으면 neoantigen(non-self 항원)도 늘어서 T세포가 종양을 인식하기 쉬움","dMMR 종양은 암종 불문 PD-1 차단에 반응(dMMR CRC ORR 40% vs pMMR 0%)","조직 불문(tissue-agnostic) 면역치료 적응증의 유전체 근거"]]],
        ["predictive-biomarkers","checkpoint-blockade","cancer-drivers"]],
 
       ["immune-evasion","면역파괴 회피",["immune evasion","avoiding immune destruction","immune escape"],"progression",
-       "종양이 항암 T세포 반응을 억눌러 면역 제거를 피하는 능력 — Hallmarks of cancer의 핵심 능력 중 하나",
-       [["무엇인가",["면역계가 종양을 인식·제거하려 하지만 종양은 이를 회피하는 능력을 획득","면역관문(PD-1/PD-L1 등)을 이용해 T세포에 brake를 거는 것이 대표 기전","Hallmarks of cancer의 core capability로 편입된 축"]],
-        ["치료로의 연결",["면역파괴 회피는 면역치료가 역전하려는 바로 그 표적","변이부하·neoantigen이 많을수록 면역 인식이 쉬워 회피 극복도 쉬움","미세환경(대사·기질·면역세포 상태)이 회피의 강도를 좌우"]]],
+       "종양이 항암 T세포 반응을 억제해 면역 제거를 피하는 능력. Hallmarks of cancer에 포함됨",
+       [["무엇인가",["면역계가 종양을 인식·제거하려 하지만 종양은 이를 회피하는 능력을 획득","면역관문(PD-1/PD-L1 등)을 이용해 T세포에 brake를 거는 것이 대표 기전","Hallmarks of cancer의 core capability로 편입됨"]],
+        ["치료로의 연결",["면역파괴 회피는 면역치료가 역전하려는 바로 그 표적","변이부하·neoantigen이 많을수록 면역 인식이 쉬워 회피 극복도 쉬움","미세환경(대사, 기질, 면역세포 상태)이 회피의 강도를 결정함"]]],
        ["checkpoint-blockade","tmb-msi","tumor-metabolism"]],
 
       ["checkpoint-blockade","Immune checkpoint blockade (ICI)",["immune checkpoint blockade","ICI","CTLA-4","PD-1","PD-L1"],"treatment",
        "T세포를 억제하는 면역관문(CTLA-4, PD-1/PD-L1)을 항체로 차단해, 종양이 억눌러 둔 항암 T세포 반응을 풀어주는 치료",
        [["작동 원리",["항원을 주는 게 아니라 T세포의 brake를 제거(unleash)한다는 점이 백신·세포치료와 다름","CTLA-4는 T세포 priming, PD-1/PD-L1은 effector 단계에서 brake로 작용","만성 항원의 T cell exhaustion 프로그램을 부분적으로 되돌리는 것과 개념적으로 연결"]],
-        ["효과와 한계",["전이 흑색종 등에서 일부 환자에게 durable·장기(10년+) 생존 제공","표적치료의 높지만 단기적인 반응과 대비되는 지속성","핵심 한계는 반응이 일부 환자에 국한 — 누가 반응하나가 중심 과제"]]],
+        ["효과와 한계",["전이 흑색종 등에서 일부 환자에게 durable·장기(10년+) 생존 제공","표적치료의 높지만 단기적인 반응과 대비되는 지속성","반응이 일부 환자에 국한된다는 한계가 있음. 누가 반응하는지가 다음 과제"]]],
        ["immune-evasion","next-gen-immunotherapy","predictive-biomarkers"]],
 
       ["next-gen-immunotherapy","차세대 면역치료 modality",["immune cell engager","ADC","bispecific","cytokine therapy"],"treatment",
-       "관문 차단을 넘어 immune cell engager·차세대 ADC·cytokine/chemokine 표적 등으로 면역치료 modality가 다변화되고 있다",
-       [["주요 modality",["Immune cell engager — 이중특이항체로 T세포(또는 NK·myeloid)를 종양에 재유도","차세대 ADC — bispecific·conditionally active·immune-stimulating 등으로 내성·독성 대응","cytokine/chemokine 표적 — IL·IFN·TGF-β 등 신호를 조절해 미세환경을 재편"]],
-        ["방향",["혈액암에서 성공한 engager를 고형암으로 확대하려는 시도","조합(표적치료 + ICI, modality 간 결합)이 공통된 다음 단계","사이토카인은 맥락에 따라 촉진/억제가 갈려 방향 설정이 과제"]]],
+       "관문 차단에 더해 immune cell engager, 차세대 ADC, cytokine/chemokine 표적 등으로 면역치료 modality가 다변화되고 있다",
+       [["주요 modality",["Immune cell engager: 이중특이항체로 T세포(또는 NK, myeloid)를 종양으로 유도함","차세대 ADC: bispecific, conditionally active, immune-stimulating 형태로 내성과 독성에 대응함","cytokine/chemokine 표적: IL과 IFN, TGF-β 신호를 조절해 미세환경을 바꿈"]],
+        ["방향",["혈액암에서 성공한 engager를 고형암으로 확대하려는 시도","표적치료와 ICI를 함께 쓰거나 modality를 결합하는 것이 공통된 다음 단계","사이토카인은 맥락에 따라 촉진/억제가 갈려 방향 설정이 과제"]]],
        ["checkpoint-blockade","tumor-metabolism","immune-evasion"]],
 
       ["predictive-biomarkers","면역치료 예측 바이오마커",["predictive biomarker","PD-L1","TMB","response prediction"],"treatment",
        "PD-L1 발현·TMB·MSI 등으로 면역치료 반응을 예측하지만, 어느 단일 지표도 완전하지 않다",
-       [["반응을 예측하는 지표",["PD-L1 발현 — 중요하지만 결정적이지 않은 지표","변이부하·neoantigen — dMMR/MSI-H, 흡연(폐)·UV(흑색종) 종양이 고변이·고반응","T세포 침윤·면역미세환경 상태(단일세포 근거)"]],
-        ["단독 지표의 한계",["TMB/MSI가 높아도 반응 안 하거나, 낮아도 반응하는 종양이 존재","panel별 TMB 산출·cutoff가 달라 cross-assay 비교가 어려움","복합 바이오마커(미세환경·항원제시·T세포 상태) 통합이 필요"]]],
+       [["반응을 예측하는 지표",["PD-L1 발현: 참고가 되지만 결정적이지는 않은 지표","변이부하와 neoantigen: dMMR/MSI-H 종양과 흡연(폐), UV(흑색종) 관련 종양이 변이가 많고 반응도 좋음","T세포 침윤과 면역미세환경 상태(단일세포 근거)"]],
+        ["단독 지표의 한계",["TMB/MSI가 높아도 반응 안 하거나, 낮아도 반응하는 종양이 존재","panel마다 TMB 산출 방식과 cutoff가 달라 cross-assay 비교가 어려움","미세환경과 항원제시, T세포 상태를 묶은 복합 바이오마커가 필요함"]]],
        ["tmb-msi","checkpoint-blockade","tumor-ecosystem-single-cell"]],
 
       ["tumor-metabolism","종양미세환경의 대사 (immunometabolism)",["immunometabolism","tumor microenvironment","glucose competition","TME"],"progression",
        "종양세포와 침윤 T세포는 포도당을 두고 경쟁하며, 이 대사 균형이 항암 면역의 세기를 좌우한다",
-       [["TME의 대사 경쟁",["종양세포의 높은 glucose 소비가 침윤 T세포(TIL)를 대사적으로 굶김","굶주린 T세포는 effector 기능이 억제되어 암 진행을 허용","대사가 면역세포의 기능·운명을 결정한다는 immunometabolism의 한 사례"]],
-        ["치료와의 접점",["checkpoint 차단이 종양세포 glycolysis를 낮춰 T세포에 glucose를 되돌려 기능 회복","면역치료의 한 작용점이 대사 균형 교정일 수 있음을 시사","memory T세포 형성은 fatty acid oxidation에 의존 — 대사 개입으로 면역 운명 조절 가능"]]],
+       [["TME의 대사 경쟁",["종양세포의 높은 glucose 소비가 침윤 T세포(TIL)를 대사적으로 굶김","굶주린 T세포는 effector 기능이 억제되어 암 진행을 허용","대사가 면역세포의 기능과 운명을 결정한다는 immunometabolism의 한 사례"]],
+        ["치료와의 접점",["checkpoint 차단이 종양세포 glycolysis를 낮춰 T세포에 glucose를 되돌려 기능 회복","면역치료의 한 작용점이 대사 균형 교정일 수 있음을 시사","memory T세포 형성은 fatty acid oxidation에 의존함. 대사에 개입해 면역 운명을 바꿀 수 있음"]]],
        ["checkpoint-blockade","immune-evasion","tumor-ecosystem-single-cell"]],
 
       ["tumor-ecosystem-single-cell","단일세포·공간으로 본 종양 생태계",["single-cell cancer","spatial","tumor ecosystem","plasticity"],"progression",
-       "단일세포·공간 멀티오믹스는 bulk가 가리던 clone 구조·세포 상태·공간 배치를 분해해 종양을 하나의 생태계로 읽는다",
-       [["bulk가 못 보는 것",["bulk 시퀀싱은 종양·면역·기질이 섞여 clonal 구조를 제한적으로만 분해","단일세포 해상도가 진짜 phylogeny·clone별 fitness·세포 상태 결합을 제공","같은 clone의 서로 다른 transcriptional state(plasticity)를 포착"]],
-        ["공간과 미세환경",["공간 위치 자체가 fitness의 heritable 차원(성장 경계·clonal mixing)","미세환경(면역·기질)이 subclone에 선택압으로 작용","spatial 단일세포 플랫폼으로 종양 생태계의 in situ 배치를 측정"]]],
+       "단일세포와 공간 멀티오믹스는 bulk에서 섞여 보이던 clone 구조와 세포 상태, 공간 배치를 분해해 종양을 하나의 생태계로 읽는다",
+       [["bulk가 못 보는 것",["bulk 시퀀싱은 종양·면역·기질이 섞여 clonal 구조를 제한적으로만 분해","단일세포 해상도에서는 phylogeny와 clone별 fitness, 세포 상태를 함께 볼 수 있음","같은 clone의 서로 다른 transcriptional state(plasticity)를 포착"]],
+        ["공간과 미세환경",["공간 위치 자체가 fitness의 heritable 차원(성장 경계·clonal mixing)","미세환경(면역·기질)이 subclone에 선택압으로 작용","spatial 단일세포 플랫폼으로 종양 생태계의 in situ 배치를 측정함"]]],
        ["somatic-evolution","tumor-metabolism","predictive-biomarkers"]]
     ];
 
@@ -171,14 +171,14 @@
 
     const glossaryTerms = {
       "neoantigen":{key:"neo",definition:"체세포 변이로 생긴 종양 특이 'non-self' 항원. 면역 인식의 표적이 됨."},
-      "tmb":{key:"tmb",definition:"Tumor mutational burden — 종양당 체세포 변이 수(mutations/Mb). 변이부하 지표."},
-      "msi":{key:"msi",definition:"Microsatellite instability — mismatch-repair 결손으로 microsatellite가 불안정해진 상태(MSI-H)."},
+      "tmb":{key:"tmb",definition:"Tumor mutational burden. 종양당 체세포 변이 수(mutations/Mb)로 변이부하를 나타냄."},
+      "msi":{key:"msi",definition:"Microsatellite instability. mismatch-repair 결손으로 microsatellite가 불안정해진 상태(MSI-H)."},
       "dmmr":{key:"dmmr",definition:"DNA mismatch-repair 결손. MSI/hypermutation의 주요 원인."},
       "driver":{key:"driver",definition:"종양 진행을 추동하는 체세포 변이(↔ 부수적 passenger 변이)."},
       "checkpoint":{key:"ckpt",definition:"T세포를 억제하는 면역관문 수용체(CTLA-4·PD-1 등). 차단이 면역치료의 표적."},
       "hallmark":{key:"hallmark",definition:"암이 공통으로 획득하는 기능 능력(functional capability)."},
-      "tme":{key:"tme",definition:"Tumor microenvironment — 종양세포 주변의 면역·기질·혈관 환경."},
-      "glycolysis":{key:"glyco",definition:"포도당을 분해해 에너지를 얻는 대사경로. 활성 T세포·종양세포가 의존."},
+      "tme":{key:"tme",definition:"Tumor microenvironment. 종양세포 주변의 면역, 기질, 혈관 환경."},
+      "glycolysis":{key:"glyco",definition:"포도당을 분해해 에너지를 얻는 대사경로. 활성 T세포와 종양세포가 의존."},
       "exhaustion":{key:"exh",definition:"만성 항원 노출로 CD8⁺ T세포가 effector 기능을 잃는 상태."}
     };
     const glossaryPattern = /(^|[^A-Za-z0-9])(neoantigen|glycolysis|exhaustion|checkpoint|hallmark|driver|dMMR|TMB|MSI|TME)(?=$|[^A-Za-z0-9])/g;
@@ -223,7 +223,7 @@
       document.title = "General Cancer";
       app.innerHTML = '<section class="hero"><div class="container">' +
         '<p class="eyebrow">Cancer disease knowledge base</p><h1>General Cancer</h1>' +
-        '<p class="hero-copy">원인(hallmarks·종양 유전체) · 진행(면역회피·미세환경) · 치료(면역치료)</p>' +
+        '<p class="hero-copy">원인(hallmarks, 종양 유전체) · 진행(면역회피, 미세환경) · 치료(면역치료)</p>' +
         '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="General Cancer 통합 검색" placeholder="Search: hallmark, TMB, MSI, checkpoint, neoantigen"><span class="search-icon">⌕</span></form>' +
         '<p class="search-hint">Korean / English / acronym</p></div></section>' +
         '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>질문을 따라 큰 구조부터 살펴보세요.</p></div>' +

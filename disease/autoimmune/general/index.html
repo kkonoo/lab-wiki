@@ -7,7 +7,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="자가면역의 공통 유전 구조 — HLA·보체·조절 변이·세포타입 유전학과 약물 번역을 질문으로 탐색하는 HaLab Wiki">
+  <meta name="description" content="자가면역의 공통 유전 구조(HLA·보체·조절 변이·세포타입 유전학)와 약물 개발로의 연결을 질문으로 탐색하는 HaLab Wiki">
   <title>General Autoimmune · HaLab Wiki</title>
   <link rel="stylesheet" href="../../../assets/css/base.css">
   <link rel="stylesheet" href="../../../assets/css/spa.css">
@@ -33,58 +33,58 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container"><span>Updated 2026-06-30</span></div>
+    <div class="container"><span>Updated 2026-11-09</span></div>
   </footer>
 
   <script>
     const sections = {
-      "cause":{"number":"01","title":"원인 — 유전 구조 (HLA·보체)","english":"WHERE THE RISK COMES FROM","accent":"#6f3a55","summary":"MHC 지배 · 아미노산 fine-mapping · C4 copy number · 성차","groups":[
+      "cause":{"number":"01","title":"원인: 유전 구조 (HLA·보체)","english":"WHERE THE RISK COMES FROM","accent":"#6f3a55","summary":"MHC 지배 · 아미노산 fine-mapping · C4 copy number · 성차","groups":[
         {"q":"자가면역 위험은 유전적으로 어디서 오는가?","note":"MHC가 압도적, 그 안의 HLA와 비-HLA(C4)","items":[
-          ["ai-hla","HLA — 자가면역 최강 위험 영역","MHC가 지배하고, 위험은 peptide-binding groove 아미노산으로 정련"],
-          ["ai-complement","보체와 C4 — 위험과 성차의 원천","MHC 안 비-HLA C4가 보체로 위험·성차를 만듦"]
+          ["ai-hla","HLA: 자가면역에서 위험이 가장 큰 영역","MHC가 위험의 대부분을 설명함. 위험은 peptide-binding groove 아미노산 수준까지 좁혀짐"],,
+          ["ai-complement","보체와 C4: 위험과 성차의 원천","MHC 안의 비-HLA 유전자 C4가 보체를 통해 위험과 성차에 기여함"]
         ]}
       ]},
-      "mechanism":{"number":"02","title":"조절·환경 — 변이는 어떻게 작동하나","english":"HOW RISK VARIANTS ACT","accent":"#315d78","summary":"비코딩 조절 변이 · 전사인자 · EBV(EBNA2) · 세포타입 eQTL","groups":[
+      "mechanism":{"number":"02","title":"조절·환경: 변이는 어떻게 작동하나","english":"HOW RISK VARIANTS ACT","accent":"#315d78","summary":"비코딩 조절 변이 · 전사인자 · EBV(EBNA2) · 세포타입 eQTL","groups":[
         {"q":"위험 변이는 어떻게 작동하고 환경과 어떻게 만나나?","note":"대부분 조절 영역, TF·바이러스가 매개","items":[
-          ["ai-regulatory-ebv","비코딩 위험 변이와 환경(EBV)","위험은 조절 영역에 있고 EBNA2가 SLE loci 절반 점유"],
-          ["ai-celltype-genetics","세포타입 특이 유전학","단일세포 eQTL이 위험을 세포타입에 귀속·층화"]
+          ["ai-regulatory-ebv","비코딩 위험 변이와 환경(EBV)","위험 변이는 주로 조절 영역에 있음. EBNA2가 SLE loci 절반을 점유함"],
+          ["ai-celltype-genetics","세포타입 특이 유전학","단일세포 eQTL로 위험 변이가 작동하는 세포타입을 찾고 환자를 층화함"]
         ]}
       ]},
-      "treatment":{"number":"03","title":"치료로의 번역 — 유전학에서 약물로","english":"FROM GENETICS TO DRUGS","accent":"#1f5d43","summary":"GWAS 후보유전자 · 승인약 표적 일치 · repurposing","groups":[
-        {"q":"유전학을 어떻게 치료로 번역하나?","note":"후보유전자가 약물 표적과 일치","items":[
-          ["ai-drug-translation","유전학에서 약물로","GWAS 후보유전자가 승인약 표적과 일치, repurposing 근거"]
+      "treatment":{"number":"03","title":"치료로의 적용: 유전학에서 약물로","english":"FROM GENETICS TO DRUGS","accent":"#1f5d43","summary":"GWAS 후보유전자 · 승인약 표적 일치 · repurposing","groups":[
+        {"q":"유전학을 어떻게 치료로 이어 가나?","note":"후보유전자가 약물 표적과 일치","items":[
+          ["ai-drug-translation","유전학에서 약물로","GWAS 후보유전자가 승인약 표적과 일치해 repurposing 근거가 됨"]
         ]}
       ]}
     };
     const articleRows = [
-      ["ai-hla","HLA — 자가면역 최강 위험 영역",["HLA","MHC","amino acid fine-mapping","shared epitope","antigen presentation"],"cause",
+      ["ai-hla","HLA: 자가면역에서 위험이 가장 큰 영역",["HLA","MHC","amino acid fine-mapping","shared epitope","antigen presentation"],"cause",
        "거의 모든 자가면역질환에서 MHC(HLA 영역)가 유전체 어느 곳보다 큰 위험을 설명하며, 위험은 peptide-binding groove의 아미노산으로 정련된다",
-       [["MHC가 지배한다",["거의 모든 자가면역에서 MHC가 가장 큰 유전 위험을 설명","예: RA 표현형 분산의 12.7%를 MHC 내 5개 아미노산이, 확립된 non-MHC 전체는 4%만 설명","HLA class I/II 단백은 펩타이드를 T세포에 제시 — 위험 allele이 자가면역을 어떻게 일으키나가 핵심 질문"]],
+       [["MHC가 지배한다",["거의 모든 자가면역에서 MHC가 가장 큰 유전 위험을 설명","예: RA 표현형 분산 가운데 MHC 내 5개 아미노산이 12.7%를 설명하고, 확립된 non-MHC 전체는 4%만 설명","HLA class I/II 단백은 펩타이드를 T세포에 제시함. 위험 allele이 어떻게 자가면역을 일으키는지가 남은 질문"]],
         ["아미노산 해상도 fine-mapping",["imputation 기반 fine-mapping으로 인과 변이를 아미노산 수준까지 좁힘","seropositive RA는 HLA-DRβ1 11·71·74 등 peptide-binding groove 잔기가 연관을 거의 설명","위험 allele은 자가항원 제시(말초)와 자가반응 T세포 선택(흉선) 양쪽으로 작동"]]],
        ["ai-complement","ai-regulatory-ebv","ai-drug-translation"]],
 
-      ["ai-complement","보체와 C4 — 위험과 성차의 원천",["complement","C4","copy number","sex bias","clearance"],"cause",
-       "MHC 안의 비-HLA 유전자 C4는 보체를 통해 자가면역 위험과 성차를 만든다 — 결핍은 위험, 흔한 copy number 변이는 정량적 위험을 좌우한다",
+      ["ai-complement","보체와 C4: 위험과 성차의 원천",["complement","C4","copy number","sex bias","clearance"],"cause",
+       "MHC 안의 비-HLA 유전자 C4는 보체를 통해 자가면역 위험과 성차에 기여한다. 결핍은 위험을 높이고, 흔한 copy number 변이는 위험의 정도를 좌우한다",
        [["보체의 양면성",["보체는 면역복합체·죽은 세포 잔해 청소를 담당하는 선천면역 시스템","희귀 C1q·C4 결핍은 강한 SLE 위험(청소 실패)인 한편, 보체 활성화는 조직손상을 매개","MHC 안의 C4(C4A·C4B)는 HLA와 독립적으로 큰 위험에 기여"]],
-        ["copy number와 성차",["흔한 C4 copy number 변이가 SLE·Sjögren 위험을 정량적으로 좌우(C4A가 더 보호적)","C4 효과가 남성에서 더 강해 자가면역의 여성 편중을 부분적으로 설명","같은 C4 변이가 자가면역과 정신질환에서 반대 방향으로 작용 — 맥락 의존"]]],
+        ["copy number와 성차",["흔한 C4 copy number 변이가 SLE·Sjögren 위험을 정량적으로 좌우(C4A가 더 보호적)","C4 효과가 남성에서 더 강해 자가면역의 여성 편중을 부분적으로 설명","같은 C4 변이가 자가면역과 정신질환에서 반대 방향으로 작용(맥락에 따라 다름)"]]],
        ["ai-hla","ai-celltype-genetics","ai-regulatory-ebv"]],
 
       ["ai-regulatory-ebv","비코딩 위험 변이와 환경(EBV)",["regulatory variant","transcription factor","EBNA2","gene-environment","noncoding"],"mechanism",
        "자가면역 위험 변이는 대부분 단백을 바꾸지 않는 조절 영역에 있고 전사인자가 매개하며, EBV의 EBNA2가 SLE 위험 loci 절반을 점유해 유전–환경 상호작용을 시사한다",
-       [["위험은 조절 영역에 있다",["대부분의 위험 변이는 단백 서열이 아니라 유전자 조절 영역에 위치","질환 위험 loci에 특정 전사인자(TF)가 공통으로 결합","변이가 유전자 발현을 바꿔 면역세포 기능에 영향"]],
+       [["조절 영역에 있는 위험 변이",["대부분의 위험 변이는 단백 서열이 아니라 유전자 조절 영역에 위치","질환 위험 loci에 특정 전사인자(TF)가 공통으로 결합","변이가 유전자 발현을 바꿔 면역세포 기능에 영향을 줌"]],
         ["유전–환경 상호작용",["SLE 위험 loci의 절반을 EBV 단백 EBNA2가 점유","Epstein–Barr virus(EBV) 감염이 자가면역(특히 SLE) 위험을 높임","유전 소인과 환경(바이러스)이 같은 조절 영역에서 만나는 모델"]]],
        ["ai-hla","ai-celltype-genetics","ai-complement"]],
 
       ["ai-celltype-genetics","세포타입 특이 유전학",["single-cell eQTL","cell-type attribution","interferon","patient stratification"],"mechanism",
        "단일세포 eQTL은 자가면역 GWAS를 해부해, 어떤 위험 변이가 어느 면역세포·자극조건에서 작동하는지 매핑하고 환자를 분자 subtype으로 층화한다",
-       [["GWAS를 세포로 해부",["면역세포 단일세포 cis-eQTL을 여러 세포타입에서 매핑","eQTL×GWAS로 위험 loci를 특정 세포타입에 귀속·fine-map","bulk가 놓치던 세포타입 특이 신호와 interferon 상호작용 eQTL을 발견"]],
-        ["환자 층화로",["예: SLE에서 classical monocyte의 type I interferon 신호가 가장 강함","세포타입 해상도가 환자를 분자 subtype으로 나눠 치료 선택을 도움","현재는 혈액(PBMC) 중심 — 표적조직·자극조건으로 확장 중"]]],
+       [["GWAS 신호를 세포 단위로 나누기",["면역세포 단일세포 cis-eQTL을 여러 세포타입에서 매핑","eQTL과 GWAS를 겹쳐 위험 loci가 작동하는 세포타입을 찾고 fine-map함","bulk에서 놓치던 세포타입 특이 신호와 interferon 상호작용 eQTL을 발견"]],
+        ["환자 층화",["예: SLE에서 classical monocyte의 type I interferon 신호가 가장 강함","세포타입 해상도가 환자를 분자 subtype으로 나눠 치료 선택을 도움","현재는 혈액(PBMC) 중심이고, 표적조직과 자극조건으로 확장 중"]]],
        ["ai-regulatory-ebv","ai-complement","ai-drug-translation"]],
 
       ["ai-drug-translation","유전학에서 약물로",["drug discovery","GWAS to drug","repurposing","drug target"],"treatment",
-       "non-MHC 자가면역 유전학은 기능·약물로 번역된다 — GWAS 후보유전자가 승인약 표적과 일치하고 약물 재배치와 신약 표적의 근거를 제공한다",
-       [["유전학이 약을 가리킨다",["trans-ethnic RA GWAS의 101개 loci를 in silico 통합(eQTL·면역결핍 유전자·KO mouse·Treg 농축)으로 후보유전자로 좁힘","후보유전자가 RA 승인약 표적과 통계적으로 일치","유전 근거가 기존 약의 적응 확대(repurposing)와 신약 표적을 시사"]],
-        ["집단을 가로지르는 공유",["RA 위험은 European·Asian 간 대체로 공유되나 일부는 집단특이","대부분의 연구가 European 중심이라 비서구 집단으로의 전이성 확인이 과제","유전학→기능→약물 번역이 자가면역 치료개발의 한 축"]]],
+       "non-MHC 자가면역 유전학은 기능 연구와 약물 개발로 이어진다. GWAS 후보유전자가 승인약 표적과 일치하고, 약물 재배치와 신약 표적의 근거를 제공한다",
+       [["유전학에서 찾은 약물 표적",["trans-ethnic RA GWAS의 101개 loci를 in silico 통합(eQTL·면역결핍 유전자·KO mouse·Treg 농축)으로 후보유전자로 좁힘","후보유전자가 RA 승인약 표적과 통계적으로 일치","유전 근거가 기존 약의 적응 확대(repurposing)와 신약 표적 후보를 제시"]],
+        ["집단을 가로지르는 공유",["RA 위험은 European·Asian 간 대체로 공유되나 일부는 집단특이","대부분의 연구가 European 중심이라 비서구 집단으로의 전이성 확인이 과제","유전학에서 기능을 거쳐 약물로 이어지는 흐름이 자가면역 치료개발의 한 축"]]],
        ["ai-hla","ai-celltype-genetics","ai-complement"]]
     ];
 
@@ -103,10 +103,10 @@
     };
 
     const glossaryTerms = {
-      "hla":{key:"hla",definition:"Human Leukocyte Antigen. 펩타이드를 T세포에 제시하는 분자 — 자가면역 최강 위험 영역."},
+      "hla":{key:"hla",definition:"Human Leukocyte Antigen. 펩타이드를 T세포에 제시하는 분자. 자가면역에서 위험이 가장 큰 영역."},
       "mhc":{key:"mhc",definition:"Major Histocompatibility Complex. HLA 유전자를 품은 6번 염색체 영역."},
       "complement":{key:"complement",definition:"보체. 면역복합체·죽은 세포 잔해 청소를 담당하는 선천면역 시스템."},
-      "c4":{key:"c4",definition:"보체 C4 유전자/단백. MHC 안의 비-HLA 위험·성차 원천."},
+      "c4":{key:"c4",definition:"보체 C4 유전자/단백. MHC 안의 비-HLA 유전자로 위험과 성차에 기여."},
       "ebv":{key:"ebv",definition:"Epstein–Barr virus. 자가면역(특히 SLE) 위험을 높이는 환경 인자."},
       "ebna2":{key:"ebna2",definition:"EBV 단백. SLE 위험 loci 다수를 점유해 유전–환경 상호작용을 시사."},
       "eqtl":{key:"eqtl",definition:"expression QTL. 유전변이가 유전자 발현에 미치는 효과."},
@@ -155,7 +155,7 @@
       document.title = "General Autoimmune";
       app.innerHTML = '<section class="hero"><div class="container">' +
         '<p class="eyebrow">Autoimmune disease knowledge base</p><h1>General Autoimmune</h1>' +
-        '<p class="hero-copy">자가면역의 공통 유전 구조 — 원인(HLA·보체) · 조절·환경(EBV·세포타입) · 약물 번역</p>' +
+        '<p class="hero-copy">자가면역의 공통 유전 구조: 원인(HLA·보체), 조절·환경(EBV·세포타입), 약물 개발</p>' +
         '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="자가면역 유전 통합 검색" placeholder="Search: HLA, C4, EBNA2, eQTL"><span class="search-icon">⌕</span></form>' +
         '<p class="search-hint">Korean / English / acronym</p></div></section>' +
         '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>여러 자가면역질환을 가로지르는 공통 유전 구조를 살펴보세요.</p></div>' +

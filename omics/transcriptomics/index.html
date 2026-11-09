@@ -33,7 +33,7 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container"><span>Updated 2026-07-19</span></div>
+    <div class="container"><span>Updated 2026-11-09</span></div>
   </footer>
 
   <script>
@@ -44,7 +44,7 @@
         "groups": [
           {"q":"RNA-seq은 무엇을 측정하는가?","note":"RNA molecules → cDNA library → sequencing reads","items":[
             ["transcriptome-rnaseq","RNA-seq & transcriptome","Sample에 존재하는 RNA를 digital count로 읽는 방법"],
-            ["bulk-scope","Bulk RNA-seq의 범위","여러 cell의 평균 signal을 측정"]
+            ["bulk-scope","Bulk RNA-seq의 범위","여러 cell을 합친 평균 signal을 측정"]
           ]},
           {"q":"Gene과 transcript는 어떻게 다른가?","note":"Gene locus → alternative transcripts → isoforms","items":[
             ["gene-transcript-isoform","Gene · transcript · isoform","같은 gene에서 여러 transcript가 생성될 수 있음"]
@@ -63,8 +63,8 @@
         "accent": "#526b7a", "summary": "Read QC · Reference · Spliced alignment · Count · Transcript abundance",
         "groups": [
           {"q":"정량 전에 무엇을 확인하는가?","note":"Read quality and reference compatibility","items":[
-            ["read-qc","Read QC","Base quality·adapter·duplication·library 이상을 확인"],
-            ["reference-annotation","Reference & annotation","Genome build와 GTF/GFF version을 일치"]
+            ["read-qc","Read QC","Base quality·adapter·duplication을 확인해 library 이상을 찾음"],
+            ["reference-annotation","Reference & annotation","Genome build와 GTF/GFF version을 일치시킴"]
           ]},
           {"q":"Read를 genome에 정렬할 때 무엇이 다른가?","note":"Exon junctions require splice-aware mapping","items":[
             ["spliced-alignment","Spliced alignment","Intron을 건너는 read를 exon junction에 정렬"],
@@ -87,9 +87,9 @@
           {"q":"Sample 간 차이는 어떻게 보정하는가?","note":"Library size and composition bias","items":[
             ["normalization","Between-sample normalization","TMM 또는 median-of-ratios로 sample을 비교 가능하게 만듦"]
           ]},
-          {"q":"비교 질문은 어떻게 model로 옮기는가?","note":"Metadata → design matrix → contrast","items":[
-            ["design-contrast","Design & contrast","Condition·covariate·batch를 model에 명시"],
-            ["differential-expression","Differential expression","Effect size와 uncertainty를 gene별로 평가"],
+          {"q":"비교 질문은 어떻게 model로 옮기는가?","note":"Metadata에서 design matrix를 만들고 contrast를 지정함","items":[
+            ["design-contrast","Design & contrast","Condition·covariate·batch를 model에 명시함"],
+            ["differential-expression","Differential expression","Effect size와 uncertainty를 gene별로 평가함"],
             ["deseq2-edger-limma","DESeq2 · edgeR · limma-voom","Count 또는 precision-weighted model로 DE 수행"]
           ]}
         ]
@@ -102,18 +102,18 @@
             ["pca-sample-qc","PCA & sample-level QC","Condition·batch·outlier가 전체 variation에 미치는 영향 확인"]
           ]},
           {"q":"Gene list를 biological function으로 어떻게 요약하는가?","note":"Cutoff-based list or ranked statistics","items":[
-            ["gene-set-enrichment","Gene set enrichment","Gene-level 결과를 pathway와 functional term으로 압축"],
+            ["gene-set-enrichment","Gene set enrichment","Gene-level 결과를 pathway와 functional term으로 요약함"],
             ["ora-vs-gsea","ORA vs GSEA","선택된 gene list와 전체 ranked list의 차이"]
           ]},
           {"q":"함께 움직이는 gene 묶음은 어떻게 찾는가?","note":"Correlation across samples → module → trait association","items":[
             ["co-expression-module","Co-expression module (WGCNA)","Sample 간 상관으로 함께 움직이는 gene 묶음을 찾음"],
-            ["module-trait","Module eigengene & trait 연관","Module을 대표값으로 요약해 sample trait과 비교"]
+            ["module-trait","Module eigengene & trait 연관","Module을 대표값으로 요약해 sample trait과 비교함"]
           ]},
           {"q":"Bulk signal의 cell composition은 어떻게 다루는가?","note":"Mixed tissue can reflect both proportion and within-cell changes","items":[
-            ["cell-type-deconvolution","Cell-type deconvolution","Reference를 이용해 cell-type proportion 또는 signal을 추정"]
+            ["cell-type-deconvolution","Cell-type deconvolution","Reference를 이용해 cell-type proportion 또는 signal을 추정함"]
           ]},
           {"q":"Public expression data는 어디서 찾는가?","note":"Study metadata and processed/raw expression data","items":[
-            ["expression-repositories","GEO & Expression Atlas","공개 transcriptomics dataset과 expression profile 탐색"]
+            ["expression-repositories","GEO & Expression Atlas","공개 transcriptomics dataset과 expression profile을 탐색함"]
           ]}
         ]
       }
@@ -122,178 +122,178 @@
     const articleRows = [
       ["transcriptome-rnaseq","RNA-seq & transcriptome",["RNA sequencing","bulk RNA-seq","transcriptome sequencing"],"measurement",
         "Sample의 RNA를 cDNA로 바꾸어 sequencing하고 transcript abundance와 구조를 digital read로 측정하는 방법",
-        [["측정 대상",["Transcriptome은 특정 cell·tissue·condition에서 발현되는 RNA의 전체 집합","Read 수는 transcript abundance를 반영하는 관측값","Gene expression과 splice junction·isoform 정보를 함께 얻을 수 있음"]],
-         ["Bulk의 의미",["여러 cell에서 나온 RNA를 섞어 sample-level 평균 signal을 측정","Cell composition과 cell 내부 expression 변화가 함께 반영","Single-cell·spatial transcriptomics는 별도 knowledge domain에서 다룸"]],
+        [["측정 대상",["Transcriptome은 특정 cell·tissue·condition에서 발현되는 RNA의 전체 집합","Read 수는 transcript abundance를 반영하는 관측값","Gene expression과 함께 splice junction·isoform 정보도 얻을 수 있음"]],
+         ["Bulk의 의미",["여러 cell에서 나온 RNA를 섞어 sample-level 평균 signal을 측정함","Cell composition과 cell 내부 expression 변화가 함께 반영됨","Single-cell·spatial transcriptomics는 별도 knowledge domain에서 다룸"]],
          ["주요 결과",["Gene 또는 transcript abundance matrix","Sample 간 differential expression","Pathway와 biological process 수준의 해석"]]],
         ["bulk-scope","gene-transcript-isoform","count-matrix"]],
 
       ["bulk-scope","Bulk RNA-seq의 범위",["bulk transcriptomics","pooled RNA-seq","population-average expression"],"measurement",
-        "분리하지 않은 다수의 cell에서 얻은 RNA를 합쳐 sample 단위의 평균 expression을 측정",
+        "분리하지 않은 다수의 cell에서 얻은 RNA를 합쳐 sample 단위의 평균 expression을 측정함",
         [["무엇이 보이는가",["Tissue 또는 cell population 전체의 안정적인 expression profile","충분한 read와 replicate가 있으면 condition 간 작은 차이도 비교 가능","대규모 cohort에 적용하기 쉬움"]],
          ["무엇이 섞이는가",["Cell-type proportion 차이와 cell-intrinsic regulation이 같은 signal에 공존","Rare cell의 signal은 평균에서 약해질 수 있음","Interpretation 시 tissue composition을 함께 고려"]],
-         ["범위 구분",["Bulk Transcriptomics는 sample-level expression 비교에 초점","Single-cell Genomics는 cell별 heterogeneity와 state를 다룸","Spatial Transcriptomics는 위치 정보를 보존한 채 expression을 측정"]]],
+         ["범위 구분",["Bulk Transcriptomics는 sample-level expression 비교에 초점","Single-cell Genomics는 cell별 heterogeneity와 state를 다룸","Spatial Transcriptomics는 위치 정보를 보존한 채 expression을 측정함"]]],
         ["transcriptome-rnaseq","replicates-batch","cell-type-deconvolution"]],
 
       ["gene-transcript-isoform","Gene · transcript · isoform",["gene-level","transcript-level","alternative isoform"],"measurement",
         "Gene은 genomic locus이고 transcript 또는 isoform은 그 locus에서 실제로 생성된 RNA sequence",
         [["관계",["하나의 gene에서 alternative promoter·splicing·polyadenylation으로 여러 transcript 생성 가능","Transcript마다 exon 조합과 길이가 다를 수 있음","Gene-level count는 여러 transcript signal을 합친 값"]],
-         ["분석 단위",["Gene-level은 DE와 pathway analysis에서 가장 흔함","Transcript-level은 isoform switching과 splicing 질문에 적합","질문에 맞춰 annotation과 quantification unit을 먼저 결정"]],
+         ["분석 단위",["Gene-level은 DE와 pathway analysis에서 가장 흔함","Transcript-level은 isoform switching과 splicing 질문에 적합","질문에 맞춰 annotation과 quantification unit을 먼저 결정함"]],
          ["주의",["짧은 read는 유사 isoform 사이에서 모호하게 mapping될 수 있음","Annotation version에 따라 transcript 정의가 달라짐","Gene abundance 변화와 isoform proportion 변화는 다른 현상"]]],
         ["reference-annotation","featurecounts","salmon-kallisto-tximport"]],
 
       ["library-selection","Poly(A) selection vs total RNA",["polyA selection","rRNA depletion","total RNA-seq"],"measurement",
         "Library preparation에서 어떤 RNA population을 sequencing 대상으로 남길지 결정하는 선택",
-        [["Poly(A) selection",["Poly(A) tail을 가진 mature mRNA를 주로 포착","Coding transcript 분석에 효율적","Degraded RNA와 non-polyadenylated RNA에는 제약"]],
-         ["Total RNA",["rRNA depletion 후 coding·non-coding RNA를 폭넓게 측정","Pre-mRNA와 일부 non-coding RNA가 포함될 수 있음","Library composition과 required depth가 달라짐"]],
-         ["선택 기준",["Biological question과 sample quality에 맞춤","Condition 간 동일한 protocol 유지","Protocol 차이는 biological group과 confounded되지 않게 설계"]]],
+        [["Poly(A) selection",["Poly(A) tail을 가진 mature mRNA를 주로 포착함","Coding transcript 분석에 효율적","Degraded RNA와 non-polyadenylated RNA에는 제약"]],
+         ["Total RNA",["rRNA depletion 후 coding·non-coding RNA를 폭넓게 측정함","Pre-mRNA와 일부 non-coding RNA가 포함될 수 있음","Library composition과 required depth가 달라짐"]],
+         ["선택 기준",["Biological question과 sample quality에 맞춰 고름","Condition 간 동일한 protocol을 유지함","Protocol 차이는 biological group과 confounded되지 않게 설계"]]],
         ["transcriptome-rnaseq","stranded-paired-end","replicates-batch"]],
 
       ["stranded-paired-end","Strandedness & paired-end",["strand-specific RNA-seq","paired-end reads","read layout"],"measurement",
         "Stranded library는 RNA의 전사 방향을 보존하고 paired-end는 한 fragment의 양끝을 읽음",
         [["Strandedness",["Overlapping antisense gene을 구분하는 데 도움","Library protocol에 따라 forward 또는 reverse convention이 다름","Counting 단계에서 잘못 지정하면 count가 크게 감소할 수 있음"]],
          ["Paired-end",["Fragment length와 양끝 정보를 이용해 mapping ambiguity를 줄임","Splice junction과 isoform 해석에 유리","Gene-level 단순 정량에서는 목적과 비용에 따라 single-end도 가능"]],
-         ["기록",["Read length·layout·strandedness를 metadata로 보존","Aligner와 counter에 동일한 library setting 전달","샘플 간 protocol을 일관되게 유지"]]],
+         ["기록",["Read length·layout·strandedness를 metadata로 보존함","Aligner와 counter에 동일한 library setting을 전달함","샘플 간 protocol을 일관되게 유지함"]]],
         ["library-selection","read-qc","featurecounts"]],
 
       ["replicates-batch","Replicates & batch",["biological replicate","technical replicate","batch effect"],"measurement",
-        "Biological replicate로 population variation을 추정하고 batch가 condition과 섞이지 않도록 설계",
+        "Biological replicate로 population variation을 추정하고, batch가 condition과 섞이지 않도록 설계함",
         [["Replicate",["Biological replicate는 서로 독립적인 biological unit","Technical replicate는 측정 반복이며 biological n을 늘리지 않음","일반적으로 extra depth보다 biological replicate 증가가 DE power에 더 중요"]],
-         ["Batch",["Extraction date·library plate·sequencing run 등이 systematic variation을 만들 수 있음","각 condition을 여러 batch에 분산하고 randomize","Batch와 condition이 완전히 겹치면 model로 분리하기 어려움"]],
-         ["Metadata",["Sample ID·condition·covariate·batch를 명시","Paired 또는 repeated design은 subject ID를 보존","분석 전 comparison과 exclusion rule을 정의"]]],
+         ["Batch",["Extraction date·library plate·sequencing run 등이 systematic variation을 만들 수 있음","각 condition을 여러 batch에 나누어 randomize함","Batch와 condition이 완전히 겹치면 model로 분리하기 어려움"]],
+         ["Metadata",["Sample ID·condition·covariate·batch를 명시함","Paired 또는 repeated design은 subject ID를 보존함","분석 전 comparison과 exclusion rule을 정의함"]]],
         ["design-contrast","pca-sample-qc","differential-expression"]],
 
       ["read-qc","Read QC",["sequence QC","FastQC","MultiQC"],"quantification",
-        "Alignment 전에 raw read의 base quality·adapter·GC pattern·duplication 등 technical signal을 확인",
+        "Alignment 전에 raw read의 base quality·adapter·GC pattern·duplication 같은 technical signal을 확인함",
         [["확인 항목",["Per-base quality와 read length distribution","Adapter contamination과 overrepresented sequence","GC content·duplication·sequence composition의 sample 간 차이"]],
-         ["해석",["QC warning은 즉시 sample 폐기를 뜻하지 않음","RNA-seq의 biological composition 때문에 일부 metric은 예상과 다를 수 있음","모든 sample을 함께 비교해 outlier와 batch pattern을 확인"]],
-         ["다음 단계",["필요한 경우 adapter trimming 또는 low-quality base 처리","변경 전후 QC를 기록","Alignment rate와 gene assignment rate까지 함께 평가"]]],
+         ["해석",["QC warning은 즉시 sample 폐기를 뜻하지 않음","RNA-seq의 biological composition 때문에 일부 metric은 예상과 다를 수 있음","모든 sample을 함께 비교해 outlier와 batch pattern을 확인함"]],
+         ["다음 단계",["필요한 경우 adapter trimming 또는 low-quality base 처리","변경 전후 QC를 기록함","Alignment rate와 gene assignment rate까지 함께 평가함"]]],
         ["spliced-alignment","pca-sample-qc","reference-annotation"]],
 
       ["reference-annotation","Reference & annotation",["genome build","GTF","GFF","gene annotation"],"quantification",
         "Read mapping과 feature assignment에 사용하는 genome sequence와 gene model의 version",
-        [["일치",["Genome FASTA와 GTF/GFF는 같은 assembly와 naming convention 사용","chr1과 1 같은 chromosome naming mismatch를 확인","Annotation release를 분석 기록에 남김"]],
-         ["영향",["Gene·transcript 정의와 exon boundary가 count에 직접 영향","Novel junction 탐색과 known transcript quantification의 범위가 달라짐","서로 다른 release의 결과는 feature ID를 맞춘 뒤 비교"]],
-         ["선택",["Human은 목적에 맞는 GRCh37 또는 GRCh38 build 선택","Gene-level 분석에는 consistent gene annotation 사용","Transcript-level 분석은 isoform completeness가 중요"]]],
+        [["일치",["Genome FASTA와 GTF/GFF는 같은 assembly와 naming convention을 사용함","chr1과 1 같은 chromosome naming mismatch를 확인함","Annotation release를 분석 기록에 남김"]],
+         ["영향",["Gene·transcript 정의와 exon boundary가 count에 직접 영향","Novel junction 탐색과 known transcript quantification의 범위가 달라짐","서로 다른 release의 결과는 feature ID를 맞춘 뒤 비교함"]],
+         ["선택",["Human은 목적에 맞는 GRCh37 또는 GRCh38 build를 고름","Gene-level 분석에는 consistent gene annotation 사용","Transcript-level 분석은 isoform completeness가 결과를 좌우함"]]],
         ["gene-transcript-isoform","spliced-alignment","featurecounts"]],
 
       ["spliced-alignment","Spliced alignment",["splice-aware alignment","RNA-seq mapping","junction alignment"],"quantification",
         "RNA-seq read가 intron을 건너 서로 다른 exon에 걸쳐 mapping될 수 있도록 하는 genome alignment",
-        [["필요성",["Mature RNA에는 intron이 제거되어 genome과 연속적으로 대응하지 않음","Exon-exon junction read를 일반 DNA aligner로 처리하기 어려움","Splice-aware aligner는 큰 genomic gap을 junction으로 모델링"]],
-         ["결과",["Coordinate-sorted BAM과 splice junction 정보","Gene count·coverage track·variant 또는 fusion 분석의 입력","Alignment rate와 uniquely mapped read 비율을 QC에 사용"]],
-         ["선택",["Novel junction·genome coordinate가 필요하면 alignment route가 유용","Expression 정량만 빠르게 수행하면 transcriptome-based method도 가능","Reference annotation과 read layout을 정확히 지정"]]],
+        [["필요성",["Mature RNA는 intron이 제거되어 genome과 연속적으로 대응하지 않음","Exon-exon junction read를 일반 DNA aligner로 처리하기 어려움","Splice-aware aligner는 큰 genomic gap을 junction으로 모델링함"]],
+         ["결과",["Coordinate-sorted BAM과 splice junction 정보","Gene count·coverage track·variant 또는 fusion 분석의 입력","Alignment rate와 uniquely mapped read 비율을 QC에 사용함"]],
+         ["선택",["Novel junction과 genome coordinate가 필요하면 alignment route가 유용함","Expression 정량만 빠르게 하려면 transcriptome-based method도 쓸 수 있음","Reference annotation과 read layout을 정확히 지정함"]]],
         ["star-hisat2","featurecounts","salmon-kallisto-tximport"]],
 
       ["star-hisat2","STAR & HISAT2",["STAR aligner","HISAT2","splice-aware aligner"],"quantification",
         "RNA-seq read를 genome에 splice-aware 방식으로 정렬하는 대표 aligner",
-        [["STAR",["높은 처리 속도와 splice junction discovery에 강점","Genome index가 크고 memory 사용량이 높은 편","대규모 bulk RNA-seq pipeline에서 널리 사용"]],
-         ["HISAT2",["Hierarchical index로 memory 사용량이 낮음","Spliced alignment와 graph-aware option 지원","제한된 memory 환경에서 유용"]],
-         ["선택 기준",["속도·memory·downstream 목적을 함께 고려","동일 cohort에는 같은 version과 parameter 적용","Mapping QC와 gene assignment 결과까지 비교"]]],
+        [["STAR",["높은 처리 속도와 splice junction discovery에 강점","Genome index가 크고 memory 사용량이 높은 편","대규모 bulk RNA-seq pipeline에서 널리 쓰임"]],
+         ["HISAT2",["Hierarchical index로 memory 사용량이 낮음","Spliced alignment와 graph-aware option을 지원함","제한된 memory 환경에서 유용함"]],
+         ["선택 기준",["속도·memory·downstream 목적을 함께 고려함","동일 cohort에는 같은 version과 parameter를 적용함","Mapping QC와 gene assignment 결과까지 비교함"]]],
         ["spliced-alignment","featurecounts","reference-annotation"]],
 
       ["featurecounts","featureCounts",["Subread featureCounts","read summarization","gene count"],"quantification",
         "Aligned read 또는 fragment를 annotation의 gene·exon feature에 배정해 integer count matrix를 만드는 도구",
-        [["입력과 출력",["Coordinate-aligned BAM/SAM과 GTF/GFF를 입력","Gene 또는 exon별 integer count 출력","Sample별 count를 결합해 feature × sample matrix 구성"]],
-         ["핵심 설정",["Strandedness와 paired-end counting을 library에 맞춤","Multi-mapping·overlap read 처리 rule을 명시","Gene ID attribute와 feature type을 확인"]],
-         ["사용",["Raw integer count는 edgeR·DESeq2 입력에 적합","TPM을 DE model의 raw count 대신 사용하지 않음","Assignment rate를 alignment QC와 함께 확인"]]],
+        [["입력과 출력",["Coordinate-aligned BAM/SAM과 GTF/GFF를 입력으로 받음","Gene 또는 exon별 integer count 출력","Sample별 count를 결합해 feature × sample matrix를 구성함"]],
+         ["설정",["Strandedness와 paired-end counting을 library에 맞춤","Multi-mapping·overlap read 처리 rule을 명시","Gene ID attribute와 feature type을 확인함"]],
+         ["사용",["Raw integer count는 edgeR·DESeq2 입력에 적합함","TPM을 DE model의 raw count 대신 사용하지 않음","Assignment rate를 alignment QC와 함께 확인함"]]],
         ["spliced-alignment","count-matrix","deseq2-edger-limma"]],
 
       ["salmon-kallisto-tximport","Salmon · kallisto · tximport",["transcript quantification","pseudoalignment","quasi-mapping","tximport"],"quantification",
         "Transcriptome에 read를 빠르게 배정해 transcript abundance를 추정하고 gene-level DE 입력으로 연결하는 workflow",
-        [["Salmon과 kallisto",["Full genome alignment 없이 compatible transcript를 빠르게 탐색","Ambiguous read를 statistical model로 transcript 사이에 배분","Estimated count와 TPM을 transcript 단위로 출력"]],
-         ["tximport",["Transcript-level estimate를 gene-level로 aggregation","Transcript length 차이를 반영할 수 있는 offset 또는 scaled count 제공","DESeq2·edgeR·limma-voom workflow에 연결"]],
-         ["선택",["빠른 expression quantification이 주목적이면 효율적","Novel junction·genome-coordinate 분석에는 spliced alignment가 적합","Transcriptome index와 annotation version을 일치"]]],
+        [["Salmon과 kallisto",["Full genome alignment 없이 compatible transcript를 빠르게 탐색함","Ambiguous read를 statistical model로 transcript 사이에 배분함","Estimated count와 TPM을 transcript 단위로 출력함"]],
+         ["tximport",["Transcript-level estimate를 gene-level로 aggregation","Transcript length 차이를 반영하는 offset 또는 scaled count를 제공함","DESeq2·edgeR·limma-voom workflow로 이어짐"]],
+         ["선택",["빠른 expression quantification이 목적이면 효율적임","Novel junction이나 genome coordinate 분석에는 spliced alignment가 적합함","Transcriptome index와 annotation version을 일치시킴"]]],
         ["gene-transcript-isoform","count-matrix","deseq2-edger-limma"]],
 
       ["count-matrix","Count matrix",["expression matrix","gene count table","feature by sample"],"de",
         "Row는 gene 또는 transcript, column은 sample, cell은 관측 또는 추정 count인 분석 입력 table",
-        [["구조",["Feature ID는 annotation과 연결","Column 이름은 sample metadata와 정확히 대응","Integer count 또는 length-aware estimated count 사용"]],
-         ["검사",["Library size와 detected feature 수를 sample별 확인","극저발현 feature는 사전 filter 가능","NA·duplicate ID·metadata mismatch를 점검"]],
-         ["용도",["Normalization과 differential expression의 입력","Exploratory transformation 후 PCA·clustering 수행","TPM matrix와 raw count matrix의 목적을 구분"]]],
+        [["구조",["Feature ID는 annotation과 연결됨","Column 이름은 sample metadata와 정확히 대응","Integer count 또는 length-aware estimated count를 사용함"]],
+         ["검사",["Library size와 detected feature 수를 sample별로 확인함","극저발현 feature는 사전 filter 가능","NA·duplicate ID·metadata mismatch를 점검함"]],
+         ["용도",["Normalization과 differential expression의 입력","Exploratory transformation 후 PCA와 clustering을 수행함","TPM matrix와 raw count matrix의 목적을 구분함"]]],
         ["tpm-cpm","normalization","design-contrast"]],
 
       ["tpm-cpm","TPM · CPM · raw count",["TPM","CPM","RPKM","FPKM","raw count"],"de",
-        "RNA-seq abundance 표현 방식으로, 단위마다 길이·library size 보정과 사용 목적이 다름",
-        [["Raw count",["Read 또는 fragment assignment의 원래 scale","Count-based DE model이 분산을 추정하는 핵심 입력","Sample 간 직접 비교 전 normalization 필요"]],
-         ["CPM과 TPM",["CPM은 library size를 기준으로 million 단위 환산","TPM은 transcript length와 library composition을 보정해 sample 내 abundance 비교에 유용","RPKM/FPKM도 길이와 depth를 보정하지만 합의 scale이 TPM과 다름"]],
-         ["원칙",["DESeq2·edgeR에는 TPM을 raw count 대신 넣지 않음","Expression visualization과 abundance reporting에는 목적에 맞는 scale 사용","Within-sample과 between-sample normalization을 구분"]]],
+        "RNA-seq abundance를 나타내는 단위. 단위마다 길이·library size 보정과 사용 목적이 다름",
+        [["Raw count",["Read 또는 fragment assignment의 원래 scale","Count-based DE model이 분산을 추정할 때 쓰는 입력","Sample 간 직접 비교하기 전에 normalization이 필요함"]],
+         ["CPM과 TPM",["CPM은 library size를 기준으로 million 단위로 환산함","TPM은 transcript length와 library composition을 보정해 sample 내 abundance 비교에 유용","RPKM/FPKM도 길이와 depth를 보정하지만 합의 scale이 TPM과 다름"]],
+         ["원칙",["DESeq2·edgeR에는 TPM을 raw count 대신 넣지 않음","Expression visualization과 abundance reporting에는 목적에 맞는 scale을 사용함","Within-sample과 between-sample normalization을 구분"]]],
         ["count-matrix","normalization","differential-expression"]],
 
       ["normalization","Between-sample normalization",["TMM","median-of-ratios","size factor","composition bias"],"de",
         "Library size와 highly expressed feature가 만드는 composition bias를 보정해 sample 간 count를 비교 가능하게 만드는 단계",
         [["문제",["Total read 수가 다르면 같은 abundance도 count가 다름","일부 매우 높은 gene이 전체 library proportion을 바꿈","Total-count scaling만으로는 composition bias를 제거하지 못할 수 있음"]],
-         ["방법",["edgeR의 TMM은 reference 대비 log-fold change를 trim해 scaling factor 추정","DESeq2의 median-of-ratios는 gene별 geometric mean 대비 ratio의 median 사용","대부분 gene이 크게 변하지 않는다는 가정에 의존"]],
-         ["사용",["Normalization factor는 DE model 내부에서 count mean scale을 조정","Normalized value와 transformed value를 구분","Global RNA output 변화가 질문이면 spike-in 같은 외부 기준을 별도 고려"]]],
+         ["방법",["edgeR의 TMM은 reference 대비 log-fold change를 trim해 scaling factor를 추정함","DESeq2의 median-of-ratios는 gene별 geometric mean 대비 ratio의 median을 사용함","대부분 gene이 크게 변하지 않는다는 가정에 의존"]],
+         ["사용",["Normalization factor는 DE model 내부에서 count mean의 scale을 조정함","Normalized value와 transformed value를 구분함","Global RNA output 변화가 질문이면 spike-in 같은 외부 기준을 별도 고려"]]],
         ["tpm-cpm","deseq2-edger-limma","differential-expression"]],
 
       ["design-contrast","Design & contrast",["design matrix","contrast","covariate","paired design"],"de",
-        "Sample metadata를 statistical model의 predictor로 표현하고 실제 비교할 coefficient 조합을 지정",
-        [["Design",["Condition·batch·sex·age 등 필요한 covariate 포함","Paired sample은 subject effect를 model에 반영","Confounded variable은 통계 model만으로 분리할 수 없음"]],
-         ["Contrast",["Treatment vs control처럼 관심 비교를 명시","다요인 design에서는 main effect와 interaction을 구분","Coefficient direction을 확인해 log fold change 부호를 해석"]],
-         ["검사",["각 group의 replicate 수와 missing combination 확인","Design matrix rank deficiency를 점검","Analysis question을 contrast 문장으로 먼저 작성"]]],
+        "Sample metadata를 statistical model의 predictor로 표현하고, 실제 비교할 coefficient 조합을 지정함",
+        [["Design",["Condition·batch·sex·age 중 필요한 covariate를 포함함","Paired sample은 subject effect를 model에 반영함","Confounded variable은 통계 model만으로 분리할 수 없음"]],
+         ["Contrast",["Treatment vs control처럼 관심 비교를 명시함","다요인 design에서는 main effect와 interaction을 구분함","Coefficient direction을 확인해 log fold change 부호를 해석함"]],
+         ["검사",["각 group의 replicate 수와 missing combination을 확인함","Design matrix의 rank deficiency를 점검함","Analysis question을 contrast 문장으로 먼저 적음"]]],
         ["replicates-batch","differential-expression","deseq2-edger-limma"]],
 
       ["differential-expression","Differential expression",["DE","differential gene expression","log fold change","FDR"],"de",
         "Condition과 covariate를 고려해 gene별 expression 차이의 effect size와 uncertainty를 추정하는 분석",
-        [["모델",["RNA-seq count는 평균이 커질수록 variance가 변하는 discrete data","Negative binomial model이 biological overdispersion을 다룸","Gene 간 정보를 공유해 dispersion 또는 effect를 안정화"]],
-         ["결과",["Log fold change는 변화 방향과 크기","P-value는 null model 아래의 evidence","FDR은 다수 gene 검정에서 expected false discovery proportion을 조절"]],
-         ["해석",["Statistical significance와 biological importance를 구분","Effect size·uncertainty·expression level을 함께 확인","Batch·outlier·cell composition이 결과를 설명하는지 점검"]]],
+        [["모델",["RNA-seq count는 평균이 커질수록 variance가 변하는 discrete data","Negative binomial model로 biological overdispersion을 다룸","Gene 간 정보를 공유해 dispersion 또는 effect 추정을 안정화함"]],
+         ["결과",["Log fold change는 변화의 방향과 크기를 나타냄","P-value는 null model 아래의 evidence","FDR은 다수 gene 검정에서 expected false discovery proportion을 조절함"]],
+         ["해석",["Statistical significance와 biological importance를 구분함","Effect size·uncertainty·expression level을 함께 확인함","Batch·outlier·cell composition이 결과를 설명하는지 점검함"]]],
         ["design-contrast","deseq2-edger-limma","gene-set-enrichment"]],
 
       ["deseq2-edger-limma","DESeq2 · edgeR · limma-voom",["DESeq2","edgeR","limma","voom"],"de",
         "Bulk RNA-seq differential expression에 널리 쓰이는 count 또는 mean-variance modeling framework",
-        [["DESeq2",["Negative binomial GLM과 median-of-ratios normalization","Dispersion과 log fold change shrinkage 제공","복잡한 design과 contrast 지원"]],
-         ["edgeR",["Negative binomial GLM과 empirical Bayes dispersion estimation","TMM normalization 사용","작은 sample에서도 gene 간 정보 공유"]],
-         ["limma-voom",["Count의 mean-variance relation을 precision weight로 추정","Weighted linear model과 empirical Bayes 사용","복잡한 design과 large study에 유연"]]],
+        [["DESeq2",["Negative binomial GLM과 median-of-ratios normalization을 사용함","Dispersion과 log fold change에 shrinkage를 적용함","복잡한 design과 contrast를 지원함"]],
+         ["edgeR",["Negative binomial GLM과 empirical Bayes dispersion estimation","TMM normalization을 사용함","작은 sample에서도 gene 간 정보 공유"]],
+         ["limma-voom",["Count의 mean-variance relation을 precision weight로 추정함","Weighted linear model과 empirical Bayes를 사용함","복잡한 design과 large study에 유연하게 적용됨"]]],
         ["normalization","design-contrast","differential-expression"]],
 
       ["pca-sample-qc","PCA & sample-level QC",["principal component analysis","sample clustering","outlier detection"],"interpretation",
-        "많은 gene의 expression variation을 소수의 axis로 요약해 sample 관계·batch·outlier를 확인",
-        [["입력",["Raw count가 아니라 variance-stabilized 또는 log-like transformed expression 사용","Low-count noise를 줄인 matrix가 유리","PCA용 transformation과 DE용 count model을 구분"]],
-         ["확인",["PC plot에 condition·batch·sex·library metric을 표시","Unexpected cluster와 sample swap 가능성 확인","한 sample이 전체 result를 지배하는지 점검"]],
-         ["해석",["PC separation은 원인을 자동으로 증명하지 않음","Loading gene과 metadata association을 함께 확인","QC 결과에 따라 model covariate 또는 sample annotation 재검토"]]],
+        "많은 gene의 expression variation을 소수의 axis로 요약해 sample 관계·batch·outlier를 확인함",
+        [["입력",["Raw count가 아니라 variance-stabilized 또는 log-like transformed expression을 사용함","Low-count noise를 줄인 matrix가 유리함","PCA용 transformation과 DE용 count model을 구분함"]],
+         ["확인",["PC plot에 condition·batch·sex와 library metric을 표시함","Unexpected cluster와 sample swap 가능성 확인","한 sample이 전체 result를 좌우하는지 점검함"]],
+         ["해석",["PC separation은 원인을 자동으로 증명하지 않음","Loading gene과 metadata의 association을 함께 확인함","QC 결과에 따라 model covariate 또는 sample annotation 재검토"]]],
         ["replicates-batch","count-matrix","design-contrast"]],
 
       ["gene-set-enrichment","Gene set enrichment",["pathway analysis","functional enrichment","GO enrichment"],"interpretation",
-        "Gene-level differential expression 결과를 predefined gene set과 비교해 pathway·function 단위로 요약",
-        [["목적",["긴 gene list를 biological process로 압축","서로 작은 변화가 같은 pathway에 모이는지 탐색","GO·Reactome·KEGG·MSigDB 같은 gene set 사용"]],
-         ["입력",["Significant gene list를 쓰는 ORA","모든 gene의 ranked statistic을 쓰는 GSEA/FCS","Gene ID와 species·database version을 일치"]],
-         ["해석",["Overlapping gene set 때문에 결과가 중복될 수 있음","Gene set size와 background universe가 결과에 영향","Enrichment는 pathway activation이나 causality를 자동으로 의미하지 않음"]]],
+        "Gene-level differential expression 결과를 predefined gene set과 비교해 pathway·function 단위로 요약함",
+        [["목적",["긴 gene list를 biological process 단위로 줄임","작은 변화들이 같은 pathway에 모이는지 살펴봄","GO·Reactome·KEGG·MSigDB 같은 gene set을 사용함"]],
+         ["입력",["Significant gene list를 쓰는 ORA","모든 gene의 ranked statistic을 쓰는 GSEA/FCS","Gene ID와 species, database version을 일치시킴"]],
+         ["해석",["Overlapping gene set 때문에 결과가 중복될 수 있음","Gene set size와 background universe가 결과를 바꿈","Enrichment는 pathway activation이나 causality를 자동으로 의미하지 않음"]]],
         ["ora-vs-gsea","co-expression-module","differential-expression","expression-repositories"]],
 
       ["ora-vs-gsea","ORA vs GSEA",["over-representation analysis","GSEA","FCS","ranked gene list"],"interpretation",
-        "ORA는 선택된 gene list의 과대표현을, GSEA는 전체 ranked list에서 gene set의 분포를 평가",
-        [["ORA",["DE cutoff를 통과한 gene list와 background universe 필요","Hypergeometric 또는 Fisher exact test 사용","간단하지만 cutoff 선택에 민감"]],
-         ["GSEA",["모든 gene을 signed statistic으로 rank","Gene set member가 rank 상단 또는 하단에 모이는지 평가","Cutoff 아래의 일관된 약한 signal도 포착 가능"]],
-         ["선택",["명확한 selected list 해석에는 ORA","Genome-wide coordinated shift에는 GSEA","Multiple testing과 gene set redundancy를 함께 관리"]]],
+        "ORA는 선택된 gene list의 과대표현을 보고, GSEA는 전체 ranked list에서 gene set의 분포를 평가함",
+        [["ORA",["DE cutoff를 통과한 gene list와 background universe가 필요함","Hypergeometric 또는 Fisher exact test를 사용함","간단하지만 cutoff 선택에 민감함"]],
+         ["GSEA",["모든 gene을 signed statistic으로 rank","Gene set member가 rank 상단 또는 하단에 모이는지 평가함","Cutoff 아래의 일관된 약한 signal도 포착 가능"]],
+         ["선택",["명확한 selected list 해석에는 ORA","Genome-wide coordinated shift에는 GSEA","Multiple testing과 gene set redundancy를 함께 관리함"]]],
         ["gene-set-enrichment","differential-expression","deseq2-edger-limma"]],
 
       ["cell-type-deconvolution","Cell-type deconvolution",["bulk deconvolution","cell proportion estimation","mixed tissue"],"interpretation",
-        "혼합 tissue의 bulk expression에서 reference profile을 이용해 cell-type proportion 또는 cell-type-specific signal을 추정",
-        [["왜 필요한가",["Bulk expression은 cell composition과 cell 내부 regulation을 함께 반영","질환·노화·조직 sampling이 cell proportion을 바꿀 수 있음","Composition 차이를 gene regulation으로 오해하지 않도록 도움"]],
-         ["접근",["Reference-based method는 purified 또는 single-cell expression signature 사용","주로 cell-type proportion을 추정","일부 method는 sample별 cell-type-specific expression까지 추정"]],
-         ["주의",["Reference의 cell-type definition과 tissue·platform 적합성이 중요","Rare cell type과 유사한 cell state는 구분이 어려울 수 있음","Deconvolution estimate는 관측값이 아니라 model-based inference"]]],
+        "혼합 tissue의 bulk expression에서 reference profile을 이용해 cell-type proportion 또는 cell-type-specific signal을 추정함",
+        [["왜 필요한가",["Bulk expression은 cell composition과 cell 내부 regulation을 함께 반영함","질환·노화·조직 sampling이 cell proportion을 바꿀 수 있음","Composition 차이를 gene regulation으로 오해하는 것을 줄여 줌"]],
+         ["접근",["Reference-based method는 purified 또는 single-cell expression signature를 사용함","주로 cell-type proportion을 추정함","일부 method는 sample별 cell-type-specific expression까지 추정함"]],
+         ["주의",["Reference의 cell-type definition이 대상 tissue·platform에 맞는지 확인함","Rare cell type과 유사한 cell state는 구분이 어려울 수 있음","Deconvolution estimate는 관측값이 아니라 model-based inference"]]],
         ["bulk-scope","pca-sample-qc","differential-expression","co-expression-module"]],
 
       ["co-expression-module","Co-expression module (WGCNA)",["WGCNA","gene co-expression network","gene module","hdWGCNA"],"interpretation",
-        "Sample 간 expression 상관을 network로 보고 함께 움직이는 gene 묶음(module)을 찾아, 개별 gene 대신 module 단위로 결과를 요약하는 방법",
-        [["기본 발상",["Differential expression은 gene을 하나씩 비교하지만 co-expression은 gene 사이의 상관 구조를 봄","여러 sample에서 함께 오르내리는 gene을 하나의 module로 묶음","Module은 사전에 정의된 gene set이 아니라 데이터에서 유도된 묶음"]],
-         ["구성 절차",["Gene 사이 correlation을 계산하고 soft-thresholding으로 weighted network를 구성","Topological overlap 기반 clustering으로 module을 검출","Module마다 eigengene·hub gene·module membership 값을 계산"]],
-         ["실제 분석에서 주의",["Soft power·minimum module size·merge threshold 선택이 module 경계를 바꿈","Sample 수가 적으면 correlation 추정이 불안정해짐","Bulk에서는 cell-type 조성 변화가 상관으로 나타날 수 있어 composition을 함께 고려"]],
-         ["확장",["hdWGCNA는 single-cell·spatial 데이터에서 cell subpopulation·spatial domain 안의 module을 구성","Single-cell은 sparsity 때문에 cell을 묶어 correlation을 안정화하는 절차를 사용","방향성 있는 regulatory network 추론은 별도의 접근이 필요"]]],
+        "Sample 간 expression 상관을 network로 보고 함께 변하는 gene 묶음(module)을 찾는 방법. 개별 gene 대신 module 단위로 결과를 요약함",
+        [["기본 발상",["Differential expression은 gene을 하나씩 비교하지만, co-expression은 gene 사이의 상관 구조를 봄","여러 sample에서 함께 증가하고 감소하는 gene을 하나의 module로 묶음","Module은 사전에 정의된 gene set이 아니라 데이터에서 유도된 묶음"]],
+         ["구성 절차",["Gene 사이 correlation을 계산하고 soft-thresholding으로 weighted network를 구성함","Topological overlap에 기반한 clustering으로 module을 검출함","Module마다 eigengene·hub gene·module membership 값을 계산함"]],
+         ["실제 분석에서 주의",["Soft power·minimum module size·merge threshold 선택이 module 경계를 바꿈","Sample 수가 적으면 correlation 추정이 불안정해짐","Bulk에서는 cell-type 조성 변화가 상관으로 나타날 수 있어서 composition을 함께 고려함"]],
+         ["확장",["hdWGCNA는 single-cell·spatial 데이터에서 cell subpopulation과 spatial domain 안의 module을 구성함","Single-cell은 sparsity 때문에 cell을 묶어 correlation을 안정화하는 절차를 사용함","방향성 있는 regulatory network 추론에는 별도의 접근이 필요함"]]],
         ["module-trait","gene-set-enrichment","cell-type-deconvolution"]],
 
       ["module-trait","Module eigengene & trait 연관",["module eigengene","module-trait correlation","hub gene","module membership"],"interpretation",
-        "Module을 대표값 하나로 요약한 뒤 sample trait과의 연관을 평가해, 형질과 함께 움직이는 module과 후보 gene을 고르는 단계",
-        [["Module eigengene",["Module에 속한 gene expression의 first principal component를 module 대표값으로 사용","Sample마다 module 하나당 값 하나가 되어 비교가 단순해짐","Gene 수천 개를 module 수십 개로 줄여 multiple testing 부담을 낮춤"]],
-         ["Trait 연관",["Module eigengene과 sample trait의 correlation으로 관심 module을 선택","Module membership과 gene significance로 module 내 후보 gene을 순위화","Hub gene은 module 안에서 연결성이 높은 gene"]],
+        "Module을 대표값 하나로 요약한 뒤 sample trait과의 연관을 평가함. 형질과 함께 변하는 module과 후보 gene을 고르는 단계",
+        [["Module eigengene",["Module에 속한 gene expression의 first principal component를 module 대표값으로 사용함","Sample마다 module 하나당 값 하나가 되어 비교가 단순해짐","Gene 수천 개를 module 수십 개로 줄여서 multiple testing 부담을 낮춤"]],
+         ["Trait 연관",["Module eigengene과 sample trait의 correlation으로 관심 module을 선택함","Module membership과 gene significance로 module 내 후보 gene을 순위화함","Hub gene은 module 안에서 연결성이 높은 gene"]],
          ["해석 주의",["Module-trait 연관은 correlation이며 module이 trait을 일으킨다는 뜻이 아님","방향을 따지려면 mediation 같은 별도 분석 설계가 필요","다른 cohort에서 module이 재현되는지(module preservation) 확인이 권장됨"]]],
         ["co-expression-module","pca-sample-qc","differential-expression"]],
 
       ["expression-repositories","GEO & Expression Atlas",["Gene Expression Omnibus","Expression Atlas","public transcriptomics data"],"interpretation",
-        "Public transcriptomics study의 metadata·raw 또는 processed data와 gene expression profile을 탐색하는 repository",
-        [["GEO",["NCBI의 functional genomics data repository","Study·sample·platform record와 processed file 제공","Accession과 sample metadata를 함께 확인"]],
-         ["Expression Atlas",["EBI가 curated expression과 differential expression view 제공","Gene·organism·tissue·condition 중심으로 검색","Baseline과 differential expression study를 구분"]],
-         ["재사용",["Original publication과 experimental design을 먼저 확인","Genome build·annotation·processing method를 기록","Different study를 결합할 때 batch와 protocol 차이를 고려"]]],
+        "Public transcriptomics study의 metadata, raw 또는 processed data, gene expression profile을 탐색하는 repository",
+        [["GEO",["NCBI의 functional genomics data repository","Study·sample·platform record와 processed file을 제공함","Accession과 sample metadata를 함께 확인함"]],
+         ["Expression Atlas",["EBI가 curated expression과 differential expression view를 제공함","Gene·organism·tissue·condition을 기준으로 검색함","Baseline과 differential expression study를 구분"]],
+         ["재사용",["Original publication과 experimental design을 먼저 확인함","Genome build·annotation·processing method를 기록함","Different study를 결합할 때 batch와 protocol 차이를 고려"]]],
         ["gene-set-enrichment","reference-annotation","replicates-batch"]]
     ];
 
@@ -353,7 +353,7 @@
       "pca": {key:"pca",definition:"고차원 variation을 서로 직교하는 소수의 principal component로 요약하는 방법."},
       "deconvolution": {key:"deconv",definition:"혼합 sample signal을 구성 요소의 proportion 또는 component signal로 분해하는 추정."},
       "module eigengene": {key:"eigengene",definition:"Module 내 gene expression의 first principal component로 정의한 module 대표값."},
-      "co-expression": {key:"coexpr",definition:"여러 sample에서 발현이 함께 변하는 gene 사이의 상관 관계."}
+      "co-expression": {key:"coexpr",definition:"여러 sample에서 발현이 함께 변하는 gene 사이의 상관."}
     };
     const glossaryPattern = /(^|[^A-Za-z0-9])(module eigengene|co-expression|median-of-ratios|negative binomial|log fold change|splice junction|bulk RNA-seq|count matrix|transcriptome|strandedness|transcript|isoform|deconvolution|TPM|CPM|TMM|FDR|PCA)(?=$|[^A-Za-z0-9])/gi;
 
@@ -400,7 +400,7 @@
         '<p class="hero-copy">Bulk RNA-seq · Quantification · Differential Expression · Interpretation</p>' +
         '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="Transcriptomics 통합 검색" placeholder="Search: RNA-seq, STAR, TPM, DESeq2"><span class="search-icon">⌕</span></form>' +
         '<p class="search-hint">Korean / English / acronym</p></div></section>' +
-        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>질문을 따라 큰 구조부터 살펴보세요.</p></div>' +
+        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>질문을 따라 전체 구조부터 살펴보세요.</p></div>' +
         '<div class="category-grid">' + categoryCards() + '</div></div></section>';
       document.getElementById("heroSearchForm").addEventListener("submit", function (e) {
         e.preventDefault();

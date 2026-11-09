@@ -33,13 +33,13 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container"><span>Updated 2026-06-30</span></div>
+    <div class="container"><span>Updated 2026-11-09</span></div>
   </footer>
 
   <script>
     const sections = {
       "molecular":{"number":"01","title":"원인 — 분자초상과 유전","english":"THE MOLECULAR PORTRAIT OF BREAST TUMORS","accent":"#6f3a55","summary":"TCGA 6-플랫폼 통합 · 4개 분자 class · driver · germline","groups":[
-        {"q":"유방암을 분자로 나누면 무엇이 보이는가?","note":"6개 플랫폼 통합이 만든 4개 주요 class","items":[
+        {"q":"유방암을 분자로 나누면 무엇이 보이는가?","note":"6개 플랫폼을 통합해 얻은 4개 주요 class","items":[
           ["brca-molecular-portrait","유방암 분자초상 (TCGA 2012)","825명·6 플랫폼 통합 분석이 4개 주요 분자 class를 확립"]
         ]}
       ]},
@@ -53,13 +53,13 @@
       ["brca-molecular-portrait","유방암 분자초상 (TCGA 2012)",["breast cancer","BRCA","TCGA","intrinsic subtype","luminal","HER2-enriched","basal-like"],"molecular",
        "유방암 825명을 6개 분자 플랫폼으로 통합 분석한 TCGA landmark가 4개 주요 분자 class와 subtype별 driver를 확립했다",
        [["통합이 만드는 분류",["exome·CNV·methylation·mRNA·miRNA·RPPA(단백) 6개 플랫폼을 같은 종양에서 측정","5개 플랫폼 통합 시 4개 주요 분자 class로 수렴","intrinsic subtype(luminal A/B·HER2-enriched·basal-like)이 여러 층(발현·변이·CNV·methylation·단백)에서 뒷받침됨"]],
-        ["driver와 공통성",["전체 >10% 변이 유전자는 TP53·PIK3CA·GATA3 셋뿐 — 나머지는 subtype별로 갈림(luminal A=PIK3CA 45%, basal=TP53 80%)","TBX3·RUNX1·CBFB·SF3B1 등 신규 significantly mutated gene 동정","basal-like 유방암이 high-grade serous 난소암과 분자적으로 유사 — 암종을 가로지르는 병인 공유 시사","germline 소인이 ~10%(BRCA1/2·ATM·CHEK2 등)"]]],
+        ["driver와 공통성",["전체 >10% 변이 유전자는 TP53·PIK3CA·GATA3 셋뿐. 나머지는 subtype별로 갈림(luminal A=PIK3CA 45%, basal=TP53 80%)","TBX3·RUNX1·CBFB·SF3B1 등 신규 significantly mutated gene 동정","basal-like 유방암이 high-grade serous 난소암과 분자적으로 유사함. 서로 다른 암종이 병인을 공유함을 시사","germline 소인이 ~10%(BRCA1/2·ATM·CHEK2 등)"]]],
        ["brca-clinical"]],
 
       ["brca-clinical","유방암 임상 — surrogate subtype과 치료",["breast cancer","HR+","HER2+","triple-negative","endocrine therapy","PARP inhibitor"],"clinical",
        "유방암은 여성에서 가장 흔한 암으로, 호르몬수용체(HR)·HER2 상태로 정의되는 5개 surrogate subtype에 따라 치료 전략이 갈린다",
-       [["역학과 분류",["여성에서 가장 많이 진단되는 암 — 조기 발견 시 70–80%가 치유되나 전이는 아직 incurable","임상에서는 IHC 기반 HR(ER/PR)·HER2 상태로 5개 surrogate subtype을 정의해 TCGA의 분자 subtype을 근사","이 surrogate subtype이 치료 선택의 1차 기준"]],
-        ["subtype별 치료",["HR+ — 내분비요법(아로마타제 억제제·tamoxifen 등)이 중심","HER2+ — 항HER2 표적치료(trastuzumab 계열)를 병용","BRCA1/2 변이 보유 종양 — PARP 억제제가 합성치사(synthetic lethality) 기전으로 작동","triple-negative 등 표적이 적은 subtype에는 화학요법·면역치료가 추가 옵션"]],
+       [["역학과 분류",["여성에서 가장 많이 진단되는 암. 조기 발견 시 70–80%가 치유되나 전이는 아직 incurable","임상에서는 IHC 기반 HR(ER/PR)·HER2 상태로 5개 surrogate subtype을 정의해 TCGA의 분자 subtype을 근사","치료를 고를 때 이 surrogate subtype을 1차 기준으로 삼음"]],
+        ["subtype별 치료",["HR+: 내분비요법(아로마타제 억제제·tamoxifen 등)이 중심","HER2+: 항HER2 표적치료(trastuzumab 계열)를 병용","BRCA1/2 변이 보유 종양: PARP 억제제가 합성치사(synthetic lethality) 기전으로 작동","triple-negative 등 표적이 적은 subtype에는 화학요법·면역치료가 추가 옵션"]],
         ["방향",["biology 근거로 치료를 줄이거나(de-escalation) 늘리는(escalation) 개인화가 진행 중","세계적으로 치료 접근성의 형평성이 남은 과제"]]],
        ["brca-molecular-portrait"]]
     ];
@@ -81,11 +81,11 @@
 
     const glossaryTerms = {
       "tcga":{key:"tcga",definition:"The Cancer Genome Atlas. 다수 암종을 멀티오믹스로 통합 분석한 NCI landmark 프로젝트."},
-      "hr+":{key:"hrpos",definition:"Hormone receptor-positive. ER/PR 발현 유방암 — 내분비요법의 대상."},
-      "her2+":{key:"her2pos",definition:"HER2 단백 과발현/증폭 유방암 — 항HER2 표적치료(trastuzumab 등)의 대상."},
+      "hr+":{key:"hrpos",definition:"Hormone receptor-positive. ER/PR을 발현하는 유방암으로, 내분비요법의 대상."},
+      "her2+":{key:"her2pos",definition:"HER2 단백이 과발현/증폭된 유방암으로, 항HER2 표적치료(trastuzumab 등)의 대상."},
       "parp":{key:"parp",definition:"PARP 억제제. BRCA1/2 변이 종양에서 합성치사(synthetic lethality)로 작동하는 표적치료."},
-      "triple-negative":{key:"tnbc",definition:"ER·PR·HER2 모두 음성인 유방암 subtype. 표적이 적어 화학요법·면역치료가 중심."},
-      "driver":{key:"driver",definition:"종양 진행을 추동하는 체세포 변이(↔ 부수적 passenger 변이)."}
+      "triple-negative":{key:"tnbc",definition:"ER·PR·HER2가 모두 음성인 유방암 subtype. 표적이 적어 화학요법·면역치료가 중심."},
+      "driver":{key:"driver",definition:"종양 진행을 일으키는 체세포 변이(부수적인 passenger 변이와 대비됨)."}
     };
     const glossaryPattern = /(^|[^A-Za-z0-9])(TCGA|HR\+|HER2\+|PARP|triple-negative|driver)(?=$|[^A-Za-z0-9])/g;
 

@@ -33,7 +33,7 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container"><span>Updated 2026-10-28</span></div>
+    <div class="container"><span>Updated 2026-11-09</span></div>
   </footer>
 
   <script src="./glossary.js"></script>
@@ -416,7 +416,7 @@
         [
           "Imputed genotype의 uncertainty를 반영한 expected allele count",
           "범위: 보통 0–2의 continuous value",
-          "Hard call보다 uncertainty 정보를 보존해 association test에 유리"
+          "Hard call과 달리 uncertainty 정보를 보존해 association test에 유리"
         ]
       ],
       [
@@ -554,7 +554,7 @@
           "PCA로 major ancestry axes를 요약해 covariate로 사용",
           "Closely related sample과 population outlier를 QC 단계에서 확인",
           "Mixed model 또는 stratified analysis로 residual structure를 조정",
-          "Admixed sample: local ancestry inference(RFMix 등) → ancestry background별 dosage 분할 → ancestry-specific effect 추정(Tractor; 친족 포함 코호트는 GLMM 확장 Tractor-Mix)"
+          "Admixed sample: local ancestry inference(RFMix 등)로 ancestry background별 dosage를 나눈 뒤 ancestry-specific effect 추정(Tractor; 친족 포함 코호트는 GLMM 확장 Tractor-Mix)"
         ]
       ]
     ],
@@ -624,7 +624,7 @@
           "Pre-phasing: sample genotype의 haplotype phase 추정",
           "Reference panel matching: observed haplotype과 유사한 reference segment 탐색",
           "Imputation: untyped variant의 genotype probability 또는 dosage 계산",
-          "Low-pass WGS 입력: read의 genotype likelihood에서 바로 phasing·imputation(GLIMPSE) — individual-level reference haplotype 필요 → summary 접근만 주는 imputation server 대신 공개 panel 직접 사용"
+          "Low-pass WGS 입력: read의 genotype likelihood에서 바로 phasing·imputation(GLIMPSE). Individual-level reference haplotype이 필요해서 summary 접근만 주는 imputation server 대신 공개 panel을 직접 사용"
         ]
       ],
       [
@@ -1238,7 +1238,7 @@
           "Ancestry와 phenotype definition을 맞춰 비교",
           "Low heritability trait에서는 estimate가 불안정",
           "Genome-wide sharing이 특정 locus 또는 mechanism 공유를 보장하지 않음",
-          "Pairwise rg = 형질 쌍 단위 요약 → 여러 형질에 걸친 공유 성분은 multi-trait factor 분석(genomic SEM · genetic factor analysis)으로 분해"
+          "Pairwise rg는 형질 쌍 단위 요약. 여러 형질에 걸친 공유 성분은 multi-trait factor 분석(genomic SEM · genetic factor analysis)으로 분해"
         ]
       ]
     ],

@@ -39,7 +39,7 @@
       <article class="article">
         <p class="eyebrow">기초와 구성 — 면역계는 무엇으로 이루어지나</p>
         <h1>면역계는 전체적으로 어떻게 짜여 있나?</h1>
-        <p class="definition">골수 HSC → 골수계·림프계 두 갈래 → 혈액과 조직의 면역세포. 같은 지도를 <b>계통</b>(어디서 왔나)과 <b>역할</b>(선천·적응)로 다시 칠하면 두 분류가 어긋나는 세포가 드러남.</p>
+        <p class="definition">골수 HSC → 골수계·림프계 두 갈래 → 혈액과 조직의 면역세포. 같은 그림을 <b>계통</b>(어디서 왔나)과 <b>역할</b>(선천·적응)로 나눠 보면 두 분류가 어긋나는 세포가 드러남.</p>
 
         <!-- ───────── 1. 지도 ───────── -->
         <h2 id="map">한 장 지도 — 조혈 계통도<small>Who comes from where</small></h2>
@@ -123,7 +123,7 @@
 </svg>
 <!--/GEN:MAP-->
           </div>
-          <p class="mapinfo" id="mapInfo" aria-live="polite">세포에 마우스 → 계통 · 역할 · 장소 · HSC부터의 경로</p>
+          <p class="mapinfo" id="mapInfo" aria-live="polite">세포에 마우스를 올리면 계통 · 역할 · 장소 · HSC부터의 경로 표시</p>
           <div class="chips" aria-label="용어로 범위 강조">
             <span class="chip-h">용어로 찾기</span>
             <button type="button" class="chip" data-fig="map" data-hl="neut eos baso mono dc nk b t nkt">Leukocyte · WBC<small>백혈구</small></button>
@@ -157,7 +157,7 @@
             <p class="abbr-src">명칭 <a class="src" href="https://doi.org/10.1038/35004599" target="_blank" rel="noopener">Akashi 2000</a> <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a> <a class="src" href="https://doi.org/10.1016/j.cell.2018.07.017" target="_blank" rel="noopener">Vivier 2018</a></p>
           </div>
           <figcaption>
-            고전 계통도 기준 단순화 — CMP·CLP = 골수계·림프계의 가장 이른 갈림 <a class="src" href="https://doi.org/10.1038/35004599" target="_blank" rel="noopener">Akashi 2000</a>
+            고전 계통도 기준 단순화. CMP·CLP는 골수계·림프계의 가장 이른 갈림 <a class="src" href="https://doi.org/10.1038/35004599" target="_blank" rel="noopener">Akashi 2000</a>
             · 인간 전구세포 지도에서는 대식세포·DC의 림프계 초기 기원도 보고 <a class="src" href="https://doi.org/10.1038/ni.1889" target="_blank" rel="noopener">Doulatov 2010</a>
             · 중간 전구 단계·DC 아형 경로 생략.
             세포 계통·장소 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a>
@@ -174,7 +174,7 @@
 
         <!-- ───────── 2. 선천 ↔ 적응 ───────── -->
         <h2 id="innate-adaptive">선천 ↔ 적응 한눈에<small>How the two arms connect</small></h2>
-        <p class="lede">선천면역 → 즉시 1차 방어 + 적응면역 시동 · 적응면역 → 며칠 뒤 특이적 작동 + 선천면역 재강화 → 한 방향 단계보다 <b>되먹임 회로</b>. 2장(선천)과 3·4장(적응)의 연결 지도.</p>
+        <p class="lede">선천면역은 즉시 1차 방어에 더해 적응면역을 시동함. 적응면역은 며칠 뒤 특이적으로 작동하면서 선천면역을 다시 강화함. 그래서 한 방향 단계가 아니라 <b>되먹임 회로</b>. 2장(선천)과 3·4장(적응)을 잇는 그림.</p>
         <figure class="fig">
           <div class="fig-scroll">
 <!--GEN:FLOW-->
@@ -233,7 +233,7 @@
           <table class="vtable">
             <thead><tr><th>비교</th><th>선천면역 innate</th><th>적응면역 adaptive</th></tr></thead>
             <tbody>
-              <tr><th>반응 시점</th><td class="inn">감염 직후 · 적응면역이 늦는 동안 감염 억제</td><td class="ada">첫 반응까지 4–7일 지연 · 재감염 시 지연 짧고 반응 큼</td></tr>
+              <tr><th>반응 시점</th><td class="inn">감염 직후부터 작동. 적응면역이 늦는 동안 감염 억제</td><td class="ada">첫 반응까지 4–7일 지연 · 재감염 시 지연 짧고 반응 큼</td></tr>
               <tr><th>수용체</th><td class="inn">germline 암호 수용체 → 여러 병원체의 공통 구조 인식</td><td class="ada">유전자 절편 재조합 → 림프구마다 1가지 특이성</td></tr>
               <tr><th>증폭</th><td class="inn">—</td><td class="ada">항원 만난 림프구만 활성화·증식 (clonal selection)</td></tr>
               <tr><th>대표 세포</th><td class="inn">대식세포 · 호중구 · DC · NK</td><td class="ada">B세포 → 형질세포 · T세포 (CD4 · CD8)</td></tr>
@@ -255,11 +255,11 @@
         <!-- 세포 축 -->
         <section role="tabpanel" id="panel-cell" aria-labelledby="tab-cell">
           <h3 class="panelhd">이름이 가리키는 범위</h3>
-          <p class="lede">혈액·면역세포 상위 용어의 포함 관계 · “그림에서 보기” → 위 지도에서 범위 강조.</p>
+          <p class="lede">혈액·면역세포 상위 용어의 포함 관계. ‘그림에서 보기’를 누르면 위 그림에서 범위가 강조됨.</p>
           <div class="fixlist">
             <div class="fix">
               <code>HSC → CMP (골수계 전구) + CLP (림프계 전구)</code>
-              <p class="why">합이 아니라 분화 방향 · 고전 모델의 가장 이른 갈림 <a class="src" href="https://doi.org/10.1038/35004599" target="_blank" rel="noopener">Akashi 2000</a> · 인간 지도 수정안 <a class="src" href="https://doi.org/10.1038/ni.1889" target="_blank" rel="noopener">Doulatov 2010</a></p>
+              <p class="why">합이 아니라 분화 방향. 고전 모델에서 가장 이른 갈림 <a class="src" href="https://doi.org/10.1038/35004599" target="_blank" rel="noopener">Akashi 2000</a> · 인간 지도 수정안 <a class="src" href="https://doi.org/10.1038/ni.1889" target="_blank" rel="noopener">Doulatov 2010</a></p>
               <button type="button" class="see" data-fig="map" data-hl="hsc cmp clp">그림에서 보기 ↑</button>
             </div>
             <div class="fix">
@@ -294,7 +294,7 @@
             <table class="vtable">
               <thead><tr><th>용어</th><th>가리키는 것</th><th>구분 포인트</th><th></th></tr></thead>
               <tbody>
-                <tr><th>Myeloid<span class="ko">골수계</span></th><td>CMP 계열 — 과립구·대식세포·DC·비만세포 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a> · 적혈구·거핵세포 전구까지 <a class="src" href="https://doi.org/10.1038/35004599" target="_blank" rel="noopener">Akashi 2000</a></td><td>백혈구 계열만 · 적혈구·거핵세포 포함 — 두 범위 모두 쓰임 → 문맥 확인</td><td><button type="button" class="see chip" data-fig="map" data-hl="cmp mep gmp mk rbc plt neut eos baso mono dc mast mac tdc">그림 ↑</button></td></tr>
+                <tr><th>Myeloid<span class="ko">골수계</span></th><td>CMP 계열 — 과립구·대식세포·DC·비만세포 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a> · 적혈구·거핵세포 전구까지 <a class="src" href="https://doi.org/10.1038/35004599" target="_blank" rel="noopener">Akashi 2000</a></td><td>백혈구 계열만 가리키기도 하고 적혈구·거핵세포까지 넣기도 함. 두 범위가 모두 쓰이므로 문맥 확인</td><td><button type="button" class="see chip" data-fig="map" data-hl="cmp mep gmp mk rbc plt neut eos baso mono dc mast mac tdc">그림 ↑</button></td></tr>
                 <tr><th>Monocyte · Macrophage<span class="ko">단핵구 · 대식세포</span></th><td>혈액 순환 단핵구 → 조직 이동 후 대식세포로 분화</td><td>같은 계열의 장소·성숙 차이 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></td><td><button type="button" class="see chip" data-fig="map" data-hl="mono mac">그림 ↑</button></td></tr>
                 <tr><th>NK · NKT<span class="ko">자연살해세포 · 자연살해 T세포</span></th><td>NK: 선천 림프구 · NKT: αβ TCR 가진 T세포 하위</td><td>NKT는 NK 표지를 공유할 뿐 NK의 하위 아님 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK532332/" target="_blank" rel="noopener">Heller 2018</a></td><td><button type="button" class="see chip" data-fig="map" data-hl="nk nkt">그림 ↑</button></td></tr>
                 <tr><th>Plasma cell · Plasma<span class="ko">형질세포 · 혈장</span></th><td>활성화 B세포 → 항체 분비 세포 · 혈액의 액체 성분</td><td>이름만 비슷, 전혀 다른 대상 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a> · <a class="next" href="./cells.html#fractions">혈액 분획 →</a></td><td><button type="button" class="see chip" data-fig="map" data-hl="b plasma">그림 ↑</button></td></tr>
@@ -308,16 +308,16 @@
         <!-- 장소 축 -->
         <section role="tabpanel" id="panel-place" aria-labelledby="tab-place" hidden>
           <h3 class="panelhd">만들고 · 만나고 · 일하는 곳</h3>
-          <p class="lede">지도의 배경 띠가 곧 장소 축 · 같은 세포라도 어디에 있느냐에 따라 이름(단핵구 → 대식세포)과 역할 단계가 바뀜.</p>
+          <p class="lede">그림의 배경 띠가 장소 축임. 같은 세포라도 어디에 있느냐에 따라 이름(단핵구 → 대식세포)과 역할 단계가 바뀜.</p>
           <ol class="route">
-            <li style="--c:var(--st)"><span class="lv">만드는 곳</span><h4>1차 림프기관</h4><p><b>골수</b> — 모든 혈구의 출발점 HSC · <b>흉선</b> — T세포 성숙 · 림프구 생성 장소 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></p></li>
-            <li style="--c:var(--ly)"><span class="lv">만나는 곳</span><h4>2차 림프기관</h4><p><b>림프절 · 비장 · 점막 림프조직</b> — 적응면역 개시 · 림프구 유지 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></p></li>
+            <li style="--c:var(--st)"><span class="lv">만드는 곳</span><h4>1차 림프기관</h4><p><b>골수</b>: 모든 혈구의 출발점 HSC. <b>흉선</b>: T세포가 성숙하는 곳. 둘 다 림프구 생성 장소 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></p></li>
+            <li style="--c:var(--ly)"><span class="lv">만나는 곳</span><h4>2차 림프기관</h4><p><b>림프절 · 비장 · 점막 림프조직</b>: 적응면역 개시와 림프구 유지 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></p></li>
             <li style="--c:var(--my)"><span class="lv">일하는 곳</span><h4>조직 · 감염 부위</h4><p>순환 백혈구 → 혈관 내피 부착 → 감염 부위로 이동 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27090/" target="_blank" rel="noopener">Janeway 2001</a> · 단핵구 → 조직에서 대식세포 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></p></li>
           </ol>
           <ul class="moves">
-            <li><b>B·T 림프구</b>: 혈액 → 2차 림프조직 → 림프관 → 다시 혈액 — 지속 순환 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></li>
+            <li><b>B·T 림프구</b>: 혈액 → 2차 림프조직 → 림프관 → 다시 혈액으로 지속 순환 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a></li>
             <li><b>DC</b>: 조직에서 항원 포획 → 가까운 림프절로 이동 → T세포에 제시 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27090/" target="_blank" rel="noopener">Janeway 2001</a></li>
-            <li><b>림프절</b>: 어느 조직을 배수하느냐 → 들어오는 세포·용질·국소 면역 이력 차이 → 다른 반응 맥락 <a class="src" href="https://doi.org/10.1038/s41577-023-00965-8" target="_blank" rel="noopener">Cruz de Casas 2024</a></li>
+            <li><b>림프절</b>: 어느 조직을 배수하느냐에 따라 들어오는 세포·용질·국소 면역 이력이 달라지고, 그 결과 반응 맥락도 달라짐 <a class="src" href="https://doi.org/10.1038/s41577-023-00965-8" target="_blank" rel="noopener">Cruz de Casas 2024</a></li>
           </ul>
           <div class="chips"><span class="chip-h">그림에서</span>
             <button type="button" class="chip see" data-fig="map" data-hl="hsc cmp clp mep gmp mk thy">골수 · 흉선</button>
@@ -330,11 +330,11 @@
         <!-- 시간 축 -->
         <section role="tabpanel" id="panel-time" aria-labelledby="tab-time" hidden>
           <h3 class="panelhd">조혈 장소의 이동 — 인간 발생</h3>
-          <p class="lede">성인 지도의 출발점(골수 HSC)도 처음부터 골수에 있던 것 아님 → 난황낭 → AGM → 태아 간 → 골수 순으로 조혈 장소 이동. <span class="mono">AGM</span> = aorta-gonad-mesonephros.</p>
+          <p class="lede">성인 그림의 출발점(골수 HSC)도 처음부터 골수에 있던 것은 아님. 난황낭 → AGM → 태아 간 → 골수 순으로 조혈 장소가 옮겨 감. <span class="mono">AGM</span> = aorta-gonad-mesonephros.</p>
           <ol class="tl">
             <li><span class="when">배아기</span><h4>난황낭 → AGM</h4><p>첫 조혈세포, 이어서 첫 HSC</p></li>
-            <li><span class="when">태아기</span><h4>태아 간 → 골수</h4><p>HSC의 자리가 옮겨 감 · 골수 형성이 배아기 끝 표지</p></li>
-            <li class="adult"><span class="when">출생 후</span><h4>골수 HSC</h4><p>모든 혈구 세포의 공통 출발점 → 위 지도</p></li>
+            <li><span class="when">태아기</span><h4>태아 간 → 골수</h4><p>HSC의 자리가 옮겨 감. 골수 형성이 배아기의 끝</p></li>
+            <li class="adult"><span class="when">출생 후</span><h4>골수 HSC</h4><p>모든 혈구 세포의 공통 출발점. 위 그림에 해당</p></li>
           </ol>
           <p class="lede" style="margin-top:12px;font-size:.78rem">출처: 발생 시기 <a class="src" href="https://doi.org/10.1242/dev.134866" target="_blank" rel="noopener">Ivanovs 2017 · Development</a> · 성인 골수 조혈 <a class="src" href="https://www.ncbi.nlm.nih.gov/books/NBK27092/" target="_blank" rel="noopener">Janeway 2001</a> · 주수·dpc 수치와 출생 전후 이야기는 아래 문서에서.</p>
           <a class="more" href="./ontogeny.html">면역계는 언제 만들어지고 출생 전후에 어떻게 달라지나? →</a>
@@ -373,7 +373,7 @@
   </main>
 
   <footer>
-    <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-09<!--/GEN:STAMP--></span></div>
   </footer>
   <script src="../../../assets/js/article-page.js"></script>
   <script src="./data.js"></script>

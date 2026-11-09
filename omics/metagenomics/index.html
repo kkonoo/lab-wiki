@@ -33,11 +33,11 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container"><span>Updated 2026-06-30</span></div>
+    <div class="container"><span>Updated 2026-11-09</span></div>
   </footer>
 
   <script>
-    const sections = {"measurement":{"number":"01","title":"Measurement & Study Design","english":"WHAT IS MEASURED","accent":"#8b4f3a","summary":"Microbiome · Sample · Amplicon · Shotgun · Contamination","groups":[{"q":"Microbiome과 metagenomics는 무엇이 다른가?","note":"Community → DNA sample → sequencing data","items":[["microbiome-metagenomics","Microbiome & metagenomics","Microbial community와 그 community DNA를 읽는 방법"],["sample-metadata","Sample & metadata","Biological unit·body site·collection 정보를 함께 정의"]]},{"q":"Amplicon과 shotgun 중 무엇을 선택하는가?","note":"Marker-gene survey vs whole-community DNA","items":[["amplicon-shotgun","Amplicon vs shotgun","질문·비용·해상도에 따라 결정"],["amplicon-16s","16S amplicon sequencing","Marker region으로 taxonomic composition을 측정"],["shotgun-metagenomics","Shotgun metagenomics","Taxonomy와 gene/pathway potential을 함께 측정"]]},{"q":"Host DNA와 contamination은 왜 먼저 확인하는가?","note":"Low biomass · negative control · host-read removal","items":[["contamination-host-dna","Contamination & host DNA","미생물 signal과 technical/background DNA를 구분"]]}]},"profiling":{"number":"02","title":"Taxonomic & Functional Profiling","english":"WHO IS THERE AND WHAT CAN THEY DO","accent":"#526b7a","summary":"Feature table · ASV/OTU · Taxonomy · Function · Strain","groups":[{"q":"분석 결과는 어떤 table로 정리되는가?","note":"Feature × sample abundance plus annotation","items":[["feature-table","Feature & abundance table","ASV·taxon·gene·pathway를 row로 갖는 matrix"],["asv-otu","ASV & OTU","Amplicon sequence를 feature로 정의하는 두 방식"]]},{"q":"어떤 microorganism이 있는지는 어떻게 찾는가?","note":"Marker sequence · k-mer/LCA · clade marker","items":[["taxonomic-profiling","Taxonomic profiling","Taxon presence와 relative abundance를 추정"],["kraken-bracken","Kraken 2 & Bracken","Read classification과 abundance estimation을 분리"],["metaphlan","MetaPhlAn","Clade-specific marker로 species/SGB abundance를 추정"]]},{"q":"무엇을 할 수 있는 community인지는 어떻게 보는가?","note":"Gene family · pathway · strain variation","items":[["functional-humann","Functional profiling & HUMAnN","Gene family와 pathway potential을 정량"],["strain-profiling","Strain-level profiling","Species 아래의 nucleotide·gene variation을 추적"]]}]},"statistics":{"number":"03","title":"Diversity & Statistics","english":"HOW COMMUNITIES ARE COMPARED","accent":"#6f6948","summary":"Composition · Alpha · Beta · UniFrac · PERMANOVA · DA","groups":[{"q":"Relative abundance는 왜 일반 numeric data와 다른가?","note":"Sum constraint → log-ratio thinking","items":[["compositionality","Compositional data","한 taxon의 비율 변화가 다른 taxon 비율에 영향을 줌"]]},{"q":"Diversity는 무엇을 비교하는가?","note":"Within-sample vs between-sample","items":[["alpha-diversity","Alpha diversity","한 sample 안의 richness와 evenness"],["beta-diversity","Beta diversity","Sample 사이 community dissimilarity"],["unifrac","UniFrac","Phylogenetic branch를 이용한 beta-diversity distance"]]},{"q":"Group 차이는 어떻게 검정하는가?","note":"Community-level test vs feature-level test","items":[["permanova-permdisp","PERMANOVA & PERMDISP","Centroid 차이와 dispersion 차이를 함께 확인"],["differential-abundance","Differential abundance","Taxon·gene·pathway별 effect size와 FDR을 평가"]]}]},"resources":{"number":"04","title":"Tools & Reference Atlases","english":"WHAT TOOL IS USED WHERE","accent":"#694f63","summary":"QIIME 2 · DADA2 · bioBakery · HMP · MetaHIT","groups":[{"q":"Amplicon data는 어떤 도구로 처리하는가?","note":"Platform · denoising · provenance","items":[["qiime2","QIIME 2","Amplicon workflow와 data provenance를 관리"],["dada2","DADA2","Error model로 ASV를 inference"]]},{"q":"Shotgun profiling은 어떤 suite로 묶을 수 있는가?","note":"Taxonomy · function · strain","items":[["biobakery","bioBakery","MetaPhlAn·HUMAnN·strain tools를 통합"]]},{"q":"Human microbiome의 reference는 어디서 왔는가?","note":"Atlas · gene catalogue · standard protocol","items":[["reference-atlases","HMP & MetaHIT","Human microbiome atlas와 non-redundant gene catalogue"]]}]}};
+    const sections = {"measurement":{"number":"01","title":"Measurement & Study Design","english":"WHAT IS MEASURED","accent":"#8b4f3a","summary":"Microbiome · Sample · Amplicon · Shotgun · Contamination","groups":[{"q":"Microbiome과 metagenomics는 무엇이 다른가?","note":"Community에서 DNA sample을 얻어 sequencing data로 읽음","items":[["microbiome-metagenomics","Microbiome & metagenomics","Microbial community와 그 community DNA를 읽는 방법"],["sample-metadata","Sample & metadata","Biological unit과 body site, collection 정보를 함께 정의"]]},{"q":"Amplicon과 shotgun 중 무엇을 선택하는가?","note":"Marker-gene survey vs whole-community DNA","items":[["amplicon-shotgun","Amplicon vs shotgun","질문·비용·해상도에 따라 결정"],["amplicon-16s","16S amplicon sequencing","Marker region으로 taxonomic composition을 측정"],["shotgun-metagenomics","Shotgun metagenomics","Taxonomy와 gene/pathway potential을 함께 측정"]]},{"q":"Host DNA와 contamination은 왜 먼저 확인하는가?","note":"Low biomass · negative control · host-read removal","items":[["contamination-host-dna","Contamination & host DNA","미생물 signal과 technical/background DNA를 구분"]]}]},"profiling":{"number":"02","title":"Taxonomic & Functional Profiling","english":"WHO IS THERE AND WHAT CAN THEY DO","accent":"#526b7a","summary":"Feature table · ASV/OTU · Taxonomy · Function · Strain","groups":[{"q":"분석 결과는 어떤 table로 정리되는가?","note":"Feature × sample abundance plus annotation","items":[["feature-table","Feature & abundance table","ASV·taxon·gene·pathway를 row로 갖는 matrix"],["asv-otu","ASV & OTU","Amplicon sequence를 feature로 정의하는 두 방식"]]},{"q":"어떤 microorganism이 있는지는 어떻게 찾는가?","note":"Marker sequence · k-mer/LCA · clade marker","items":[["taxonomic-profiling","Taxonomic profiling","Taxon presence와 relative abundance를 추정"],["kraken-bracken","Kraken 2 & Bracken","Read classification과 abundance estimation을 분리"],["metaphlan","MetaPhlAn","Clade-specific marker로 species/SGB abundance를 추정"]]},{"q":"무엇을 할 수 있는 community인지는 어떻게 보는가?","note":"Gene family · pathway · strain variation","items":[["functional-humann","Functional profiling & HUMAnN","Gene family와 pathway potential을 정량"],["strain-profiling","Strain-level profiling","Species 아래의 nucleotide·gene variation을 추적"]]}]},"statistics":{"number":"03","title":"Diversity & Statistics","english":"HOW COMMUNITIES ARE COMPARED","accent":"#6f6948","summary":"Composition · Alpha · Beta · UniFrac · PERMANOVA · DA","groups":[{"q":"Relative abundance는 왜 일반 numeric data와 다른가?","note":"Sum constraint → log-ratio thinking","items":[["compositionality","Compositional data","한 taxon의 비율 변화가 다른 taxon 비율에 영향을 줌"]]},{"q":"Diversity는 무엇을 비교하는가?","note":"Within-sample vs between-sample","items":[["alpha-diversity","Alpha diversity","한 sample 안의 richness와 evenness"],["beta-diversity","Beta diversity","Sample 사이 community dissimilarity"],["unifrac","UniFrac","Phylogenetic branch를 이용한 beta-diversity distance"]]},{"q":"Group 차이는 어떻게 검정하는가?","note":"Community-level test vs feature-level test","items":[["permanova-permdisp","PERMANOVA & PERMDISP","Centroid 차이와 dispersion 차이를 함께 확인"],["differential-abundance","Differential abundance","Taxon·gene·pathway별 effect size와 FDR을 평가"]]}]},"resources":{"number":"04","title":"Tools & Reference Atlases","english":"WHAT TOOL IS USED WHERE","accent":"#694f63","summary":"QIIME 2 · DADA2 · bioBakery · HMP · MetaHIT","groups":[{"q":"Amplicon data는 어떤 도구로 처리하는가?","note":"Platform · denoising · provenance","items":[["qiime2","QIIME 2","Amplicon workflow와 data provenance를 관리"],["dada2","DADA2","Error model로 ASV를 inference"]]},{"q":"Shotgun profiling은 어떤 suite로 묶을 수 있는가?","note":"Taxonomy · function · strain","items":[["biobakery","bioBakery","MetaPhlAn·HUMAnN·strain tools를 통합"]]},{"q":"Human microbiome의 reference는 어디서 왔는가?","note":"Atlas · gene catalogue · standard protocol","items":[["reference-atlases","HMP & MetaHIT","Human microbiome atlas와 non-redundant gene catalogue"]]}]}};
 
     const articles = {
     "microbiome-metagenomics":  {
@@ -102,9 +102,9 @@
                                          [
                                              "필수 metadata",
                                              [
-                                                 "Collection site·date·protocol·storage·extraction batch",
+                                                 "Collection site와 date, protocol, storage, extraction batch",
                                                  "Host condition·treatment·diet처럼 분석에 필요한 covariate",
-                                                 "Sequencing run·library kit·read length·depth"
+                                                 "Sequencing run과 library kit, read length, depth"
                                              ]
                                          ],
                                          [
@@ -130,14 +130,14 @@
                                              "whole metagenome"
                                          ],
                              "section":  "measurement",
-                             "summary":  "Marker gene만 읽을지 community DNA 전반을 읽을지 결정하는 연구 설계의 첫 분기",
+                             "summary":  "Marker gene만 읽을지 community DNA 전반을 읽을지 결정하는 연구 설계의 첫 단계",
                              "body":  [
                                           [
                                               "Amplicon",
                                               [
                                                   "주로 16S rRNA의 variable region을 PCR amplification",
                                                   "저비용·high throughput taxonomic survey에 적합",
-                                                  "Primer·region·copy-number bias와 제한된 taxonomic resolution"
+                                                  "Primer와 region, copy number에서 오는 bias. Taxonomic resolution도 제한됨"
                                               ]
                                           ],
                                           [
@@ -145,7 +145,7 @@
                                               [
                                                   "Sample의 community DNA를 비표적으로 sequencing",
                                                   "Taxonomy뿐 아니라 gene·pathway와 strain-level evidence 제공",
-                                                  "더 높은 sequencing depth·비용과 host-DNA removal 필요"
+                                                  "더 높은 sequencing depth와 비용이 들고 host-DNA removal이 필요"
                                               ]
                                           ],
                                           [
@@ -258,7 +258,7 @@
                                                 [
                                                     "Host DNA",
                                                     [
-                                                        "Shotgun은 host genome DNA도 함께 sequencing",
+                                                        "Shotgun은 host genome DNA도 함께 sequencing함",
                                                         "Body site에 따라 host-read proportion이 크게 달라짐",
                                                         "Host alignment·filtering 후 microbial read로 profiling"
                                                     ]
@@ -274,7 +274,7 @@
                                                 [
                                                     "기록",
                                                     [
-                                                        "Input biomass·extraction kit·batch·operator 기록",
+                                                        "Input biomass와 extraction kit, batch, operator를 기록",
                                                         "제거 전후 read count와 host fraction 보고",
                                                         "Filtered read 수가 downstream sensitivity를 제한할 수 있음"
                                                     ]
@@ -315,7 +315,7 @@
                                        [
                                            "Downstream",
                                            [
-                                               "Diversity·ordination·differential abundance의 입력",
+                                               "Diversity와 ordination, differential abundance의 입력",
                                                "Taxonomic rank를 합칠 때 count aggregation rule 기록",
                                                "Raw count와 transformed table을 별도 보존"
                                            ]
@@ -382,7 +382,7 @@
                                                  "입력",
                                                  [
                                                      "Amplicon ASV/OTU sequence 또는 shotgun raw read",
-                                                     "Reference taxonomy·marker database·genome database",
+                                                     "Reference taxonomy와 marker database, genome database",
                                                      "Sample별 read와 quality-filtered abundance evidence"
                                                  ]
                                              ],
@@ -604,7 +604,7 @@
                                               "해석",
                                               [
                                                   "Relative increase가 absolute cell count 증가를 뜻하지 않음",
-                                                  "Spike-in·qPCR 같은 추가 측정이 absolute scale을 보완",
+                                                  "Spike-in이나 qPCR 같은 추가 측정이 absolute scale을 보완",
                                                   "Differential abundance method의 compositional assumption 확인"
                                               ]
                                           ]
@@ -687,7 +687,7 @@
                                             [
                                                 "PERMANOVA로 group centroid 차이를 permutation test",
                                                 "PERMDISP로 group dispersion 차이를 별도 확인",
-                                                "Body site·batch·subject 같은 design variable을 함께 고려"
+                                                "Body site와 batch, subject 같은 design variable을 함께 고려"
                                             ]
                                         ]
                                     ],
@@ -793,7 +793,7 @@
                                                     "입력",
                                                     [
                                                         "Feature count/abundance table과 sample metadata",
-                                                        "Group·covariate·batch·subject를 포함한 design",
+                                                        "Group과 covariate, batch, subject를 포함한 design",
                                                         "Taxonomic 또는 functional feature"
                                                     ]
                                                 ],
@@ -843,8 +843,8 @@
                                     "Workflow",
                                     [
                                         "DADA2/Deblur denoising plugin",
-                                        "Taxonomy assignment·phylogeny·diversity analysis",
-                                        "CLI·Python API·QIIME 2 View로 실행·공유"
+                                        "Taxonomy assignment와 phylogeny, diversity analysis",
+                                        "CLI와 Python API, QIIME 2 View로 실행하고 공유"
                                     ]
                                 ],
                                 [
@@ -852,7 +852,7 @@
                                     [
                                         "Workflow와 provenance를 관리하는 platform",
                                         "각 statistical method의 assumption까지 자동 해결하지는 않음",
-                                        "Parameter·database·plugin version을 결과와 함께 보존"
+                                        "Parameter와 database, plugin version을 결과와 함께 보존"
                                     ]
                                 ]
                             ],
@@ -883,7 +883,7 @@
                                [
                                    "처리",
                                    [
-                                       "Filtering·dereplication·denoising",
+                                       "Filtering과 dereplication, denoising",
                                        "Paired-end merging과 chimera removal",
                                        "Exact ASV sequence와 sample별 abundance 생성"
                                    ]
@@ -927,7 +927,7 @@
                                        [
                                            "Quality-controlled shotgun read를 공통 입력으로 사용",
                                            "ChocoPhlAn·UniRef reference와 함께 실행",
-                                           "Conda·container·workflow system으로 재현 가능하게 배포"
+                                           "Conda와 container, workflow system으로 재현 가능하게 배포"
                                        ]
                                    ],
                                    [
@@ -935,7 +935,7 @@
                                        [
                                            "Species/SGB abundance",
                                            "Gene family·pathway abundance",
-                                           "Strain nucleotide·gene variation profile"
+                                           "Strain의 nucleotide와 gene variation profile"
                                        ]
                                    ]
                                ],
@@ -967,7 +967,7 @@
                                                "HMP",
                                                [
                                                    "건강 성인의 여러 body site를 16S와 shotgun으로 profiling",
-                                                   "표준 protocol·reference genome·analysis framework 구축",
+                                                   "표준 protocol과 reference genome, analysis framework를 구축",
                                                    "약 514만 개 non-redundant gene을 회수"
                                                ]
                                            ],
@@ -1256,7 +1256,7 @@
       }).join("");
       app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
-        '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
+        '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover 또는 focus 하면 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
         (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
         (papers ? '<div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">' + papers + '</div></div>' : '') +

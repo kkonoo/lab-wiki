@@ -33,7 +33,7 @@
     <p class="lead">질문을 따라 개념의 구조를 찾는 연구실 공부 가이드</p>
     <div class="search-wrap">
       <form class="search-box" id="searchForm" role="search" autocomplete="off">
-        <input id="q" type="search" aria-label="위키 전체 검색" placeholder="전체 검색 — 예: PRS, ATAC-seq, APOE, fine-mapping, 자가항체">
+        <input id="q" type="search" aria-label="위키 전체 검색" placeholder="전체 검색(예: PRS, ATAC-seq, APOE, fine-mapping, 자가항체)">
         <button class="clear-btn" id="clearBtn" type="button" aria-label="검색어 지우기">✕</button>
         <span class="keycap">/</span>
       </form>
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var filter = "all", hits = [], sel = -1, shown = LIMIT;
 
   if (!IDX) {
-    hint.textContent = "검색 색인을 불러오지 못했습니다 — assets/js/search-index.js 를 확인하세요 (node tools/build-search-index.js).";
+    hint.textContent = "검색 색인을 불러오지 못했습니다. assets/js/search-index.js 를 확인하세요 (node tools/build-search-index.js).";
     input.disabled = true;
     return;
   }
@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
     results.innerHTML = '<p class="result-meta">결과 ' + hits.length + '개' +
       (filter === "all" ? "" : " · " + esc(filter) + " 필터") +
       ' · ↑↓ 이동, Enter 열기, Esc 닫기</p>' + list +
-      (hits.length > shown ? '<p class="more">+ ' + (hits.length - shown) + '개 더 있습니다 — 검색어를 좁혀보세요.</p>' : "");
+      (hits.length > shown ? '<p class="more">+ ' + (hits.length - shown) + '개 더 있습니다. 검색어를 좁혀보세요.</p>' : "");
   }
 
   function move(step) {

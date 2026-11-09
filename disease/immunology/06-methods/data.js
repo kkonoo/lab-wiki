@@ -3,7 +3,7 @@ window.IMMUNOLOGY = {
   "sections": {
     "methods": {
       "number": "06",
-      "title": "면역 연구와 오믹스 — 면역 상태 읽기",
+      "title": "면역 연구와 오믹스: 면역 상태 읽기",
       "english": "HOW WE READ IMMUNE STATES",
       "accent": "#4f5d75",
       "kuby": "Kuby 20장 + 랩 확장",
@@ -28,7 +28,7 @@ window.IMMUNOLOGY = {
           "items": [
             [
               "",
-              "단일세포 면역 지도",
+              "단일세포 면역 프로파일",
               "scRNA-seq로 본 면역세포",
               "wiki 문서 있음",
               "../../../single-cell/index.html"

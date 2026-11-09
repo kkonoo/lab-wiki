@@ -33,7 +33,7 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container"><span>Updated 2026-06-29</span></div>
+    <div class="container"><span>Updated 2026-11-09</span></div>
   </footer>
 
   <script>
@@ -63,12 +63,12 @@
             },
             {
                 "q": "무엇을 하나의 sample로 보는가?",
-                "note": "Biological unit → experimental unit → aliquot",
+                "note": "Biological unit · experimental unit · aliquot",
                 "items": [
                     [
                         "sample-unit",
                         "Sample & experimental unit",
-                        "실제 independent comparison의 단위"
+                        "independent comparison을 이루는 단위"
                     ],
                     [
                         "replicates",
@@ -84,7 +84,7 @@
                     [
                         "feature-identifier",
                         "Feature & identifier",
-                        "Row가 의미하는 biological entity와 ID system"
+                        "Row가 가리키는 biological entity와 ID system"
                     ]
                 ]
             }
@@ -173,7 +173,7 @@
             },
             {
                 "q": "Batch effect는 어떻게 다루는가?",
-                "note": "Design confounding → diagnosis → correction",
+                "note": "Design confounding 확인 → diagnosis → correction",
                 "items": [
                     [
                         "batch-effect",
@@ -193,12 +193,12 @@
         "groups": [
             {
                 "q": "어떤 comparison을 test하는가?",
-                "note": "Research question → design matrix → contrast",
+                "note": "Research question을 design matrix와 contrast로 표현",
                 "items": [
                     [
                         "experimental-design",
                         "Experimental design & contrast",
-                        "Group comparison과 covariate를 model로 표현"
+                        "Group comparison과 covariate를 model에 넣음"
                     ]
                 ]
             },
@@ -225,7 +225,7 @@
                     [
                         "enrichment",
                         "Enrichment analysis",
-                        "Feature-level result를 biological set으로 요약"
+                        "Feature-level result를 biological set 단위로 요약함"
                     ]
                 ]
             },
@@ -236,7 +236,7 @@
                     [
                         "exploratory-visualization",
                         "Exploratory visualization",
-                        "PCA · heatmap · distribution plot의 역할"
+                        "PCA · heatmap · distribution plot"
                     ]
                 ]
             }
@@ -385,7 +385,7 @@
                                         [
                                             "Independent donor · animal · culture 등에서 얻은 sample",
                                             "Population 또는 biological variability를 반영",
-                                            "Inference 범위를 결정하는 핵심 n"
+                                            "Inference 범위를 결정하는 n"
                                         ]
                                     ],
                                     [
@@ -801,7 +801,7 @@
                                                 "paired design"
                                             ],
                                 "section":  "analysis",
-                                "summary":  "Research question과 sample structure를 statistical model의 comparison으로 표현",
+                                "summary":  "Research question과 sample structure를 statistical model의 comparison으로 옮김",
                                 "body":  [
                                              [
                                                  "Design matrix",
@@ -1143,7 +1143,7 @@
     },
     "sample": {
         "key": "sample",
-        "definition": "측정에 투입된 material; experimental unit과 동일한지 확인 필요."
+        "definition": "측정에 투입된 material. experimental unit과 같은지 확인해야 함."
     },
     "biological replicate": {
         "key": "biological-replicate",
@@ -1247,7 +1247,7 @@
         '<p class="hero-copy">Measurement · Data Structure · Preprocessing · Analysis</p>' +
         '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="Omics Basics 통합 검색" placeholder="Search: sample, normalization, batch effect"><span class="search-icon">⌕</span></form>' +
         '<p class="search-hint">Korean / English / acronym</p></div></section>' +
-        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>질문을 따라 큰 구조부터 살펴보세요.</p></div>' +
+        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>질문을 따라 큰 구조부터 보세요.</p></div>' +
         '<div class="category-grid">' + categoryCards() + '</div></div></section>';
       document.getElementById("heroSearchForm").addEventListener("submit", function (e) {
         e.preventDefault();

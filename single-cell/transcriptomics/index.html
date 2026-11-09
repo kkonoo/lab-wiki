@@ -33,7 +33,7 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container"><span>Updated 2026-10-28</span></div>
+    <div class="container"><span>Updated 2026-11-09</span></div>
   </footer>
 
   <script>
@@ -58,7 +58,7 @@
           ["normalization-hvg","Normalization & HVG","Depth를 보정하고 informative gene을 선택"],
           ["batch-integration","Batch integration","Batch를 줄이되 biological variation을 보존"]
         ]},
-        {"q":"Cell type은 어떻게 정의하는가?","note":"Representation → graph → cluster → label","items":[
+        {"q":"Cell type은 어떻게 정의하는가?","note":"Representation·graph·cluster·label 순서","items":[
           ["reduction-clustering","Dimension reduction & clustering","PCA·kNN graph·Leiden/Louvain으로 구조 탐색"],
           ["cell-type-annotation","Cell type annotation","Marker gene과 reference label transfer로 cluster에 이름 붙이기"]
         ]}
@@ -96,7 +96,7 @@
           ["spatial-resolution-tradeoff","Resolution vs gene breadth","단일세포 해상도와 transcriptome-wide 측정 범위의 균형"]
         ]},
         {"q":"Spatial data에서만 생기는 분석 질문은 무엇인가?","note":"Coordinate-aware analysis","items":[
-          ["spatial-analysis","Spatial data analysis","Domain·SVG·deconvolution·neighborhood 분석의 전체 지도"],
+          ["spatial-analysis","Spatial data analysis","Domain·SVG·deconvolution·neighborhood 분석을 한자리에 모음"],
           ["spatial-domain-svg","Spatial domain & SVG","조직 영역과 coordinate-dependent gene expression 탐색"],
           ["spatial-neighborhood","Spatial neighborhood","Cell type 위치와 local microenvironment를 함께 해석"]
         ]},
@@ -169,7 +169,7 @@
 
       ["cell-type-annotation","Cell-type annotation",["cell annotation","marker genes","reference mapping","SingleR","CellTypist","Tabula Sapiens"],"core",
        "Cluster 또는 cell의 expression pattern을 marker와 reference atlas에 비교해 biological label을 부여",
-       [["접근",["Canonical marker의 조합과 negative marker를 수동 확인","SingleR·CellTypist·scANVI 등 reference-based classifier 사용","Reference mapping과 cluster-level inspection을 함께 수행","다장기 reference 예: Tabula Sapiens 2.0 — 28개 조직 · 24 donor · 약 1.1M cells, Cell Ontology 기반 fine 182 → broad 38 cell type 2단 label(Tabula Sapiens Consortium 2026)"]],
+       [["접근",["Canonical marker의 조합과 negative marker를 수동 확인","SingleR·CellTypist·scANVI 등 reference-based classifier 사용","Reference mapping과 cluster-level inspection을 함께 수행","다장기 reference 예: Tabula Sapiens 2.0은 28개 조직 · 24 donor, 약 1.1M cells, Cell Ontology 기반 2단 label로 fine 182개와 broad 38개 cell type(Tabula Sapiens Consortium 2026)"]],
         ["검증",["한 개 marker가 아닌 여러 gene program으로 판단","Doublet·low-quality cluster를 cell type으로 오인하지 않음","Unknown 또는 intermediate state를 억지로 기존 label에 넣지 않음"]]],
        ["reduction-clustering","ambient-doublets","donor-replicate"]],
 

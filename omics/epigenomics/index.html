@@ -33,14 +33,14 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container"><span>Updated 2026-06-29</span></div>
+    <div class="container"><span>Updated 2026-11-09</span></div>
   </footer>
 
   <script>
     const sections = {
       "fundamentals":{"number":"01","title":"Epigenome Basics & Assays","english":"WHAT REGULATORY LAYER IS MEASURED","accent":"#8b4f3a","summary":"Epigenome · Accessibility · Histone marks · DNA methylation · ChIP · ATAC","groups":[
         {"q":"Epigenome은 genome과 무엇이 다른가?","note":"Same DNA sequence → cell-type-specific regulatory state","items":[
-          ["epigenome","Epigenome","DNA sequence 위에 기록되는 cell-state-dependent regulation"],
+          ["epigenome","Epigenome","DNA sequence 위에 더해지는 cell-state-dependent regulation"],
           ["chromatin-accessibility","Chromatin accessibility","Regulatory DNA가 protein에 접근 가능한 정도"],
           ["histone-modifications","Histone modifications","Promoter·enhancer·transcribed·repressed state의 표지"]
         ]},
@@ -56,7 +56,7 @@
           ["bisulfite-sequencing","WGBS & RRBS","Bisulfite conversion으로 base-resolution methylation 측정"]
         ]},
         {"q":"Methylation 값은 어떻게 표현하는가?","note":"Methylated signal → beta/M value or methylated-read fraction","items":[
-          ["methylation-values","Beta value & M value","해석용 비율과 통계용 logit scale을 구분"]
+          ["methylation-values","Beta value & M value","해석에 쓰는 비율과 통계에 쓰는 logit scale을 구분함"]
         ]},
         {"q":"Group 차이와 biological age는 어떻게 분석하는가?","note":"Site/region test and CpG-based prediction","items":[
           ["differential-methylation","DMP & DMR","단일 CpG와 인접 region의 차등 methylation"],
@@ -64,9 +64,9 @@
         ]}
       ]},
       "chipatac":{"number":"03","title":"ChIP/ATAC Analysis","english":"FROM READS TO REGULATORY SIGNAL","accent":"#6f6948","summary":"Alignment · Peak · QC · Track · Motif · Differential signal","groups":[
-        {"q":"Read에서 regulatory region은 어떻게 얻는가?","note":"Alignment → fragment/cut site → enrichment region","items":[
+        {"q":"Read에서 regulatory region은 어떻게 얻는가?","note":"Alignment → fragment/cut site → enrichment region 순서","items":[
           ["alignment-fragments","Alignment & fragments","DNA-seq read를 genome에 정렬하고 fragment signal을 구성"],
-          ["peak-calling","Peak calling","Background보다 enriched된 region을 호출"]
+          ["peak-calling","Peak calling","Background보다 enriched된 region을 호출함"]
         ]},
         {"q":"Signal이 믿을 만한지는 어떻게 확인하는가?","note":"Control · replicate · complexity · enrichment","items":[
           ["qc-reproducibility","QC & reproducibility","FRiP·TSS enrichment·IDR·library complexity"],
@@ -80,7 +80,7 @@
       "resources":{"number":"04","title":"Tools & Reference Atlases","english":"WHAT TOOL OR REFERENCE IS USED","accent":"#694f63","summary":"MACS · Bismark · minfi/methylKit · ENCODE · Roadmap","groups":[
         {"q":"분석 단계별 핵심 tool은 무엇인가?","note":"Peak calling · BS-seq · methylation statistics","items":[
           ["macs","MACS","ChIP/ATAC peak caller"],
-          ["bismark","Bismark","Bisulfite alignment과 methylation calling"],
+          ["bismark","Bismark","Bisulfite alignment와 methylation calling"],
           ["methylation-tools","minfi & methylKit","Array와 BS-seq methylation analysis"]
         ]},
         {"q":"Reference epigenome은 어디서 찾는가?","note":"cCRE registry · chromatin state · tissue atlas","items":[
@@ -97,7 +97,7 @@
                                       "chromatin state"
                                   ],
                       "section":  "fundamentals",
-                      "summary":  "DNA sequence를 바꾸지 않고 cell type·state에 따라 달라지는 genome-wide regulatory layer",
+                      "summary":  "DNA sequence는 그대로 두고 cell type과 state에 따라 달라지는 genome-wide regulatory layer",
                       "body":  [
                                    [
                                        "구성",
@@ -120,7 +120,7 @@
                                        [
                                            "Epigenetic mark는 regulatory state와 연관된 measurement",
                                            "Mark 자체만으로 causal regulation을 확정하지 않음",
-                                           "여러 assay를 조합하면 regulatory element 해석력이 높아짐"
+                                           "여러 assay를 조합하면 regulatory element를 더 잘 해석할 수 있음"
                                        ]
                                    ]
                                ],
@@ -143,7 +143,7 @@
                                                  [
                                                      "Open region",
                                                      [
-                                                         "Promoter·enhancer·insulator 같은 cis-regulatory element가 enrich",
+                                                         "Promoter·enhancer·insulator 같은 cis-regulatory element가 enrich됨",
                                                          "TF binding과 regulatory activity가 일어날 후보 영역",
                                                          "ATAC-seq·DNase-seq 등으로 측정"
                                                      ]
@@ -200,7 +200,7 @@
                                                [
                                                    "해석",
                                                    [
-                                                       "Mark의 기능은 genomic context와 조합에 의존",
+                                                       "Mark의 기능은 genomic context와 조합에 따라 달라짐",
                                                        "Sharp mark와 broad mark는 peak strategy가 다름",
                                                        "Histone mark는 state indicator이며 단독 causal evidence가 아님"
                                                    ]
@@ -243,7 +243,7 @@
                                              [
                                                  "Standard bisulfite는 5mC와 5hmC를 구분하지 못함",
                                                  "Bulk tissue는 cell composition을 반영",
-                                                 "Methylation과 expression의 방향을 context별로 해석"
+                                                 "Methylation과 expression의 방향은 context별로 해석함"
                                              ]
                                          ]
                                      ],
@@ -366,7 +366,7 @@
                                                 [
                                                     "Array에 설계된 CpG만 관측",
                                                     "Platform version 간 공통 probe가 다름",
-                                                    "Distal regulatory region coverage는 WGBS보다 제한"
+                                                    "Distal regulatory region은 WGBS보다 coverage가 제한됨"
                                                 ]
                                             ]
                                         ],
@@ -979,7 +979,7 @@
                                     [
                                         "해석",
                                         [
-                                            "Bulk tissue 평균에 묻힌 rare cell state를 분리",
+                                            "Bulk tissue 평균에서는 보이지 않는 rare cell state를 분리함",
                                             "Single-cell peak는 coverage가 낮아 aggregate evidence를 활용",
                                             "Accessibility와 gene expression을 직접 동일시하지 않음"
                                         ]
@@ -1065,7 +1065,7 @@
       "epigenome": { key: "epigenome", definition: "DNA sequence 위에 형성되는 cell-state-dependent regulatory information." },
       "epigenomics": { key: "epigenomics", definition: "Epigenetic marks와 chromatin state를 genome-wide로 측정·해석하는 분야." },
       "chromatin accessibility": { key: "accessibility", definition: "Genomic DNA가 nucleosome에 덜 가려져 접근 가능한 정도." },
-      "histone modification": { key: "histone", definition: "Histone protein의 chemical mark로 regulatory chromatin state와 연관." },
+      "histone modification": { key: "histone", definition: "Histone protein에 붙는 chemical mark로 regulatory chromatin state와 연관됨." },
       "dna methylation": { key: "methylation", definition: "주로 CpG cytosine에 5mC가 형성되는 epigenetic modification." },
       "chip-seq": { key: "chip", definition: "특정 chromatin protein이나 histone mark에 결합한 DNA를 sequencing하는 assay." },
       "atac-seq": { key: "atac", definition: "Tn5 tagmentation으로 accessible chromatin을 측정하는 assay." },
@@ -1316,7 +1316,7 @@
       }).join("");
       app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
         '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
-        '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
+        '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover 또는 focus하면 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
         '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
         (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
         (papers ? '<div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">' + papers + '</div></div>' : '') +

@@ -43,7 +43,7 @@
 
         <!-- ───────── 1. 혈액 분획 ───────── -->
         <h2 id="fractions">혈액 분획 — 무엇을 분리했나<small>Whole blood · plasma · serum · buffy coat · PBMC</small></h2>
-        <p class="lede">항응고제 유무 · 원심분리 방식 → 층 이름이 달라짐.</p>
+        <p class="lede">항응고제를 넣었는지와 원심분리 방식에 따라 층 이름이 달라짐.</p>
         <figure class="fig" id="tubesFig">
           <div class="fig-scroll">
 <!--GEN:TUBES-->
@@ -77,7 +77,7 @@
 
         <!-- ───────── 2. 분모 사다리 ───────── -->
         <h2 id="denominator">분모 사다리 — 무엇을 100으로 놓았나<small>Same cells, different denominators</small></h2>
-        <p class="lede">아래로 갈수록 분리·선별 단계 추가 → 분모가 좁아짐. <b style="color:var(--blue)">파란 행 = 림프구</b> — 같은 세포 종류가 단계마다 다른 숫자.</p>
+        <p class="lede">아래로 갈수록 분리·선별 단계가 늘어서 분모가 좁아짐. <b style="color:var(--blue)">파란 행 = 림프구</b>. 같은 세포 종류가 단계마다 다른 숫자.</p>
         <p class="abbr-line"><b>CBC</b> complete blood count · <b>WBC</b> white blood cell · <b>PMN</b> polymorphonuclear leukocyte · <b>PBMC</b> peripheral blood mononuclear cell · <b>DC</b> dendritic cell</p>
         <div class="ladder2">
           <section class="step">
@@ -141,7 +141,7 @@
         </div>
         <div class="callout blue">
           <h4>같은 림프구, 세 개의 숫자</h4>
-          <p>WBC 기준 <b>20–40%</b> → PBMC 기준 <b>70–90%</b> → PBMC3k barcode 기준 <b>74.1%</b>. 논문의 “비율” → 분모(전혈 · WBC · PBMC · QC 통과 barcode)부터 확인.</p>
+          <p>WBC 기준 <b>20–40%</b> → PBMC 기준 <b>70–90%</b> → PBMC3k barcode 기준 <b>74.1%</b>. 논문에서 ‘비율’을 볼 때는 분모(전혈 · WBC · PBMC · QC 통과 barcode)부터 확인.</p>
         </div>
 
         <!-- ───────── 3. single-cell ───────── -->
@@ -192,32 +192,32 @@
         </figure>
         <div class="callout">
           <h4>같은 cluster, 다른 이름</h4>
-          <p><b>PPBP</b> cluster → Scanpy 튜토리얼 “Megakaryocytes” · Seurat 튜토리얼 “Platelet” → 주석 이름 = 분석자의 해석 → 마커와 함께 읽기.</p>
-          <p><b>scRNA-seq 비율</b> = 분리·포획·QC를 거친 barcode의 조성 → 혈액 속 조성(STEP 3·4)과 구분.</p>
+          <p>같은 <b>PPBP</b> cluster를 Scanpy 튜토리얼은 ‘Megakaryocytes’로, Seurat 튜토리얼은 ‘Platelet’으로 부름. 주석 이름은 분석자의 해석이므로 마커와 함께 읽기.</p>
+          <p><b>scRNA-seq 비율</b>은 분리·포획·QC를 거친 barcode의 조성이므로 혈액 속 조성(STEP 3·4)과 구분.</p>
         </div>
 
         <!-- ───────── 4. 종류 vs 상태 ───────── -->
         <h2 id="type-state">종류 type vs 상태 state<small>Identity and context</small></h2>
-        <p class="lede">표면마커·형태·기능으로 출발한 분류 → scRNA-seq로 전사체 전반 비교 → 새 subset · 집단 내 이질성 · 발달 궤적 탐색 <a class="src" href="https://doi.org/10.1038/nri.2017.76" target="_blank" rel="noopener">Papalexi &amp; Satija 2018</a></p>
+        <p class="lede">표면마커·형태·기능으로 출발한 분류를 scRNA-seq로 전사체 전반까지 비교함. 그 결과 새 subset, 집단 내 이질성, 발달 궤적을 탐색 <a class="src" href="https://doi.org/10.1038/nri.2017.76" target="_blank" rel="noopener">Papalexi &amp; Satija 2018</a></p>
         <div class="vs2">
-          <div class="type"><span class="tag">종류 type</span><h4>계통에 묶인 정체성</h4>
+          <div class="type"><span class="tag">종류 type</span><h4>계통으로 정해지는 정체성</h4>
             <ul>
               <li>마커·계통으로 정의 — 예: CD14+ vs FCGR3A+ monocyte (위 PBMC3k)</li>
-              <li>전사체 기반 재분류 → 인간 혈액 DC·monocyte·progenitor 새 아형 + 분리·기능 검증 <a class="src" href="https://doi.org/10.1126/science.aah4573" target="_blank" rel="noopener">Villani 2017</a></li>
+              <li>전사체로 다시 분류해서 인간 혈액 DC·monocyte·progenitor의 새 아형을 찾고 분리·기능으로 검증 <a class="src" href="https://doi.org/10.1126/science.aah4573" target="_blank" rel="noopener">Villani 2017</a></li>
             </ul>
           </div>
-          <div class="state"><span class="tag">상태 state</span><h4>맥락에 따라 바뀌는 프로그램</h4>
+          <div class="state"><span class="tag">상태 state</span><h4>맥락에 따라 바뀌는 발현</h4>
             <ul>
               <li>같은 계통 안의 항상성 · 활성 · 질환 관련 상태 구분</li>
-              <li>AD mouse model의 disease-associated microglia(DAM) — 질환 맥락의 식세포 프로그램 <a class="src" href="https://doi.org/10.1016/j.cell.2017.05.018" target="_blank" rel="noopener">Keren-Shaul 2017</a></li>
+              <li>AD mouse model의 disease-associated microglia(DAM): 질환 맥락에서 나타나는 식세포 발현 <a class="src" href="https://doi.org/10.1016/j.cell.2017.05.018" target="_blank" rel="noopener">Keren-Shaul 2017</a></li>
             </ul>
           </div>
         </div>
         <h3 class="subhd">분류 결과를 읽는 기준</h3>
         <ol class="rules">
           <li>전사체 cluster ≠ 기능적으로 독립된 세포 종류 — 곧바로 동일시하지 않기</li>
-          <li>상태 해석 → 조직 · 발달 시기 · 자극 이력 함께</li>
-          <li>발달 궤적 추정 ≠ 실제 계통추적 · 전사체 분류 + 기능 검증 결합 <a class="src" href="https://doi.org/10.1038/nri.2017.76" target="_blank" rel="noopener">Papalexi &amp; Satija 2018</a></li>
+          <li>상태를 해석할 때는 조직 · 발달 시기 · 자극 이력을 함께 봄</li>
+          <li>발달 궤적 추정은 실제 계통추적이 아님. 전사체 분류에 기능 검증을 함께 씀 <a class="src" href="https://doi.org/10.1038/nri.2017.76" target="_blank" rel="noopener">Papalexi &amp; Satija 2018</a></li>
         </ol>
         <details class="aliases-fold"><summary>별칭 · 약어</summary>
         <p class="aliases">cell type · cell state · whole blood · plasma · serum · buffy coat · PBMC · 혈장 · 혈청 · 세포 비율 · scRNA-seq · UMAP · DAM</p></details>
@@ -253,7 +253,7 @@
   </main>
 
   <footer>
-    <div class="container"><span><!--GEN:STAMP-->Updated 2026-09-18<!--/GEN:STAMP--></span></div>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-09<!--/GEN:STAMP--></span></div>
   </footer>
   <script src="../../../assets/js/article-page.js"></script>
   <script src="./data.js"></script>

@@ -33,7 +33,7 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container"><span>Updated 2026-06-30</span></div>
+    <div class="container"><span>Updated 2026-11-09</span></div>
   </footer>
 
   <script>
@@ -87,37 +87,37 @@
       ["single-cell-epigenomics","Single-cell epigenomics",["single-cell chromatin","single-cell regulatory genomics","sc-epigenomics"],"measurement",
        "Cell 또는 nucleus별 regulatory state를 accessibility·methylation·histone mark·3D contact로 측정",
        [["범위",["sc/snATAC-seq은 open chromatin을 측정","Single-cell methylome은 cytosine methylation을 측정","scCUT&Tag와 3D genome assay는 histone/TF mark와 chromatin contact를 측정"]],
-        ["목적",["Bulk epigenome에 섞인 cell-type-specific regulation을 분리","Rare cell과 continuous cell state의 regulatory element를 탐색","Cell-type cCRE atlas와 multiome integration의 기반"]]],
+        ["목적",["Bulk epigenome에 섞인 cell-type-specific regulation을 분리","Rare cell과 continuous cell state의 regulatory element를 탐색","Cell-type cCRE atlas와 multiome integration의 바탕이 됨"]]],
        ["scatac-snatac","single-cell-methylome","ccre-mapping"]],
 
       ["scatac-snatac","scATAC-seq & snATAC-seq",["single-cell ATAC-seq","single-nucleus ATAC-seq","scATAC-seq","snATAC-seq"],"measurement",
        "Tn5 transposase가 accessible chromatin에 삽입되는 반응을 cell 또는 nucleus barcode별로 측정",
        [["측정",["Open promoter·enhancer·insulator에 Tn5 insertion이 enrich","Cell마다 fragment coordinate와 barcode를 얻음","Frozen tissue는 isolated nucleus 기반 snATAC-seq에 적합"]],
-        ["특성",["Diploid genome에서 각 locus copy 수가 작아 signal이 매우 sparse","Cell 단독보다 group pseudobulk에서 peak를 안정적으로 호출","Accessibility는 regulatory potential이며 transcription 자체와 동일하지 않음"]]],
+        ["특성",["Diploid genome에서 각 locus copy 수가 작아 signal이 매우 sparse","Cell 하나보다 group pseudobulk에서 peak를 더 안정적으로 호출함","Accessibility는 regulatory potential이며 transcription 자체와 동일하지 않음"]]],
        ["tagmentation-fragments","accessibility-qc","peak-pseudobulk"]],
 
       ["tagmentation-fragments","Tagmentation & fragments",["Tn5","tagmentation","fragment file","cut site"],"measurement",
        "Tn5가 accessible DNA를 절단하면서 sequencing adapter를 붙이고 insertion pair를 fragment로 기록",
        [["Fragment",["Chromosome·start·end·cell barcode·duplicate count로 표현","Paired insertion은 하나의 accessible DNA fragment를 나타냄","Tn5 cut-site offset을 적용해 insertion position을 정리"]],
-        ["분석 연결",["Fragment file에서 cell-level QC와 tile/peak matrix 생성","Nucleosome-free와 mono/di-nucleosome fragment pattern을 확인","Genome build와 chromosome naming을 일치"]]],
+        ["분석 연결",["Fragment file에서 cell-level QC와 tile/peak matrix 생성","Nucleosome-free와 mono/di-nucleosome fragment pattern을 확인","Genome build와 chromosome naming을 일치시킴"]]],
        ["scatac-snatac","accessibility-qc","feature-matrices"]],
 
       ["single-cell-methylome","Single-cell methylome",["single-cell DNA methylation","snmC-seq","sci-MET","mCG","mCH"],"measurement",
        "Cell 또는 nucleus별 genome-wide 5mC를 측정해 stable cell identity와 regulatory state를 구분",
-       [["데이터",["Bisulfite conversion으로 unmethylated C와 methylated C를 구분","Cell × CpG coverage가 극도로 sparse","mCG와 neuron의 mCH는 서로 다른 biological signal을 제공"]],
+       [["데이터",["Bisulfite conversion으로 unmethylated C와 methylated C를 구분","Cell × CpG coverage가 극도로 sparse","mCG와 neuron의 mCH는 서로 다른 biological signal을 보여 줌"]],
         ["접근",["snmC-seq/snmC-seq2는 plate 기반 single-nucleus methylome","sci-MET 계열은 combinatorial indexing으로 throughput 확장","CpG/bin/region 집계와 pseudobulk로 coverage를 보완"]]],
        ["other-epigenomic-assays","methylation-analysis","gene-activity-linkage"]],
 
       ["other-epigenomic-assays","Other epigenomic assays",["scCUT&Tag","single-cell histone","snm3C","single-cell 3D genome"],"measurement",
        "Accessibility와 methylation 외에 histone/TF mark와 chromatin contact를 cell별로 측정하는 assay",
-       [["Histone/TF",["scCUT&Tag·CoBATCH 등은 antibody-targeted chromatin mark를 측정","Active·repressive mark로 regulatory element class를 구분","Target mark마다 별도 experiment와 antibody validation 필요"]],
-        ["3D contact",["snm3C·Dip-C 등은 chromatin contact를 cell 또는 nucleus별 측정","Distal enhancer-promoter contact와 chromosome architecture 분석","Signal sparsity 때문에 coarse bin 또는 group aggregation을 사용"]]],
+       [["Histone/TF",["scCUT&Tag·CoBATCH 등은 antibody-targeted chromatin mark를 측정","Active·repressive mark로 regulatory element class를 구분","Target mark마다 experiment와 antibody validation을 따로 해야 함"]],
+        ["3D contact",["snm3C·Dip-C 등은 chromatin contact를 cell 또는 nucleus별로 측정","Distal enhancer-promoter contact와 chromosome architecture를 분석","Signal sparsity 때문에 coarse bin 또는 group aggregation을 사용"]]],
        ["single-cell-epigenomics","single-cell-methylome","gene-activity-linkage"]],
 
       ["accessibility-qc","Accessibility QC",["TSS enrichment","FRiP","unique fragments","nucleosome signal","ATAC QC"],"processing",
        "Cell별 fragment complexity와 regulatory region enrichment를 이용해 usable nucleus와 artifact를 구분",
        [["Metric",["Unique fragment 수와 duplicate rate","TSS enrichment와 fraction of reads in peaks","Fragment length periodicity와 nucleosome-free fraction"]],
-        ["판정",["Sample별 metric distribution과 knee를 함께 확인","Low-depth cell·doublet·background barcode를 구분","QC cutoff가 특정 cell type을 선택적으로 제거하지 않는지 점검"]]],
+        ["판정",["Sample마다 metric distribution과 knee를 함께 확인","Low-depth cell·doublet·background barcode를 구분","QC cutoff가 특정 cell type을 선택적으로 제거하지 않는지 점검"]]],
        ["tagmentation-fragments","peak-pseudobulk","dimension-reduction"]],
 
       ["peak-pseudobulk","Pseudobulk peak calling",["peak calling","pseudobulk","MACS2","reproducible peaks"],"processing",
@@ -141,7 +141,7 @@
       ["cell-annotation","Epigenomic cell annotation",["label transfer","gene activity","reference mapping","cell type annotation"],"processing",
        "Accessibility·methylation pattern을 gene activity·motif·reference RNA/epigenome에 연결해 cell label을 부여",
        [["방법",["Promoter·gene body accessibility로 gene activity score 계산","scRNA reference와 anchor/label transfer","Known marker locus·TF motif와 pseudobulk track을 함께 확인"]],
-        ["검증",["RNA-derived label과 epigenomic signal의 일치 여부 확인","Doublet와 low-quality cluster를 별도 처리","Reference에 없는 state는 unknown으로 유지 가능"]]],
+        ["검증",["RNA-derived label과 epigenomic signal의 일치 여부 확인","Doublet와 low-quality cluster는 따로 처리","Reference에 없는 state는 unknown으로 유지 가능"]]],
        ["dimension-reduction","gene-activity-linkage","reference-atlases"]],
 
       ["motif-activity","Motif activity",["TF motif","chromVAR","motif deviation","TF activity"],"regulation",
@@ -153,13 +153,13 @@
       ["ccre-mapping","Cell-type cCRE mapping",["cis-regulatory element","cCRE","enhancer","promoter"],"regulation",
        "Accessible·hypomethylated·marked chromatin region을 cell-type-specific candidate regulatory element로 catalog",
        [["Catalog",["Promoter·enhancer·insulator 후보를 genomic coordinate로 정의","Pseudobulk peak와 differential signal로 cell-type specificity 평가","ENCODE/Roadmap bulk catalog를 cell resolution으로 확장"]],
-        ["응용",["Cell-type regulatory program과 master TF 탐색","GWAS noncoding variant가 겹치는 cell type과 element 해석","Multiome에서 cCRE와 target gene expression을 연결"]]],
+        ["응용",["Cell-type regulatory program과 master TF 탐색","GWAS noncoding variant가 겹치는 cell type과 element를 해석","Multiome에서 cCRE와 target gene expression을 연결"]]],
        ["motif-activity","gene-activity-linkage","reference-atlases"]],
 
       ["differential-accessibility","Differential accessibility",["DA peaks","differential peaks","chromatin accessibility change"],"regulation",
        "같은 cell type 안에서 condition·state에 따라 genomic region accessibility가 달라지는지 평가",
        [["설계",["Cell을 donor 안에 nested된 관측으로 인식","Donor × cell type pseudobulk fragment count를 사용할 수 있음","Library size·depth·batch와 replicate balance를 고려"]],
-        ["결과",["Region별 log fold change·P-value·FDR","Promoter/enhancer annotation과 motif enrichment를 후속 수행","Accessibility 변화가 expression change와 같은 방향인지 별도 확인"]]],
+        ["결과",["Region별 log fold change·P-value·FDR","이어서 promoter/enhancer annotation과 motif enrichment를 수행","Accessibility 변화가 expression change와 같은 방향인지 별도 확인"]]],
        ["peak-pseudobulk","ccre-mapping","gene-activity-linkage"]],
 
       ["methylation-analysis","Single-cell methylation analysis",["DMR","mCG","mCH","methylation bin","methylome clustering"],"regulation",
@@ -171,7 +171,7 @@
       ["gene-activity-linkage","Gene activity & peak-to-gene",["gene score","peak-to-gene link","co-accessibility","Cicero"],"regulation",
        "Region-level epigenomic signal을 nearby 또는 correlated gene expression과 연결해 target gene 후보를 추정",
        [["Gene activity",["Promoter·gene body·nearby peak accessibility를 gene score로 요약","Methylome은 mCG/mCH 또는 DMR을 gene regulation과 연결","Score는 직접 RNA measurement가 아닌 proxy"]],
-        ["Linkage",["Distance는 candidate peak-gene pair를 제한","Co-accessibility는 함께 열리는 region pair를 찾음","Paired RNA+ATAC correlation과 3D contact가 linkage evidence를 보강"]]],
+        ["Linkage",["Distance로 candidate peak-gene pair 범위를 좁힘","Co-accessibility는 함께 열리는 region pair를 찾음","Paired RNA+ATAC correlation과 3D contact가 linkage evidence를 보강"]]],
        ["ccre-mapping","chromvar-cicero","reference-atlases"]],
 
       ["archr-signac","ArchR & Signac",["ArchR","Signac","scATAC workflow"],"resources",
@@ -183,19 +183,19 @@
       ["snapatac-cistopic-episcanpy","SnapATAC · cisTopic · epiScanpy",["SnapATAC","cisTopic","epiScanpy","scATAC tools"],"resources",
        "Spectral embedding·topic model·AnnData ecosystem으로 single-cell accessibility와 methylome을 분석하는 도구군",
        [["Accessibility",["SnapATAC은 binarized genomic bins와 spectral embedding을 사용","cisTopic/pycisTopic은 region topic으로 cell state와 regulatory topic을 학습","Peak·motif·annotation downstream으로 연결"]],
-        ["epiScanpy",["Scanpy/AnnData 기반 single-cell epigenomic analysis","Accessibility·methylation feature matrix를 처리","QC·dimension reduction·clustering·differential feature workflow 지원"]]],
+        ["epiScanpy",["Scanpy/AnnData 기반 single-cell epigenomic analysis","Accessibility와 methylation의 feature matrix를 처리","QC·dimension reduction·clustering·differential feature workflow 지원"]]],
        ["dimension-reduction","archr-signac","reference-atlases"]],
 
       ["chromvar-cicero","chromVAR & Cicero",["chromVAR","Cicero","motif variability","co-accessibility"],"resources",
        "Cell별 motif deviation과 genomic region co-accessibility를 계산해 TF program과 regulatory linkage를 탐색",
-       [["chromVAR",["Motif 또는 annotation을 공유하는 peak의 accessibility deviation 계산","Matched background peak로 technical bias 보정","Cell-type/state별 variable TF motif 탐색"]],
+       [["chromVAR",["Motif 또는 annotation을 공유하는 peak의 accessibility deviation을 계산","Matched background peak로 technical bias 보정","Cell-type/state별 variable TF motif 탐색"]],
         ["Cicero",["Low-dimensional neighbor cell을 aggregate해 sparsity 완화","Nearby peak pair의 co-accessibility score 계산","Distal enhancer-promoter 후보를 생성"]]],
        ["motif-activity","gene-activity-linkage","ccre-mapping"]],
 
       ["reference-atlases","Reference epigenomic atlases",["ENCODE cCRE","cell atlas","reference epigenome","regulatory atlas"],"resources",
        "Reference regulatory element와 cell taxonomy를 이용해 single-cell epigenomic region과 cell identity를 해석",
-       [["Reference",["ENCODE cCRE registry는 promoter-like·enhancer-like candidate element 제공","Cell atlas의 RNA·ATAC·methylome taxonomy로 label transfer와 비교","Genome build와 annotation release를 맞춤"]],
-        ["사용",["Query peak와 reference cCRE overlap","Cell-type pseudobulk track과 atlas marker 비교","Reference 밖의 tissue·state는 억지로 기존 label에 맞추지 않음"]]],
+       [["Reference",["ENCODE cCRE registry는 promoter-like·enhancer-like candidate element 제공","Cell atlas의 RNA·ATAC·methylome taxonomy로 label transfer와 비교","Genome build와 annotation release를 서로 맞춤"]],
+        ["사용",["Query peak와 reference cCRE overlap","Cell-type pseudobulk track을 atlas marker와 비교","Reference 밖의 tissue·state는 억지로 기존 label에 맞추지 않음"]]],
        ["cell-annotation","ccre-mapping","archr-signac"]]
     ];
 

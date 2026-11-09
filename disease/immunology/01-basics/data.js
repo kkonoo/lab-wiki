@@ -33,10 +33,10 @@ window.IMMUNOLOGY_BASICS = {
       "조혈 계통도(계통 ↔ 역할 색 전환) · 용어 포함 관계 · 선천↔적응 연결 · 세포·장소·시간 축",
       [
         [
-          "한 장 지도 — 조혈 계통도",
+          "조혈 계통도",
           [
             "HSC → CMP·CLP → 혈액·조직 면역세포",
-            "계통(골수계·림프계) ↔ 역할(선천·적응) 색 전환 — NK·NKT에서 어긋남",
+            "계통(골수계·림프계) ↔ 역할(선천·적응) 색 전환. NK·NKT에서 어긋남",
             "Leukocyte·WBC · Granulocyte·PMN · Mononuclear cell·MNC · Lymphocyte · Myeloid · Lymphoid 범위 강조"
           ]
         ],
@@ -160,7 +160,7 @@ window.IMMUNOLOGY_BASICS = {
       "림프절 단면 지도(림프·혈액 입구, 반응 경로) · 구역별 세포 · 배수 장기에 따른 림프절 차이",
       [
         [
-          "한 장 지도 — 림프절 단면",
+          "림프절 단면",
           [
             "피막하 굴 · B 여포 · 배중심 · T 영역 paracortex · HEV · 수질 · 수입·수출 림프관",
             "림프 입구: 수입 림프관 → 피막하 굴 → conduit → HEV · 이동성 DC",
@@ -240,16 +240,16 @@ window.IMMUNOLOGY_BASICS = {
         [
           "인식에서 신호로",
           [
-            "신호 1 항원 · 신호 2 공동자극 · 신호 3 cytokine — PRR은 02장, MHC는 03장, 활성화·기억은 04장",
+            "신호 1 항원 · 신호 2 공동자극 · 신호 3 cytokine. PRR은 02장, MHC는 03장, 활성화·기억은 04장",
             "CD8 T세포: IL-12 또는 I형 IFN이 없으면 작동·기억 대신 결실·무반응 (Curtsinger 2010, mouse)"
           ]
         ],
         [
           "작용 거리와 겹침",
           [
-            "autocrine · paracrine · endocrine — 분비 세포 자신, 이웃, 혈류 건너까지",
-            "cytokine niche 30–150 µm(시험관) · 생체 80–120 µm — 소비하는 세포 밀도가 범위를 정함 (Oyler-Yaniv 2017, mouse)",
-            "pleiotropy는 수용체 분포 때문이고 redundancy는 대개 겉보기 — 결손 표현형은 구별된다 (Lin & Leonard 2019; Cui 2024 실측)"
+            "autocrine · paracrine · endocrine: 분비 세포 자신, 이웃, 혈류 건너까지",
+            "cytokine niche 30–150 µm(시험관) · 생체 80–120 µm. 소비하는 세포 밀도가 범위를 정함 (Oyler-Yaniv 2017, mouse)",
+            "pleiotropy는 수용체 분포 때문이고 redundancy는 대개 겉보기임. 결손 표현형은 구별된다 (Lin & Leonard 2019; Cui 2024 실측)"
           ]
         ],
         [
@@ -263,16 +263,16 @@ window.IMMUNOLOGY_BASICS = {
         [
           "조합이 정하는 것",
           [
-            "Th1 IL-12 · Th2 IL-4 · Th17 TGF-β+IL-6 · iTreg TGF-β+IL-2 — STAT과 전사인자까지 (Zhu 2010, 주로 mouse·시험관)",
-            "분화한 세포의 산물이 같은 분화를 다시 밀어주는 되먹임 · TGF-β 농도가 Th17/Treg 갈림길",
-            "memory T세포 → myeloid 선천 염증 지시 (Warrick 2025 · McDaniel 2022, mouse)"
+            "Th1 IL-12 · Th2 IL-4 · Th17 TGF-β+IL-6 · iTreg TGF-β+IL-2. STAT과 전사인자까지 (Zhu 2010, 주로 mouse·시험관)",
+            "분화한 세포의 산물이 같은 분화를 다시 촉진하는 되먹임 · TGF-β 농도가 Th17/Treg 갈림길",
+            "memory T세포가 myeloid 선천 염증을 지시함 (Warrick 2025 · McDaniel 2022, mouse)"
           ]
         ],
         [
           "데이터와 치료로",
           [
             "PBMC3k 마커 IL7R·CCR7 = cytokine·chemokine 수용체",
-            "cytokine niche 차이 = 단일세포 자료의 비유전적 변이 원천 (Oyler-Yaniv 2017)",
+            "cytokine niche 차이가 단일세포 자료의 비유전적 변이 원천 (Oyler-Yaniv 2017)",
             "차단(TNF-α·IL-6·IL-17·IL-23) · JAK 억제제 · cytokine 자체를 약으로 (Saxton 2023 · Virtanen 2024)"
           ]
         ]
@@ -320,7 +320,7 @@ window.IMMUNOLOGY_BASICS = {
       "수정부터 두 돌까지 한 장 타임라인(난황낭 → AGM → 태아 간 → 골수) · 태반을 건너오는 모체 IgG와 모체 세포 · 모유와 미생물 정착 · 영아기 조직별 T세포 — 성인의 축소판이 아닌 시기별 프로그램",
       [
         [
-          "한 장 타임라인",
+          "타임라인",
           [
             "난황낭 CS 7–8 · AGM 첫 HSC 30–32 dpc · 태아 간 7–8주 · 골수 CS 23 (Ivanovs 2017)",
             "모체 IgG: 제대혈:모체혈 비가 24–25주 0.11 → 36–37주 0.98 (Sci Rep 2022)",
@@ -330,15 +330,15 @@ window.IMMUNOLOGY_BASICS = {
         [
           "성인의 축소판이 아니다",
           [
-            "태아·영아 조직의 Treg 10–30% — 성인 2–5% (Thome 2016)",
-            "태아기 B1 세포와 비전형 T세포 · effector 기능은 2분기부터 (Suo 2022)",
+            "태아·영아 조직의 Treg 10–30%, 성인 2–5% (Thome 2016)",
+            "태아기 B1 세포와 비전형 T세포. effector 기능은 2분기부터 (Suo 2022)",
             "1차 조혈기관 밖 말초 장기에서도 B 림프구 생성 관찰 (Suo 2022)"
           ]
         ],
         [
           "출생 전후에 들어오는 것",
           [
-            "모유 — IgA·IgM은 PIGR, IgG는 FcRn으로 유선을 건너감 · 엄마 장의 IgA 레퍼토리가 전달됨 (Immunol Rev 2024)",
+            "모유: IgA·IgM은 PIGR, IgG는 FcRn으로 유선을 건너감 · 엄마 장의 IgA 레퍼토리가 전달됨 (Immunol Rev 2024)",
             "HMO는 소화되지 않는 prebiotic이자 병원체 decoy (Le Doare 2018)",
             "신생아기 장내 미생물을 가장 크게 가르는 요인은 분만 방식 (Shao 2019)"
           ]
@@ -346,15 +346,15 @@ window.IMMUNOLOGY_BASICS = {
         [
           "영아기 조직 시계",
           [
-            "naive T세포가 70–95%로 우세 · effector memory는 폐·공장·회장에서만 20% 이상 (Thome 2016)",
+            "naive T세포가 70–95%로 우세함. effector memory는 폐·공장·회장에서만 20% 이상 (Thome 2016)",
             "초기 각인이 감염 방어·백신 반응·아토피 위험과 연결된다는 정리 (Palma 2026)"
           ]
         ],
         [
           "근거와 한계",
           [
-            "태아 단일세포 아틀라스 — 수정 후 4–17주 · 9개 조직 · 90만 세포 이상 (Suo 2022)",
-            "전사체로 그린 발달 경로는 기원에 대한 추론 — 계통추적 결과와 구분 (Haniffa 2025)",
+            "태아 단일세포 아틀라스: 수정 후 4–17주 · 9개 조직 · 90만 세포 이상 (Suo 2022)",
+            "전사체로 그린 발달 경로는 기원을 추론한 것. 계통추적 결과와 구분 (Haniffa 2025)",
             "수정 후 기준(dpc·CS)과 임신 주수 기준을 섞지 않기"
           ]
         ]
@@ -508,7 +508,7 @@ window.IMMUNOLOGY_BASICS = {
     },
     "tnfsf": {
       "key": "tnfsf",
-      "definition": "TNF 계열 리간드 집합 — 기억 T세포와 myeloid 세포 사이 접촉 신호의 한 축"
+      "definition": "TNF 계열 리간드 집합. 기억 T세포와 myeloid 세포 사이 접촉 신호의 하나"
     }
   },
   "sourceLinks": {
@@ -582,7 +582,7 @@ window.IMMUNOLOGY = {
   "sections": {
     "basics": {
       "number": "01",
-      "title": "기초와 구성 — 면역계는 무엇으로 이루어지나",
+      "title": "기초와 구성: 면역계는 무엇으로 이루어지나",
       "english": "WHAT THE IMMUNE SYSTEM IS MADE OF",
       "accent": "#6f3a55",
       "kuby": "Kuby 1–3장",
@@ -594,7 +594,7 @@ window.IMMUNOLOGY = {
           "items": [
             [
               "immunology-overview",
-              "면역계의 큰 그림",
+              "면역계의 전체 구성",
               "조혈 계통도(계통 ↔ 역할 색 전환) · 용어 포함 관계 · 선천↔적응 연결 · 세포·장소·시간 축",
               "읽기",
               ""
@@ -633,7 +633,7 @@ window.IMMUNOLOGY = {
           "items": [
             [
               "immunology-recognition",
-              "cytokine과 신호 — 수용체 계열 지도",
+              "cytokine과 신호: 수용체 계열",
               "cytokine 수용체 계열과 신호 경로(JAK-STAT · NF-κB · SMAD · GPCR) · 작용 거리와 pleiotropy·redundancy · CD4 T세포 분화를 정하는 조합 · chemokine 주소 · 치료 표적",
               "읽기",
               ""
@@ -647,7 +647,7 @@ window.IMMUNOLOGY = {
             [
               "immunology-ontogeny",
               "면역 발생과 영아기",
-              "수정부터 두 돌까지 한 장 타임라인(난황낭 → AGM → 태아 간 → 골수) · 태반을 건너오는 모체 IgG와 모체 세포 · 모유와 미생물 정착 · 영아기 조직별 T세포 — 성인의 축소판이 아닌 시기별 프로그램",
+              "수정부터 두 돌까지 타임라인(난황낭 → AGM → 태아 간 → 골수) · 태반을 건너오는 모체 IgG와 모체 세포 · 모유와 미생물 정착 · 영아기 조직별 T세포. 성인의 축소판이 아닌 시기별 프로그램",
               "읽기",
               ""
             ]
