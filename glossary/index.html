@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/img/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="HaLab Wiki 용어집: 용어 카드의 한 줄 요약, 본문 점선 용어의 정의, 약어 풀이를 모아 용어마다 다루는 페이지로 연결">
+<title>용어집 · HaLab Wiki</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/hub.css">
+<link rel="stylesheet" href="./glossary.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-group"><a class="brand brand-home" href="../index.html"><img class="mark" src="../assets/img/symbol.png" alt="">HaLab Wiki</a><span class="brand brand-domain">/ 용어집</span></div>
+    <nav class="domain-nav" aria-label="도메인">
+      <a href="../gwas/index.html">GWAS</a>
+      <a href="../omics/index.html">Omics</a>
+      <a href="../single-cell/index.html">Single-cell</a>
+      <a href="../multi-omics/index.html">Multi-omics</a>
+      <a href="../disease/index.html">Diseases</a>
+    </nav>
+    <a class="lab-link" href="https://halab.knu.ac.kr" target="_blank" rel="noopener">HaLab ↗</a>
+  </div>
+</header>
+
+<section class="hub-hero">
+  <div class="container">
+    <p class="eyebrow">Glossary</p>
+    <h1>용어집</h1>
+    <p class="lead">용어 카드의 한 줄 요약, 본문 점선 용어의 정의, 약어 풀이를 한곳에 모은 목록. 용어마다 자세히 다루는 페이지로 연결됨.</p>
+    <div class="search-wrap">
+      <form class="search-box" id="searchForm" role="search" autocomplete="off">
+        <input id="q" type="search" aria-label="용어 찾기" placeholder="용어 찾기(예: coloc, PRS, eGFR)">
+        <button class="clear-btn" id="clearBtn" type="button" aria-label="검색어 지우기">✕</button>
+        <span class="keycap">/</span>
+      </form>
+      <p class="search-hint" id="hint">용어집을 불러오는 중</p>
+    </div>
+  </div>
+</section>
+
+<main class="container hub-main gloss-main">
+  <div class="chips" id="chips" role="group" aria-label="도메인 거르기"></div>
+  <nav class="az" id="az" aria-label="글자 바로가기"></nav>
+  <div id="list" aria-live="polite"></div>
+</main>
+
+<footer><div class="container"><span>HaLab · Genomic Medicine Lab, Kyungpook National University</span><span id="updated">Updated</span></div></footer>
+<script src="./data.js"></script>
+<script>
+(function () {
+  "use strict";
+  var G = window.WIKI_GLOSSARY;
+  var input = document.getElementById("q"), form = document.getElementById("searchForm");
+  var clearBtn = document.getElementById("clearBtn"), hint = document.getElementById("hint");
+  var chipsBox = document.getElementById("chips"), az = document.getElementById("az"), list = document.getElementById("list");
+  if (!G) {
+    hint.textContent = "용어집 데이터를 불러오지 못함 (node tools/build-search-index.js 로 glossary/data.js 생성)";
+    input.disabled = true;
+    return;
+  }
+  document.getElementById("updated").textContent = "Updated " + G.updated;
+
+  var COLOR = {}, ORDER = G.domains.map(function (d) { COLOR[d.label] = d.color; return d.label; });
+  var BY_ID = {};
+  G.entries.forEach(function (e) {
+    BY_ID[e.id] = e;
+    var defs = [].concat((e.c || []).map(function (c) { return c.s; }), (e.x || []).map(function (x) { return x.x; }), (e.b || []).map(function (b) { return b.x; }));
+    e._t = e.t.toLowerCase();
+    e._a = (e.a || []).map(function (s) { return s.toLowerCase(); });
+    e._k = (e.k || []).join(" · ").toLowerCase();
+    e._s = defs.join(" ").toLowerCase();
+  });
+  var S = G.stats;
+  hint.textContent = "용어 " + S.entries + "개, ABC순. 정의마다 앞에 나오는 곳을 달았고, 영역마다 정의가 다르면 나란히 보여 줌. 이 페이지 안에서는 Ctrl+F로 찾아도 됨";
+
+  var filter = "all";
+
+  function esc(v) {
+    return String(v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
+  }
+  function href(u) { return /^https?:/.test(u) ? u : "../" + u; }
+
+  function score(e, tokens) {
+    var whole = tokens.join(" "), total = 0;
+    for (var i = 0; i < tokens.length; i++) {
+      var tk = tokens[i], s = 0;
+      if (e._t === whole) s = 200;
+      else if (e._t.indexOf(tk) === 0) s = 80;
+      else if (e._t.indexOf(tk) > -1) s = 55;
+      if (e._a.indexOf(whole) > -1) s = Math.max(s, 90);
+      else if (e._a.some(function (a) { return a.indexOf(tk) > -1; })) s = Math.max(s, 45);
+      if (e._k.indexOf(tk) > -1) s = Math.max(s, 25);
+      if (e._s.indexOf(tk) > -1) s = Math.max(s, 12);
+      if (!s) return 0;
+      total += s;
+    }
+    return total;
+  }
+
+  /* 한 줄 = 앞에 출처(어디서 나오는지) + 뒤에 정의. 출처 이름은 그 페이지로 가는 링크.
+     같은 출처 이름(면역학 한 섹션의 여러 문서)은 하나로 묶고 첫 문서로 연결, 나머지 제목은 title로 */
+  function from(w) {
+    var seen = {}, out = [];
+    w.forEach(function (p) {
+      var s = p.s || p.t;
+      if (seen[s]) { seen[s].titles.push(p.t); return; }
+      seen[s] = { s: s, u: p.u, d: p.d, titles: [p.t] };
+      out.push(seen[s]);
+    });
+    return out.map(function (o) {
+      return '<a href="' + esc(href(o.u)) + '" style="--accent:' + (COLOR[o.d] || "var(--theme)") + '" title="' + esc(o.titles.join(" / ")) + '">' + esc(o.s) + "</a>";
+    }).join(" · ");
+  }
+  function row(cls, label, body) {
+    return '<div class="row' + (cls ? " " + cls : "") + '"><span class="from">' + label + '</span><span class="def">' + body + "</span></div>";
+  }
+  function entryHtml(e) {
+    var h = '<article class="term" id="g-' + esc(e.id) + '">';
+    h += '<h3><a href="#g-' + esc(e.id) + '">' + esc(e.t) + "</a></h3>";
+    if (e.a) h += '<p class="aka">' + esc(e.a.join(" · ")) + "</p>";
+    h += '<div class="rows">';
+    (e.c || []).forEach(function (c) {
+      var t = "용어 카드: " + [c.p, c.g, c.ct].filter(Boolean).join(" › ");
+      h += row("", from([{ s: c.l || c.p, u: c.u, d: c.d, t: t }]), esc(c.s || c.ct || "") + ' <a class="go" href="' + esc(href(c.u)) + '">카드 →</a>');
+    });
+    (e.x || []).forEach(function (x) { h += row("", from(x.w), esc(x.x)); });
+    (e.b || []).forEach(function (b) { h += row("", from(b.w), '<span class="kind">약어</span>' + esc(b.x)); });
+    if (e.f) h += row("more", "그림으로 보기", e.f.map(function (f) { return '<a href="' + esc(href(f.u)) + '">' + esc(f.t) + "</a>"; }).join(" · "));
+    if (e.r) {
+      var rel = e.r.map(function (id) { return BY_ID[id]; }).filter(Boolean);
+      if (rel.length) h += row("more", "관련 용어", rel.map(function (r) { return '<a href="#g-' + esc(r.id) + '">' + esc(r.t) + "</a>"; }).join(" · "));
+    }
+    if (e.o) {
+      /* 페이지 이름은 괄호 속 약칭만(Rheumatoid Arthritis (RA) → RA) */
+      h += row("more", "다루는 문서", e.o.map(function (o) {
+        var p = o.p && o.p !== o.t ? ((o.p.match(/\(([^()]+)\)\s*$/) || [])[1] || o.p) : "";
+        return (p ? '<span class="n">' + esc(p) + "</span> " : "") + '<a href="' + esc(href(o.u)) + '">' + esc(o.t) + "</a>";
+      }).join(" · ") + (e.on ? ' <span class="n">외 ' + (e.on - e.o.length) + "개</span>" : ""));
+    }
+    return h + "</div></article>";
+  }
+
+  function renderChips(pool) {
+    var counts = {};
+    pool.forEach(function (e) { e.d.forEach(function (d) { counts[d] = (counts[d] || 0) + 1; }); });
+    chipsBox.innerHTML = '<button class="chip' + (filter === "all" ? " active" : "") + '" data-f="all">전체<span class="n">' + pool.length + "</span></button>" +
+      ORDER.filter(function (l) { return counts[l]; }).map(function (l) {
+        return '<button class="chip' + (filter === l ? " active" : "") + '" data-f="' + esc(l) + '">' + esc(l) + '<span class="n">' + counts[l] + "</span></button>";
+      }).join("");
+  }
+
+  var LETTER_NAME = { "#": "0–9", "~": "기타" };
+  function render() {
+    var q = input.value.trim().toLowerCase();
+    clearBtn.style.display = q ? "block" : "none";
+    var tokens = q.split(/\s+/).filter(Boolean), pool;
+    if (tokens.length) {
+      pool = [];
+      G.entries.forEach(function (e) { var s = score(e, tokens); if (s) pool.push({ e: e, s: s }); });
+      pool.sort(function (a, b) { return b.s - a.s || a.e.t.length - b.e.t.length; });
+      pool = pool.map(function (o) { return o.e; });
+    } else pool = G.entries;
+    renderChips(pool);
+    var shown = filter === "all" ? pool : pool.filter(function (e) { return e.d.indexOf(filter) > -1; });
+
+    if (!shown.length) {
+      az.innerHTML = "";
+      list.innerHTML = '<div class="empty gloss-empty"><b>“' + esc(input.value.trim()) + '”</b>에 맞는 용어 없음. ' +
+        '<a href="../index.html?q=' + encodeURIComponent(input.value.trim()) + '">위키 전체 검색에서 찾기 →</a></div>';
+      return;
+    }
+    if (tokens.length) {
+      az.innerHTML = '<span class="result-meta">결과 ' + shown.length + "개" + (filter === "all" ? "" : " · " + esc(filter)) + "</span>";
+      list.innerHTML = shown.map(entryHtml).join("");
+      return;
+    }
+    var groups = [], cur = null;
+    shown.forEach(function (e) {
+      if (!cur || cur.l !== e.i) { cur = { l: e.i, items: [] }; groups.push(cur); }
+      cur.items.push(e);
+    });
+    az.innerHTML = groups.map(function (g) { return '<a href="#l-' + encodeURIComponent(g.l) + '">' + esc(LETTER_NAME[g.l] || g.l) + "</a>"; }).join("");
+    list.innerHTML = groups.map(function (g) {
+      return '<section class="letter" id="l-' + esc(g.l) + '"><h2>' + esc(LETTER_NAME[g.l] || g.l) + "</h2>" + g.items.map(entryHtml).join("") + "</section>";
+    }).join("");
+  }
+
+  /* #g-<id> 로 들어오거나 관련 용어를 누르면 그 용어로 */
+  function goHash() {
+    var h = decodeURIComponent(location.hash.slice(1));
+    if (h.indexOf("g-") !== 0) return;
+    var e = BY_ID[h.slice(2)];
+    if (!e) return;
+    if (!document.getElementById(h)) { input.value = ""; filter = "all"; render(); }
+    var el = document.getElementById(h);
+    if (!el) return;
+    el.scrollIntoView({ block: "start" });
+    el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+  }
+
+  var timer;
+  input.addEventListener("input", function () { clearTimeout(timer); timer = setTimeout(render, 90); });
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var first = list.querySelector(".term");
+    if (first) first.scrollIntoView({ block: "start" });
+  });
+  clearBtn.addEventListener("click", function () { input.value = ""; render(); input.focus(); });
+  chipsBox.addEventListener("click", function (e) {
+    var c = e.target.closest("[data-f]");
+    if (!c) return;
+    filter = c.dataset.f; render();
+  });
+  input.addEventListener("keydown", function (e) { if (e.key === "Escape") { input.value = ""; render(); } });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "/" && document.activeElement !== input) { e.preventDefault(); input.focus(); }
+  });
+  window.addEventListener("hashchange", goHash);
+
+  var pre = new URLSearchParams(location.search).get("q");
+  if (pre) input.value = pre;
+  render();
+  if (location.hash) goHash();
+})();
+</script>
+</body></html>

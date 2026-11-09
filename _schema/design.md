@@ -42,6 +42,7 @@ disease/immunology/immunology.css   면역학 전용(visual-tabs · term-table �
 gwas/gwas.css            GWAS 시각 페이지 공용 — 옛 색 이름 별칭(article.css용). SPA는 안 씀
 assets/css/article.css   시각 페이지(body.vpage) 공용 — visual-page.md
 assets/css/feedback.css  "여기 헷갈려요" 버튼 — --theme을 따른다
+glossary/glossary.css    용어집(glossary/index.html) 전용 — 글자 바로가기 · 용어 항목
 ```
 
 | 페이지 | 순서 |
@@ -52,8 +53,11 @@ assets/css/feedback.css  "여기 헷갈려요" 버튼 — --theme을 따른다
 | 면역학 SPA | `base` → `spa` → `immunology` |
 | 면역학 시각 페이지 | `base` → `spa` → `immunology` → `article` → 섹션 css |
 | GWAS 시각 페이지 | `base` → `spa` → `gwas` → `article` → 섹션 css |
+| 용어집 | `base` → `hub` → `glossary` |
 
 `assets/css/styles.css`는 어느 페이지도 링크하지 않는 옛 사본이다.
+
+**용어집(`glossary/`)은 손으로 쓰지 않는다.** `node tools/build-search-index.js`가 검색 색인과 함께 `glossary/data.js`를 만든다(`tools/glossary.js`). 모으는 것은 용어 카드 summary · 모든 `glossaryTerms` · 정적 문서의 `<dt>/<dd>` 약어이고, 정의가 영역마다 다르면 합치지 않고 나란히 둔다. 정렬은 영어 표제어 ABC순 하나(학생은 Ctrl+F로 찾는다는 전제라 처음부터 전부 펼쳐 둠), 정의마다 앞에 나오는 곳을 단다. 한글로 시작하는 질환 카드 제목은 카드의 영어 키워드를 표제어로 올리고 한글 제목은 별칭으로 둔다. 데이터에 영어가 없는 한글 점선 용어는 `tools/glossary.js`의 `EN` 대응표로 맞추고, 빠진 것이 있으면 빌드가 경고한다. 그래서 용어를 고치려면 원래 페이지의 카드·`glossaryTerms`를 고친 뒤 색인을 다시 만든다. 푸터 날짜는 `data.js`의 `updated`(내용이 바뀐 빌드 날짜)를 따른다.
 
 ## 4. 틀
 

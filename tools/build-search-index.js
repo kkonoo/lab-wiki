@@ -11,6 +11,7 @@
  *   3) data.js 의 window.IMMUNOLOGY(_BASICS)                  (immunology SPA · articlePages 전용 문서)
  *   4) 정적 HTML 문서                                         (h1 · Aliases · meta description · id 달린 h2 · 약어 dt/dd)
  *   5) 허브 index.html                                        (페이지 목록)
+ *   6) 용어집 glossary/data.js 도 같이 만든다                  (tools/glossary.js — 용어 카드 · 점선 용어 · 약어)
  */
 "use strict";
 const fs = require("fs");
@@ -27,7 +28,7 @@ const DOMAINS = [
   { key: "multi-omics", label: "Multi-omics", color: "var(--c-mo)" },
   { key: "disease", label: "Disease", color: "var(--c-disease)" },
 ];
-const SKIP = new Set(["index.html", "index.old.html"]);          // 대문 자체
+const SKIP = new Set(["index.html", "index.old.html", "glossary/index.html"]);   // 대문 자체 · 용어집(항목은 6에서 따로)
 const items = [], pages = [], seenPage = new Set(), log = [];
 
 /* ── 유틸 ── */
@@ -231,9 +232,16 @@ for (const abs of walk(ROOT).sort()) {
   log.push(`hub      ${r}`);
 }
 
+/* ── 6) 용어집 — 위 items(별칭)로 "다루는 문서"를 잇고, 카드 없는 용어(점선 정의·약어)만 색인에 더한다 ── */
+const G = require("./glossary.js")({ ROOT, items, DOMAINS, U: { rel, domainOf, text, cleanTitle, tag, literal, resolveUrl } });
+G.extra.forEach(addItem);
+log.push(`glossary ${G.out}  용어 ${G.entries} · 카드 ${G.stats.cards} · 점선 정의 ${G.stats.defs} · 약어 ${G.stats.abbr} · 색인 추가 ${G.extra.length}`);
+
 const IDX = { generated: new Date().toISOString().slice(0, 10), domains: DOMAINS, items, pages };
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, "/* 자동 생성 — node tools/build-search-index.js · 직접 수정 금지 */\nwindow.WIKI_SEARCH_INDEX = " + JSON.stringify(IDX) + ";\n");
 if (process.argv.includes("-v")) console.log(log.join("\n"));
 const byD = {}; items.forEach((i) => (byD[i.d] = (byD[i.d] || 0) + 1));
 console.log(`✓ ${rel(OUT)} · items ${items.length} · pages ${pages.length} · ${(fs.statSync(OUT).size / 1024).toFixed(0)} KB · ` + Object.entries(byD).map(([k, v]) => k + " " + v).join(" · "));
+console.log(`✓ ${G.out} · 용어 ${G.entries} (카드 ${G.stats.cards} · 점선 정의 ${G.stats.defs} · 약어 ${G.stats.abbr}) · ${G.kb} KB`);
+if (G.warnings.length) console.log(`⚠ 용어집: 영어 이름이 없어 ABC순에 못 넣은 한글 용어 ${G.warnings.length}개 → tools/glossary.js 의 EN 대응표에 추가: ${G.warnings.join(", ")}`);
