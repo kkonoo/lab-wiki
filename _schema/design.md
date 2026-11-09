@@ -57,7 +57,7 @@ glossary/glossary.css    용어집(glossary/index.html) 전용 — 글자 바로
 
 `assets/css/styles.css`는 어느 페이지도 링크하지 않는 옛 사본이다.
 
-**용어집(`glossary/`)은 손으로 쓰지 않는다.** `node tools/build-search-index.js`가 검색 색인과 함께 `glossary/data.js`를 만든다(`tools/glossary.js`). 모으는 것은 용어 카드 summary · 모든 `glossaryTerms` · 정적 문서의 `<dt>/<dd>` 약어이고, 정의가 영역마다 다르면 합치지 않고 나란히 둔다. 정렬은 영어 표제어 ABC순 하나(학생은 Ctrl+F로 찾는다는 전제라 처음부터 전부 펼쳐 둠), 정의마다 앞에 나오는 곳을 단다. 한글로 시작하는 질환 카드 제목은 카드의 영어 키워드를 표제어로 올리고 한글 제목은 별칭으로 둔다. 데이터에 영어가 없는 한글 점선 용어는 `tools/glossary.js`의 `EN` 대응표로 맞추고, 빠진 것이 있으면 빌드가 경고한다. 그래서 용어를 고치려면 원래 페이지의 카드·`glossaryTerms`를 고친 뒤 색인을 다시 만든다. 푸터 날짜는 `data.js`의 `updated`(내용이 바뀐 빌드 날짜)를 따른다.
+**용어집(`glossary/`)은 손으로 쓰지 않는다.** `node tools/build-search-index.js`가 검색 색인과 함께 `glossary/data.js`를 만든다(`tools/glossary.js`). 모으는 것은 용어 카드 summary · 모든 `glossaryTerms` · 정적 문서의 `<dt>/<dd>` 약어이고, 정의가 영역마다 다르면 합치지 않고 나란히 둔다. 정렬은 영어 표제어 ABC순 하나이고, 화면에는 한 번에 첫 글자 하나만 보인다(글자 줄은 상단 바 아래 고정, 주소 `#l-C`). 학생은 글자 안에서 Ctrl+F로 찾으므로, 다른 글자로 시작하는 별칭은 그 글자 쪽에 한 줄 바로가기(`SNP → Genetic variant & SNP`)를 둔다. 전체에서 찾는 일은 검색창이 맡는다. 정의마다 앞에 나오는 곳을 단다. 한글로 시작하는 질환 카드 제목은 카드의 영어 키워드를 표제어로 올리고 한글 제목은 별칭으로 둔다. 데이터에 영어가 없는 한글 점선 용어는 `tools/glossary.js`의 `EN` 대응표로 맞추고, 빠진 것이 있으면 빌드가 경고한다. 그래서 용어를 고치려면 원래 페이지의 카드·`glossaryTerms`를 고친 뒤 색인을 다시 만든다. 푸터 날짜는 `data.js`의 `updated`(내용이 바뀐 빌드 날짜)를 따른다.
 
 ## 4. 틀
 

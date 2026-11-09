@@ -27,14 +27,14 @@
   </div>
 </header>
 
-<section class="hub-hero">
+<section class="hub-hero gloss-hero">
   <div class="container">
     <p class="eyebrow">Glossary</p>
     <h1>용어집</h1>
     <p class="lead">용어 카드의 한 줄 요약, 본문 점선 용어의 정의, 약어 풀이를 한곳에 모은 목록. 용어마다 자세히 다루는 페이지로 연결됨.</p>
     <div class="search-wrap">
       <form class="search-box" id="searchForm" role="search" autocomplete="off">
-        <input id="q" type="search" aria-label="용어 찾기" placeholder="용어 찾기(예: coloc, PRS, eGFR)">
+        <input id="q" type="search" aria-label="용어 찾기" placeholder="전체 용어에서 찾기(예: coloc, PRS, eGFR)">
         <button class="clear-btn" id="clearBtn" type="button" aria-label="검색어 지우기">✕</button>
         <span class="keycap">/</span>
       </form>
@@ -45,7 +45,7 @@
 
 <main class="container hub-main gloss-main">
   <div class="chips" id="chips" role="group" aria-label="도메인 거르기"></div>
-  <nav class="az" id="az" aria-label="글자 바로가기"></nav>
+  <nav class="az" id="az" aria-label="글자 고르기"></nav>
   <div id="list" aria-live="polite"></div>
 </main>
 
@@ -66,24 +66,46 @@
   document.getElementById("updated").textContent = "Updated " + G.updated;
 
   var COLOR = {}, ORDER = G.domains.map(function (d) { COLOR[d.label] = d.color; return d.label; });
-  var BY_ID = {};
+  var LETTERS = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  var LETTER_NAME = { "#": "0–9", "~": "기타" };
+  var collator = new Intl.Collator("en", { sensitivity: "base", numeric: true });
+  function norm(s) { return String(s).toLowerCase().replace(/[-\s]+/g, " ").trim(); }
+  function lead(s) { return String(s).replace(/^[^A-Za-z0-9ㄱ-ㆎ가-힣]+/, ""); }
+  function groupOf(s) { var c = lead(s).charAt(0).toUpperCase(); return /[A-Z]/.test(c) ? c : /[0-9]/.test(c) ? "#" : null; }
+
+  var BY_ID = {}, HEAD = {};
   G.entries.forEach(function (e) {
-    BY_ID[e.id] = e;
+    BY_ID[e.id] = e; HEAD[norm(e.t)] = e;
     var defs = [].concat((e.c || []).map(function (c) { return c.s; }), (e.x || []).map(function (x) { return x.x; }), (e.b || []).map(function (b) { return b.x; }));
     e._t = e.t.toLowerCase();
     e._a = (e.a || []).map(function (s) { return s.toLowerCase(); });
     e._k = (e.k || []).join(" · ").toLowerCase();
     e._s = defs.join(" ").toLowerCase();
   });
-  var S = G.stats;
-  hint.textContent = "용어 " + S.entries + "개, ABC순. 정의마다 앞에 나오는 곳을 달았고, 영역마다 정의가 다르면 나란히 보여 줌. 이 페이지 안에서는 Ctrl+F로 찾아도 됨";
 
-  var filter = "all";
+  /* 다른 글자로 시작하는 별칭은 그 글자 쪽에 한 줄 바로가기(SNP → Genetic variant & SNP).
+     글자 페이지 안에서 Ctrl+F로 찾아도 걸리게 */
+  var STUBS = {};
+  G.entries.forEach(function (e) {
+    (e.a || []).forEach(function (a) {
+      var g = groupOf(a), k = norm(a);
+      if (!g || g === e.i || HEAD[k]) return;
+      if (!STUBS[k]) STUBS[k] = { stub: true, t: a, i: g, to: [], d: [] };
+      if (STUBS[k].to.indexOf(e) < 0) STUBS[k].to.push(e);
+      e.d.forEach(function (d) { if (STUBS[k].d.indexOf(d) < 0) STUBS[k].d.push(d); });
+    });
+  });
+  STUBS = Object.keys(STUBS).map(function (k) { return STUBS[k]; });
+
+  hint.textContent = "용어 " + G.entries.length + "개를 첫 글자별로 나눔. 글자 안에서는 Ctrl+F, 전체에서 찾을 때는 이 검색창. 정의마다 앞에 나오는 곳을 달았음";
+
+  var filter = "all", view = null;
 
   function esc(v) {
     return String(v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
   }
   function href(u) { return /^https?:/.test(u) ? u : "../" + u; }
+  function inFilter(x) { return filter === "all" || x.d.indexOf(filter) > -1; }
 
   function score(e, tokens) {
     var whole = tokens.join(" "), total = 0;
@@ -144,6 +166,11 @@
     }
     return h + "</div></article>";
   }
+  function stubHtml(s) {
+    return '<p class="see"><b>' + esc(s.t) + "</b> → " + s.to.map(function (e) {
+      return '<a href="#g-' + esc(e.id) + '">' + esc(e.t) + "</a>";
+    }).join(" · ") + "</p>";
+  }
 
   function renderChips(pool) {
     var counts = {};
@@ -153,54 +180,84 @@
         return '<button class="chip' + (filter === l ? " active" : "") + '" data-f="' + esc(l) + '">' + esc(l) + '<span class="n">' + counts[l] + "</span></button>";
       }).join("");
   }
+  function renderAz(counts, active) {
+    az.innerHTML = LETTERS.map(function (l) {
+      var n = counts[l] || 0;
+      return n ? '<a href="#l-' + encodeURIComponent(l) + '" data-l="' + esc(l) + '"' + (l === active ? ' class="on" aria-current="true"' : "") + ">" + esc(LETTER_NAME[l] || l) + "</a>"
+               : '<span class="off">' + esc(LETTER_NAME[l] || l) + "</span>";
+    }).join("");
+    /* 좁은 화면에서 고른 글자가 줄 밖에 있으면 가운데로(가로만 — 페이지는 움직이지 않음) */
+    var on = az.querySelector(".on");
+    if (on && az.scrollWidth > az.clientWidth) az.scrollLeft = on.offsetLeft - az.clientWidth / 2 + on.offsetWidth / 2;
+  }
 
-  var LETTER_NAME = { "#": "0–9", "~": "기타" };
   function render() {
     var q = input.value.trim().toLowerCase();
     clearBtn.style.display = q ? "block" : "none";
-    var tokens = q.split(/\s+/).filter(Boolean), pool;
-    if (tokens.length) {
-      pool = [];
-      G.entries.forEach(function (e) { var s = score(e, tokens); if (s) pool.push({ e: e, s: s }); });
-      pool.sort(function (a, b) { return b.s - a.s || a.e.t.length - b.e.t.length; });
-      pool = pool.map(function (o) { return o.e; });
-    } else pool = G.entries;
-    renderChips(pool);
-    var shown = filter === "all" ? pool : pool.filter(function (e) { return e.d.indexOf(filter) > -1; });
+    var tokens = q.split(/\s+/).filter(Boolean);
 
-    if (!shown.length) {
-      az.innerHTML = "";
-      list.innerHTML = '<div class="empty gloss-empty"><b>“' + esc(input.value.trim()) + '”</b>에 맞는 용어 없음. ' +
-        '<a href="../index.html?q=' + encodeURIComponent(input.value.trim()) + '">위키 전체 검색에서 찾기 →</a></div>';
-      return;
-    }
+    /* 검색어가 있으면 글자와 상관없이 전체에서 */
     if (tokens.length) {
-      az.innerHTML = '<span class="result-meta">결과 ' + shown.length + "개" + (filter === "all" ? "" : " · " + esc(filter)) + "</span>";
-      list.innerHTML = shown.map(entryHtml).join("");
+      var hits = [];
+      G.entries.forEach(function (e) { var s = score(e, tokens); if (s) hits.push({ e: e, s: s }); });
+      hits.sort(function (a, b) { return b.s - a.s || a.e.t.length - b.e.t.length; });
+      hits = hits.map(function (o) { return o.e; });
+      renderChips(hits);
+      var shown = hits.filter(inFilter), counts = {};
+      G.entries.filter(inFilter).forEach(function (e) { counts[e.i] = (counts[e.i] || 0) + 1; });
+      renderAz(counts, null);
+      list.innerHTML = shown.length
+        ? '<p class="result-meta">전체에서 ' + shown.length + "개" + (filter === "all" ? "" : " · " + esc(filter)) + "</p>" + shown.map(entryHtml).join("")
+        : '<div class="empty gloss-empty"><b>“' + esc(input.value.trim()) + '”</b>에 맞는 용어 없음. ' +
+          '<a href="../index.html?q=' + encodeURIComponent(input.value.trim()) + '">위키 전체 검색에서 찾기 →</a></div>';
       return;
     }
-    var groups = [], cur = null;
-    shown.forEach(function (e) {
-      if (!cur || cur.l !== e.i) { cur = { l: e.i, items: [] }; groups.push(cur); }
-      cur.items.push(e);
-    });
-    az.innerHTML = groups.map(function (g) { return '<a href="#l-' + encodeURIComponent(g.l) + '">' + esc(LETTER_NAME[g.l] || g.l) + "</a>"; }).join("");
-    list.innerHTML = groups.map(function (g) {
-      return '<section class="letter" id="l-' + esc(g.l) + '"><h2>' + esc(LETTER_NAME[g.l] || g.l) + "</h2>" + g.items.map(entryHtml).join("") + "</section>";
-    }).join("");
+
+    /* 검색어가 없으면 고른 글자 하나만 */
+    renderChips(G.entries);
+    var pool = G.entries.filter(inFilter), stubs = STUBS.filter(inFilter), cnt = {};
+    pool.forEach(function (e) { cnt[e.i] = (cnt[e.i] || 0) + 1; });
+    var avail = LETTERS.filter(function (l) { return cnt[l]; });
+    if (!avail.length) { renderAz(cnt, null); list.innerHTML = '<div class="empty gloss-empty">이 도메인에는 용어 없음.</div>'; return; }
+    if (!cnt[view]) view = avail.indexOf("A") > -1 ? "A" : avail[0];
+    renderAz(cnt, view);
+
+    var items = pool.filter(function (e) { return e.i === view; })
+      .concat(stubs.filter(function (s) { return s.i === view && s.to.some(function (e) { return inFilter(e); }); }));
+    items.sort(function (a, b) { return collator.compare(lead(a.t), lead(b.t)); });
+    var k = avail.indexOf(view), prev = avail[k - 1], next = avail[k + 1];
+    var nTerm = items.filter(function (x) { return !x.stub; }).length, nStub = items.length - nTerm;
+    list.innerHTML = '<section class="letter"><h2>' + esc(LETTER_NAME[view] || view) +
+      '<small>용어 ' + nTerm + (nStub ? " · 바로가기 " + nStub : "") + "</small></h2>" +
+      items.map(function (x) { return x.stub ? stubHtml(x) : entryHtml(x); }).join("") +
+      '<nav class="pager" aria-label="앞뒤 글자">' +
+      (prev ? '<a href="#l-' + encodeURIComponent(prev) + '" data-l="' + esc(prev) + '">← ' + esc(LETTER_NAME[prev] || prev) + "</a>" : "<span></span>") +
+      (next ? '<a href="#l-' + encodeURIComponent(next) + '" data-l="' + esc(next) + '">' + esc(LETTER_NAME[next] || next) + " →</a>" : "<span></span>") +
+      "</nav></section>";
   }
 
-  /* #g-<id> 로 들어오거나 관련 용어를 누르면 그 용어로 */
-  function goHash() {
-    var h = decodeURIComponent(location.hash.slice(1));
-    if (h.indexOf("g-") !== 0) return;
-    var e = BY_ID[h.slice(2)];
+  /* 글자를 바꾸면 목록 머리로 — 머리 띠가 보이는 위쪽에 있으면 그대로 둔다 */
+  function toListTop() {
+    var top = list.getBoundingClientRect().top + window.scrollY - (document.querySelector(".topbar").offsetHeight + az.offsetHeight + 8);
+    if (window.scrollY > top) window.scrollTo(0, top);
+  }
+  function showLetter(l) {
+    if (LETTERS.indexOf(l) < 0) return;
+    input.value = ""; view = l; render(); toListTop();
+  }
+  function showEntry(id) {
+    var e = BY_ID[id];
     if (!e) return;
-    if (!document.getElementById(h)) { input.value = ""; filter = "all"; render(); }
-    var el = document.getElementById(h);
+    var el = document.getElementById("g-" + id);
+    if (!el) { input.value = ""; if (!inFilter(e)) filter = "all"; view = e.i; render(); el = document.getElementById("g-" + id); }
     if (!el) return;
     el.scrollIntoView({ block: "start" });
     el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+  }
+  function goHash() {
+    var h = decodeURIComponent(location.hash.slice(1));
+    if (h.indexOf("g-") === 0) showEntry(h.slice(2));
+    else if (h.indexOf("l-") === 0) showLetter(h.slice(2));
   }
 
   var timer;
@@ -215,6 +272,11 @@
     var c = e.target.closest("[data-f]");
     if (!c) return;
     filter = c.dataset.f; render();
+  });
+  /* 같은 글자를 다시 눌러도(주소가 그대로라 hashchange가 없음) 그 글자로 */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a[data-l]");
+    if (a && location.hash === a.getAttribute("href")) { e.preventDefault(); showLetter(a.dataset.l); }
   });
   input.addEventListener("keydown", function (e) { if (e.key === "Escape") { input.value = ""; render(); } });
   document.addEventListener("keydown", function (e) {
