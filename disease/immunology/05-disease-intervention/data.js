@@ -957,7 +957,7 @@ window.IMMUNOLOGY = {
               "바이러스 감염: HBV 면역병인",
               "만성화와 소진 수치는 바이러스 문서에 둔다",
               "wiki 문서 있음",
-              "../../virus/index.html"
+              "../../virus/hbv/index.html"
             ]
           ]
         },

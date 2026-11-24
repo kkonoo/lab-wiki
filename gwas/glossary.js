@@ -35,7 +35,15 @@
     "ld score": { key: "ld-score", definition: "한 SNP와 주변 SNP 사이 r²의 합. 그 SNP가 주변 변이를 얼마나 tagging하는지 나타냄." },
     "population stratification": { key: "stratification", definition: "표본 안 하위 집단 사이 allele frequency 차이가 phenotype 차이와 겹쳐 생기는 가짜 연관." },
     "effect allele": { key: "effect-allele", definition: "Summary statistics에서 effect size의 부호가 기준으로 삼는 allele." },
-    "palindromic": { key: "palindromic", definition: "A/T 또는 G/C처럼 두 strand에서 allele 글자가 같은 SNP. Allele만으로는 strand를 판단할 수 없음." }
+    "palindromic": { key: "palindromic", definition: "A/T 또는 G/C처럼 두 strand에서 allele 글자가 같은 SNP. Allele만으로는 strand를 판단할 수 없음." },
+    "genetic correlation": { key: "genetic-correlation", definition: "두 형질의 genetic value 사이 상관. Genetic covariance를 두 형질의 genetic SD로 나눈 값으로 −1에서 1 사이." },
+    "snp heritability": { key: "snp-heritability", definition: "측정한 SNP의 additive 효과가 설명하는 표현형 분산의 비율." },
+    "heritability": { key: "heritability", definition: "형질 분산 가운데 유전 요인이 설명하는 비율." },
+    "coheritability": { key: "coheritability", definition: "두 형질이 공유하는 유전 분산의 크기. 형질을 표준화했을 때의 genetic covariance." },
+    "pleiotropy": { key: "pleiotropy", definition: "변이 하나가 여러 형질에 영향을 주는 것." },
+    "liability": { key: "liability", definition: "질병으로 이어지는 연속적인 소인. 문턱을 넘으면 발병한다고 보는 liability threshold 모형의 척도." },
+    "assortative mating": { key: "assortative-mating", definition: "비슷한 형질을 가진 사람끼리 짝을 짓는 것. 유전 분산과 genetic correlation 추정치를 키움." },
+    "collider bias": { key: "collider-bias", definition: "두 변수가 함께 영향을 주는 제3의 변수(예: 연구 참여)로 표본을 고를 때 생기는 가짜 상관." }
   };
 
   /* (앞 경계)(용어)(뒤 경계) — 영문·숫자에 붙은 부분 일치는 잡지 않는다. 긴 용어가 먼저 맞도록 길이순 */

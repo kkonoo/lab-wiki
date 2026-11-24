@@ -187,7 +187,8 @@ function staticDoc(abs, html, crumbP) {
     if (!same.s) same.s = clip(desc, 240);
   } else addItem({ t: h1, k, s: desc, u: r, d: D.label, c: D.color, p: crumbP, g: "문서" });
   let n = 0;
-  for (const m of html.matchAll(/<h2([^>]*)>([\s\S]*?)<\/h2>([\s\S]{0,1200})/gi)) {
+  /* 뒤 1200자는 lookahead로만 본다 — 소비하면 짧은 절 다음의 h2가 통째로 빠진다(2026-11-24 genetics regulation #elements) */
+  for (const m of html.matchAll(/<h2([^>]*)>([\s\S]*?)<\/h2>(?=([\s\S]{0,1200}))/gi)) {
     const id = (m[1].match(/id="([^"]+)"/) || [])[1];
     const title = text(m[2].replace(/<small[\s\S]*?<\/small>/gi, ""));
     const lede = (m[3].match(/<p class="lede[^"]*">([\s\S]*?)<\/p>/i) || [])[1];

@@ -263,7 +263,7 @@ window.IMMUNOLOGY = {
               "만성 바이러스 감염에서의 소진 — 질환 수치",
               "만성 B형간염의 소진 정도와 간 염증 지표, 단일세포 면역지형은 바이러스 문서에 둔다",
               "wiki 문서 있음",
-              "../virus/index.html"
+              "../virus/hbv/index.html"
             ],
             [
               "",
@@ -487,7 +487,7 @@ window.IMMUNOLOGY = {
               "바이러스 감염 — HBV 면역병인",
               "만성화와 소진 수치는 바이러스 문서에 둔다",
               "wiki 문서 있음",
-              "../virus/index.html"
+              "../virus/hbv/index.html"
             ]
           ]
         },

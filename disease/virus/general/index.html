@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="바이러스를 가로지르는 분류·항원 측정·균주 진화를 질문으로 탐색하는 HaLab Wiki Human diseases">
+  <title>General Virus · HaLab Wiki</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+</head>
+<body data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Virus</span></a><button class="brand brand-domain" type="button" data-route="home"><span>/ General</span></button></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer>
+    <div class="container"><span>Updated 2026-11-24</span></div>
+  </footer>
+
+  <script>
+    const sections = {
+      "classify":{"number":"01","title":"분류와 측정 — 무엇으로 나누고 무엇으로 재는가","english":"HOW STRAINS ARE CLASSIFIED AND MEASURED","accent":"#8a5a2b","summary":"genotype ↔ serotype · 항원 지도 · 중화역가 · serotype 경계","groups":[
+        {"q":"같은 바이러스를 왜 genotype과 serotype으로 나누는가?","note":"서열이 갈리는 것과 항혈청이 구별하는 것은 다른 일","items":[
+          ["genotype-serotype","genotype과 serotype","서열로 나눈 계통과 항혈청이 구별하는 형은 서로 번역되지 않음"],
+          ["antigenic-map","항원 지도 (antigenic cartography)","역가를 거리로 바꿔 분리주와 항혈청을 한 좌표에 놓음"]
+        ]},
+        {"q":"항원이 비슷하다·다르다를 무엇으로 재는가?","note":"역가는 assay 설계에 따라 달라지는 측정값","items":[
+          ["neutralization-titer","중화역가와 PRNT50","PRNT50은 단위가 아니라 plaque를 50% 줄이는 희석배수"],
+          ["serotype-not-discrete","serotype은 이산적 경계인가","dengue 4형조차 항원 지도에서 경계가 겹침"]
+        ]}
+      ]},
+      "evolution":{"number":"02","title":"진화와 교체 — 균주는 어떻게 갈리고 사라지나","english":"HOW STRAINS DIVERGE AND DISAPPEAR","accent":"#315d78","summary":"균주 교체와 공존 · 항원 drift · 백신 조성 갱신","groups":[
+        {"q":"새 균주가 뜨면 이전 균주는 사라지는가?","note":"교체는 일반 법칙이 아니라 조건이 맞을 때의 결과","items":[
+          ["strain-replacement","균주 교체와 공존","1977·2009에는 기존 아형이 사라지지 않음"]
+        ]},
+        {"q":"항원 변화가 백신 조성을 어떻게 정하는가?","note":"cluster 교체 주기가 백신주 갱신 시점을 정함","items":[
+          ["antigenic-drift-vaccine","항원 drift와 백신 조성","cluster 교체 주기가 백신주 갱신 시점을 정함"]
+        ]}
+      ]}
+    };
+    const articleRows = [
+      ["genotype-serotype","genotype과 serotype",["genotype","serotype","serologic type","subtype"],"classify",
+       "서열로 나눈 genotype과 항혈청이 구별하는 serotype은 기준이 달라서 서로 번역되지 않는다",
+       [["두 단위",["genotype: 서열을 기준으로 나눈 계통. Japanese encephalitis virus를 GI~GV로 부르는 쪽","serotype: 항혈청이 구별하는지를 기준으로 나눈 형. poliovirus 1·2·3형과 dengue 1~4형","실무 원칙은 항원성이 거의 같으면 serologic type을 새로 세우지 않는 것"]],
+        ["서로 대신하지 못함",["influenza A(H3N2)에서 항원 거리와 계통 거리의 상관은 0.78","그런데도 계통 데이터만으로는 항원 cluster를 신뢰성 있게 결정하지 못함","서열로 serotype을 추정하는 일은 원칙적으로 불가"]]],
+       ["antigenic-map","serotype-not-discrete","strain-replacement"]],
+
+      ["antigenic-map","항원 지도 (antigenic cartography)",["antigenic cartography","antigenic map","antigenic distance","HI assay"],"classify",
+       "역가를 거리로 해석해 분리주와 항혈청을 같은 좌표에 놓으면 항원성의 차이를 숫자로 말할 수 있다",
+       [["만드는 방식",["hemagglutination inhibition(HI)이나 중화 역가를 거리로 해석함. 1단위가 항혈청 2배 희석에 해당","분리주와 항혈청을 같은 좌표공간에 배치. 둘 사이 거리가 측정된 역가에 대응","influenza는 HI를 쓰고, HI가 통하지 않는 dengue 같은 바이러스는 중화역가를 씀"]],
+        ["해상도",["한 점의 위치가 여러 측정으로 동시에 고정되어 개별 측정 오차가 평균됨","결측 역가 481건을 지도로 예측한 뒤 실측해 평균 절대오차 0.83 단위(표준편차 0.67), 상관 0.80","지도의 해상도가 assay 자체의 해상도보다 높아짐"]],
+        ["지도에서 보이는 구조",["H3N2의 1968–2003년 35년치는 cluster로 묶이고 순서가 대체로 시간순","연속한 cluster 중심 사이 평균 항원거리 4.5 단위(표준편차 1.3), 누적 44.6 단위"]]],
+       ["genotype-serotype","neutralization-titer","antigenic-drift-vaccine"]],
+
+      ["neutralization-titer","중화역가와 PRNT50",["PRNT50","PRNT90","FRNT","neutralization titer","pseudovirus"],"classify",
+       "PRNT50은 단위가 아니라 plaque를 50% 줄이는 혈청 희석배수를 뜻하는 역가의 정의다",
+       [["역가의 정의",["PRNT50: plaque 수를 50% 줄이는 혈청 희석배수. 보고하는 숫자는 그 희석배의 역수(1:320이면 320)","PRNT90은 같은 방식으로 90% 감소를 기준으로 잡은 것","단위 이름이 아니라 기준점 이름"]],
+        ["assay 계열",["live virus 중화: PRNT · microneutralization · focus reduction(FRNT)","pseudovirus 중화","결합 assay: ELISA · HI. 뒤로 갈수록 빠르고 표준화가 쉬우나 방어와의 거리가 멀어짐"]],
+        ["숫자가 흔들리는 이유",["세포주·바이러스 분리주·동물 종과 조건의 차이가 같은 개입의 효능 예측을 갈라놓음","같은 세포와 같은 분리주를 써도 inoculum 크기·배양 시간·감염 정량법이 해석을 바꿈","다른 논문의 역가를 그대로 비교하면 같은 개입이 다른 효능으로 보임"]]],
+       ["antigenic-map","serotype-not-discrete"]],
+
+      ["serotype-not-discrete","serotype은 이산적 경계인가",["dengue","DENV","serotype","antigenic diversity"],"classify",
+       "이미 serotype으로 불리는 dengue 4형조차 항원 지도에서는 경계가 겹친다",
+       [["관찰된 것",["많은 분리주가 같은 type 안의 분리주보다 다른 type 분리주와 항원적으로 더 가까움","1차 감염 항혈청이 2년까지도 같은 type을 다른 type보다 더 잘 중화하지 않음","African green monkey 36마리, 1가 생백신 접종자, 니카라과 소아 20명 세 계열에서 같은 방향"]],
+        ["서열 쪽과 어긋나는 지점",["envelope 단백 아미노산 거리로는 4형이 compact하게 분리됨","type 사이의 치환 수가 type 안의 최대 차이를 크게 넘음","그런데 항원 지도에서는 type 경계가 겹침"]],
+        ["남는 질문",["serotype이라는 이름을 유지할지, 느슨한 cluster로 다시 정의할지 미정","4가 백신의 효능 평가와 역가 해석이 4형 구분을 전제로 함"]]],
+       ["genotype-serotype","neutralization-titer"]],
+
+      ["strain-replacement","균주 교체와 공존",["strain replacement","lineage extinction","cross-immunity","H1N1pdm09"],"evolution",
+       "새 항원형이 퍼질 때 기존 계통이 사라지는 일은 조건이 맞을 때만 일어난다",
+       [["교체된 경우",["1918년 H1N1이 그전까지 돌던 H3N8을 몰아냄","1957년 H2N2가 H1N1을, 1968년 H3N2가 H2N2를 몰아냄"]],
+        ["교체되지 않은 경우",["1977년 재출현한 H1N1은 H3N2를 몰아내지 못해 이후 두 아형이 공존","2009년 H1N1pdm09는 기존 계절성 H1N1만 대체하고 H3N2는 남김","dengue 4형과 HIV subtype은 서로 공존"]],
+        ["무엇이 교체를 정하나",["두 균주 확률 SEIR 모델에서 교체 확률은 열대가 온대보다 높음","pandemic 균주는 초기 감수성과 기초감염재생산수가 높아 계절형보다 교체가 쉬움","진행 중 유행의 규모, 기존 균주에 대한 집단면역, 신규 균주의 출현 시점은 교체 여부에 그다지 중요하지 않았음"]]],
+       ["antigenic-drift-vaccine","genotype-serotype"]],
+
+      ["antigenic-drift-vaccine","항원 drift와 백신 조성",["antigenic drift","immune escape","vaccine strain selection","WHO surveillance"],"evolution",
+       "항원 cluster가 갈아타는 주기가 백신주를 언제 바꿀지 정한다",
+       [["매년 돌아오는 이유",["기존 감염이나 백신이 만든 면역을 회피하는 진화가 핵심 과정","계절 인플루엔자는 매년 인구의 5–15%를 감염시키고 연 약 500,000명이 사망","새 균주의 출현 시점과 성질은 여전히 대체로 예측하지 못함"]],
+        ["백신 갱신의 기준",["백신주와 다음 시즌 예상 균주의 항원 차이가 2단위를 넘으면 교체","그 기준 때문에 cluster마다 백신주가 최소 하나씩 들어감","WHO 감시망이 HI 역가와 HA1 서열을 함께 보고 균주를 고름"]]],
+       ["antigenic-map","strain-replacement"]]
+    ];
+
+    const articles = Object.fromEntries(articleRows.map(function (row) {
+      return [row[0], {title:row[1],aliases:row[2],section:row[3],summary:row[4],body:row[5],related:row[6]}];
+    }));
+
+    const sourceLinks = {};
+    const officialSupplementLinks = {
+      "antigenic-drift-vaccine":[
+        ["WHO — Influenza vaccine composition recommendations","https://www.who.int/teams/global-influenza-programme/vaccines/who-recommendations"]
+      ],
+      "serotype-not-discrete":[
+        ["ICTV — Virus taxonomy","https://ictv.global/taxonomy"]
+      ]
+    };
+
+    const glossaryTerms = {
+      "genotype":{key:"genotype",definition:"서열을 기준으로 나눈 계통. 항혈청이 구별하는 형(serotype)과 기준이 다름."},
+      "serotype":{key:"serotype",definition:"항혈청이 구별하는지를 기준으로 나눈 형. poliovirus 1·2·3형, dengue 1~4형이 그 예."},
+      "antigenic cartography":{key:"cartography",definition:"역가를 거리로 해석해 분리주와 항혈청을 한 좌표공간에 놓은 지도. 1단위가 항혈청 2배 희석."},
+      "prnt50":{key:"prnt50",definition:"plaque 수를 50% 줄이는 혈청 희석배수. 단위 이름이 아니라 기준점 이름."},
+      "antigenic drift":{key:"drift",definition:"기존 감염·백신이 만든 면역을 회피하는 방향으로 항원이 조금씩 바뀌는 진화."},
+      "hemagglutination inhibition":{key:"hi",definition:"적혈구응집 억제 assay(HI). influenza 항원 지도의 역가 측정에 씀."}
+    };
+    const glossaryPattern = /(^|[^A-Za-z0-9])(antigenic cartography|hemagglutination inhibition|antigenic drift|PRNT50|serotype|genotype)(?=$|[^A-Za-z0-9])/g;
+
+    function createAnnotator() {
+      const seen = new Set();
+      return function (text) {
+        return esc(text).replace(glossaryPattern, function (match, prefix, term) {
+          const item = glossaryTerms[term.toLowerCase()];
+          if (!item || seen.has(item.key)) return match;
+          seen.add(item.key);
+          return prefix + '<span class="glossary-term" tabindex="0" data-definition="' + esc(item.definition) + '">' + esc(term) + '</span>';
+        });
+      };
+    }
+
+    const app = document.getElementById("app");
+    const topSearch = document.getElementById("topSearch");
+    let activeFilter = "all";
+
+    function esc(value) {
+      return String(value).replace(/[&<>'"]/g, function (c) {
+        return {"&":"&amp;", "<":"&lt;", ">":"&gt;", "'":"&#39;", '"':"&quot;"}[c];
+      });
+    }
+
+    function route(hash) {
+      window.location.hash = hash;
+    }
+
+    function categoryCards() {
+      return Object.keys(sections).map(function (key) {
+        const s = sections[key];
+        return '<button class="category-card" data-section="' + key + '">' +
+          '<span class="category-number">' + s.number + ' · ' + s.english + '</span>' +
+          '<h3>' + s.title + '</h3><p>' + s.summary + '</p>' +
+          '<span class="card-route">질문으로 살펴보기 →</span></button>';
+      }).join("");
+    }
+
+    function renderHome() {
+      document.title = "General Virus";
+      app.innerHTML = '<section class="hero"><div class="container">' +
+        '<p class="eyebrow">Virus — cross-cutting</p><h1>General Virus</h1>' +
+        '<p class="hero-copy">분류와 측정(genotype ↔ serotype · 항원 지도 · 중화역가) · 진화와 교체(균주 교체 · 항원 drift와 백신 조성)</p>' +
+        '<form class="hero-search" id="heroSearchForm" role="search"><input id="heroSearch" type="search" aria-label="General Virus 통합 검색" placeholder="Search: serotype, antigenic map, PRNT50, drift"><span class="search-icon">⌕</span></form>' +
+        '<p class="search-hint">Korean / English / acronym</p></div></section>' +
+        '<section class="browse"><div class="container"><div class="section-heading"><h2>어디서부터 볼까요?</h2><p>질문을 따라 큰 구조부터 살펴보세요.</p></div>' +
+        '<div class="category-grid">' + categoryCards() + '</div></div></section>';
+      document.getElementById("heroSearchForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const q = document.getElementById("heroSearch").value.trim();
+        if (q) route("search/" + encodeURIComponent(q));
+      });
+      window.scrollTo(0, 0);
+    }
+
+    function renderSection(key) {
+      const s = sections[key];
+      if (!s) return renderHome();
+      document.title = s.title + " · General Virus";
+      const annotateOnce = createAnnotator();
+      const groups = s.groups.map(function (group, i) {
+        const items = group.items.map(function (item) {
+          const hasPage = Boolean(item[0] && articles[item[0]]);
+          return '<div class="concept-row"><strong>' + annotateOnce(item[1]) + '</strong><p>' + annotateOnce(item[2]) + '</p>' +
+            (hasPage ? '<button data-article="' + item[0] + '">읽기 →</button>' : '<span class="map-label">개념 지도</span>') + '</div>';
+        }).join("");
+        return '<section class="question-block"><div class="question-head"><small>QUESTION ' + String(i + 1).padStart(2, "0") + '</small>' +
+          '<h2>' + annotateOnce(group.q) + '</h2><p>' + annotateOnce(group.note) + '</p></div><div>' + items + '</div></section>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb" aria-label="현재 위치"><button data-route="home">홈</button><span>›</span>' + s.title + '</nav>' +
+        '<header class="page-header"><p class="eyebrow">' + s.number + ' · ' + s.english + '</p><h1>' + s.title + '</h1><p class="lead">' + s.summary + '</p></header>' +
+        '<div class="question-list">' + groups + '</div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function articleText(a) {
+      const bodyText = a.body.map(function (b) { return [b[0]].concat(Array.isArray(b[1]) ? b[1] : [b[1]]).join(" "); });
+      return [a.title, a.aliases.join(" "), a.summary].concat(bodyText).join(" ").toLowerCase();
+    }
+
+    function highlight(text, query) {
+      if (!query) return esc(text);
+      const safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return esc(text).replace(new RegExp("(" + safe + ")", "ig"), "<mark>$1</mark>");
+    }
+
+    function searchArticles(query, filter) {
+      const q = query.trim().toLowerCase();
+      if (!q) return [];
+      return Object.keys(articles).map(function (id) {
+        const a = articles[id];
+        if (filter !== "all" && a.section !== filter) return null;
+        const hay = articleText(a);
+        const pos = hay.indexOf(q);
+        if (pos < 0) return null;
+        const titleHit = a.title.toLowerCase().includes(q) ? 3 : 0;
+        const aliasHit = a.aliases.join(" ").toLowerCase().includes(q) ? 2 : 0;
+        return { id: id, article: a, score: titleHit + aliasHit + 1 };
+      }).filter(Boolean).sort(function (a, b) { return b.score - a.score || a.article.title.localeCompare(b.article.title); });
+    }
+
+    function renderSearch(query) {
+      document.title = '"' + query + '" 검색 · General Virus';
+      const filterButtons = ['<button class="filter-btn ' + (activeFilter === "all" ? "active" : "") + '" data-filter="all">전체</button>'].concat(
+        Object.keys(sections).map(function (key) { return '<button class="filter-btn ' + (activeFilter === key ? "active" : "") + '" data-filter="' + key + '">' + sections[key].title + '</button>'; })
+      ).join("");
+      const found = searchArticles(query, activeFilter);
+      const cards = found.length ? found.map(function (r) {
+        const s = sections[r.article.section];
+        return '<button class="result-card" data-article="' + r.id + '"><span class="result-path">' + s.title + ' › 문서</span>' +
+          '<h2>' + highlight(r.article.title, query) + '</h2><p>' + highlight(r.article.summary, query) + '</p></button>';
+      }).join("") : '<div class="empty"><strong>No results</strong><br>Try: English / Korean / acronym</div>';
+      app.innerHTML = '<div class="container search-page"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span>검색</nav>' +
+        '<header class="page-header"><p class="eyebrow">Search</p><h1>“' + esc(query) + '”</h1></header>' +
+        '<div class="search-summary"><p>Public pages · <strong>' + found.length + '</strong></p><div class="filters">' + filterButtons + '</div></div>' +
+        '<div class="results">' + cards + '</div></div>';
+      topSearch.value = query;
+      window.scrollTo(0, 0);
+    }
+
+    const paperLinks = {
+  "genotype-serotype": [
+    ["Smith et al., 2004, Science", "https://doi.org/10.1126/science.1097211"],
+    ["Katzelnick et al., 2015, Science", "https://doi.org/10.1126/science.aac5017"]
+  ],
+  "antigenic-map": [
+    ["Smith et al., 2004, Science", "https://doi.org/10.1126/science.1097211"]
+  ],
+  "neutralization-titer": [
+    ["Khoury et al., 2020, Nat Rev Immunol", "https://doi.org/10.1038/s41577-020-00471-1"]
+  ],
+  "serotype-not-discrete": [
+    ["Katzelnick et al., 2015, Science", "https://doi.org/10.1126/science.aac5017"]
+  ],
+  "strain-replacement": [
+    ["Furuse & Oshitani, 2016, Int J Infect Dis", "https://doi.org/10.1016/j.ijid.2016.08.012"]
+  ],
+  "antigenic-drift-vaccine": [
+    ["Petrova & Russell, 2018, Nat Rev Microbiol", "https://doi.org/10.1038/nrmicro.2017.118"],
+    ["Smith et al., 2004, Science", "https://doi.org/10.1126/science.1097211"]
+  ]
+};
+
+    const wikiLinks = {
+      "genotype-serotype": [
+        ["항체는 무엇에 붙고 무슨 일을 하나 (면역학)","../../immunology/04-adaptive-effector/antibody.html"],
+        ["HBV — 바이러스별 페이지","../hbv/index.html"]
+      ],
+      "antigenic-map": [
+        ["항체 — 중화가 무너진 뒤에도 남는 방어 (면역학)","../../immunology/04-adaptive-effector/antibody.html#beyond"]
+      ],
+      "neutralization-titer": [
+        ["백신 — 무엇을 켜야 방어가 되나 (면역학)","../../immunology/05-disease-intervention/vaccine.html#problem"],
+        ["항체 — isotype에 따라 일하는 장소가 다르다 (면역학)","../../immunology/04-adaptive-effector/antibody.html#isotype"]
+      ],
+      "serotype-not-discrete": [
+        ["기억 B세포는 다양성을 지키도록 설계돼 있다 (면역학)","../../immunology/04-adaptive-effector/memory.html#diversity"],
+        ["백신 — 무엇을 켜야 방어가 되나 (면역학)","../../immunology/05-disease-intervention/vaccine.html#problem"]
+      ],
+      "strain-replacement": [
+        ["기억은 어디에 어떤 형태로 남나 (면역학)","../../immunology/04-adaptive-effector/memory.html"]
+      ],
+      "antigenic-drift-vaccine": [
+        ["백신 — 항원을 입자로 줄 때와 설계도로 줄 때 (면역학)","../../immunology/05-disease-intervention/vaccine.html#platform"],
+        ["백신 — 좋은 백신의 조건과 그 대가 (면역학)","../../immunology/05-disease-intervention/vaccine.html#design"],
+        ["배중심 — 더 좋은 항체를 고르는 자리 (면역학)","../../immunology/04-adaptive-effector/germinal-center.html"]
+      ]
+    };
+    function getWikiLinks(id) {
+      return wikiLinks[id] || [];
+    }
+
+    function getSources(id) {
+      return (sourceLinks[id] || []).concat(officialSupplementLinks[id] || []);
+    }
+    function getPapers(id) {
+      return paperLinks[id] || [];
+    }
+
+    function renderArticle(id) {
+      const a = articles[id];
+      if (!a) return renderHome();
+      const s = sections[a.section];
+      const annotateOnce = createAnnotator();
+      document.title = a.title + " · General Virus";
+      const body = a.body.map(function (part) {
+        const points = Array.isArray(part[1]) ? part[1] : part[1].replace(/\.\s+/g, ".||| ").split("|||").filter(Boolean);
+        return '<section><h2>' + part[0] + '</h2><ul class="fact-list">' + points.map(function (point) { return "<li>" + annotateOnce(point.trim()) + "</li>"; }).join("") + "</ul></section>";
+      }).join("");
+      const related = a.related.filter(function (rid) { return articles[rid]; }).map(function (rid) {
+        return '<button data-article="' + rid + '">' + articles[rid].title + ' →</button>';
+      }).join("");
+      const wiki = getWikiLinks(id).map(function (link) {
+        return '<a href="' + esc(link[1]) + '">' + esc(link[0]) + ' →</a>';
+      }).join("");
+      const sources = getSources(id).map(function (source) {
+        return '<a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + ' ↗</a>';
+      }).join("");
+      const papers = getPapers(id).map(function (paper) {
+        return '<a href="' + esc(paper[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(paper[0]) + ' ↗</a>';
+      }).join("");
+      app.innerHTML = '<div class="container"><nav class="breadcrumb"><button data-route="home">홈</button><span>›</span><button data-section="' + a.section + '">' + s.title + '</button><span>›</span>' + a.title + '</nav>' +
+        '<div class="article-layout"><article class="article"><p class="eyebrow">' + s.title + '</p><h1>' + a.title + '</h1>' +
+        '<p class="aliases">Aliases: ' + a.aliases.join(" · ") + '</p><p class="tooltip-hint">점선 용어: hover / focus → 한 줄 설명</p><p class="definition">' + annotateOnce(a.summary) + '</p>' + body + '</article>' +
+        '<aside class="aside"><div class="aside-box"><h3>Related</h3><div class="related-list">' + related + '</div></div>' +
+        (wiki ? '<div class="aside-box"><h3>이 위키에서 이어 보기</h3><div class="related-list">' + wiki + '</div></div>' : '') +
+        (sources ? '<div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">' + sources + '</div></div>' : '') +
+        (papers ? '<div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">' + papers + '</div></div>' : '') +
+        '</aside></div></div>';
+      window.scrollTo(0, 0);
+    }
+
+    function handleRoute() {
+      const raw = window.location.hash.replace(/^#/, "");
+      const parts = raw.split("/");
+      if (!raw || raw === "home") return renderHome();
+      if (parts[0] === "section") return renderSection(parts[1]);
+      if (parts[0] === "article") return renderArticle(parts[1]);
+      if (parts[0] === "search") return renderSearch(decodeURIComponent(parts.slice(1).join("/")));
+      renderHome();
+    }
+
+    document.addEventListener("click", function (e) {
+      const home = e.target.closest("[data-route='home']");
+      const section = e.target.closest("[data-section]");
+      const article = e.target.closest("[data-article]");
+      const filter = e.target.closest("[data-filter]");
+      if (home) route("home");
+      else if (article) route("article/" + article.dataset.article);
+      else if (section) route("section/" + section.dataset.section);
+      else if (filter) { activeFilter = filter.dataset.filter; const q = decodeURIComponent(window.location.hash.split("/").slice(1).join("/")); renderSearch(q); }
+    });
+
+    document.getElementById("topSearchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const q = topSearch.value.trim();
+      if (q) { activeFilter = "all"; route("search/" + encodeURIComponent(q)); }
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+        e.preventDefault(); topSearch.focus();
+      }
+    });
+    window.addEventListener("hashchange", handleRoute);
+    handleRoute();
+  </script>
+<script src="../../../assets/js/feedback.js"></script>
+</body>
+</html>

@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="유전율과 유전 상관: 가계 h²·SNP h²·유의 SNP 몫·liability scale, rg의 정의, summary statistics 두 개로 rg를 구하는 cross-trait LD Score regression과 표본 겹침, genome-wide rg와 local rg, pleiotropy 종류와 rg를 흔드는 편향">
+  <title>두 형질은 유전적으로 얼마나 겹치는가? · GWAS</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/spa.css">
+  <link rel="stylesheet" href="../gwas.css">
+  <link rel="stylesheet" href="../../assets/css/article.css">
+  <link rel="stylesheet" href="../gwas-fig.css">
+</head>
+<body class="vpage" data-domain="gwas">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html"><img class="mark" src="../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../index.html"><span>/ GWAS</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../gwas/index.html" aria-current="page">GWAS</a>
+        <a href="../../omics/index.html">Omics</a>
+        <a href="../../single-cell/index.html">Single-cell</a>
+        <a href="../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../disease/index.html">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../index.html">HaLab Wiki</a><span>›</span><a href="../index.html">GWAS</a><span>›</span><a href="../index.html#section/postgwas">Post-GWAS</a><span>›</span>Heritability · genetic correlation</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">GWAS — Post-GWAS</p>
+        <h1>두 형질은 유전적으로 얼마나 겹치는가?</h1>
+        <p class="definition">Genetic correlation(rg, 유전 상관): 두 형질의 genetic value 사이 covariance를 각 형질의 genetic SD로 나눈 값. −1에서 1 사이 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a>. SNP heritability: 측정한 SNP의 additive 효과가 설명하는 표현형 분산의 비율. GWAS 검정력과 유전 예측 성능의 상한을 정함 <a class="src" href="https://doi.org/10.1038/s41586-025-09720-6" target="_blank" rel="noopener">Wainschtein 2025</a></p>
+
+        <!-- ───────── 1. heritability ───────── -->
+        <h2 id="heritability">어느 heritability를 말하는가<small>Heritability</small></h2>
+        <p class="lede">heritability는 형질 분산 가운데 유전 요인이 설명하는 비율. broad-sense는 dominance와 epistasis까지 포함하고, narrow-sense는 additive 효과만 셈 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a>. GWAS에서 말하는 h²는 어떤 변이까지 세느냐에 따라 값이 달라짐</p>
+        <div class="cases">
+          <div style="--c:#6B736E"><span class="lv">가계</span><h4>pedigree · twin h²</h4><p>친족 사이 표현형 공분산에서 추정. 쌍둥이 h²는 GWAS · WES · WGS로 추정한 narrow-sense h²보다 대체로 높음 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></p></div>
+          <div style="--c:var(--theme)"><span class="lv">SNP</span><h4>SNP h²</h4><p>측정한 SNP과 LD에 있는 causal 변이만 포착해서 가계 h²보다 낮음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a>. 형질의 heritability 자체가 아니라 SNP 전체가 설명하는 분산 <a class="src" href="https://doi.org/10.1016/j.ajhg.2010.11.011" target="_blank" rel="noopener">Yang 2011</a></p></div>
+          <div style="--c:var(--theme)"><span class="lv">유의 SNP</span><h4>h²<sub>GWAS</sub></h4><p>genome-wide 유의 SNP만 설명하는 몫. SNP h²와의 격차(hiding heritability)는 표본이 커지면 줄어듦 <a class="src" href="https://doi.org/10.1038/s41586-025-09720-6" target="_blank" rel="noopener">Wainschtein 2025</a></p></div>
+        </div>
+        <figure class="fig" id="fig-h2">
+          <div class="fig-scroll">
+<!--GEN:H2FIG-->
+<svg class="g-svg " viewBox="0 0 900 330" role="img" aria-labelledby="h2T h2D" xmlns="http://www.w3.org/2000/svg">
+<title id="h2T">표본 크기에 따른 h² 추정과 질병 형질의 관측 척도 h²</title>
+<desc id="h2D">왼쪽은 같은 형질을 표본 1만에서 100만 명까지 분석했을 때, genome-wide 유의한 lead SNP가 설명하는 분산과 LD Score regression으로 추정한 SNP heritability를 비교한다. 유의 SNP의 몫은 표본이 커질수록 늘지만 넣은 값 0.4에 닿지 않고, LDSC 추정치는 표본 크기와 관계없이 0.4 근처에 있다. 오른쪽은 liability scale heritability가 0.4인 질병에서 관측 척도(0과 1) heritability가 유병률과 표본의 case 비율에 따라 얼마나 달라지는지 계산한 곡선이다.</desc>
+<line class="g-grid" x1="70" x2="400" y1="286.0" y2="286.0"/><text class="g-tick" x="63" y="289.5" text-anchor="end">0</text>
+<line class="g-grid" x1="70" x2="400" y1="238.0" y2="238.0"/><text class="g-tick" x="63" y="241.5" text-anchor="end">0.1</text>
+<line class="g-grid" x1="70" x2="400" y1="190.0" y2="190.0"/><text class="g-tick" x="63" y="193.5" text-anchor="end">0.2</text>
+<line class="g-grid" x1="70" x2="400" y1="142.0" y2="142.0"/><text class="g-tick" x="63" y="145.5" text-anchor="end">0.3</text>
+<line class="g-grid" x1="70" x2="400" y1="94.0" y2="94.0"/><text class="g-tick" x="63" y="97.5" text-anchor="end">0.4</text>
+<line class="g-grid" x1="70" x2="400" y1="46.0" y2="46.0"/><text class="g-tick" x="63" y="49.5" text-anchor="end">0.5</text>
+<line class="g-grid" x1="560" x2="860" y1="286.0" y2="286.0"/><text class="g-tick" x="553" y="289.5" text-anchor="end">0</text>
+<line class="g-grid" x1="560" x2="860" y1="226.0" y2="226.0"/><text class="g-tick" x="553" y="229.5" text-anchor="end">0.2</text>
+<line class="g-grid" x1="560" x2="860" y1="166.0" y2="166.0"/><text class="g-tick" x="553" y="169.5" text-anchor="end">0.4</text>
+<line class="g-grid" x1="560" x2="860" y1="106.0" y2="106.0"/><text class="g-tick" x="553" y="109.5" text-anchor="end">0.6</text>
+<line class="g-grid" x1="560" x2="860" y1="46.0" y2="46.0"/><text class="g-tick" x="553" y="49.5" text-anchor="end">0.8</text>
+<line class="g-ax" x1="70.0" x2="70.0" y1="286" y2="290"/><text class="g-tick" x="70.0" y="302" text-anchor="middle">1만</text>
+<line class="g-ax" x1="235.0" x2="235.0" y1="286" y2="290"/><text class="g-tick" x="235.0" y="302" text-anchor="middle">10만</text>
+<line class="g-ax" x1="400.0" x2="400.0" y1="286" y2="290"/><text class="g-tick" x="400.0" y="302" text-anchor="middle">100만</text>
+<line class="g-ax" x1="70" x2="400" y1="286" y2="286"/><line class="g-ax" x1="70" x2="70" y1="46" y2="286"/>
+<text class="g-lab" x="235.0" y="320" text-anchor="middle">표본 크기 N (로그 눈금)</text>
+<text class="g-lab" transform="translate(34,166.0) rotate(-90)" text-anchor="middle">h²</text>
+<text class="g-ttl" x="70" y="22">표본 크기와 h²<tspan class="g-sub" dx="8">6번 페이지의 형질 · N만 바꿈</tspan></text>
+<polygon points="70.0,94.0 119.7,94.0 185.3,94.0 235.0,94.0 284.7,94.0 350.3,94.0 400.0,94.0 400.0,133.9 350.3,141.9 284.7,171.0 235.0,215.7 185.3,258.6 119.7,281.7 70.0,285.5" fill="#E3E8E5" stroke="none"/>
+<line class="g-eq" x1="70" x2="400" y1="94.0" y2="94.0"/>
+<polyline class="g-line" points="70.0,285.5 119.7,281.7 185.3,258.6 235.0,215.7 284.7,171.0 350.3,141.9 400.0,133.9" stroke="var(--theme)"/>
+<circle class="g-dot" cx="70.0" cy="285.5" r="3.6" fill="var(--theme)"/>
+<circle class="g-dot" cx="119.7" cy="281.7" r="3.6" fill="var(--theme)"/>
+<circle class="g-dot" cx="185.3" cy="258.6" r="3.6" fill="var(--theme)"/>
+<circle class="g-dot" cx="235.0" cy="215.7" r="3.6" fill="var(--theme)"/>
+<circle class="g-dot" cx="284.7" cy="171.0" r="3.6" fill="var(--theme)"/>
+<circle class="g-dot" cx="350.3" cy="141.9" r="3.6" fill="var(--theme)"/>
+<circle class="g-dot" cx="400.0" cy="133.9" r="3.6" fill="var(--theme)"/>
+<line x1="70.0" x2="70.0" y1="153.7" y2="51.5" stroke="var(--text)" stroke-width="1.2"/>
+<circle cx="70.0" cy="102.6" r="3.2" fill="#fff" stroke="var(--text)" stroke-width="1.4"/>
+<line x1="119.7" x2="119.7" y1="129.4" y2="64.3" stroke="var(--text)" stroke-width="1.2"/>
+<circle cx="119.7" cy="96.8" r="3.2" fill="#fff" stroke="var(--text)" stroke-width="1.4"/>
+<line x1="185.3" x2="185.3" y1="118.1" y2="76.2" stroke="var(--text)" stroke-width="1.2"/>
+<circle cx="185.3" cy="97.2" r="3.2" fill="#fff" stroke="var(--text)" stroke-width="1.4"/>
+<line x1="235.0" x2="235.0" y1="113.1" y2="79.6" stroke="var(--text)" stroke-width="1.2"/>
+<circle cx="235.0" cy="96.4" r="3.2" fill="#fff" stroke="var(--text)" stroke-width="1.4"/>
+<line x1="284.7" x2="284.7" y1="109.7" y2="77.8" stroke="var(--text)" stroke-width="1.2"/>
+<circle cx="284.7" cy="93.7" r="3.2" fill="#fff" stroke="var(--text)" stroke-width="1.4"/>
+<line x1="350.3" x2="350.3" y1="106.5" y2="75.1" stroke="var(--text)" stroke-width="1.2"/>
+<circle cx="350.3" cy="90.8" r="3.2" fill="#fff" stroke="var(--text)" stroke-width="1.4"/>
+<line x1="400.0" x2="400.0" y1="105.4" y2="73.1" stroke="var(--text)" stroke-width="1.2"/>
+<circle cx="400.0" cy="89.3" r="3.2" fill="#fff" stroke="var(--text)" stroke-width="1.4"/>
+<text class="g-note" x="408" y="53.2"><tspan class="g-em">LDSC h²</tspan></text>
+<text class="g-note" x="408" y="67.2">흰 점 ± 95% 구간</text>
+<text class="g-note dim" x="408" y="98.0">넣은 SNP h² 0.4</text>
+<text class="g-note" x="408" y="137.9" style="fill:var(--theme);font-weight:700">유의 SNP 몫</text>
+<text class="g-note" x="86.0" y="168.4">회색 띠 = 유의 SNP</text>
+<text class="g-note" x="86.0" y="183.4">밖에 남은 몫</text>
+<line class="g-ax" x1="560.0" x2="560.0" y1="286" y2="290"/><text class="g-tick" x="560.0" y="302" text-anchor="middle">1%</text>
+<line class="g-ax" x1="613.2" x2="613.2" y1="286" y2="290"/><text class="g-tick" x="613.2" y="302" text-anchor="middle">2%</text>
+<line class="g-ax" x1="683.4" x2="683.4" y1="286" y2="290"/><text class="g-tick" x="683.4" y="302" text-anchor="middle">5%</text>
+<line class="g-ax" x1="736.6" x2="736.6" y1="286" y2="290"/><text class="g-tick" x="736.6" y="302" text-anchor="middle">10%</text>
+<line class="g-ax" x1="789.7" x2="789.7" y1="286" y2="290"/><text class="g-tick" x="789.7" y="302" text-anchor="middle">20%</text>
+<line class="g-ax" x1="860.0" x2="860.0" y1="286" y2="290"/><text class="g-tick" x="860.0" y="302" text-anchor="middle">50%</text>
+<line class="g-ax" x1="560" x2="860" y1="286" y2="286"/><line class="g-ax" x1="560" x2="560" y1="46" y2="286"/>
+<text class="g-lab" x="710.0" y="320" text-anchor="middle">유병률 K (로그 눈금)</text>
+<text class="g-lab" transform="translate(524,166.0) rotate(-90)" text-anchor="middle">관측 척도 h²</text>
+<text class="g-ttl" x="560" y="22">질병 형질의 관측 척도 h²<tspan class="g-sub" dx="8">liability h² 0.4로 고정</tspan></text>
+<line class="g-eq" x1="560" x2="860" y1="166.0" y2="166.0"/>
+<text class="g-note dim" x="860" y="160.0" text-anchor="end">liability h² 0.4</text>
+<polyline class="g-line" points="560.0,277.4 563.8,277.1 567.6,276.7 571.4,276.4 575.2,276.0 579.0,275.6 582.8,275.2 586.6,274.8 590.4,274.4 594.2,274.0 598.0,273.6 601.8,273.1 605.6,272.6 609.4,272.1 613.2,271.6 617.0,271.1 620.8,270.6 624.6,270.0 628.4,269.5 632.2,268.9 635.9,268.3 639.7,267.7 643.5,267.0 647.3,266.4 651.1,265.7 654.9,265.0 658.7,264.3 662.5,263.5 666.3,262.8 670.1,262.0 673.9,261.2 677.7,260.4 681.5,259.6 685.3,258.7 689.1,257.8 692.9,256.9 696.7,256.0 700.5,255.0 704.3,254.1 708.1,253.1 711.9,252.1 715.7,251.0 719.5,250.0 723.3,248.9 727.1,247.8 730.9,246.7 734.7,245.5 738.5,244.3 742.3,243.2 746.1,242.0 749.9,240.7 753.7,239.5 757.5,238.3 761.3,237.0 765.1,235.7 768.9,234.4 772.7,233.1 776.5,231.8 780.3,230.5 784.1,229.2 787.8,227.9 791.6,226.6 795.4,225.2 799.2,223.9 803.0,222.6 806.8,221.4 810.6,220.1 814.4,218.9 818.2,217.7 822.0,216.6 825.8,215.5 829.6,214.4 833.4,213.4 837.2,212.5 841.0,211.7 844.8,211.0 848.6,210.4 852.4,210.0 856.2,209.7 860.0,209.6" stroke="var(--theme)"/>
+<polyline class="g-line" points="560.0,68.6 563.8,71.1 567.6,73.6 571.4,76.1 575.2,78.6 579.0,81.1 582.8,83.5 586.6,86.0 590.4,88.4 594.2,90.9 598.0,93.3 601.8,95.7 605.6,98.1 609.4,100.5 613.2,102.9 617.0,105.3 620.8,107.7 624.6,110.0 628.4,112.4 632.2,114.7 635.9,117.0 639.7,119.3 643.5,121.6 647.3,123.8 651.1,126.1 654.9,128.3 658.7,130.5 662.5,132.7 666.3,134.9 670.1,137.1 673.9,139.3 677.7,141.4 681.5,143.5 685.3,145.6 689.1,147.7 692.9,149.8 696.7,151.8 700.5,153.8 704.3,155.8 708.1,157.8 711.9,159.8 715.7,161.7 719.5,163.6 723.3,165.5 727.1,167.4 730.9,169.2 734.7,171.0 738.5,172.8 742.3,174.6 746.1,176.3 749.9,178.0 753.7,179.7 757.5,181.4 761.3,183.0 765.1,184.6 768.9,186.2 772.7,187.7 776.5,189.2 780.3,190.7 784.1,192.1 787.8,193.5 791.6,194.8 795.4,196.1 799.2,197.4 803.0,198.6 806.8,199.8 810.6,201.0 814.4,202.1 818.2,203.1 822.0,204.1 825.8,205.0 829.6,205.8 833.4,206.6 837.2,207.3 841.0,208.0 844.8,208.5 848.6,209.0 852.4,209.3 856.2,209.5 860.0,209.6" stroke="#2F6DB5"/>
+<circle class="g-dot" cx="560.0" cy="277.4" r="3.8" fill="var(--theme)"/>
+<circle class="g-dot" cx="560.0" cy="68.6" r="3.8" fill="#2F6DB5"/>
+<text class="g-note" x="596.0" y="61.0" style="fill:#2F6DB5;font-weight:700">case = control 표본(P = 0.5)</text>
+<text class="g-note" x="596.0" y="75.0">K 1%에서 0.72</text>
+<text class="g-note" x="580.1" y="244.0" style="fill:var(--theme);font-weight:700">코호트 표본(P = K)</text>
+<text class="g-note" x="580.1" y="258.0">K 1%에서 0.029</text>
+</svg>
+<!--/GEN:H2FIG-->
+          </div>
+          <figcaption>
+            왼쪽: <a href="../02-association/manhattan.html#sim">Manhattan 페이지</a>와 같은 가상 형질(SNP <!--GEN:M-->425,904<!--/GEN:M-->개 · causal SNP <!--GEN:CAUSAL-->4,234<!--/GEN:CAUSAL-->개 · SNP h² <!--GEN:H2-->0.4<!--/GEN:H2-->). 색 선 = genome-wide 유의 lead SNP(±500 kb로 묶음)가 설명하는 분산의 합. 시뮬레이션의 참값 효과로 계산 · 흰 점과 세로선 = LD Score regression으로 추정한 h²와 95% 구간 · 오른쪽: liability h²를 0.4로 고정하고 고전 변환식 <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a>을 거꾸로 풀어 관측 척도 h²를 계산한 곡선
+          </figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>같은 형질, 다른 h²</th><th>값</th></tr></thead>
+            <tbody>
+              <tr><th>키 · UK Biobank 유럽계</th><td>가계 h² 0.882(s.e. 0.010), WGS h² 0.709(s.e. 0.006) <a class="src" href="https://doi.org/10.1038/s41586-025-09720-6" target="_blank" rel="noopener">Wainschtein 2025</a></td></tr>
+              <tr><th>키 · common SNP 전체</th><td>표현형 분산의 약 45%를 설명. heritability가 사라진 것이 아니라 효과가 작은 많은 SNP에 퍼져 있다는 해석 <a class="src" href="https://doi.org/10.1016/j.ajhg.2010.11.011" target="_blank" rel="noopener">Yang 2011</a></td></tr>
+              <tr><th>34개 형질 평균</th><td>WGS 변이가 가계 narrow-sense h²의 약 88%를 설명. MAF &lt; 1%인 rare 변이가 20%, common 변이가 68% <a class="src" href="https://doi.org/10.1038/s41586-025-09720-6" target="_blank" rel="noopener">Wainschtein 2025</a></td></tr>
+              <tr><th>자녀 수</th><td>가계 h² 0.152, WGS h² 0.075. 34개 형질 가운데 WGS h²가 가장 낮음 <a class="src" href="https://doi.org/10.1038/s41586-025-09720-6" target="_blank" rel="noopener">Wainschtein 2025</a></td></tr>
+              <tr><th>그림 1 왼쪽</th><td>유의 SNP의 몫: 1만 명 <!--GEN:HG_1E4-->0.001<!--/GEN:HG_1E4-->(locus <!--GEN:LOCI_1E4-->1<!--/GEN:LOCI_1E4-->개), 10만 명 <!--GEN:HG_1E5-->0.15<!--/GEN:HG_1E5-->(<!--GEN:LOCI_1E5-->381<!--/GEN:LOCI_1E5-->개), 100만 명 <!--GEN:HG_1E6-->0.32<!--/GEN:HG_1E6-->(<!--GEN:LOCI_1E6-->1,760<!--/GEN:LOCI_1E6-->개) · LDSC h²는 1만 명에서 <!--GEN:LH2_1E4-->0.38 ± 0.05<!--/GEN:LH2_1E4-->, 100만 명에서 <!--GEN:LH2_1E6-->0.41 ± 0.02<!--/GEN:LH2_1E6--></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout blue">
+          <h4>두 가지 격차</h4>
+          <p>유의 SNP의 몫과 SNP h² 사이 격차는 hiding heritability. 표본이 커지면 사라지고, 500만 명이 넘는 키 GWAS에서 두 값이 수렴함 <a class="src" href="https://doi.org/10.1038/s41586-025-09720-6" target="_blank" rel="noopener">Wainschtein 2025</a> · 가계 h²와 common SNP h² 사이 격차는 still-missing heritability로 따로 부름 <a class="src" href="https://doi.org/10.1038/s41586-025-09720-6" target="_blank" rel="noopener">Wainschtein 2025</a> · 후보 원인: common SNP가 잘 tagging하지 못하는 rare 변이와 structural variant, 친족이 공유하는 환경, non-additive 효과. 뒤의 둘은 가계 추정치를 부풀렸을 수 있음 <a class="src" href="https://doi.org/10.1038/s41586-025-09720-6" target="_blank" rel="noopener">Wainschtein 2025</a> · 그림 1 왼쪽의 회색 띠가 hiding heritability. 시뮬레이션의 변이는 전부 측정된 SNP라 still-missing은 없음</p>
+        </div>
+        <div class="callout">
+          <h4>질병 형질은 척도부터 맞춤</h4>
+          <p>liability threshold 모형은 질병을 연속적인 liability(소인)가 문턱을 넘은 상태로 봄. 이 척도에서 잰 것이 liability h² <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · 0과 1로 잰 관측 척도 h²는 유병률 K와 표본의 case 비율 P에 따라 달라짐. 형질끼리 비교하려면 liability scale로 바꿈 <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · 고전 변환식: h²<sub>liab</sub> = h²<sub>obs</sub> × K(1−K)/φ(Φ⁻¹(K))² × K(1−K)/P(1−P) <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · 예: UK Biobank에서 관측 h²가 0.026인 oesophagitis(표본 유병률 2.5%)와 0.027인 hypertensive renal disease(0.4%)의 liability h²는 0.180과 0.679 <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · biobank는 참여자가 더 건강해서 대개 P &lt; K이고, 고전식은 이 범위에서 검증되지 않았음. 유병률이 아주 낮으면 추정치가 1을 넘기도 해서 분모를 유전 분산과 오차 분산의 합으로 바꾼 식이 제안됨 <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · 그림 1 오른쪽: 유병률 1%에서 liability h² 0.4는 코호트 표본의 관측 h² <!--GEN:HOBS_PK-->0.029<!--/GEN:HOBS_PK-->, case와 control이 반씩인 표본의 관측 h² <!--GEN:HOBS_CC-->0.72<!--/GEN:HOBS_CC--> · binary 형질에서 LDSC 기울기로 얻은 h²도 관측 척도 값 <a class="src" href="https://doi.org/10.1038/ng.3211" target="_blank" rel="noopener">Bulik-Sullivan 2015</a></p>
+        </div>
+        <div class="callout">
+          <h4>h²는 유전체 어디에 몰려 있나</h4>
+          <p>stratified LDSC는 SNP를 기능 annotation별로 나누고 χ²를 annotation마다 따로 센 LD Score에 회귀함 <a class="src" href="https://doi.org/10.1038/ng.3404" target="_blank" rel="noopener">Finucane 2015</a> · enrichment = annotation이 설명하는 h² 비율 ÷ annotation에 속한 SNP 비율 <a class="src" href="https://doi.org/10.1038/ng.3404" target="_blank" rel="noopener">Finucane 2015</a> · 예: 포유류에서 보존된 영역은 SNP의 2.6%로 SNP h²의 약 35%를 설명(형질 평균) <a class="src" href="https://doi.org/10.1038/ng.3404" target="_blank" rel="noopener">Finucane 2015</a> · WGS 자료에서 coding 변이는 전체 변이의 0.71%로 h²<sub>WGS</sub>의 17.5%를 설명 <a class="src" href="https://doi.org/10.1038/s41586-025-09720-6" target="_blank" rel="noopener">Wainschtein 2025</a> · 유전체의 아주 작은 비율만 차지하는 annotation은 검정력이 낮음 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a></p>
+        </div>
+
+        <!-- ───────── 2. rg ───────── -->
+        <h2 id="rg">유전 상관 rg의 정의<small>Genetic correlation</small></h2>
+        <p class="lede">rg = σ<sub>gx,gy</sub> / √(σ²<sub>gx</sub> σ²<sub>gy</sub>). 두 형질의 genetic value 사이 상관 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a>. 형질을 표준화하면 분자인 genetic covariance가 coheritability h<sub>xy</sub>가 되고, rg = h<sub>xy</sub> / √(h²<sub>x</sub> h²<sub>y</sub>) <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p>
+        <div class="cases">
+          <div style="--c:var(--theme)"><span class="lv">rg</span><h4>genetic correlation</h4><p>−1에서 1. 두 형질의 유전 효과가 평균적으로 같은 방향이면 양수 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p></div>
+          <div style="--c:var(--theme)"><span class="lv">h<sub>xy</sub></span><h4>coheritability</h4><p>두 형질이 공유하는 유전 분산의 크기. h²가 작으면 rg가 높아도 h<sub>xy</sub>는 작음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p></div>
+          <div style="--c:#6B736E"><span class="lv">ρ<sub>p</sub></span><h4>phenotypic correlation</h4><p>h<sub>x</sub>h<sub>y</sub>ρ<sub>g</sub> + √(1−h²<sub>x</sub>)√(1−h²<sub>y</sub>)ρ<sub>e</sub>. 유전 상관과 환경 상관을 h²로 가중해 더한 값 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p></div>
+        </div>
+        <div class="callout">
+          <h4>rg는 h²와 함께 봄</h4>
+          <p>rg는 genetic covariance를 두 genetic SD로 나눈 값이라, 두 형질의 유전 기여가 작아도 높게 나올 수 있음. h²를 함께 보고해야 공유하는 유전 기여의 크기를 가늠함 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · 표현형 상관이 유전 상관의 근사가 될 수 있다는 가설이 Cheverud's conjecture <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p>
+        </div>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>추정 방법</th><th>입력</th><th>특징</th></tr></thead>
+            <tbody>
+              <tr><th>가계 기록</th><td>친족의 질병 기록</td><td>liability threshold 모형. 예: 스웨덴 registry의 schizophrenia와 bipolar disorder에서 h² 0.64 · 0.59, rg 0.60. liability threshold 공식으로 메타분석한 값은 rg 0.47(95% CI 0.32–0.62) <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></td></tr>
+              <tr><th>bivariate GREML</th><td>개인 genotype</td><td>2·3차 사촌보다 가까운 친족을 빼고 GRM으로 두 형질의 유전 분산과 공분산을 함께 추정 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · 같은 표본 크기에서 SE가 LDSC의 약 절반 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></td></tr>
+              <tr><th>cross-trait LDSC</th><td>summary statistics · LD Score</td><td>계산이 가볍고 표본이 겹쳐도 bias가 없어 수백 개 형질 쌍을 비교함 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · 개인 자료로 구한 bivariate REML 추정과 잘 일치 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a> · <a href="#cross-trait">아래 그림 2</a></td></tr>
+              <tr><th>Popcorn</th><td>두 ancestry의 summary statistics</td><td>LDSC를 넓혀 두 집단의 LD reference로 서로 다른 ancestry GWAS 사이 rg를 추정 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></td></tr>
+              <tr><th>ρHESS · GNOVA</th><td>summary statistics</td><td>ρHESS는 유전체 구간별 local rg, GNOVA는 functional annotation별 genetic covariance <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · <a href="#local">아래 그림 3</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h4>정밀도</h4>
+          <p>GREML의 SNP h² 표준오차는 표본 크기로 근사됨(GWAS 자료에서 약 316/N). rg의 표준오차는 두 h²와 rg 세 모수의 오차를 함께 반영해 몇 배 큼 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · LDSC의 표준오차는 같은 표본 크기의 GREML보다 약 2배(절편을 고정하지 않은 조건)여서 rg가 0이나 1과 다른지 가리는 검정력이 낮음. 대신 훨씬 큰 표본을 적은 계산으로 다룸 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p>
+        </div>
+
+        <!-- ───────── 3. cross-trait LDSC ───────── -->
+        <h2 id="cross-trait">summary statistics 두 개로 rg 구하기<small>Cross-trait LD Score regression</small></h2>
+        <p class="lede">형질 하나의 LDSC는 χ²를 LD Score에 회귀함(<a href="../02-association/manhattan.html#inflation">Manhattan 페이지 그림 3</a>). 형질이 둘이면 χ² 자리에 두 형질 z의 곱을 넣음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p>
+        <p class="lede">식: <b>E[z<sub>1j</sub> z<sub>2j</sub>] = ρ<sub>p</sub>·N<sub>s</sub>/√(N<sub>1</sub>N<sub>2</sub>) + √(N<sub>1</sub>N<sub>2</sub>)·h<sub>12</sub>·ℓ<sub>j</sub>/M</b> · N<sub>s</sub> = 두 GWAS에 함께 들어간 사람 수, ρ<sub>p</sub> = 그 사람들의 표현형 상관, h<sub>12</sub> = coheritability, ℓ<sub>j</sub> = LD Score <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p>
+        <div class="cases">
+          <div style="--c:var(--theme)"><span class="lv">기울기</span><h4>coheritability</h4><p>√(N<sub>1</sub>N<sub>2</sub>)·h<sub>12</sub>/M. 기울기에서 h<sub>12</sub>를 구함 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p></div>
+          <div style="--c:#B5525C"><span class="lv">절편</span><h4>표본 겹침</h4><p>겹친 사람의 비율과 그들의 표현형 상관을 반영함 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p></div>
+          <div style="--c:var(--theme)"><span class="lv">rg</span><h4>h<sub>12</sub> ÷ √(h²<sub>1</sub>h²<sub>2</sub>)</h4><p>두 h²는 형질마다 따로 돌린 단일 형질 LDSC에서 구함. 이때는 절편이 층화 같은 잔여 confounding을 흡수함 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p></div>
+        </div>
+        <figure class="fig" id="fig-cross" data-mode="sep">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-cross" role="group" aria-label="시나리오">
+              <button type="button" data-mode="sep" aria-pressed="true">rg 0.5 · 표본 따로</button>
+              <button type="button" data-mode="same" aria-pressed="false">rg 0.5 · 같은 표본</button>
+              <button type="button" data-mode="null" aria-pressed="false">rg 0 · 같은 표본</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:CROSS-->
+<svg class="g-svg " viewBox="0 0 900 330" role="img" aria-labelledby="crossT crossD" xmlns="http://www.w3.org/2000/svg">
+<title id="crossT">두 형질의 z 곱을 LD Score에 회귀하기</title>
+<desc id="crossD">SNP를 LD Score 크기로 50구간으로 나누고 구간마다 두 형질 z의 곱을 평균해 찍었다. 기울기는 두 형질의 유전 공분산을, 절편은 두 GWAS가 같은 사람을 쓴 몫을 반영한다. rg 0.5인 두 형질을 다른 표본에서 분석하면 절편이 0 근처이고, 같은 표본에서 분석하면 기울기는 그대로인 채 절편만 표현형 상관만큼 올라간다. rg가 0이고 같은 표본이면 기울기는 0 근처이고 절편만 0보다 크다.</desc>
+<line class="g-grid" x1="70" x2="400" y1="264.2" y2="264.2"/><text class="g-tick" x="63" y="267.7" text-anchor="end">0</text>
+<line class="g-grid" x1="70" x2="400" y1="209.6" y2="209.6"/><text class="g-tick" x="63" y="213.1" text-anchor="end">0.5</text>
+<line class="g-grid" x1="70" x2="400" y1="155.1" y2="155.1"/><text class="g-tick" x="63" y="158.6" text-anchor="end">1</text>
+<line class="g-grid" x1="70" x2="400" y1="100.5" y2="100.5"/><text class="g-tick" x="63" y="104.0" text-anchor="end">1.5</text>
+<line class="g-grid" x1="70" x2="400" y1="46.0" y2="46.0"/><text class="g-tick" x="63" y="49.5" text-anchor="end">2</text>
+<line class="g-ax" x1="70.0" x2="70.0" y1="286" y2="290"/><text class="g-tick" x="70.0" y="302" text-anchor="middle">0</text>
+<line class="g-ax" x1="180.0" x2="180.0" y1="286" y2="290"/><text class="g-tick" x="180.0" y="302" text-anchor="middle">10</text>
+<line class="g-ax" x1="290.0" x2="290.0" y1="286" y2="290"/><text class="g-tick" x="290.0" y="302" text-anchor="middle">20</text>
+<line class="g-ax" x1="400.0" x2="400.0" y1="286" y2="290"/><text class="g-tick" x="400.0" y="302" text-anchor="middle">30</text>
+<line class="g-ax" x1="70" x2="400" y1="286" y2="286"/><line class="g-ax" x1="70" x2="70" y1="46" y2="286"/>
+<text class="g-lab" x="235.0" y="320" text-anchor="middle">LD Score (구간 평균)</text>
+<text class="g-lab" transform="translate(36,166.0) rotate(-90)" text-anchor="middle">평균 z₁ × z₂</text>
+<g class="g-ov on" data-ov="sep">
+<text class="g-ttl" x="70" y="22">LD Score 구간별 평균 z₁ × z₂<tspan class="g-sub" dx="8">rg 0.5 · 표본 따로 · 각 100,000명</tspan></text>
+<line class="g-eq" x1="70" x2="400" y1="264.2" y2="264.2"/>
+<line x1="70.0" y1="263.7" x2="400.0" y2="117.6" stroke="var(--text)" stroke-width="1.4"/>
+<circle class="g-dot" cx="81.3" cy="261.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="82.1" cy="259.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="83.4" cy="258.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="84.9" cy="257.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="86.8" cy="258.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="88.7" cy="248.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="90.6" cy="256.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="92.1" cy="255.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="93.7" cy="259.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="95.4" cy="246.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="97.3" cy="247.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="99.2" cy="253.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="101.1" cy="250.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="103.0" cy="248.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="105.0" cy="248.6" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="107.1" cy="243.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="109.4" cy="252.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="111.7" cy="244.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="113.9" cy="240.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="116.3" cy="237.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="119.0" cy="232.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="121.7" cy="232.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="124.3" cy="237.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="127.2" cy="241.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="130.3" cy="239.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="133.4" cy="239.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="136.8" cy="233.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="140.3" cy="223.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="143.8" cy="236.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="147.5" cy="233.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="151.6" cy="232.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="155.9" cy="233.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="160.3" cy="235.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="165.2" cy="232.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="170.3" cy="209.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="175.7" cy="238.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="181.5" cy="204.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="188.1" cy="207.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="195.6" cy="214.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="203.5" cy="196.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="212.2" cy="164.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="221.9" cy="174.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="233.1" cy="208.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="245.3" cy="182.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="260.4" cy="160.6" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="277.7" cy="162.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="299.3" cy="174.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="329.3" cy="200.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="374.6" cy="178.0" r="3.4" fill="var(--theme)"/>
+<circle cx="70.0" cy="263.7" r="4.5" fill="#fff" stroke="var(--text)" stroke-width="1.6"/>
+<text class="g-hd" x="470" y="52">이 모드</text>
+<text class="g-note" x="470" y="78">두 GWAS의 표본 겹침</text><text class="g-cnt" x="860" y="78" text-anchor="end">0</text>
+<text class="g-note" x="470" y="103">겹친 표본의 표현형 상관 ρp</text><text class="g-cnt" x="860" y="103" text-anchor="end">해당 없음</text>
+<text class="g-note" x="470" y="128">절편 기대값 = ρp × 겹친 비율</text><text class="g-cnt" x="860" y="128" text-anchor="end">0</text>
+<text class="g-note" x="470" y="153">절편 추정</text><text class="g-cnt" x="860" y="153" text-anchor="end" style="font-weight:800">0.00 ± 0.01</text>
+<text class="g-note" x="470" y="178">h² 추정 (형질 1 · 형질 2)</text><text class="g-cnt" x="860" y="178" text-anchor="end">0.39 · 0.38</text>
+<text class="g-note" x="470" y="203">rg 추정 = 기울기에서 구한 값</text><text class="g-cnt" x="860" y="203" text-anchor="end" style="font-weight:800">0.49 ± 0.02</text>
+<text class="g-note" x="470" y="228">rg 참값 (시뮬레이션에 넣은 값)</text><text class="g-cnt" x="860" y="228" text-anchor="end">0.50</text>
+</g>
+<g class="g-ov" data-ov="same">
+<text class="g-ttl" x="70" y="22">LD Score 구간별 평균 z₁ × z₂<tspan class="g-sub" dx="8">rg 0.5 · 같은 표본 · 각 100,000명</tspan></text>
+<line x1="70.0" y1="263.7" x2="400.0" y2="117.6" stroke="#A3ABA6" stroke-width="1.4" stroke-dasharray="5 4"/>
+<line class="g-eq" x1="70" x2="400" y1="264.2" y2="264.2"/>
+<line x1="70.0" y1="228.6" x2="400.0" y2="84.7" stroke="var(--text)" stroke-width="1.4"/>
+<circle class="g-dot" cx="81.3" cy="225.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="82.1" cy="224.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="83.4" cy="222.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="84.9" cy="221.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="86.8" cy="223.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="88.7" cy="213.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="90.6" cy="222.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="92.1" cy="220.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="93.7" cy="224.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="95.4" cy="212.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="97.3" cy="212.6" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="99.2" cy="218.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="101.1" cy="215.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="103.0" cy="213.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="105.0" cy="214.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="107.1" cy="209.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="109.4" cy="217.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="111.7" cy="209.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="113.9" cy="205.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="116.3" cy="200.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="119.0" cy="195.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="121.7" cy="196.6" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="124.3" cy="201.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="127.2" cy="209.6" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="130.3" cy="206.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="133.4" cy="205.6" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="136.8" cy="198.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="140.3" cy="188.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="143.8" cy="200.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="147.5" cy="197.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="151.6" cy="196.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="155.9" cy="199.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="160.3" cy="202.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="165.1" cy="196.6" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="170.3" cy="175.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="175.7" cy="203.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="181.5" cy="169.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="188.1" cy="182.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="195.6" cy="180.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="203.5" cy="160.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="212.2" cy="132.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="221.9" cy="140.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="233.1" cy="174.6" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="245.3" cy="147.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="260.4" cy="124.6" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="277.7" cy="124.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="299.3" cy="138.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="329.3" cy="169.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="374.6" cy="142.0" r="3.4" fill="var(--theme)"/>
+<circle cx="70.0" cy="228.6" r="4.5" fill="#fff" stroke="var(--text)" stroke-width="1.6"/>
+<text class="g-hd" x="470" y="52">이 모드</text>
+<text class="g-note" x="470" y="78">두 GWAS의 표본 겹침</text><text class="g-cnt" x="860" y="78" text-anchor="end">100%</text>
+<text class="g-note" x="470" y="103">겹친 표본의 표현형 상관 ρp</text><text class="g-cnt" x="860" y="103" text-anchor="end">0.32</text>
+<text class="g-note" x="470" y="128">절편 기대값 = ρp × 겹친 비율</text><text class="g-cnt" x="860" y="128" text-anchor="end">0.32</text>
+<text class="g-note" x="470" y="153">절편 추정</text><text class="g-cnt" x="860" y="153" text-anchor="end" style="font-weight:800">0.33 ± 0.01</text>
+<text class="g-note" x="470" y="178">h² 추정 (형질 1 · 형질 2)</text><text class="g-cnt" x="860" y="178" text-anchor="end">0.39 · 0.38</text>
+<text class="g-note" x="470" y="203">rg 추정 = 기울기에서 구한 값</text><text class="g-cnt" x="860" y="203" text-anchor="end" style="font-weight:800">0.49 ± 0.02</text>
+<text class="g-note" x="470" y="228">rg 참값 (시뮬레이션에 넣은 값)</text><text class="g-cnt" x="860" y="228" text-anchor="end">0.50</text>
+</g>
+<g class="g-ov" data-ov="null">
+<text class="g-ttl" x="70" y="22">LD Score 구간별 평균 z₁ × z₂<tspan class="g-sub" dx="8">rg 0 · 같은 표본 · 각 100,000명</tspan></text>
+<line x1="70.0" y1="263.7" x2="400.0" y2="117.6" stroke="#A3ABA6" stroke-width="1.4" stroke-dasharray="5 4"/>
+<line class="g-eq" x1="70" x2="400" y1="264.2" y2="264.2"/>
+<line x1="70.0" y1="250.1" x2="400.0" y2="257.0" stroke="var(--text)" stroke-width="1.4"/>
+<circle class="g-dot" cx="81.3" cy="252.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="82.1" cy="251.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="83.4" cy="249.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="84.9" cy="249.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="86.8" cy="252.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="88.7" cy="244.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="90.6" cy="251.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="92.1" cy="251.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="93.7" cy="255.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="95.4" cy="246.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="97.3" cy="247.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="99.3" cy="253.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="101.1" cy="251.6" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="103.0" cy="250.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="105.0" cy="250.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="107.1" cy="249.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="109.4" cy="255.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="111.7" cy="249.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="113.9" cy="256.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="116.3" cy="243.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="119.0" cy="245.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="121.7" cy="248.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="124.3" cy="253.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="127.2" cy="259.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="130.3" cy="251.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="133.4" cy="253.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="136.8" cy="249.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="140.3" cy="238.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="143.8" cy="252.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="147.5" cy="249.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="151.6" cy="252.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="155.9" cy="260.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="160.3" cy="265.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="165.2" cy="262.6" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="170.3" cy="247.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="175.7" cy="263.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="181.5" cy="240.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="188.1" cy="245.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="195.6" cy="254.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="203.5" cy="240.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="212.2" cy="241.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="222.0" cy="245.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="233.1" cy="277.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="245.4" cy="256.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="260.5" cy="216.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="277.7" cy="250.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="299.3" cy="241.3" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="329.3" cy="283.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="374.6" cy="286.0" r="3.4" fill="var(--theme)"/>
+<circle cx="70.0" cy="250.1" r="4.5" fill="#fff" stroke="var(--text)" stroke-width="1.6"/>
+<text class="g-hd" x="470" y="52">이 모드</text>
+<text class="g-note" x="470" y="78">두 GWAS의 표본 겹침</text><text class="g-cnt" x="860" y="78" text-anchor="end">100%</text>
+<text class="g-note" x="470" y="103">겹친 표본의 표현형 상관 ρp</text><text class="g-cnt" x="860" y="103" text-anchor="end">0.12</text>
+<text class="g-note" x="470" y="128">절편 기대값 = ρp × 겹친 비율</text><text class="g-cnt" x="860" y="128" text-anchor="end">0.12</text>
+<text class="g-note" x="470" y="153">절편 추정</text><text class="g-cnt" x="860" y="153" text-anchor="end" style="font-weight:800">0.13 ± 0.01</text>
+<text class="g-note" x="470" y="178">h² 추정 (형질 1 · 형질 2)</text><text class="g-cnt" x="860" y="178" text-anchor="end">0.40 · 0.39</text>
+<text class="g-note" x="470" y="203">rg 추정 = 기울기에서 구한 값</text><text class="g-cnt" x="860" y="203" text-anchor="end" style="font-weight:800">−0.02 ± 0.03</text>
+<text class="g-note" x="470" y="228">rg 참값 (시뮬레이션에 넣은 값)</text><text class="g-cnt" x="860" y="228" text-anchor="end">0.00</text>
+</g>
+<line x1="470" x2="492" y1="262" y2="262" stroke="var(--text)" stroke-width="1.4"/><text class="g-note" x="500" y="266">가중 회귀선 · 흰 점 = 절편</text>
+<line x1="470" x2="492" y1="282" y2="282" stroke="#A3ABA6" stroke-width="1.4" stroke-dasharray="5 4"/><text class="g-note" x="500" y="286">첫 모드(표본 따로)의 회귀선</text>
+</svg>
+<!--/GEN:CROSS-->
+          </div>
+          <figcaption>
+            형질 1 = 그림 1의 형질을 <!--GEN:N0-->100,000<!--/GEN:N0-->명에서 분석한 GWAS · 형질 2 = 같은 causal SNP 위치에 효과만 상관시킨 형질(SNP h² 0.4) · 같은 표본 모드는 두 형질을 같은 사람들에서 분석하고, 환경 상관 <!--GEN:RHO_E-->0.2<!--/GEN:RHO_E-->을 더해 표현형 상관이 <!--GEN:RP_A-->0.32<!--/GEN:RP_A-->(rg 0.5) 또는 <!--GEN:RP_C-->0.12<!--/GEN:RP_C-->(rg 0) · 회귀 가중치와 jackknife는 Manhattan 페이지 그림 3과 같음 · 시뮬레이션 방법은 <a href="#sim">아래 상자</a>
+          </figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>그림 2 모드</th><th>절편</th><th>rg 추정</th><th>rg 참값</th></tr></thead>
+            <tbody>
+              <tr><th>rg 0.5 · 표본 따로</th><td><!--GEN:INT_SEP-->0.00 ± 0.01<!--/GEN:INT_SEP--></td><td><!--GEN:RG_SEP-->0.49 ± 0.02<!--/GEN:RG_SEP--></td><td><!--GEN:TRG_SEP-->0.50<!--/GEN:TRG_SEP--></td></tr>
+              <tr><th>rg 0.5 · 같은 표본</th><td><!--GEN:INT_SAME-->0.33 ± 0.01<!--/GEN:INT_SAME--> (넣은 값 <!--GEN:RP_A-->0.32<!--/GEN:RP_A-->)</td><td><!--GEN:RG_SAME-->0.49 ± 0.02<!--/GEN:RG_SAME--></td><td><!--GEN:TRG_SEP-->0.50<!--/GEN:TRG_SEP--></td></tr>
+              <tr><th>rg 0 · 같은 표본</th><td><!--GEN:INT_NULL-->0.13 ± 0.01<!--/GEN:INT_NULL--> (넣은 값 <!--GEN:RP_C-->0.12<!--/GEN:RP_C-->)</td><td><!--GEN:RG_NULL-->−0.02 ± 0.03<!--/GEN:RG_NULL--></td><td><!--GEN:TRG_NULL-->0.00<!--/GEN:TRG_NULL--></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout blue">
+          <h4>표본이 겹쳐도 되는 이유</h4>
+          <p>겹친 사람들의 표현형 상관은 모든 SNP의 z 곱을 같은 양만큼 올림. LD Score와 상관이 없어서 절편으로 가고 기울기는 그대로 남음. 그래서 표본이 겹쳐도 rg 추정에 bias가 들어가지 않음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · 그림 2: 같은 형질 쌍을 다른 표본과 같은 표본에서 분석한 rg 추정치가 <!--GEN:RG_SEP-->0.49 ± 0.02<!--/GEN:RG_SEP-->와 <!--GEN:RG_SAME-->0.49 ± 0.02<!--/GEN:RG_SAME--> · 세 번째 모드처럼 두 GWAS의 z가 서로 상관돼도(절편 <!--GEN:INT_NULL-->0.13 ± 0.01<!--/GEN:INT_NULL-->) 기울기가 0 근처면 유전 상관은 없음</p>
+        </div>
+        <div class="callout">
+          <h4>유의 locus가 적어도 rg를 구함</h4>
+          <p>genome 전체의 polygenic 신호를 쓰기 때문에 genome-wide 유의 locus가 거의 없는 형질 쌍에서도 rg를 찾아냄. 예: smoking behaviour와 educational attainment 사이의 음의 rg <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a> · 시뮬레이션: 두 형질을 각 <!--GEN:N_SMALL-->20,000<!--/GEN:N_SMALL-->명으로 줄이면 유의 locus는 형질마다 <!--GEN:LOCI_S-->11<!--/GEN:LOCI_S-->개뿐이지만 rg 추정은 <!--GEN:RG_SMALL-->0.50 ± 0.05<!--/GEN:RG_SMALL-->(참값 0.5)</p>
+        </div>
+        <div class="callout">
+          <h4>LDSC로 rg를 구할 때 확인할 것</h4>
+          <p>LD Score를 계산한 reference 집단과 GWAS 표본의 ancestry가 맞아야 함. 유럽 안의 LD 차이만으로도 절편이 치우칠 수 있음 <a class="src" href="https://doi.org/10.1038/ng.3211" target="_blank" rel="noopener">Bulik-Sullivan 2015</a> · binary 형질의 h²와 coheritability는 표본의 case 비율에 따라 달라지지만, 같은 변환이 분자와 분모에 함께 들어가서 rg는 척도와 무관 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · 강한 case ascertainment나 큰 환경 효과가 있어도 GREML · LDSC · PCGC의 rg 추정은 시뮬레이션에서 편향되지 않았음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p>
+        </div>
+        <div class="callout" id="sim">
+          <h4>이 페이지의 시뮬레이션</h4>
+          <p><a href="../02-association/manhattan.html#sim">Manhattan 페이지</a>와 같은 가상 유전체와 형질. 개인 genotype 없이 SNP별 z를 바로 뽑음 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a> · 형질 2는 형질 1과 같은 causal SNP에 효과를 두고, 염색체마다 형질 1의 효과와 무관한 성분을 섞어 염색체별 rg를 정확히 맞춤 · 같은 사람을 쓴 두 GWAS의 잡음은 상관 ρ<sub>p</sub>·N<sub>s</sub>/√(N<sub>1</sub>N<sub>2</sub>)로 만듦. 위 식의 절편 항 · 실제 형질 쌍은 causal 변이가 일부만 겹치기도 함. 이 시뮬레이션은 효과의 상관만 바꿈</p>
+        </div>
+
+        <!-- ───────── 4. local ───────── -->
+        <h2 id="local">genome-wide rg 하나에 가려지는 것<small>Genome-wide vs local rg</small></h2>
+        <p class="lede">rg는 genome 전체에 걸친 평균. genome-wide rg가 같아도 구간별 rg는 전혀 다를 수 있고, 구간 rg가 평균을 훨씬 넘거나 부호가 반대일 수 있음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p>
+        <figure class="fig" id="fig-local" data-mode="uni">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-local" role="group" aria-label="local 구조">
+              <button type="button" data-mode="uni" aria-pressed="true">고르게 퍼짐</button>
+              <button type="button" data-mode="conc" aria-pressed="false">일부에 몰림</button>
+              <button type="button" data-mode="mix" aria-pressed="false">부호가 섞임</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:LOCAL-->
+<svg class="g-svg " viewBox="0 0 900 285" role="img" aria-labelledby="localT localD" xmlns="http://www.w3.org/2000/svg">
+<title id="localT">genome-wide rg가 같은 세 가지 local 구조</title>
+<desc id="localD">두 형질의 genome-wide rg를 0.3으로 같게 두고, 염색체별 local rg만 다르게 만든 세 경우를 토글로 본다. 막대 높이는 염색체마다 시뮬레이션에 넣은 local rg이고, 막대 폭은 그 염색체가 heritability에서 차지하는 몫이다. 고르게 퍼진 경우, 일부 염색체에 몰린 경우, 양과 음이 섞인 경우 모두 폭으로 가중한 평균은 0.3이고, summary statistics로 추정한 genome-wide rg도 세 경우가 비슷하다.</desc>
+<line class="g-grid" x1="64" x2="860" y1="224.4" y2="224.4"/><text class="g-tick" x="57" y="227.9" text-anchor="end">-0.5</text>
+<line class="g-grid" x1="64" x2="860" y1="166.2" y2="166.2"/><text class="g-tick" x="57" y="169.8" text-anchor="end">0</text>
+<line class="g-grid" x1="64" x2="860" y1="108.1" y2="108.1"/><text class="g-tick" x="57" y="111.6" text-anchor="end">0.5</text>
+<line class="g-grid" x1="64" x2="860" y1="50.0" y2="50.0"/><text class="g-tick" x="57" y="53.5" text-anchor="end">1</text>
+<line class="g-ax" x1="64" x2="860" y1="166.2" y2="166.2"/><line class="g-ax" x1="64" x2="64" y1="50" y2="236"/>
+<text class="g-tick" x="93.4" y="251" text-anchor="middle">1</text>
+<text class="g-tick" x="154.3" y="251" text-anchor="middle">2</text>
+<text class="g-tick" x="214.9" y="251" text-anchor="middle">3</text>
+<text class="g-tick" x="270.4" y="251" text-anchor="middle">4</text>
+<text class="g-tick" x="319.6" y="251" text-anchor="middle">5</text>
+<text class="g-tick" x="366.6" y="251" text-anchor="middle">6</text>
+<text class="g-tick" x="411.3" y="251" text-anchor="middle">7</text>
+<text class="g-tick" x="450.4" y="251" text-anchor="middle">8</text>
+<text class="g-tick" x="487.0" y="251" text-anchor="middle">9</text>
+<text class="g-tick" x="522.1" y="251" text-anchor="middle">10</text>
+<text class="g-tick" x="557.5" y="251" text-anchor="middle">11</text>
+<text class="g-tick" x="598.4" y="251" text-anchor="middle">12</text>
+<text class="g-tick" x="632.8" y="251" text-anchor="middle">13</text>
+<text class="g-tick" x="662.4" y="251" text-anchor="middle">14</text>
+<text class="g-tick" x="693.0" y="251" text-anchor="middle">15</text>
+<text class="g-tick" x="720.2" y="251" text-anchor="middle">16</text>
+<text class="g-tick" x="744.0" y="251" text-anchor="middle">17</text>
+<text class="g-tick" x="768.2" y="251" text-anchor="middle">18</text>
+<text class="g-tick" x="792.2" y="251" text-anchor="middle">19</text>
+<text class="g-tick" x="813.8" y="251" text-anchor="middle">20</text>
+<text class="g-tick" x="832.0" y="251" text-anchor="middle">21</text>
+<text class="g-tick" x="849.8" y="251" text-anchor="middle">22</text>
+<text class="g-lab" x="462.0" y="269" text-anchor="middle">염색체 (막대 폭 = 그 염색체가 h²에서 차지하는 몫 · 점선 = genome-wide rg 0.3)</text>
+<text class="g-lab" transform="translate(28,143.0) rotate(-90)" text-anchor="middle">local rg</text>
+<g class="g-ov on" data-ov="uni">
+<text class="g-ttl" x="64" y="22">염색체별 local rg 참값<tspan class="g-sub" dx="8">고르게 퍼짐</tspan></text>
+<text class="g-note" x="860" y="22" text-anchor="end">genome-wide rg 참값 0.30 · cross-trait LDSC 추정 <tspan class="g-em">0.28 ± 0.02</tspan></text>
+<rect class="g-bar" x="64.0" y="131.4" width="58.7" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="124.7" y="131.4" width="59.1" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="185.9" y="131.4" width="58.1" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="246.0" y="131.4" width="48.9" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="296.9" y="131.4" width="45.5" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="344.3" y="131.4" width="44.6" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="391.0" y="131.4" width="40.7" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="433.6" y="131.4" width="33.5" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="469.1" y="131.4" width="35.8" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="506.9" y="131.4" width="30.4" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="539.3" y="131.4" width="36.5" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="577.7" y="131.4" width="41.4" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="621.1" y="131.4" width="23.3" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="646.4" y="131.4" width="32.0" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="680.4" y="131.4" width="25.2" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="707.6" y="131.4" width="25.2" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="734.8" y="131.4" width="18.4" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="755.2" y="131.4" width="25.9" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="783.1" y="131.4" width="18.2" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="803.3" y="131.4" width="21.0" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="826.3" y="131.4" width="11.4" height="34.9" fill="var(--theme)"/>
+<rect class="g-bar" x="839.7" y="131.4" width="20.3" height="34.9" fill="var(--theme)"/>
+</g>
+<g class="g-ov" data-ov="conc">
+<text class="g-ttl" x="64" y="22">염색체별 local rg 참값<tspan class="g-sub" dx="8">일부 염색체에 몰림</tspan></text>
+<text class="g-note" x="860" y="22" text-anchor="end">genome-wide rg 참값 0.30 · cross-trait LDSC 추정 <tspan class="g-em">0.28 ± 0.04</tspan></text>
+<rect class="g-bar" x="124.7" y="67.4" width="59.1" height="98.9" fill="var(--theme)"/>
+<rect class="g-bar" x="246.0" y="67.4" width="48.9" height="98.9" fill="var(--theme)"/>
+<rect class="g-bar" x="344.3" y="67.4" width="44.6" height="98.9" fill="var(--theme)"/>
+<rect class="g-bar" x="433.6" y="67.4" width="33.5" height="98.9" fill="var(--theme)"/>
+<rect class="g-bar" x="539.3" y="67.4" width="36.5" height="98.9" fill="var(--theme)"/>
+<rect class="g-bar" x="680.4" y="67.4" width="25.2" height="98.9" fill="var(--theme)"/>
+<rect class="g-bar" x="783.1" y="67.4" width="18.2" height="98.9" fill="var(--theme)"/>
+</g>
+<g class="g-ov" data-ov="mix">
+<text class="g-ttl" x="64" y="22">염색체별 local rg 참값<tspan class="g-sub" dx="8">부호가 섞임</tspan></text>
+<text class="g-note" x="860" y="22" text-anchor="end">genome-wide rg 참값 0.30 · cross-trait LDSC 추정 <tspan class="g-em">0.31 ± 0.05</tspan></text>
+<rect class="g-bar" x="64.0" y="89.9" width="58.7" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="124.7" y="89.9" width="59.1" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="185.9" y="166.2" width="58.1" height="58.1" fill="#B5525C"/>
+<rect class="g-bar" x="246.0" y="89.9" width="48.9" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="296.9" y="166.2" width="45.5" height="58.1" fill="#B5525C"/>
+<rect class="g-bar" x="344.3" y="89.9" width="44.6" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="391.0" y="89.9" width="40.7" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="433.6" y="89.9" width="33.5" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="469.1" y="89.9" width="35.8" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="506.9" y="166.2" width="30.4" height="58.1" fill="#B5525C"/>
+<rect class="g-bar" x="539.3" y="89.9" width="36.5" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="577.7" y="89.9" width="41.4" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="621.1" y="89.9" width="23.3" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="646.4" y="166.2" width="32.0" height="58.1" fill="#B5525C"/>
+<rect class="g-bar" x="680.4" y="89.9" width="25.2" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="707.6" y="166.2" width="25.2" height="58.1" fill="#B5525C"/>
+<rect class="g-bar" x="734.8" y="89.9" width="18.4" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="755.2" y="89.9" width="25.9" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="783.1" y="89.9" width="18.2" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="803.3" y="166.2" width="21.0" height="58.1" fill="#B5525C"/>
+<rect class="g-bar" x="826.3" y="89.9" width="11.4" height="76.3" fill="var(--theme)"/>
+<rect class="g-bar" x="839.7" y="166.2" width="20.3" height="58.1" fill="#B5525C"/>
+</g>
+<line class="g-vline" x1="64" x2="860" y1="131.4" y2="131.4" stroke="var(--text)"/>
+</svg>
+<!--/GEN:LOCAL-->
+          </div>
+          <figcaption>
+            세 모드 모두 genome-wide rg 참값 <!--GEN:LRG-->0.3<!--/GEN:LRG--> · 일부에 몰림 = 염색체 <!--GEN:CONC_N-->7<!--/GEN:CONC_N-->개만 local rg <!--GEN:CONC_V-->0.85<!--/GEN:CONC_V-->, 나머지 0 · 부호가 섞임 = 염색체 <!--GEN:MIX_NN-->7<!--/GEN:MIX_NN-->개는 <!--GEN:MIX_NEG-->−0.5<!--/GEN:MIX_NEG-->, 나머지 <!--GEN:MIX_POS-->0.66<!--/GEN:MIX_POS--> · 막대 = 시뮬레이션에 넣은 염색체별 참값 · 오른쪽 위 추정치 = 두 형질을 각 10만 명(겹침 없음)에서 분석한 cross-trait LDSC
+          </figcaption>
+        </figure>
+        <div class="callout blue">
+          <h4>summary 하나로는 구조를 구분하지 못함</h4>
+          <p>그림 3의 세 구조에서 genome-wide rg 추정치는 <!--GEN:LRG_UNI-->0.28 ± 0.02<!--/GEN:LRG_UNI-->, <!--GEN:LRG_CONC-->0.28 ± 0.04<!--/GEN:LRG_CONC-->, <!--GEN:LRG_MIX-->0.31 ± 0.05<!--/GEN:LRG_MIX--> · 실제 예: LDL과 HDL cholesterol 사이에는 genome-wide rg가 없지만, local rg가 유의한 구간이 11곳(양 4 · 음 7) <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · 이론 예: genome-wide rg를 0.2로 고정해도 구간별 구조를 여러 가지로 만들 수 있음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p>
+        </div>
+        <div class="callout">
+          <h4>local rg를 재려면</h4>
+          <p>ρHESS는 유전체 구간별 local rg를, GNOVA는 functional annotation별 genetic covariance를 추정함 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · LDSC는 polygenicity와 locus 사이 block jackknife에 기대므로 local 분석용으로 만든 방법이 아님 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a> · annotation이나 구간으로 나눌수록 기여하는 SNP 수가 줄어 표준오차가 커짐 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · locus 하나에서 두 형질이 같은 causal 변이를 공유하는지는 <a href="coloc.html">colocalization</a>으로 봄</p>
+        </div>
+
+        <!-- ───────── 5. pleiotropy ───────── -->
+        <h2 id="pleiotropy">rg가 말하지 않는 것<small>Pleiotropy and causality</small></h2>
+        <p class="lede">rg는 pleiotropy(변이 하나가 여러 형질에 영향)의 평균 효과를 요약할 뿐. horizontal pleiotropy인지 vertical pleiotropy인지는 rg 값만으로 구분되지 않음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p>
+        <figure class="fig" id="fig-pleio">
+          <div class="fig-scroll">
+<!--GEN:PLEIO-->
+<svg class="g-svg " viewBox="0 0 900 252" role="img" aria-labelledby="pleioT pleioD" xmlns="http://www.w3.org/2000/svg">
+<title id="pleioT">유전 상관을 만드는 세 가지 경로</title>
+<desc id="pleioD">왼쪽은 변이 하나가 두 형질에 각각 영향을 주는 horizontal pleiotropy, 가운데는 변이가 형질 X를 거쳐 형질 Y에 영향을 주는 vertical pleiotropy, 오른쪽은 서로 다른 두 causal 변이가 LD로 묶여 GWAS marker 하나가 둘을 함께 tagging하는 경우다. 세 경우 모두 0이 아닌 유전 상관을 만들 수 있다.</desc>
+<defs><marker id="plA" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,.6 L7.6,4 L0,7.4Z" fill="#6B736E"/></marker></defs>
+<text class="g-ttl" x="30" y="24">Horizontal pleiotropy</text>
+<text class="g-note" x="30" y="42">변이 하나가 두 형질에 따로 작용</text>
+<text class="g-ttl" x="325" y="24">Vertical pleiotropy</text>
+<text class="g-note" x="325" y="42">변이가 X를 거쳐 Y에 영향</text>
+<text class="g-ttl" x="620" y="24">LD가 만든 겉보기 pleiotropy</text>
+<text class="g-note" x="620" y="42">서로 다른 causal 변이 둘이 LD로 묶임</text>
+<rect x="116.0" y="66" width="78" height="30" rx="6" fill="var(--theme-soft)" stroke="var(--theme)" stroke-width="1.2"/><text class="g-lab" x="155.0" y="85.5" text-anchor="middle">변이 G</text>
+<rect x="50" y="156" width="78" height="30" rx="6" fill="#fff" stroke="#A3ABA6" stroke-width="1.2"/><text class="g-lab" x="89.0" y="175.5" text-anchor="middle">형질 X</text>
+<rect x="182" y="156" width="78" height="30" rx="6" fill="#fff" stroke="#A3ABA6" stroke-width="1.2"/><text class="g-lab" x="221.0" y="175.5" text-anchor="middle">형질 Y</text>
+<path d="M141.0,96 L141.0,122 L89.0,122 L89.0,154" fill="none" stroke="#6B736E" stroke-width="1.4" marker-end="url(#plA)"/>
+<path d="M169.0,96 L169.0,122 L221.0,122 L221.0,154" fill="none" stroke="#6B736E" stroke-width="1.4" marker-end="url(#plA)"/>
+<rect x="325" y="111" width="78" height="30" rx="6" fill="var(--theme-soft)" stroke="var(--theme)" stroke-width="1.2"/><text class="g-lab" x="364.0" y="130.5" text-anchor="middle">변이 G</text>
+<rect x="430" y="111" width="78" height="30" rx="6" fill="#fff" stroke="#A3ABA6" stroke-width="1.2"/><text class="g-lab" x="469.0" y="130.5" text-anchor="middle">형질 X</text>
+<rect x="535" y="111" width="78" height="30" rx="6" fill="#fff" stroke="#A3ABA6" stroke-width="1.2"/><text class="g-lab" x="574.0" y="130.5" text-anchor="middle">형질 Y</text>
+<path d="M403,126.0 L428,126.0" fill="none" stroke="#6B736E" stroke-width="1.4" marker-end="url(#plA)"/>
+<path d="M508,126.0 L533,126.0" fill="none" stroke="#6B736E" stroke-width="1.4" marker-end="url(#plA)"/>
+<rect x="640" y="66" width="78" height="30" rx="6" fill="var(--theme-soft)" stroke="var(--theme)" stroke-width="1.2"/><text class="g-lab" x="679.0" y="85.5" text-anchor="middle">변이 G₁</text>
+<rect x="772" y="66" width="78" height="30" rx="6" fill="var(--theme-soft)" stroke="var(--theme)" stroke-width="1.2"/><text class="g-lab" x="811.0" y="85.5" text-anchor="middle">변이 G₂</text>
+<line x1="718" x2="772" y1="81" y2="81" stroke="#6B736E" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text class="g-note" x="745" y="75" text-anchor="middle">LD</text>
+<rect x="640" y="156" width="78" height="30" rx="6" fill="#fff" stroke="#A3ABA6" stroke-width="1.2"/><text class="g-lab" x="679.0" y="175.5" text-anchor="middle">형질 X</text>
+<rect x="772" y="156" width="78" height="30" rx="6" fill="#fff" stroke="#A3ABA6" stroke-width="1.2"/><text class="g-lab" x="811.0" y="175.5" text-anchor="middle">형질 Y</text>
+<path d="M679.0,96 L679.0,154" fill="none" stroke="#6B736E" stroke-width="1.4" marker-end="url(#plA)"/>
+<path d="M811.0,96 L811.0,154" fill="none" stroke="#6B736E" stroke-width="1.4" marker-end="url(#plA)"/>
+<text class="g-note" x="620" y="212">GWAS marker 하나가 G₁과 G₂를 함께 tagging</text>
+<text class="g-note" x="30" y="212">X를 바꿔도 Y는 그대로</text>
+<text class="g-note" x="325" y="212">X를 바꾸면 Y도 따라 바뀜</text>
+<text class="g-note dim" x="30" y="240">세 경우 모두 rg를 0이 아니게 만들 수 있음. rg 값 하나로는 셋을 구분하지 못함</text>
+</svg>
+<!--/GEN:PLEIO-->
+          </div>
+          <figcaption>세 갈래 분류는 van Rheenen 2019를 따름 · 변이와 형질 이름은 설명용</figcaption>
+        </figure>
+        <div class="callout">
+          <h4>LD가 만든 겉보기 pleiotropy</h4>
+          <p>GWAS marker 하나가 서로 다른 두 causal 변이를 함께 tagging하면 locus 수준에서 가짜 pleiotropy가 생김. genome-wide rg가 0이 아니려면 이런 패턴이 여러 locus에서 같은 방향으로 나타나야 함 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · 표현형 측정이 거칠면 이름이 다른 두 형질이 같은 생물학적 과정을 멀리서 잰 것일 수 있음. 이때 공유된 genetic architecture는 측정이 만든 해석 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></p>
+        </div>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>rg 다음에 묻는 질문</th><th>방법</th></tr></thead>
+            <tbody>
+              <tr><th>한 형질이 다른 형질의 원인인가</th><td>Mendelian randomization. 유전 변이를 도구변수로 써서 인과 방향을 따짐 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · <a href="../index.html#article/mr">MR 카드</a></td></tr>
+              <tr><th>같은 locus의 같은 causal 변이인가</th><td>colocalization · <a href="coloc.html">coloc 페이지</a></td></tr>
+              <tr><th>어느 구간에서 공유하나</th><td>local rg(ρHESS) · <a href="#local">위 그림 3</a></td></tr>
+              <tr><th>여러 형질이 함께 공유하는 성분은</th><td>pairwise rg는 형질 쌍 단위의 요약. 여러 형질의 공유 성분은 genomic SEM이나 genetic factor analysis로 나눔 <a class="src" href="https://doi.org/10.1038/s41588-026-02753-1" target="_blank" rel="noopener">Morrison 2026</a></td></tr>
+              <tr><th>공유 신호가 어느 기능 영역에 몰리나</th><td>annotation별 genetic covariance(GNOVA) <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · h²의 annotation 분할은 <a href="#heritability">위 첫 절</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 6. bias ───────── -->
+        <h2 id="bias">rg 추정을 흔드는 것<small>Sources of bias</small></h2>
+        <p class="lede">rg 추정은 모형 가정에 비교적 강건함. 공유 causal 변이의 LD 특성은 형질이 아니라 genome의 속성이라 분자와 분모에서 대체로 상쇄되기 때문 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a>. 편향은 주로 표본을 모으고 표현형을 정하는 방식에서 생김</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>원인</th><th>방향</th><th>조건과 크기</th></tr></thead>
+            <tbody>
+              <tr><th>진단 misclassification</th><td>과대</td><td>증상이 겹치는 두 질환에서 생김(예: Crohn's disease와 ulcerative colitis). 두 질환이 실제로 무상관일 때 편향이 가장 큼 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></td></tr>
+              <tr><th>control 이중 선별(double-screening)</th><td>과대</td><td>control에서 다른 질환까지 빼면 참 rg가 0이어도 0이 아닌 추정이 나옴. 유병률이 높고 두 형질의 h² 차이가 클수록 커짐. MDD와 schizophrenia 조합에서는 작고 hayfever와 asthma에서는 상당함 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></td></tr>
+              <tr><th>assortative mating</th><td>과대</td><td>평형 상태에서 유전 분산이 커짐. 사람의 전형적인 배우자 상관(ρ<sub>m</sub> &lt; 0.3)에서 부풀림은 최대 약 1.2배 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></td></tr>
+              <tr><th>collider bias(참여 선택)</th><td>과소</td><td>두 형질이 모두 연구 참여 확률에 영향을 줄 때 생기고, 참여 비율이 작을수록 큼 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · UK Biobank는 초대 수락률이 5%이고 참여자의 교육 수준이 높고 흡연율이 낮아서, 이 자료로 구한 교육과 흡연 사이 rg는 치우칠 수 있음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></td></tr>
+              <tr><th>population stratification</th><td>절편</td><td>bivariate LDSC에서는 절편에만 영향을 주고 coheritability에는 주지 않는다는 이론 예측. 아직 충분히 조사되지 않음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></td></tr>
+              <tr><th>집단 · 환경 차이</th><td>1보다 작아짐</td><td>같은 형질을 두 집단에서 재도 rg &lt; 1. 유럽–동아시아 Crohn's disease 0.76(s.e. 0.04), ulcerative colitis 0.79(0.04), ADHD 0.39(0.15). 유럽계 ADHD 코호트 둘 사이도 0.71(0.17) <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">유전 상관 읽기의 흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>rg가 높으면 한 형질이 다른 형질의 원인 ✗</code><p class="why">rg는 horizontal pleiotropy와 vertical pleiotropy를 구분하지 않음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · <a href="#pleiotropy">그림 4</a> · 인과 방향은 <a href="../index.html#article/mr">MR</a></p></div>
+          <div class="fix"><code>genome-wide rg가 0이면 공유 locus도 없음 ✗</code><p class="why">LDL과 HDL cholesterol은 genome-wide rg 없이 local rg 유의 구간이 11곳 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · <a href="#local">그림 3</a></p></div>
+          <div class="fix"><code>rg가 높으면 공유하는 유전 기여도 큼 ✗</code><p class="why">h²가 작으면 rg가 높아도 coheritability는 작음. rg와 h²를 함께 봄 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p></div>
+          <div class="fix"><code>두 GWAS 표본이 겹치면 rg가 부풀려짐 ✗</code><p class="why">겹침은 절편으로 가고 기울기는 그대로 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · <a href="#cross-trait">그림 2</a></p></div>
+          <div class="fix"><code>유의 locus가 없으면 rg를 구하지 못함 ✗</code><p class="why">smoking behaviour와 educational attainment의 음의 rg는 유의 locus가 거의 없는 형질 쌍에서 나옴 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a></p></div>
+          <div class="fix"><code>SNP h²가 가계 h²보다 낮으면 추정이 틀린 것 ✗</code><p class="why">서로 다른 양. SNP h²는 측정 SNP과 LD에 있는 변이만 셈 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · WGS 변이는 가계 h²의 약 88%까지 설명 <a class="src" href="https://doi.org/10.1038/s41586-025-09720-6" target="_blank" rel="noopener">Wainschtein 2025</a></p></div>
+          <div class="fix"><code>h²가 같으면 유전 구조도 비슷함 ✗</code><p class="why">LDL cholesterol과 25-hydroxyvitamin D는 쌍둥이 h²가 둘 다 약 50%. vitamin D는 33,000명 GWAS에서 locus 4개, 79,366명에서 2개가 더 나왔고 LDL은 188,577명에서 52개 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></p></div>
+          <div class="fix"><code>질병끼리 관측 척도 h²를 그대로 비교 ✗</code><p class="why">관측 척도 값은 유병률과 case 비율에 따라 달라짐 <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · <a href="#heritability">그림 1 오른쪽</a></p></div>
+          <div class="fix"><code>같은 형질이면 두 집단 사이 rg = 1 ✗</code><p class="why">유럽–동아시아 ADHD rg 0.39(s.e. 0.15) <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">genetic correlation · 유전 상관 · rg · ρg · genetic covariance · coheritability · cross-trait LD Score regression · bivariate LDSC · LDSC · bivariate GREML · heritability · 유전율 · SNP heritability · h²SNP · pedigree heritability · twin heritability · broad-sense heritability · narrow-sense heritability · missing heritability · hiding heritability · still-missing heritability · liability scale · observed scale · liability threshold model · partitioned heritability · stratified LDSC · S-LDSC · enrichment · local genetic correlation · ρHESS · GNOVA · Popcorn · pleiotropy · horizontal pleiotropy · vertical pleiotropy · sample overlap · 표본 겹침 · assortative mating · collider bias · misclassification · genomic SEM</p></details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>1분 요약</h3><div class="related-list">
+          <a href="../index.html#article/genetic-correlation">Genetic correlation 용어 카드 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../02-association/manhattan.html">Manhattan · QQ · LD Score (그림) →</a>
+          <a href="coloc.html">Colocalization (그림) →</a>
+          <a href="fine-mapping.html">Fine-mapping (그림) →</a>
+          <a href="../01-genetics/ld.html">Linkage disequilibrium (그림) →</a>
+          <a href="../index.html#article/mr">Mendelian randomization →</a>
+          <a href="../index.html#article/prs">Polygenic risk score →</a>
+          <a href="../index.html#article/sumstats">GWAS summary statistics →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://github.com/bulik/ldsc" target="_blank" rel="noopener noreferrer">ldsc (GitHub) ↗</a>
+          <a href="https://github.com/huwenboshi/hess" target="_blank" rel="noopener noreferrer">HESS · ρHESS (GitHub) ↗</a>
+          <a href="https://medical-genomics-group.shinyapps.io/h2liab/" target="_blank" rel="noopener noreferrer">h2liab — liability scale 변환 ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener noreferrer">van Rheenen 2019, Nat Rev Genet — genetic correlation ↗</a>
+          <a href="https://doi.org/10.1038/ng.3211" target="_blank" rel="noopener noreferrer">Bulik-Sullivan 2015, Nat Genet — LD Score regression ↗</a>
+          <a href="https://doi.org/10.1038/ng.3404" target="_blank" rel="noopener noreferrer">Finucane 2015, Nat Genet — partitioned heritability ↗</a>
+          <a href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener noreferrer">Ojavee 2022, AJHG — liability scale ↗</a>
+          <a href="https://doi.org/10.1038/s41586-025-09720-6" target="_blank" rel="noopener noreferrer">Wainschtein 2025, Nature — missing heritability ↗</a>
+          <a href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener noreferrer">Pasaniuc 2016, Nat Rev Genet — summary statistics ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-24<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../gwas-fig.js"></script>
+</body>
+</html>
