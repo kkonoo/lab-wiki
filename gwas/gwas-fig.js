@@ -1,4 +1,4 @@
-/* GWAS 03 Post-GWAS 시각 페이지 — 그림 모드 토글 (의존성 없음)
+/* GWAS 시각 페이지 공용 — 그림 모드 토글 (의존성 없음). 2026-11-24 03-postgwas/postgwas.js에서 옮김
    .seg[data-fig="<figure id>"] 안의 button[data-mode] → figure[data-mode] 갱신 · 그 안의 .g-ov[data-ov=모드]에 .on */
 (function () {
   "use strict";

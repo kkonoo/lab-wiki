@@ -7,8 +7,8 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/apple-touch-icon.png">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="HBV를 원인·증상·치료의 질문으로 탐색하는 HaLab Wiki Human diseases">
-  <title>Virus (HBV) · HaLab Wiki</title>
+  <meta name="description" content="HBV의 원인·증상·치료와 바이러스 분류·항원 진화를 질문으로 탐색하는 HaLab Wiki Human diseases">
+  <title>Virus · HaLab Wiki</title>
   <link rel="stylesheet" href="../../assets/css/base.css">
   <link rel="stylesheet" href="../../assets/css/spa.css">
 </head>
@@ -33,7 +33,7 @@
   <main id="app" tabindex="-1"></main>
 
   <footer>
-    <div class="container"><span>Updated 2026-11-09</span></div>
+    <div class="container"><span>Updated 2026-11-24</span></div>
   </footer>
 
   <script>
@@ -73,9 +73,63 @@
         {"q":"완치(cure)는 가능한가?","note":"저장고 자체를 겨냥하는 cure 전략","items":[
           ["cccdna-cure","cccDNA를 겨냥한 cure 전략","형성 차단·비세포병변성 분해·면역 활성화 접근"]
         ]}
+      ]},
+      "classification":{"number":"04","title":"분류와 진화 — 균주는 어떻게 갈리고 사라지나","english":"HOW STRAINS DIVERGE AND DISAPPEAR","accent":"#8a5a2b","summary":"genotype ↔ serotype · 항원 지도 · 중화역가 · 균주 교체","groups":[
+        {"q":"같은 바이러스를 왜 genotype과 serotype으로 나누는가?","note":"서열이 갈리는 것과 항혈청이 구별하는 것은 다른 일","items":[
+          ["genotype-serotype","genotype과 serotype","서열로 나눈 계통과 항혈청이 구별하는 형은 서로 번역되지 않음"],
+          ["antigenic-map","항원 지도 (antigenic cartography)","역가를 거리로 바꿔 분리주와 항혈청을 한 좌표에 놓음"]
+        ]},
+        {"q":"항원이 비슷하다·다르다를 무엇으로 재는가?","note":"역가는 assay 설계에 따라 달라지는 측정값","items":[
+          ["neutralization-titer","중화역가와 PRNT50","PRNT50은 단위가 아니라 plaque를 50% 줄이는 희석배수"],
+          ["serotype-not-discrete","serotype은 이산적 경계인가","dengue 4형조차 항원 지도에서 경계가 겹침"]
+        ]},
+        {"q":"새 균주가 뜨면 이전 균주는 사라지는가?","note":"교체는 일반 법칙이 아니라 조건이 맞을 때의 결과","items":[
+          ["strain-replacement","균주 교체와 공존","1977·2009에는 기존 아형이 사라지지 않음"],
+          ["antigenic-drift-vaccine","항원 drift와 백신 조성","cluster 교체 주기가 백신주 갱신 시점을 정함"]
+        ]}
       ]}
     };
     const articleRows = [
+      ["genotype-serotype","genotype과 serotype",["genotype","serotype","serologic type","subtype"],"classification",
+       "서열로 나눈 genotype과 항혈청이 구별하는 serotype은 기준이 달라서 서로 번역되지 않는다",
+       [["두 단위",["genotype: 서열을 기준으로 나눈 계통. Japanese encephalitis virus를 GI~GV로 부르는 쪽","serotype: 항혈청이 구별하는지를 기준으로 나눈 형. poliovirus 1·2·3형과 dengue 1~4형","실무 원칙은 항원성이 거의 같으면 serologic type을 새로 세우지 않는 것"]],
+        ["서로 대신하지 못함",["influenza A(H3N2)에서 항원 거리와 계통 거리의 상관은 0.78","그런데도 계통 데이터만으로는 항원 cluster를 신뢰성 있게 결정하지 못함","서열로 serotype을 추정하는 일은 원칙적으로 불가"]]],
+       ["antigenic-map","serotype-not-discrete","strain-replacement"]],
+
+      ["antigenic-map","항원 지도 (antigenic cartography)",["antigenic cartography","antigenic map","antigenic distance","HI assay"],"classification",
+       "역가를 거리로 해석해 분리주와 항혈청을 같은 좌표에 놓으면 항원성의 차이를 숫자로 말할 수 있다",
+       [["만드는 방식",["hemagglutination inhibition(HI)이나 중화 역가를 거리로 해석함. 1단위가 항혈청 2배 희석에 해당","분리주와 항혈청을 같은 좌표공간에 배치. 둘 사이 거리가 측정된 역가에 대응","influenza는 HI를 쓰고, HI가 통하지 않는 dengue 같은 바이러스는 중화역가를 씀"]],
+        ["해상도",["한 점의 위치가 여러 측정으로 동시에 고정되어 개별 측정 오차가 평균됨","결측 역가 481건을 지도로 예측한 뒤 실측해 평균 절대오차 0.83 단위(표준편차 0.67), 상관 0.80","지도의 해상도가 assay 자체의 해상도보다 높아짐"]],
+        ["지도에서 보이는 구조",["H3N2의 1968–2003년 35년치는 cluster로 묶이고 순서가 대체로 시간순","연속한 cluster 중심 사이 평균 항원거리 4.5 단위(표준편차 1.3), 누적 44.6 단위"]]],
+       ["genotype-serotype","neutralization-titer","antigenic-drift-vaccine"]],
+
+      ["neutralization-titer","중화역가와 PRNT50",["PRNT50","PRNT90","FRNT","neutralization titer","pseudovirus"],"classification",
+       "PRNT50은 단위가 아니라 plaque를 50% 줄이는 혈청 희석배수를 뜻하는 역가의 정의다",
+       [["역가의 정의",["PRNT50: plaque 수를 50% 줄이는 혈청 희석배수. 보고하는 숫자는 그 희석배의 역수(1:320이면 320)","PRNT90은 같은 방식으로 90% 감소를 기준으로 잡은 것","단위 이름이 아니라 기준점 이름"]],
+        ["assay 계열",["live virus 중화: PRNT · microneutralization · focus reduction(FRNT)","pseudovirus 중화","결합 assay: ELISA · HI. 뒤로 갈수록 빠르고 표준화가 쉬우나 방어와의 거리가 멀어짐"]],
+        ["숫자가 흔들리는 이유",["세포주·바이러스 분리주·동물 종과 조건의 차이가 같은 개입의 효능 예측을 갈라놓음","같은 세포와 같은 분리주를 써도 inoculum 크기·배양 시간·감염 정량법이 해석을 바꿈","다른 논문의 역가를 그대로 비교하면 같은 개입이 다른 효능으로 보임"]]],
+       ["antigenic-map","serotype-not-discrete"]],
+
+      ["serotype-not-discrete","serotype은 이산적 경계인가",["dengue","DENV","serotype","antigenic diversity"],"classification",
+       "이미 serotype으로 불리는 dengue 4형조차 항원 지도에서는 경계가 겹친다",
+       [["관찰된 것",["많은 분리주가 같은 type 안의 분리주보다 다른 type 분리주와 항원적으로 더 가까움","1차 감염 항혈청이 2년까지도 같은 type을 다른 type보다 더 잘 중화하지 않음","African green monkey 36마리, 1가 생백신 접종자, 니카라과 소아 20명 세 계열에서 같은 방향"]],
+        ["서열 쪽과 어긋나는 지점",["envelope 단백 아미노산 거리로는 4형이 compact하게 분리됨","type 사이의 치환 수가 type 안의 최대 차이를 크게 넘음","그런데 항원 지도에서는 type 경계가 겹침"]],
+        ["남는 질문",["serotype이라는 이름을 유지할지, 느슨한 cluster로 다시 정의할지 미정","4가 백신의 효능 평가와 역가 해석이 4형 구분을 전제로 함"]]],
+       ["genotype-serotype","neutralization-titer"]],
+
+      ["strain-replacement","균주 교체와 공존",["strain replacement","lineage extinction","cross-immunity","H1N1pdm09"],"classification",
+       "새 항원형이 퍼질 때 기존 계통이 사라지는 일은 조건이 맞을 때만 일어난다",
+       [["교체된 경우",["1918년 H1N1이 그전까지 돌던 H3N8을 몰아냄","1957년 H2N2가 H1N1을, 1968년 H3N2가 H2N2를 몰아냄"]],
+        ["교체되지 않은 경우",["1977년 재출현한 H1N1은 H3N2를 몰아내지 못해 이후 두 아형이 공존","2009년 H1N1pdm09는 기존 계절성 H1N1만 대체하고 H3N2는 남김","dengue 4형과 HIV subtype은 서로 공존"]],
+        ["무엇이 교체를 정하나",["두 균주 확률 SEIR 모델에서 교체 확률은 열대가 온대보다 높음","pandemic 균주는 초기 감수성과 기초감염재생산수가 높아 계절형보다 교체가 쉬움","진행 중 유행의 규모, 기존 균주에 대한 집단면역, 신규 균주의 출현 시점은 교체 여부에 그다지 중요하지 않았음"]]],
+       ["antigenic-drift-vaccine","genotype-serotype"]],
+
+      ["antigenic-drift-vaccine","항원 drift와 백신 조성",["antigenic drift","immune escape","vaccine strain selection","WHO surveillance"],"classification",
+       "항원 cluster가 갈아타는 주기가 백신주를 언제 바꿀지 정한다",
+       [["매년 돌아오는 이유",["기존 감염이나 백신이 만든 면역을 회피하는 진화가 핵심 과정","계절 인플루엔자는 매년 인구의 5–15%를 감염시키고 연 약 500,000명이 사망","새 균주의 출현 시점과 성질은 여전히 대체로 예측하지 못함"]],
+        ["백신 갱신의 기준",["백신주와 다음 시즌 예상 균주의 항원 차이가 2단위를 넘으면 교체","그 기준 때문에 cluster마다 백신주가 최소 하나씩 들어감","WHO 감시망이 HI 역가와 HA1 서열을 함께 보고 균주를 고름"]]],
+       ["antigenic-map","strain-replacement"]],
+
       ["hbv-basics","HBV 기본 — non-cytopathic",["hepatitis B virus","HBV","non-cytopathic"],"cause",
        "HBV는 간세포를 직접 죽이지 않는 non-cytopathic 바이러스로, 간 손상과 바이러스 제어 결과는 대부분 숙주 면역이 결정한다",
        [["바이러스 성질",["HBV는 간세포(hepatocyte)를 직접 파괴하지 않는 non-cytopathic 바이러스","간 손상·염증은 바이러스 자체가 아니라 이를 공격하는 숙주 면역 반응의 결과","같은 바이러스라도 면역 상태에 따라 임상 경과가 크게 달라짐"]],

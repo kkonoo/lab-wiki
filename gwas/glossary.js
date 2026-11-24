@@ -24,7 +24,18 @@
     "summary stats": { key: "summary-statistics", definition: "Variant별 effect size, SE, p-value 등을 담은 result table." },
     "genome build": { key: "genome-build", definition: "Genomic position의 기준이 되는 reference genome version." },
     "reference panel": { key: "reference-panel", definition: "Imputation 또는 LD 계산에 사용하는 reference genotype dataset." },
-    "causal variant": { key: "causal-variant", definition: "Phenotype 변화에 직접 관여한다고 추정되는 genetic variant." }
+    "causal variant": { key: "causal-variant", definition: "Phenotype 변화에 직접 관여한다고 추정되는 genetic variant." },
+    "credible set": { key: "fine-mapping", definition: "Causal variant를 정해진 확률(보통 95%)로 담는 최소 variant 집합." },
+    "posterior inclusion probability": { key: "fine-mapping", definition: "Variant의 효과가 0이 아닐 사후확률. Fine-mapping이 variant마다 내는 값." },
+    "pip": { key: "fine-mapping", definition: "Posterior inclusion probability. Variant의 효과가 0이 아닐 사후확률." },
+    "bayes factor": { key: "fine-mapping", definition: "두 가설(예: 이 variant가 causal 대 효과 없음) 아래에서 데이터가 나올 가능도의 비." },
+    "manhattan plot": { key: "manhattan", definition: "SNP별 −log10 p-value를 염색체 위치 순서로 찍은 genome 전체 요약 그림." },
+    "qq plot": { key: "qq-plot", definition: "관측 p-value를 크기 순으로 null 기대값과 비교하는 진단 그림." },
+    "genomic control": { key: "genomic-control", definition: "χ² 중앙값 ÷ 0.456으로 구한 inflation factor λGC로 모든 검정 통계량을 나누는 보정." },
+    "ld score": { key: "ld-score", definition: "한 SNP와 주변 SNP 사이 r²의 합. 그 SNP가 주변 변이를 얼마나 tagging하는지 나타냄." },
+    "population stratification": { key: "stratification", definition: "표본 안 하위 집단 사이 allele frequency 차이가 phenotype 차이와 겹쳐 생기는 가짜 연관." },
+    "effect allele": { key: "effect-allele", definition: "Summary statistics에서 effect size의 부호가 기준으로 삼는 allele." },
+    "palindromic": { key: "palindromic", definition: "A/T 또는 G/C처럼 두 strand에서 allele 글자가 같은 SNP. Allele만으로는 strand를 판단할 수 없음." }
   };
 
   /* (앞 경계)(용어)(뒤 경계) — 영문·숫자에 붙은 부분 일치는 잡지 않는다. 긴 용어가 먼저 맞도록 길이순 */

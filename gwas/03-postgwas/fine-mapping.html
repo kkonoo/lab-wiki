@@ -1,0 +1,1501 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Fine-mapping으로 GWAS locus 안의 causal variant 후보를 좁히기 — lead SNP와 causal의 차이, Bayes factor와 PIP, credible set, 신호가 여럿일 때 SuSiE, summary statistics와 LD 행렬, functional prior">
+  <title>GWAS 신호 안에서 causal variant는 어떻게 좁히나? · GWAS</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/spa.css">
+  <link rel="stylesheet" href="../gwas.css">
+  <link rel="stylesheet" href="../../assets/css/article.css">
+  <link rel="stylesheet" href="../gwas-fig.css">
+</head>
+<body class="vpage" data-domain="gwas">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html"><img class="mark" src="../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../index.html"><span>/ GWAS</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../gwas/index.html" aria-current="page">GWAS</a>
+        <a href="../../omics/index.html">Omics</a>
+        <a href="../../single-cell/index.html">Single-cell</a>
+        <a href="../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../disease/index.html">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../index.html">HaLab Wiki</a><span>›</span><a href="../index.html">GWAS</a><span>›</span><a href="../index.html#section/postgwas">Post-GWAS</a><span>›</span>Fine-mapping</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">Post-GWAS — Signal resolution</p>
+        <h1>GWAS 신호 안에서 causal variant는 어떻게 좁히나?</h1>
+        <p class="definition">Fine-mapping — association이 나온 locus 안에 causal variant가 하나 이상 있다고 두고, variant마다 <b>causal일 사후확률(PIP)</b>을 계산해 후보를 좁히는 통계 분석. 결과는 PIP와, causal을 정해진 확률로 담는 <b>최소 variant 집합(credible set)</b> <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></p>
+
+        <!-- ───────── 1. lead ≠ causal ───────── -->
+        <h2 id="lead">lead SNP ≠ causal variant<small>Why fine-map</small></h2>
+        <p class="lede">GWAS에서 가장 작은 p-value를 낸 SNP(lead SNP)는 대개 causal이 아니라 causal과 LD로 묶인 대리표지 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a>. causal이 측정되거나 imputation되어 있어도 검정력이 부족하면 가장 작은 p-value가 아닐 수 있음 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a>. lead SNP가 causal일 확률은 효과 크기와 빈도에 따라 크게 다름. OR 1.5 · 빈도 50%인 변이는 약 79%, OR 1.1 · 빈도 5%인 변이는 2.4% <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></p>
+        <figure class="fig" id="fig-regional">
+          <div class="fig-scroll" data-scroll="end">
+<!--GEN:REGIONAL-->
+<svg class="g-svg " viewBox="0 0 760 380" role="img" aria-labelledby="fmregionalT fmregionalD" xmlns="http://www.w3.org/2000/svg">
+<title id="fmregionalT">lead SNP와 실제 causal variant가 다른 locus — p-value와 PIP</title>
+<desc id="fmregionalD">위는 가상 locus의 regional association plot이고 점 색은 lead SNP와의 LD(r²)다. 시뮬레이션에서 causal로 정한 변이(세로 점선)는 p-value로 3위이고 lead SNP와 r² 0.88다. 아래는 single causal 가정에서 계산한 SNP별 PIP이고, PIP를 큰 순서로 더해 95%에 닿을 때까지 모은 3개 SNP가 credible set이다. 실제 causal은 이 집합 안에 있다.</desc>
+<text class="g-ttl" x="56" y="39">GWAS 결과<tspan class="g-sub" dx="8">N = 5,000 · 정량 형질</tspan></text>
+<line class="g-grid" x1="56" x2="742" y1="170.0" y2="170.0"/>
+<text class="g-tick" x="50" y="173.5" text-anchor="end">0</text>
+<line class="g-grid" x1="56" x2="742" y1="109.0" y2="109.0"/>
+<text class="g-tick" x="50" y="112.5" text-anchor="end">10</text>
+<line class="g-grid" x1="56" x2="742" y1="48.0" y2="48.0"/>
+<text class="g-tick" x="50" y="51.5" text-anchor="end">20</text>
+<line class="g-ax" x1="56" x2="742" y1="170" y2="170"/>
+<text class="g-lab" transform="translate(22,109.0) rotate(-90)" text-anchor="middle">−log₁₀ p</text>
+<circle class="g-pt" cx="322.5" cy="170.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="419.1" cy="170.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="613.0" cy="170.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="670.5" cy="169.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="428.2" cy="169.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="311.1" cy="169.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="305.6" cy="169.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="370.6" cy="169.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="322.2" cy="169.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="422.5" cy="169.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="549.6" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="710.9" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="611.2" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="695.1" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.5" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.3" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="328.5" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="439.5" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="85.2" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.0" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="675.8" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="360.9" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="593.2" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="598.4" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="725.0" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="349.0" cy="169.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="318.1" cy="169.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.1" cy="169.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="366.2" cy="169.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="82.8" cy="169.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="393.1" cy="169.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="352.8" cy="169.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="104.8" cy="169.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="632.6" cy="169.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="622.9" cy="169.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="409.7" cy="169.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="715.9" cy="169.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="414.2" cy="169.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.1" cy="169.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="401.3" cy="169.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="431.0" cy="169.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="277.8" cy="169.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="408.6" cy="169.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="325.3" cy="169.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="657.4" cy="169.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="423.6" cy="169.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="623.7" cy="169.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.9" cy="169.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="119.4" cy="169.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.5" cy="169.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.6" cy="169.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="342.4" cy="169.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="150.1" cy="169.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.1" cy="169.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="319.1" cy="169.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="264.5" cy="169.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="305.6" cy="169.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="368.2" cy="169.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="211.1" cy="169.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="324.7" cy="169.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="392.1" cy="169.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="588.8" cy="169.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="244.7" cy="169.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="289.7" cy="169.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="742.0" cy="169.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="374.9" cy="169.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="418.5" cy="169.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="326.6" cy="169.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="334.3" cy="169.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="487.6" cy="169.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.3" cy="169.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="665.5" cy="169.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="381.6" cy="169.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="628.7" cy="169.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.9" cy="169.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="643.4" cy="169.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.1" cy="168.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="288.2" cy="168.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="309.0" cy="168.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="151.4" cy="168.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="329.2" cy="168.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="382.1" cy="168.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="425.2" cy="168.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="327.4" cy="168.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="621.0" cy="168.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="381.6" cy="168.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="242.1" cy="168.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.7" cy="168.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="229.6" cy="168.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="112.2" cy="168.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="369.9" cy="168.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="240.3" cy="168.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.5" cy="168.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="655.3" cy="168.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="353.7" cy="168.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="340.5" cy="168.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="638.4" cy="168.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="131.7" cy="168.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="397.3" cy="168.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="116.0" cy="168.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="300.7" cy="168.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="366.6" cy="168.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="390.1" cy="168.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.6" cy="168.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.6" cy="168.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="234.9" cy="168.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="222.4" cy="168.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="334.0" cy="168.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="178.6" cy="168.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="239.1" cy="168.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="205.2" cy="168.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="214.0" cy="168.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="264.4" cy="168.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="284.5" cy="168.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="515.2" cy="168.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="704.3" cy="168.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.3" cy="168.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="261.0" cy="168.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="352.2" cy="168.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.5" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="690.6" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="72.1" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.4" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="365.1" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="227.6" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="431.9" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="214.6" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.0" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="338.9" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="273.0" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="258.1" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="134.6" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.7" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="350.9" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="265.4" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="276.8" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="358.4" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="245.3" cy="167.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="102.8" cy="167.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="238.4" cy="167.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="676.3" cy="167.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="376.2" cy="167.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="241.4" cy="167.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="267.0" cy="167.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="330.8" cy="167.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="347.1" cy="167.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="251.1" cy="167.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="275.8" cy="167.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="310.8" cy="167.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.5" cy="167.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="243.7" cy="167.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="346.7" cy="167.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.1" cy="167.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="638.2" cy="167.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="223.2" cy="167.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="207.1" cy="167.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="152.7" cy="167.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="157.4" cy="167.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="239.9" cy="167.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="196.7" cy="167.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="200.0" cy="167.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.4" cy="167.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="117.4" cy="167.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="244.3" cy="167.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="201.3" cy="167.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="135.3" cy="167.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="416.5" cy="167.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="283.1" cy="167.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="222.8" cy="167.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="277.3" cy="167.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="224.3" cy="167.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="660.5" cy="167.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="93.1" cy="167.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="180.3" cy="166.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="71.7" cy="166.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="212.1" cy="166.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="72.7" cy="166.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="600.3" cy="166.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="280.5" cy="166.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="702.8" cy="166.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="704.9" cy="166.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="220.5" cy="166.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="282.2" cy="166.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.2" cy="166.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.0" cy="166.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="657.6" cy="166.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="205.6" cy="166.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="359.8" cy="166.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="233.9" cy="166.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="234.3" cy="166.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="219.0" cy="166.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="354.7" cy="166.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="304.8" cy="166.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="712.9" cy="166.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="161.8" cy="166.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="197.2" cy="166.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="202.2" cy="166.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="118.9" cy="166.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="411.8" cy="166.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="103.9" cy="166.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="213.0" cy="166.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="712.1" cy="166.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="426.6" cy="166.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="189.4" cy="166.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="211.1" cy="166.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="104.0" cy="166.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.9" cy="166.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.1" cy="165.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="154.7" cy="165.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.0" cy="165.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="136.7" cy="165.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="238.8" cy="165.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="368.7" cy="165.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="664.9" cy="165.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="433.2" cy="165.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="687.9" cy="165.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="93.1" cy="165.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="690.9" cy="165.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.6" cy="165.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="729.5" cy="165.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="195.4" cy="165.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="126.7" cy="165.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="656.3" cy="165.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="701.9" cy="165.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="84.0" cy="164.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="646.1" cy="164.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="148.3" cy="164.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.8" cy="164.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="59.3" cy="164.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="89.0" cy="164.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="187.5" cy="164.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="414.9" cy="164.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="727.7" cy="164.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="683.1" cy="164.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="118.1" cy="164.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="181.6" cy="164.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="620.6" cy="164.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="739.1" cy="164.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="177.4" cy="163.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="92.2" cy="163.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="189.1" cy="163.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="713.6" cy="163.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="94.9" cy="163.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.2" cy="163.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="273.0" cy="163.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="699.0" cy="163.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.7" cy="163.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="79.6" cy="163.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="617.5" cy="163.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="730.9" cy="163.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="106.5" cy="163.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.6" cy="162.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="178.2" cy="162.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="412.6" cy="162.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="631.7" cy="162.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="352.9" cy="162.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="415.9" cy="162.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="155.6" cy="162.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.3" cy="161.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="132.1" cy="161.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="162.5" cy="161.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="122.1" cy="161.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="154.4" cy="160.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="484.4" cy="159.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="169.8" cy="159.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="440.9" cy="159.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="174.3" cy="159.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="151.7" cy="158.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="340.9" cy="158.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="121.6" cy="158.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="164.3" cy="158.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="464.1" cy="157.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="467.3" cy="156.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="132.2" cy="154.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="143.2" cy="154.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="486.0" cy="152.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="453.4" cy="151.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="468.1" cy="145.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="439.5" cy="142.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="451.7" cy="141.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="434.2" cy="137.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="499.7" cy="136.7" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="435.9" cy="135.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="450.5" cy="133.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="528.6" cy="132.8" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="522.9" cy="132.6" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="492.1" cy="131.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="537.0" cy="131.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="487.9" cy="130.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="551.0" cy="130.5" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="441.9" cy="129.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="554.7" cy="127.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="478.7" cy="127.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="503.0" cy="127.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="473.7" cy="127.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="571.3" cy="126.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="554.0" cy="126.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="492.6" cy="126.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="454.7" cy="125.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="457.5" cy="125.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="575.0" cy="125.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="467.7" cy="123.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="542.0" cy="123.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="496.3" cy="123.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="552.0" cy="122.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="526.0" cy="122.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="538.2" cy="122.2" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="554.3" cy="122.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="530.3" cy="121.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="542.7" cy="120.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="479.4" cy="120.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="538.7" cy="120.2" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="567.6" cy="119.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="475.8" cy="119.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="570.1" cy="119.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="508.3" cy="119.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="581.7" cy="118.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="544.7" cy="118.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="516.3" cy="116.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="546.9" cy="115.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="587.1" cy="115.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="589.4" cy="110.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="552.0" cy="110.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="511.1" cy="110.4" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="569.7" cy="108.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="479.0" cy="107.6" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="453.5" cy="100.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="434.5" cy="98.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="472.5" cy="98.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="440.0" cy="96.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="462.3" cy="92.5" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="465.4" cy="90.5" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="450.6" cy="89.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="536.0" cy="88.4" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="503.5" cy="88.1" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="546.3" cy="82.5" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="533.7" cy="75.4" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="582.8" cy="72.6" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="556.3" cy="72.4" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="571.3" cy="66.8" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="580.9" cy="57.2" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="570.9" cy="53.3" r="3.1" fill="#D2453B"/>
+<path class="g-lead" d="M565.8,46.0L571.3,51.5L565.8,57.0L560.3,51.5Z"/>
+<text class="g-ttl" x="56" y="213">single causal 가정의 PIP<tspan class="g-sub" dx="8">Bayes factor를 합이 1이 되게 나눔</tspan></text>
+<line class="g-grid" x1="56" x2="742" y1="322.0" y2="322.0"/>
+<text class="g-tick" x="50" y="325.5" text-anchor="end">0</text>
+<line class="g-grid" x1="56" x2="742" y1="272.0" y2="272.0"/>
+<text class="g-tick" x="50" y="275.5" text-anchor="end">0.5</text>
+<line class="g-grid" x1="56" x2="742" y1="222.0" y2="222.0"/>
+<text class="g-tick" x="50" y="225.5" text-anchor="end">1</text>
+<text class="g-lab" transform="translate(22,272.0) rotate(-90)" text-anchor="middle">PIP</text>
+<line class="g-ax" x1="56" x2="742" y1="322" y2="322"/>
+<line class="g-stem" x1="571.3" x2="571.3" y1="322" y2="321.8" stroke="#C5CCD3"/>
+<circle class="g-pt" cx="571.3" cy="321.8" r="2.8" fill="#C5CCD3"/>
+<line class="g-stem" x1="580.9" x2="580.9" y1="322" y2="314.3" stroke="var(--theme)"/>
+<circle class="g-pt" cx="580.9" cy="314.3" r="2.8" fill="var(--theme)"/>
+<line class="g-stem" x1="570.9" x2="570.9" y1="322" y2="290.0" stroke="var(--theme)"/>
+<circle class="g-pt" cx="570.9" cy="290.0" r="2.8" fill="var(--theme)"/>
+<line class="g-stem" x1="565.8" x2="565.8" y1="322" y2="262.0" stroke="var(--theme)"/>
+<circle class="g-pt" cx="565.8" cy="262.0" r="2.8" fill="var(--theme)"/>
+<line class="g-ax" x1="56.0" x2="56.0" y1="322" y2="326"/>
+<text class="g-tick" x="56.0" y="337" text-anchor="middle">0</text>
+<line class="g-ax" x1="170.3" x2="170.3" y1="322" y2="326"/>
+<text class="g-tick" x="170.3" y="337" text-anchor="middle">100</text>
+<line class="g-ax" x1="284.7" x2="284.7" y1="322" y2="326"/>
+<text class="g-tick" x="284.7" y="337" text-anchor="middle">200</text>
+<line class="g-ax" x1="399.0" x2="399.0" y1="322" y2="326"/>
+<text class="g-tick" x="399.0" y="337" text-anchor="middle">300</text>
+<line class="g-ax" x1="513.3" x2="513.3" y1="322" y2="326"/>
+<text class="g-tick" x="513.3" y="337" text-anchor="middle">400</text>
+<line class="g-ax" x1="627.7" x2="627.7" y1="322" y2="326"/>
+<text class="g-tick" x="627.7" y="337" text-anchor="middle">500</text>
+<line class="g-ax" x1="742.0" x2="742.0" y1="322" y2="326"/>
+<text class="g-tick" x="742.0" y="337" text-anchor="middle">600</text>
+<text class="g-lab" x="399.0" y="354" text-anchor="middle">위치 (kb) · 가상 locus</text>
+<line class="g-vline" x1="580.9" x2="580.9" y1="40" y2="322" stroke="#4A4F4C"/>
+<text class="g-note" x="585.9" y="46" text-anchor="start" fill="#4A4F4C">실제 causal</text>
+<text class="g-note" x="556.8" y="55.5" text-anchor="end">lead SNP</text>
+<text class="g-note" x="559.8" y="266.0" text-anchor="end">0.60 · lead</text>
+<text class="g-note" x="564.9" y="294.0" text-anchor="end">0.32</text>
+<text class="g-note" x="586.9" y="318.3">0.08 · causal</text>
+<text class="g-note" x="56" y="8">색 = lead SNP(◆)와의 r²</text>
+<circle cx="61" cy="19" r="4" fill="#C5CCD3"/>
+<text class="g-note" x="69" y="23">< 0.2</text>
+<circle cx="127" cy="19" r="4" fill="#7FB2DD"/>
+<text class="g-note" x="135" y="23">0.2–0.4</text>
+<circle cx="193" cy="19" r="4" fill="#7DAE58"/>
+<text class="g-note" x="201" y="23">0.4–0.6</text>
+<circle cx="259" cy="19" r="4" fill="#E8913A"/>
+<text class="g-note" x="267" y="23">0.6–0.8</text>
+<circle cx="325" cy="19" r="4" fill="#D2453B"/>
+<text class="g-note" x="333" y="23">0.8–1</text>
+<rect x="56" y="362" width="10" height="10" rx="2" fill="var(--theme)"/><text class="g-note" x="70" y="371">95% credible set</text>
+</svg>
+<!--/GEN:REGIONAL-->
+          </div>
+          <figcaption>
+            seed 고정 시뮬레이션의 가상 locus(SNP <!--GEN:N_HERE-->343<!--/GEN:N_HERE-->개). 논문 데이터 아님. <a href="./coloc.html">coloc 페이지</a>와 같은 locus이고 형질 표본만 다름 · N = 5,000 · 정량 형질 · 세로 점선 = 시뮬레이션에서 causal로 정한 변이.
+            PIP = SNP별 Wakefield approximate Bayes factor(효과 크기 prior sd W = 0.15)를 합이 1이 되게 나눈 값(single causal 가정).
+          </figcaption>
+        </figure>
+        <div class="callout blue">
+          <h4>그림에서 볼 것</h4>
+          <p>causal은 p-value 순위 <b><!--GEN:F1_RANK-->3<!--/GEN:F1_RANK-->위</b>이고 lead SNP와 r² <!--GEN:F1_R2-->0.88<!--/GEN:F1_R2-->. PIP는 <!--GEN:F1_PIP-->lead 0.60 · causal 0.08<!--/GEN:F1_PIP-->. lead SNP를 causal로 고르면 틀림. 대신 PIP를 큰 순서로 모은 95% credible set(SNP <!--GEN:F1_CS-->3<!--/GEN:F1_CS-->개)은 causal을 담고 있음.</p>
+        </div>
+        <div class="callout">
+          <h4>이 예는 고른 것</h4>
+          <p>같은 locus · 같은 causal · 같은 효과 크기(기대 z = 9)로 형질 표본만 바꿔 <!--GEN:REP_N-->200<!--/GEN:REP_N-->번 반복한 결과: lead SNP = causal인 경우 <b><!--GEN:REP_SAME-->90%<!--/GEN:REP_SAME--></b> · 95% credible set이 causal을 담은 경우 <b><!--GEN:REP_COVER-->98%<!--/GEN:REP_COVER--></b> · credible set 크기 중앙값 <!--GEN:REP_SIZE-->2개(최대 5개)<!--/GEN:REP_SIZE-->. 위 그림은 lead와 causal이 갈린 경우를 골라 보여 줌. 효과가 이보다 작거나 LD가 강하면 갈리는 경우가 늘어남.</p>
+        </div>
+
+        <!-- ───────── 2. PIP ───────── -->
+        <h2 id="pip">Bayes factor에서 PIP로<small>Posterior inclusion probability</small></h2>
+        <p class="lede">fine-mapping은 trait를 outcome, 주변 variant를 predictor로 둔 multiple regression에서 <b>계수가 0이 아닌 variant를 고르는</b> variable selection 문제 <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a>. PIP는 variant의 계수가 0이 아닐 사후확률이고, 그 variant를 포함하는 모든 모형의 사후확률을 더한 값과 같음 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></p>
+        <div class="cases">
+          <div style="--c:var(--theme)"><span class="lv">STEP 1</span><h4>SNP별 Bayes factor</h4><p>β̂과 그 표집분산에 평균 0 · 분산 W인 정규 prior를 두면 Bayes factor가 닫힌 식으로 나옴 <a class="src" href="https://doi.org/10.1038/nrg3706" target="_blank" rel="noopener">Sham 2014</a>. "이 SNP 하나가 causal" 모형과 효과 없음 모형의 가능도 비</p></div>
+          <div style="--c:var(--theme)"><span class="lv">STEP 2</span><h4>합이 1이 되게 나눔</h4><p>causal이 정확히 하나라고 두면 PIP<sub>j</sub> = BF<sub>j</sub> / Σ BF(prior가 SNP마다 같을 때). z-score만으로 계산하므로 LD 행렬이 필요 없고 매우 빠름 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a></p></div>
+          <div style="--c:var(--theme)"><span class="lv">STEP 3</span><h4>credible set</h4><p>PIP를 큰 순서로 정렬하고 누적합이 ρ(보통 0.95)에 닿을 때까지 담음 <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a> <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></p></div>
+        </div>
+        <div class="callout">
+          <h4>가정: region 안 causal은 하나, 그리고 데이터 안에 있음</h4>
+          <p>이 계산은 causal marker가 region에 정확히 하나이고 그 marker가 데이터에 포함되어 있다는 가정에 기댐. 독립 신호를 먼저 나누는 분석의 예비 결과로 보라는 경고가 원 논문에 있음 <a class="src" href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener">Bycroft 2018</a>. 신호가 둘 이상이면 아래 <a href="#multiple">SuSiE</a>, 패널에 없는 변이는 <a href="#read">흔한 오해</a> 참고.</p>
+        </div>
+
+        <!-- ───────── 3. credible set ───────── -->
+        <h2 id="credible-set">credible set의 크기 = 남은 불확실성<small>Credible sets</small></h2>
+        <p class="lede">credible set = causal variant를 정해진 확률로 담는 가장 작은 SNP 집합. 보통 90% 또는 99% 수준 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a>. SuSiE의 정의는 "effect variable을 적어도 하나 담을 확률이 ρ 이상인 집합" <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a>. causal과 LD가 강한 SNP가 많을수록 PIP가 여러 SNP에 나뉘어 집합이 넓어짐</p>
+        <figure class="fig" id="fig-cs" data-mode="weak">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-cs" role="group" aria-label="locus">
+              <button type="button" data-mode="weak" aria-pressed="true">LD 보통</button>
+              <button type="button" data-mode="strong" aria-pressed="false">넓은 고LD 블록</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:CS-->
+<svg class="g-svg " viewBox="0 0 760 300" role="img" aria-labelledby="fmcsT fmcsD" xmlns="http://www.w3.org/2000/svg">
+<title id="fmcsT">LD가 강할수록 95% credible set이 넓어진다</title>
+<desc id="fmcsD">막대는 PIP 상위 30개 SNP, 선은 누적 PIP다. LD가 보통인 locus에서는 SNP 3개로 95%를 채우지만, causal과 r² 0.8 이상인 SNP가 89개인 고LD 블록에서는 24개가 필요하다. 두 경우 모두 causal은 credible set 안에 있다.</desc>
+<g class="g-ov on" data-ov="weak">
+<text class="g-ttl" x="56" y="26">LD가 보통인 locus<tspan class="g-sub" dx="8">PIP 큰 순서 상위 30개</tspan></text>
+<rect class="g-bar" x="58.0" y="115.9" width="11.5" height="114.1" fill="var(--theme)"/>
+<rect class="g-bar" x="73.5" y="169.2" width="11.5" height="60.8" fill="var(--theme)"/>
+<rect class="g-bar" x="88.9" y="215.5" width="11.5" height="14.5" fill="var(--theme)"/>
+<path d="M94.7,236l-4,7h8z" fill="#4A4F4C"/>
+<text class="g-note" x="94.7" y="256" text-anchor="middle">causal</text>
+<rect class="g-bar" x="104.4" y="229.6" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="119.9" y="229.9" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="135.3" y="229.9" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="150.8" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="166.3" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="181.7" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="197.2" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="212.7" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="228.1" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="243.6" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="259.1" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="274.5" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="290.0" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="305.5" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="320.9" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="336.4" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="351.9" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="367.3" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="382.8" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="398.3" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="413.7" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="429.2" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="444.7" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="460.1" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="475.6" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="491.1" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<rect class="g-bar" x="506.5" y="230.0" width="11.5" height="0.6" fill="#C5CCD3"/>
+<polyline class="g-cum" points="63.7,115.9 79.2,55.1 94.7,40.6 110.1,40.1 125.6,40.1 141.1,40.0 156.5,40.0 172.0,40.0 187.5,40.0 202.9,40.0 218.4,40.0 233.9,40.0 249.3,40.0 264.8,40.0 280.3,40.0 295.7,40.0 311.2,40.0 326.7,40.0 342.1,40.0 357.6,40.0 373.1,40.0 388.5,40.0 404.0,40.0 419.5,40.0 434.9,40.0 450.4,40.0 465.9,40.0 481.3,40.0 496.8,40.0 512.3,40.0"/>
+<line class="g-thr" x1="56" x2="520" y1="49.5" y2="49.5"/>
+<text class="g-note" x="520" y="63.5" text-anchor="end">누적 0.95</text>
+<text class="g-hd" x="560" y="46">이 locus</text>
+<text class="g-note" x="560" y="72">credible set</text><text class="g-cnt" x="742" y="72" text-anchor="end">3개 SNP</text>
+<text class="g-note" x="560" y="102">causal의 PIP</text><text class="g-cnt" x="742" y="102" text-anchor="end">0.08</text>
+<text class="g-note" x="560" y="132">가장 큰 PIP</text><text class="g-cnt" x="742" y="132" text-anchor="end">0.60</text>
+<text class="g-note" x="560" y="162">causal과 r² ≥ 0.8</text><text class="g-cnt" x="742" y="162" text-anchor="end">2개 SNP</text>
+</g>
+<g class="g-ov" data-ov="strong">
+<text class="g-ttl" x="56" y="26">넓은 고LD 블록 안의 locus<tspan class="g-sub" dx="8">PIP 큰 순서 상위 30개</tspan></text>
+<rect class="g-bar" x="58.0" y="139.0" width="11.5" height="91.0" fill="var(--theme)"/>
+<rect class="g-bar" x="73.5" y="215.5" width="11.5" height="14.5" fill="var(--theme)"/>
+<rect class="g-bar" x="88.9" y="216.4" width="11.5" height="13.6" fill="var(--theme)"/>
+<rect class="g-bar" x="104.4" y="222.4" width="11.5" height="7.6" fill="var(--theme)"/>
+<rect class="g-bar" x="119.9" y="223.5" width="11.5" height="6.5" fill="var(--theme)"/>
+<rect class="g-bar" x="135.3" y="225.0" width="11.5" height="5.0" fill="var(--theme)"/>
+<rect class="g-bar" x="150.8" y="225.3" width="11.5" height="4.7" fill="var(--theme)"/>
+<rect class="g-bar" x="166.3" y="225.9" width="11.5" height="4.1" fill="var(--theme)"/>
+<rect class="g-bar" x="181.7" y="226.1" width="11.5" height="3.9" fill="var(--theme)"/>
+<path d="M187.5,236l-4,7h8z" fill="#4A4F4C"/>
+<text class="g-note" x="187.5" y="256" text-anchor="middle">causal</text>
+<rect class="g-bar" x="197.2" y="226.3" width="11.5" height="3.7" fill="var(--theme)"/>
+<rect class="g-bar" x="212.7" y="226.6" width="11.5" height="3.4" fill="var(--theme)"/>
+<rect class="g-bar" x="228.1" y="226.7" width="11.5" height="3.3" fill="var(--theme)"/>
+<rect class="g-bar" x="243.6" y="227.1" width="11.5" height="2.9" fill="var(--theme)"/>
+<rect class="g-bar" x="259.1" y="227.5" width="11.5" height="2.5" fill="var(--theme)"/>
+<rect class="g-bar" x="274.5" y="227.8" width="11.5" height="2.2" fill="var(--theme)"/>
+<rect class="g-bar" x="290.0" y="228.0" width="11.5" height="2.0" fill="var(--theme)"/>
+<rect class="g-bar" x="305.5" y="228.1" width="11.5" height="1.9" fill="var(--theme)"/>
+<rect class="g-bar" x="320.9" y="228.7" width="11.5" height="1.3" fill="var(--theme)"/>
+<rect class="g-bar" x="336.4" y="228.7" width="11.5" height="1.3" fill="var(--theme)"/>
+<rect class="g-bar" x="351.9" y="228.7" width="11.5" height="1.3" fill="var(--theme)"/>
+<rect class="g-bar" x="367.3" y="228.8" width="11.5" height="1.2" fill="var(--theme)"/>
+<rect class="g-bar" x="382.8" y="228.9" width="11.5" height="1.1" fill="var(--theme)"/>
+<rect class="g-bar" x="398.3" y="229.1" width="11.5" height="0.9" fill="var(--theme)"/>
+<rect class="g-bar" x="413.7" y="229.2" width="11.5" height="0.8" fill="var(--theme)"/>
+<rect class="g-bar" x="429.2" y="229.2" width="11.5" height="0.8" fill="#C5CCD3"/>
+<rect class="g-bar" x="444.7" y="229.2" width="11.5" height="0.8" fill="#C5CCD3"/>
+<rect class="g-bar" x="460.1" y="229.2" width="11.5" height="0.8" fill="#C5CCD3"/>
+<rect class="g-bar" x="475.6" y="229.3" width="11.5" height="0.7" fill="#C5CCD3"/>
+<rect class="g-bar" x="491.1" y="229.3" width="11.5" height="0.7" fill="#C5CCD3"/>
+<rect class="g-bar" x="506.5" y="229.3" width="11.5" height="0.7" fill="#C5CCD3"/>
+<polyline class="g-cum" points="63.7,139.0 79.2,124.5 94.7,110.9 110.1,103.2 125.6,96.7 141.1,91.7 156.5,87.0 172.0,83.0 187.5,79.1 202.9,75.4 218.4,72.0 233.9,68.7 249.3,65.8 264.8,63.3 280.3,61.1 295.7,59.1 311.2,57.2 326.7,55.9 342.1,54.6 357.6,53.3 373.1,52.1 388.5,51.0 404.0,50.0 419.5,49.2 434.9,48.4 450.4,47.6 465.9,46.8 481.3,46.1 496.8,45.4 512.3,44.7"/>
+<line class="g-thr" x1="56" x2="520" y1="49.5" y2="49.5"/>
+<text class="g-note" x="520" y="63.5" text-anchor="end">누적 0.95</text>
+<text class="g-hd" x="560" y="46">이 locus</text>
+<text class="g-note" x="560" y="72">credible set</text><text class="g-cnt" x="742" y="72" text-anchor="end">24개 SNP</text>
+<text class="g-note" x="560" y="102">causal의 PIP</text><text class="g-cnt" x="742" y="102" text-anchor="end">0.02</text>
+<text class="g-note" x="560" y="132">가장 큰 PIP</text><text class="g-cnt" x="742" y="132" text-anchor="end">0.48</text>
+<text class="g-note" x="560" y="162">causal과 r² ≥ 0.8</text><text class="g-cnt" x="742" y="162" text-anchor="end">89개 SNP</text>
+</g>
+<line class="g-ax" x1="56" x2="520" y1="230" y2="230"/>
+<line class="g-grid" x1="56" x2="520" y1="230.0" y2="230.0"/>
+<text class="g-tick" x="50" y="233.5" text-anchor="end">0</text>
+<line class="g-grid" x1="56" x2="520" y1="135.0" y2="135.0"/>
+<text class="g-tick" x="50" y="138.5" text-anchor="end">0.5</text>
+<line class="g-grid" x1="56" x2="520" y1="40.0" y2="40.0"/>
+<text class="g-tick" x="50" y="43.5" text-anchor="end">1</text>
+<text class="g-lab" transform="translate(22,135.0) rotate(-90)" text-anchor="middle">PIP · 누적 PIP</text>
+<text class="g-lab" x="288.0" y="274" text-anchor="middle">SNP (PIP 순위)</text>
+<rect x="560" y="252" width="10" height="10" rx="2" fill="var(--theme)"/><text class="g-note" x="574" y="261">credible set</text>
+<line class="g-cum" x1="660" x2="682" y1="257" y2="257"/><text class="g-note" x="686" y="261">누적</text>
+</svg>
+<!--/GEN:CS-->
+          </div>
+          <figcaption>가상 locus 2개(seed 고정 시뮬레이션). 왼쪽 = 위 그림의 형질, 오른쪽 = 한 블록에 causal과 r² 0.8 이상인 SNP가 몰린 locus(<a href="./coloc.html#sensitivity">coloc 페이지</a>의 "prior에 흔들리는 locus"와 같은 locus) · credible set 크기 <!--GEN:CS_WEAK-->3<!--/GEN:CS_WEAK-->개 대 <!--GEN:CS_STRONG-->24<!--/GEN:CS_STRONG-->개 · 고LD 쪽 가장 큰 PIP <!--GEN:CS_STRONG_PIP-->0.48<!--/GEN:CS_STRONG_PIP--></figcaption>
+        </figure>
+        <div class="callout blue">
+          <h4>넓은 credible set ≠ 실패</h4>
+          <p>상관이 매우 높은 SNP들이 확률을 나눠 가지면 개별 PIP는 작아도, 그 집합 안에 effect variable이 있다는 결론은 강할 수 있음. 예: SNP 37개, purity 0.97인 credible set <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a>. credible set 안 PIP가 비슷하면 지금 표본으로는 구분할 수 없다고 읽고, 서로의 상관과 서로 보정한 효과 크기를 함께 봄 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></p>
+          <p>좁은 credible set은 드문 편. splice QTL 분석에서 credible set 2,652개 중 SNP 하나로 좁혀진 것은 457개 <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a> · GTEx cis-eQTL 90% credible set 크기 중앙값 6개 <a class="src" href="https://doi.org/10.1126/science.aaz1776" target="_blank" rel="noopener">GTEx 2020</a></p>
+        </div>
+        <h3 class="subhd">credible set을 평가하는 네 가지 값</h3>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>값</th><th>뜻</th><th>쓰임</th></tr></thead>
+            <tbody>
+              <tr><th>coverage</th><td>credible set 중 실제 causal을 담은 비율 <a class="src" href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener">Yang 2023</a></td><td>시뮬레이션에서 목표 수준(예: 95%)과 비교</td></tr>
+              <tr><th>power</th><td>시뮬레이션 causal 중 어느 credible set에든 들어간 비율 <a class="src" href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener">Yang 2023</a></td><td>신호를 얼마나 찾았나</td></tr>
+              <tr><th>size</th><td>credible set 안 SNP 수 <a class="src" href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener">Yang 2023</a></td><td>후속 실험 후보 수</td></tr>
+              <tr><th>purity</th><td>credible set 안 SNP 쌍의 상관(SuSiE는 최소 |r|) <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a></td><td>purity 0.5 미만인 집합은 버림 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 4. 다중 신호 ───────── -->
+        <h2 id="multiple">신호가 둘 이상일 때: SuSiE<small>Multiple causal variants</small></h2>
+        <p class="lede">p-value 순위로 줄 세우는 방식은 causal이 하나일 때만 잘 맞음. causal이 여럿이면 가장 강한 SNP가 여러 causal을 동시에 tagging하고 있을 수 있음 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a>. GTEx 규모의 eQTL에서는 locus마다 causal 하나라는 가정이 더는 맞지 않음 <a class="src" href="https://doi.org/10.1126/science.aaz1776" target="_blank" rel="noopener">GTEx 2020</a></p>
+        <figure class="fig" id="fig-multi" data-mode="single">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-multi" role="group" aria-label="모형">
+              <button type="button" data-mode="single" aria-pressed="true">single causal 가정</button>
+              <button type="button" data-mode="susie" aria-pressed="false">SuSiE (L = 10)</button>
+            </div>
+          </div>
+          <div class="fig-scroll" data-scroll="center">
+<!--GEN:MULTI-->
+<svg class="g-svg " viewBox="0 0 760 350" role="img" aria-labelledby="fmmultiT fmmultiD" xmlns="http://www.w3.org/2000/svg">
+<title id="fmmultiT">신호가 둘인 locus — single causal 가정과 SuSiE</title>
+<desc id="fmmultiD">위는 서로 LD가 거의 없는 두 causal(A 강, B 약)이 있는 가상 locus의 regional plot이다. single causal 가정은 가장 강한 A만 credible set으로 잡고 B의 PIP는 0에 가깝다. SuSiE는 효과 L개를 하나씩 맞추어 A와 B에 각각 credible set을 만든다.</desc>
+<text class="g-ttl" x="56" y="31">GWAS 결과<tspan class="g-sub" dx="8">신호 2개 · 서로 LD 거의 없음</tspan></text>
+<line class="g-grid" x1="56" x2="742" y1="150.0" y2="150.0"/>
+<text class="g-tick" x="50" y="153.5" text-anchor="end">0</text>
+<line class="g-grid" x1="56" x2="742" y1="95.0" y2="95.0"/>
+<text class="g-tick" x="50" y="98.5" text-anchor="end">15</text>
+<line class="g-grid" x1="56" x2="742" y1="40.0" y2="40.0"/>
+<text class="g-tick" x="50" y="43.5" text-anchor="end">30</text>
+<line class="g-ax" x1="56" x2="742" y1="150" y2="150"/>
+<text class="g-lab" transform="translate(22,95.0) rotate(-90)" text-anchor="middle">−log₁₀ p</text>
+<circle class="g-pt" cx="287.0" cy="150.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="628.7" cy="150.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="730.9" cy="150.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="241.4" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="85.2" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="234.9" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="135.3" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="239.9" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="310.8" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="309.0" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="283.1" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="322.5" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="324.7" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="178.6" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="632.6" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="318.1" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="282.2" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="712.9" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="112.2" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="515.2" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="119.4" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="189.1" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="273.0" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="93.1" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="322.2" cy="149.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.7" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="240.3" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="326.6" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.5" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="233.9" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="151.4" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="72.7" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="132.2" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="329.2" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="325.3" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="277.3" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="712.1" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="487.6" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="245.3" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="277.8" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="620.6" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.5" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="238.8" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="742.0" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="261.0" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="239.1" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="327.4" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="617.5" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="319.1" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="304.8" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="71.7" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="117.4" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="311.1" cy="149.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="234.3" cy="149.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="300.7" cy="149.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.7" cy="149.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="276.8" cy="149.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="200.0" cy="149.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="267.0" cy="149.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="328.5" cy="149.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="284.5" cy="149.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="305.6" cy="149.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="439.5" cy="149.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="243.7" cy="149.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.3" cy="149.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="131.7" cy="149.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.3" cy="149.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.6" cy="149.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="664.9" cy="149.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="264.4" cy="149.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="739.1" cy="149.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="665.5" cy="149.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="600.3" cy="149.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.1" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="305.6" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="79.6" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="227.6" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.5" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="214.6" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="381.6" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.2" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.0" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="180.3" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="288.2" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="211.1" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="242.1" cy="149.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="273.0" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="187.5" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="258.1" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="72.1" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="244.7" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="229.6" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="118.9" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="134.6" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.7" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="205.6" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="265.4" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="157.4" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="280.5" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="223.2" cy="149.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="197.2" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="151.7" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="189.4" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.6" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="213.0" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="289.7" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.6" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="238.4" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="222.8" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="244.3" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="82.8" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="104.8" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="181.6" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="196.7" cy="149.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="214.0" cy="149.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="59.3" cy="149.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="251.1" cy="149.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="195.4" cy="149.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="150.1" cy="149.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="275.8" cy="149.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="264.5" cy="149.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="121.6" cy="149.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="201.3" cy="149.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.5" cy="149.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="84.0" cy="149.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="222.4" cy="149.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="381.6" cy="149.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="212.1" cy="148.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="136.7" cy="148.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="126.7" cy="148.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="148.3" cy="148.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="104.0" cy="148.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="202.2" cy="148.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="102.8" cy="148.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="224.3" cy="148.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.1" cy="148.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="169.8" cy="148.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="219.0" cy="148.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.8" cy="148.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="220.5" cy="148.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="205.2" cy="148.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="646.1" cy="148.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="94.9" cy="148.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="154.4" cy="148.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.6" cy="148.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="207.1" cy="148.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="631.7" cy="148.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="154.7" cy="148.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="656.3" cy="148.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="360.9" cy="148.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.4" cy="148.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.9" cy="148.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="623.7" cy="148.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="725.0" cy="148.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="178.2" cy="148.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="143.2" cy="148.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="676.3" cy="148.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="116.0" cy="148.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="683.1" cy="148.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="657.6" cy="148.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="177.4" cy="148.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="727.7" cy="148.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="93.1" cy="148.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.1" cy="148.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="164.3" cy="148.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="695.1" cy="148.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="92.2" cy="148.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="549.6" cy="148.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="342.4" cy="148.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="106.5" cy="148.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="211.1" cy="148.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="675.8" cy="147.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.2" cy="147.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="132.1" cy="147.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="713.6" cy="147.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.0" cy="147.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="369.9" cy="147.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="593.2" cy="147.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="89.0" cy="147.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="349.0" cy="147.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="122.1" cy="147.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.9" cy="147.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.1" cy="147.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="103.9" cy="147.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="155.6" cy="147.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="118.1" cy="147.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="687.9" cy="147.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="174.3" cy="147.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="411.8" cy="147.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="162.5" cy="147.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="340.9" cy="147.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="660.5" cy="147.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="152.7" cy="146.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.1" cy="146.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="657.4" cy="146.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.6" cy="146.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="699.0" cy="146.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="670.5" cy="146.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="419.1" cy="146.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="588.8" cy="146.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="655.3" cy="145.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="690.9" cy="145.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.1" cy="145.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="638.4" cy="145.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.3" cy="145.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="702.8" cy="145.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="433.2" cy="145.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="414.2" cy="145.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="161.8" cy="145.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="425.2" cy="145.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="467.3" cy="145.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="690.6" cy="145.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="704.3" cy="145.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="643.4" cy="145.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="701.9" cy="145.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="401.3" cy="145.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.5" cy="144.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="638.2" cy="144.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="366.6" cy="144.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="484.4" cy="144.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="415.9" cy="144.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="704.9" cy="144.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="729.5" cy="144.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.4" cy="144.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="397.3" cy="144.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="440.9" cy="143.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.0" cy="143.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="382.1" cy="143.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="486.0" cy="143.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="598.4" cy="143.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="414.9" cy="143.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="416.5" cy="143.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="392.1" cy="143.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="613.0" cy="143.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="390.1" cy="142.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.3" cy="142.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="611.2" cy="142.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="710.9" cy="142.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="715.9" cy="142.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="412.6" cy="141.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="358.4" cy="141.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="353.7" cy="141.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="359.8" cy="141.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="370.6" cy="141.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="426.6" cy="141.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="453.4" cy="141.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="454.7" cy="140.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="621.0" cy="140.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="354.7" cy="140.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="450.5" cy="140.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="346.7" cy="140.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="347.1" cy="139.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="441.9" cy="139.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="622.9" cy="139.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="457.5" cy="139.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="338.9" cy="139.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="435.9" cy="138.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="508.3" cy="138.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="434.2" cy="138.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="467.7" cy="138.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="330.8" cy="138.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="530.3" cy="137.9" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="431.0" cy="137.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="451.7" cy="137.4" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="479.4" cy="137.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="464.1" cy="136.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="478.7" cy="136.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="475.8" cy="136.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="409.7" cy="136.0" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="503.0" cy="135.9" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="511.1" cy="135.5" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="492.6" cy="135.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="526.0" cy="135.1" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="473.7" cy="134.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="439.5" cy="134.8" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="538.2" cy="134.6" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="516.3" cy="134.3" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="468.1" cy="134.3" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="492.1" cy="134.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="554.3" cy="134.0" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="496.3" cy="133.9" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="542.7" cy="133.6" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="538.7" cy="133.3" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="544.7" cy="133.3" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="487.9" cy="133.1" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="542.0" cy="132.2" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="368.7" cy="131.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="499.7" cy="131.6" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="352.9" cy="131.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="552.0" cy="130.9" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="546.9" cy="130.4" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="376.2" cy="130.1" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="567.6" cy="129.5" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="431.9" cy="129.1" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="581.7" cy="128.7" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="569.7" cy="128.7" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="418.5" cy="128.5" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="522.9" cy="128.3" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="537.0" cy="128.0" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="589.4" cy="127.9" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="587.1" cy="126.9" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="528.6" cy="126.7" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="422.5" cy="126.2" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="570.1" cy="126.2" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="428.2" cy="126.1" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="453.5" cy="125.6" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="554.7" cy="125.3" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="552.0" cy="125.1" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="450.6" cy="124.7" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="479.0" cy="124.4" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="554.0" cy="124.0" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="536.0" cy="123.4" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="393.1" cy="123.3" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="551.0" cy="123.0" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="440.0" cy="122.6" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="384.9" cy="122.5" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="472.5" cy="120.8" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="575.0" cy="120.5" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="423.6" cy="119.9" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="434.5" cy="119.8" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="462.3" cy="119.3" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="571.3" cy="118.8" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="465.4" cy="118.8" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="503.5" cy="118.2" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="546.3" cy="116.5" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="556.3" cy="115.0" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="408.6" cy="112.3" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="350.9" cy="112.2" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="374.9" cy="111.6" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="340.5" cy="111.4" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="352.2" cy="110.4" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="533.7" cy="109.9" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="571.3" cy="107.0" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="582.8" cy="105.9" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="365.1" cy="104.4" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="334.0" cy="103.9" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="565.8" cy="97.7" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="570.9" cy="91.6" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="580.9" cy="87.4" r="3.1" fill="#2E8B7A"/>
+<circle class="g-pt" cx="368.2" cy="75.5" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="334.3" cy="72.5" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="366.2" cy="70.6" r="3.1" fill="#7B5AA6"/>
+<circle class="g-pt" cx="352.8" cy="59.4" r="3.1" fill="#7B5AA6"/>
+<text class="g-sig sm" x="352.8" y="50.4" text-anchor="middle" fill="#7B5AA6">A</text>
+<text class="g-sig sm" x="580.9" y="78.4" text-anchor="middle" fill="#2E8B7A">B</text>
+<line class="g-grid" x1="56" x2="742" y1="300.0" y2="300.0"/>
+<text class="g-tick" x="50" y="303.5" text-anchor="end">0</text>
+<line class="g-grid" x1="56" x2="742" y1="250.0" y2="250.0"/>
+<text class="g-tick" x="50" y="253.5" text-anchor="end">0.5</text>
+<line class="g-grid" x1="56" x2="742" y1="200.0" y2="200.0"/>
+<text class="g-tick" x="50" y="203.5" text-anchor="end">1</text>
+<text class="g-lab" transform="translate(22,250.0) rotate(-90)" text-anchor="middle">PIP</text>
+<line class="g-ax" x1="56" x2="742" y1="300" y2="300"/>
+<line class="g-ax" x1="56.0" x2="56.0" y1="300" y2="304"/>
+<text class="g-tick" x="56.0" y="315" text-anchor="middle">0</text>
+<line class="g-ax" x1="170.3" x2="170.3" y1="300" y2="304"/>
+<text class="g-tick" x="170.3" y="315" text-anchor="middle">100</text>
+<line class="g-ax" x1="284.7" x2="284.7" y1="300" y2="304"/>
+<text class="g-tick" x="284.7" y="315" text-anchor="middle">200</text>
+<line class="g-ax" x1="399.0" x2="399.0" y1="300" y2="304"/>
+<text class="g-tick" x="399.0" y="315" text-anchor="middle">300</text>
+<line class="g-ax" x1="513.3" x2="513.3" y1="300" y2="304"/>
+<text class="g-tick" x="513.3" y="315" text-anchor="middle">400</text>
+<line class="g-ax" x1="627.7" x2="627.7" y1="300" y2="304"/>
+<text class="g-tick" x="627.7" y="315" text-anchor="middle">500</text>
+<line class="g-ax" x1="742.0" x2="742.0" y1="300" y2="304"/>
+<text class="g-tick" x="742.0" y="315" text-anchor="middle">600</text>
+<text class="g-lab" x="399.0" y="332" text-anchor="middle">위치 (kb) · 가상 locus</text>
+<g class="g-ov on" data-ov="single">
+<text class="g-ttl" x="56" y="191">single causal 가정 · credible set 1개</text>
+<line class="g-stem" x1="352.8" x2="352.8" y1="300" y2="200.1" stroke="#7B5AA6"/>
+<circle class="g-pt" cx="352.8" cy="200.1" r="2.8" fill="#7B5AA6"/>
+<text class="g-note" x="358.8" y="204.1">CS1 · SNP 1개</text>
+<text class="g-note" x="580.9" y="284" text-anchor="middle" fill="#C0392B">신호 B의 PIP ≈ 0</text>
+</g>
+<g class="g-ov" data-ov="susie">
+<text class="g-ttl" x="56" y="191">SuSiE (L = 10) · credible set 2개</text>
+<line class="g-stem" x1="366.2" x2="366.2" y1="300" y2="299.8" stroke="#AAB3AE"/>
+<circle class="g-pt" cx="366.2" cy="299.8" r="2.8" fill="#AAB3AE"/>
+<line class="g-stem" x1="570.9" x2="570.9" y1="300" y2="295.4" stroke="#AAB3AE"/>
+<circle class="g-pt" cx="570.9" cy="295.4" r="2.8" fill="#AAB3AE"/>
+<line class="g-stem" x1="580.9" x2="580.9" y1="300" y2="204.8" stroke="#2E8B7A"/>
+<circle class="g-pt" cx="580.9" cy="204.8" r="2.8" fill="#2E8B7A"/>
+<line class="g-stem" x1="352.8" x2="352.8" y1="300" y2="200.3" stroke="#7B5AA6"/>
+<circle class="g-pt" cx="352.8" cy="200.3" r="2.8" fill="#7B5AA6"/>
+<text class="g-note" x="358.8" y="204.3">CS1 · SNP 1개</text>
+<text class="g-note" x="586.9" y="208.8">CS2 · SNP 1개</text>
+</g>
+<rect x="430" y="5" width="10" height="10" rx="2" fill="#7B5AA6"/>
+<text class="g-note" x="444" y="14">신호 A 쪽 (r² > 0.2)</text>
+<rect x="584.4" y="5" width="10" height="10" rx="2" fill="#2E8B7A"/>
+<text class="g-note" x="598.4" y="14">신호 B 쪽</text>
+</svg>
+<!--/GEN:MULTI-->
+          </div>
+          <figcaption>가상 locus · 신호 A(기대 z = 10) + B(기대 z = 6.5), 서로 LD 거의 없음(<a href="./coloc.html#multiple">coloc 페이지</a> 그림 5의 trait 1과 같은 형질) · single causal 가정에서 B의 PIP <!--GEN:M_SINGLE_B-->0.00<!--/GEN:M_SINGLE_B--> · SuSiE credible set 크기 <!--GEN:M_SUSIE-->1개 · 1개<!--/GEN:M_SUSIE--> · SuSiE는 summary statistics와 같은 표본의 LD로 계산(susieR <code>susie_rss</code>와 같은 결과).</figcaption>
+        </figure>
+        <div class="cases">
+          <div style="--c:var(--theme)"><span class="lv">모형</span><h4>효과 L개의 합</h4><p>효과 벡터 b를 0 아닌 원소가 하나뿐인 벡터 L개의 합으로 씀. L = 1이면 single causal 모형과 같음 <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a></p></div>
+          <div style="--c:var(--theme)"><span class="lv">적합</span><h4>IBSS</h4><p>나머지 L−1개 효과를 뺀 잔차에 single effect 회귀를 맞추는 일을 효과마다 돌아가며 반복. forward stagewise selection의 Bayesian 판이고, 변수 하나를 고르는 대신 변수에 대한 분포를 계산 <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a></p></div>
+          <div style="--c:var(--theme)"><span class="lv">출력</span><h4>효과마다 credible set</h4><p>PIP = 1 − Π(1 − α<sub>lj</sub>) · 효과마다 credible set 하나 <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a>. credible set 수 = 신호 수, 크기 = 그 신호 안의 불확실성 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a></p></div>
+        </div>
+        <div class="callout">
+          <h4>L은 상한</h4>
+          <p>L을 실제 신호 수보다 크게 잡아도 결과는 대체로 안정. 남는 효과는 prior 분산이 0 근처로 추정되거나 purity 낮은 집합으로 걸러짐(시뮬레이션에서 실제 효과 1–5개에 L = 10) <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a>. LD를 바깥 패널에서 가져올 때는 예외. 아래 <a href="#summary-ld">LD 행렬</a> 참고.</p>
+        </div>
+        <p class="lede" style="margin-top:12px">독립 신호 개수를 먼저 세는 단계가 conditional/joint analysis(COJO). lead SNP로 조건화해 남는 신호를 찾음 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a>. stepwise 선택은 SuSiE · FINEMAP과 경쟁하기보다 그 앞에 오는 단계</p>
+        <a class="more" href="./locus-lead.html#conditional">조건부 분석 그림 페이지 →</a>
+
+        <!-- ───────── 5. summary statistics + LD ───────── -->
+        <h2 id="summary-ld">summary statistics와 LD 행렬로 할 때<small>Summary-data fine-mapping</small></h2>
+        <p class="lede">개인 genotype 없이 SNP별 z-score와 SNP 상관행렬(LD)만으로 likelihood를 계산할 수 있음 <a class="src" href="https://doi.org/10.1093/bioinformatics/btw018" target="_blank" rel="noopener">Benner 2016</a> <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a>. LD를 같은 표본에서 계산하면 SuSiE-RSS 결과는 개인 자료 SuSiE와 같고, 바깥 패널 LD를 쓸 때만 근사 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a>. 성능 좋은 방법들 사이에서는 방법보다 <b>어떤 LD 행렬을 쓰느냐</b>가 결과를 더 크게 바꿈 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a></p>
+        <figure class="fig" id="fig-flip" data-mode="ok">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-flip" role="group" aria-label="입력">
+              <button type="button" data-mode="ok" aria-pressed="true">allele 방향 일치</button>
+              <button type="button" data-mode="flip" aria-pressed="false">SNP 하나 뒤집힘</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:FLIP-->
+<svg class="g-svg " viewBox="0 0 760 300" role="img" aria-labelledby="fmflipT fmflipD" xmlns="http://www.w3.org/2000/svg">
+<title id="fmflipT">summary statistics와 LD 행렬의 allele 방향이 어긋날 때</title>
+<desc id="fmflipD">왼쪽은 같은 GWAS 결과에 SuSiE-RSS를 돌린 PIP다. 정상일 때 credible set은 causal 하나지만, causal과 r² 0.91인 SNP 하나의 allele 방향만 반대로 넣으면 PIP 1에 가까운 credible set이 3개로 늘어난다. 오른쪽은 나머지 SNP와 LD로 계산한 기대 z와 관측 z의 비교다. 뒤집힌 SNP만 대각선에서 크게 벗어난다.</desc>
+<line class="g-grid" x1="56" x2="470" y1="230.0" y2="230.0"/>
+<text class="g-tick" x="50" y="233.5" text-anchor="end">0</text>
+<line class="g-grid" x1="56" x2="470" y1="135.0" y2="135.0"/>
+<text class="g-tick" x="50" y="138.5" text-anchor="end">0.5</text>
+<line class="g-grid" x1="56" x2="470" y1="40.0" y2="40.0"/>
+<text class="g-tick" x="50" y="43.5" text-anchor="end">1</text>
+<text class="g-lab" transform="translate(22,135.0) rotate(-90)" text-anchor="middle">PIP</text>
+<line class="g-ax" x1="56" x2="470" y1="230" y2="230"/>
+<line class="g-ax" x1="56.0" x2="56.0" y1="230" y2="234"/>
+<text class="g-tick" x="56.0" y="245" text-anchor="middle">400</text>
+<line class="g-ax" x1="115.1" x2="115.1" y1="230" y2="234"/>
+<text class="g-tick" x="115.1" y="245" text-anchor="middle">410</text>
+<line class="g-ax" x1="174.3" x2="174.3" y1="230" y2="234"/>
+<text class="g-tick" x="174.3" y="245" text-anchor="middle">420</text>
+<line class="g-ax" x1="233.4" x2="233.4" y1="230" y2="234"/>
+<text class="g-tick" x="233.4" y="245" text-anchor="middle">430</text>
+<line class="g-ax" x1="292.6" x2="292.6" y1="230" y2="234"/>
+<text class="g-tick" x="292.6" y="245" text-anchor="middle">440</text>
+<line class="g-ax" x1="351.7" x2="351.7" y1="230" y2="234"/>
+<text class="g-tick" x="351.7" y="245" text-anchor="middle">450</text>
+<line class="g-ax" x1="410.9" x2="410.9" y1="230" y2="234"/>
+<text class="g-tick" x="410.9" y="245" text-anchor="middle">460</text>
+<line class="g-ax" x1="470.0" x2="470.0" y1="230" y2="234"/>
+<text class="g-tick" x="470.0" y="245" text-anchor="middle">470</text>
+<text class="g-lab" x="263.0" y="262" text-anchor="middle">위치 (kb) · 신호 주변 확대</text>
+<line class="g-vline" x1="405.4" x2="405.4" y1="44" y2="230" stroke="#4A4F4C"/>
+<text class="g-note" x="410.4" y="224" fill="#4A4F4C">causal</text>
+<rect class="g-barframe" x="540" y="40" width="202" height="190"/>
+<line class="g-eq" x1="540.0" y1="230.0" x2="742.0" y2="40.0"/>
+<text class="g-tick" x="556.8" y="244" text-anchor="middle">-10</text>
+<text class="g-tick" x="535" y="217.7" text-anchor="end">-10</text>
+<text class="g-tick" x="641.0" y="244" text-anchor="middle">0</text>
+<text class="g-tick" x="535" y="138.5" text-anchor="end">0</text>
+<text class="g-tick" x="725.2" y="244" text-anchor="middle">10</text>
+<text class="g-tick" x="535" y="59.3" text-anchor="end">10</text>
+<text class="g-lab" x="641.0" y="262" text-anchor="middle">기대 z (나머지 SNP와 LD로 계산)</text>
+<text class="g-lab" transform="translate(514,135.0) rotate(-90)" text-anchor="middle">관측 z</text>
+<g class="g-ov on" data-ov="ok">
+<text class="g-ttl" x="56" y="22">allele 방향이 LD 행렬과 같을 때<tspan class="g-sub" dx="8">SuSiE-RSS · credible set 1개</tspan></text>
+<line class="g-stem" x1="353.9" x2="353.9" y1="230" y2="228.9" stroke="#AAB3AE"/>
+<circle class="g-pt" cx="353.9" cy="228.9" r="2.8" fill="#AAB3AE"/>
+<line class="g-stem" x1="405.4" x2="405.4" y1="230" y2="41.1" stroke="#7B5AA6"/>
+<circle class="g-pt" cx="405.4" cy="41.1" r="2.8" fill="#7B5AA6"/>
+<text class="g-note" x="405.4" y="34.1" text-anchor="middle">CS1</text>
+<circle class="g-pt" cx="645.7" cy="126.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="649.0" cy="126.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="633.2" cy="143.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="643.2" cy="126.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="645.4" cy="126.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="646.4" cy="126.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="650.4" cy="126.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="644.8" cy="126.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="629.8" cy="143.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="648.0" cy="126.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="649.8" cy="126.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="633.7" cy="143.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="650.6" cy="126.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="649.9" cy="126.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="635.4" cy="144.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="632.0" cy="144.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="650.7" cy="125.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="649.1" cy="125.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="630.5" cy="144.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="650.3" cy="125.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="631.4" cy="145.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="633.6" cy="145.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="645.1" cy="124.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="634.0" cy="145.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="627.5" cy="145.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="626.6" cy="145.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="653.3" cy="123.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="625.8" cy="146.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="627.6" cy="146.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="650.0" cy="123.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="647.5" cy="122.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="650.1" cy="122.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="657.5" cy="122.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="635.0" cy="147.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="623.7" cy="147.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="627.3" cy="147.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="631.9" cy="148.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="627.1" cy="148.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="656.3" cy="121.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="663.7" cy="121.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="628.7" cy="148.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="656.1" cy="121.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="656.6" cy="120.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="627.5" cy="149.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="626.5" cy="149.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="626.9" cy="150.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="625.8" cy="150.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="624.5" cy="150.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="656.1" cy="118.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="621.2" cy="151.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="653.8" cy="118.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="624.8" cy="152.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="625.9" cy="152.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="661.7" cy="116.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="664.9" cy="115.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="626.3" cy="155.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="615.7" cy="155.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="619.1" cy="155.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="660.5" cy="114.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="662.0" cy="113.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="616.3" cy="157.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="620.2" cy="157.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="619.2" cy="157.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="620.9" cy="158.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="660.1" cy="110.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="616.4" cy="160.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="609.8" cy="164.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="604.8" cy="167.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="605.2" cy="168.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="604.6" cy="168.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="603.5" cy="169.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="603.7" cy="169.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="674.4" cy="99.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="604.3" cy="170.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="683.3" cy="98.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="601.0" cy="171.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="598.4" cy="171.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="598.9" cy="172.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="599.8" cy="172.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="599.0" cy="174.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="599.5" cy="174.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="597.4" cy="174.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="598.6" cy="175.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="598.7" cy="175.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="600.2" cy="175.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="599.0" cy="175.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="597.9" cy="175.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="597.9" cy="175.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="597.9" cy="176.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="684.1" cy="93.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="685.9" cy="93.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="684.9" cy="93.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="598.3" cy="177.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="596.8" cy="177.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="596.6" cy="177.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="592.8" cy="177.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="593.9" cy="177.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="595.7" cy="178.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="591.4" cy="179.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="593.7" cy="180.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="594.9" cy="180.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="590.8" cy="182.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="693.4" cy="87.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="590.5" cy="183.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="590.6" cy="183.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="589.8" cy="183.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="590.0" cy="184.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="591.2" cy="185.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="587.1" cy="185.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="588.8" cy="186.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="698.2" cy="81.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="582.2" cy="188.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="583.7" cy="188.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="582.7" cy="189.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="700.5" cy="80.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="701.9" cy="79.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="583.8" cy="190.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="702.8" cy="77.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="706.0" cy="77.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="702.7" cy="77.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="580.1" cy="193.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="580.0" cy="194.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="701.5" cy="75.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="705.6" cy="74.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="701.6" cy="74.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="703.6" cy="74.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="708.8" cy="71.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="710.9" cy="69.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="715.8" cy="64.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="719.3" cy="63.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="718.0" cy="63.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="726.8" cy="55.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="728.0" cy="51.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="729.1" cy="47.7" r="2.6" fill="#AAB3AE"/>
+</g>
+<g class="g-ov" data-ov="flip">
+<text class="g-ttl" x="56" y="22">SNP 하나의 allele 방향만 반대일 때<tspan class="g-sub" dx="8">SuSiE-RSS · credible set 3개</tspan></text>
+<line class="g-stem" x1="327.2" x2="327.2" y1="230" y2="40.0" stroke="#7B5AA6"/>
+<circle class="g-pt" cx="327.2" cy="40.0" r="2.8" fill="#7B5AA6"/>
+<line class="g-stem" x1="353.9" x2="353.9" y1="230" y2="40.0" stroke="#2E8B7A"/>
+<circle class="g-pt" cx="353.9" cy="40.0" r="2.8" fill="#2E8B7A"/>
+<line class="g-stem" x1="405.4" x2="405.4" y1="230" y2="40.0" stroke="#D9822B"/>
+<circle class="g-pt" cx="405.4" cy="40.0" r="2.8" fill="#D9822B"/>
+<text class="g-note" x="327.2" y="33.0" text-anchor="middle">CS1</text>
+<text class="g-note" x="353.9" y="33.0" text-anchor="middle">CS2</text>
+<text class="g-note" x="405.4" y="33.0" text-anchor="middle">CS3</text>
+<circle class="g-pt" cx="645.1" cy="126.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="647.7" cy="126.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="633.5" cy="143.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="639.5" cy="126.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="648.0" cy="126.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="647.0" cy="126.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="656.1" cy="126.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="650.4" cy="126.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="632.8" cy="143.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="647.2" cy="126.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="654.3" cy="126.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="634.2" cy="143.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="650.6" cy="126.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="649.5" cy="126.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="637.2" cy="144.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="631.3" cy="144.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="651.5" cy="125.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="649.5" cy="125.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="627.1" cy="144.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="649.6" cy="125.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="632.1" cy="145.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="635.4" cy="145.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="643.5" cy="124.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="632.5" cy="145.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="631.6" cy="145.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="633.0" cy="145.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="637.8" cy="123.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="627.8" cy="146.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="622.2" cy="146.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="651.9" cy="123.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="646.3" cy="122.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="644.4" cy="122.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="638.6" cy="122.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="642.0" cy="147.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="624.2" cy="147.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="625.8" cy="147.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="619.4" cy="148.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="621.6" cy="148.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="653.9" cy="121.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="663.6" cy="121.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="631.8" cy="148.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="655.1" cy="121.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="655.0" cy="120.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="622.6" cy="149.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="624.5" cy="149.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="631.9" cy="150.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="625.0" cy="150.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="625.1" cy="150.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="637.9" cy="118.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="619.2" cy="151.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="654.3" cy="118.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="627.4" cy="152.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="620.2" cy="152.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="664.0" cy="116.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="662.9" cy="115.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="619.7" cy="155.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="618.9" cy="155.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="612.9" cy="155.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="662.1" cy="114.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="659.4" cy="113.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="616.4" cy="157.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="623.5" cy="157.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="616.1" cy="157.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="618.8" cy="158.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="659.4" cy="110.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="614.6" cy="160.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="606.7" cy="164.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="607.0" cy="167.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="603.0" cy="168.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="605.8" cy="168.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="601.4" cy="169.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="604.8" cy="169.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="657.2" cy="99.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="601.2" cy="170.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="682.2" cy="98.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="596.9" cy="171.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="600.1" cy="171.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="598.4" cy="172.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="605.1" cy="172.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="600.3" cy="174.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="593.8" cy="174.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="597.2" cy="174.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="597.3" cy="175.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="597.3" cy="175.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="606.4" cy="175.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="599.5" cy="175.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="598.3" cy="175.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="596.6" cy="175.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="597.2" cy="176.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="686.9" cy="93.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="687.9" cy="93.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="683.5" cy="93.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="595.8" cy="177.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="595.9" cy="177.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="598.3" cy="177.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="600.1" cy="177.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="594.1" cy="177.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="600.9" cy="178.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="593.9" cy="179.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="596.9" cy="180.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="593.1" cy="180.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="604.3" cy="182.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="684.0" cy="87.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="613.2" cy="183.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="588.6" cy="183.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="597.3" cy="183.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="595.7" cy="184.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="615.6" cy="185.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="587.3" cy="185.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="592.7" cy="186.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="694.0" cy="81.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="587.3" cy="188.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="590.6" cy="188.7" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="588.1" cy="189.8" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="706.9" cy="80.1" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="701.4" cy="79.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="585.5" cy="190.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="698.5" cy="77.6" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="710.0" cy="77.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="702.5" cy="77.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="600.2" cy="193.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="617.7" cy="194.5" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="705.5" cy="75.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="706.8" cy="74.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="701.6" cy="74.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="703.9" cy="74.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="707.3" cy="71.0" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="703.0" cy="69.3" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="716.1" cy="64.9" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="692.2" cy="63.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="712.3" cy="63.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="696.9" cy="55.4" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="728.0" cy="218.2" r="2.6" fill="#AAB3AE"/>
+<circle class="g-pt" cx="705.9" cy="47.7" r="2.6" fill="#AAB3AE"/>
+<circle cx="728.0" cy="218.2" r="6" fill="none" stroke="#C0392B" stroke-width="2"/>
+<text class="g-note" x="719.0" y="222.2" text-anchor="end" fill="#C0392B">뒤집힌 SNP</text>
+</g>
+</svg>
+<!--/GEN:FLIP-->
+          </div>
+          <figcaption>가상 locus · causal 하나(<a href="./coloc.html#overlap">coloc 페이지</a> 그림 1의 trait 1과 같은 형질) · LD는 같은 표본에서 계산 · 뒤집은 SNP는 causal과 r² <!--GEN:FLIP_R2-->0.91<!--/GEN:FLIP_R2-->(<!--GEN:FLIP_Z-->관측 z -10.5 · 기대 z 10.3<!--/GEN:FLIP_Z-->) · 뒤집으면 credible set <!--GEN:FLIP_N-->3<!--/GEN:FLIP_N-->개, 모두 SNP 하나에 PIP ≈ 1 · 오른쪽 기대 z = 나머지 SNP의 z와 LD로 계산한 조건부 기대값 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a></figcaption>
+        </figure>
+        <h3 class="subhd">LD가 어긋나는 경로와 점검</h3>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>경로</th><th>무엇이 생기나</th><th>점검 · 대응</th></tr></thead>
+            <tbody>
+              <tr><th>allele 방향<span class="ko">summary statistics ↔ LD 패널</span></th><td>가짜 credible set이 PIP 1로 나옴 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a></td><td>관측 z와 기대 z를 비교하는 진단 그림으로 어긋난 SNP를 찾음 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a></td></tr>
+              <tr><th>ancestry가 다른 패널</th><td>joint effect 추정이 편향되어 결과가 틀어짐. GWAS 표본이 커질수록 패널도 커져야 함 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></td><td>study 표본의 SNP 상관과 패널 상관을 비교. 상관이 없으면 allele frequency라도 비교 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></td></tr>
+              <tr><th>SNP마다 다른 표본<span class="ko">meta-analysis 등</span></th><td>z-score와 LD 사이 큰 불일치 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a></td><td>모든 SNP를 같은 N명에서 계산. 필요하면 imputation으로 맞춤 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a></td></tr>
+              <tr><th>패널 크기<span class="ko">COJO의 기준</span></th><td>패널이 작으면 LD 추정이 흔들림</td><td>2,000명 이상, 5,000명을 넘으면 추가 이득 작음, discovery와 같은 집단 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h4>바깥 LD를 쓸 때의 설정</h4>
+          <p>잔차 분산은 추정하지 않고 고정 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a> · L을 실제 신호 수 가까이로 제한하면 LD 오차가 만드는 가짜 신호가 줄어듦 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a> · 바깥 LD에서는 credible set coverage가 목표 95%에 못 미침 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a> · CARMA처럼 불일치 SNP를 찾아 빼는 방법도 있음. AD 28개 locus 중 12곳에서 SuSiE가 PIP 1 근처 SNP를 여럿 냈고, CARMA가 찾은 SNP를 뺀 뒤 정상으로 돌아옴 <a class="src" href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener">Yang 2023</a></p>
+        </div>
+
+        <!-- ───────── 6. prior ───────── -->
+        <h2 id="prior">functional annotation을 prior로<small>Functionally informed fine-mapping</small></h2>
+        <p class="lede">annotation으로 SNP마다 causal prior를 다르게 줄 수 있음 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a>. 넣으면 power가 오르고 FDR이 내려감. 개선 폭은 annotation과 summary statistics를 함께 모델링하는 방법(CARMA · fastPAINTOR)이 두 단계로 나눈 방법(SuSiE + PolyFun)보다 큼 <a class="src" href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener">Yang 2023</a></p>
+        <div class="callout">
+          <h4>prior 하나로 PIP가 뒤집힘</h4>
+          <p>AD 데이터에서 <i>SORL1</i> rs74685827의 PIP는 annotation 없이 0.009, PolyFun annotation을 넣으면 1.000 <a class="src" href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener">Yang 2023</a>. 검정력이 약하거나 SNP 상관이 클수록 prior의 영향이 커지고, 잘못 정한 prior는 non-causal SNP에 큰 PIP를 줌 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a>. 결과와 함께 prior를 어떻게 넣었는지 기록.</p>
+        </div>
+        <h3 class="subhd">여러 ancestry를 함께 쓰기</h3>
+        <p class="lede">집단마다 causal과 LD로 묶인 tag SNP가 다르므로, 여러 집단의 증거를 합치면 tag SNP 신호는 흐려지고 causal 신호는 남음 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a>. 가정은 causal SNP 집합이 모든 집단에서 같고 효과 크기 차이는 허용 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a>. 다인종 PAGE 표본에서 credible set이 유의하게 좁아짐(paired t-test P = 0.01) <a class="src" href="https://doi.org/10.1038/s41586-019-1310-4" target="_blank" rel="noopener">Wojcik 2019</a></p>
+        <a class="more" href="../index.html#article/functional-annotation">Functional annotation 용어 카드 →</a>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">결과 읽기의 흔한 오해<small>Reading PIP and credible sets</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>lead SNP = causal ✗</code><p class="why">LIPC locus에서 가장 작은 p-value의 rs2043085보다 r² 0.81로 묶인 rs7350789가 causal 근거가 더 컸음 <a class="src" href="https://doi.org/10.1093/bioinformatics/btw018" target="_blank" rel="noopener">Benner 2016</a> · 위 <a href="#lead">그림 1</a></p></div>
+          <div class="fix"><code>PIP 높음 = causal 확정 ✗</code><p class="why">효과가 0이 아닌 SNP를 편의상 causal이라 부를 뿐, 통계 방법만으로 인과는 확정되지 않음 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a> · PIP 순위 = 주어진 모형과 입력 아래의 통계적 우선순위 <a class="src" href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener">Yang 2023</a> · 확정은 기능 실험</p></div>
+          <div class="fix"><code>credible set 밖 = causal 아님 ✗</code><p class="why">어떤 credible set에도 없다는 사실이 effect variable이 아니라는 뜻은 아님. 유의하지 않은 p-value가 귀무가설이 참이라는 뜻이 아닌 것과 같음 <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a> <a class="src" href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener">Yang 2023</a></p></div>
+          <div class="fix"><code>PIP만 보면 됨 ✗</code><p class="why">PIP는 변수마다 따로 낸 요약이라 "1 또는 2 중 하나"라는 묶음을 담지 못함. 완전상관 쌍이 둘이면 네 SNP의 PIP가 모두 0.5 근처 <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a> · credible set 단위로 읽기</p></div>
+          <div class="fix"><code>95% credible set = 95% 보장 ✗</code><p class="why">Bayesian 집합이라 frequentist coverage를 보장하지 않음. 시뮬레이션에서 대체로 0.90–0.95 <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a> · 바깥 LD에서는 목표 미달 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a></p></div>
+          <div class="fix"><code>SNP 하나짜리 credible set이 많을수록 좋음 ✗</code><p class="why">바깥 LD가 어긋나면 상관된 SNP가 "주변과 약하게 상관된 큰 신호"처럼 보여 PIP ≈ 1인 단독 집합이 늘어남. 이런 집합의 coverage는 나쁨 <a class="src" href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener">Yang 2023</a> · 위 <a href="#summary-ld">그림 4</a></p></div>
+          <div class="fix"><code>lead와 상관 높은 SNP만 남기고 시작 ✗</code><p class="why">상관이 높으면 어떤 SNP도 큰 PIP를 얻기 어려우므로 사전 필터링은 성급함. 상관이 낮은 SNP도 후보 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></p></div>
+          <div class="fix"><code>패널에 없는 변이도 후보에 듦 ✗</code><p class="why">fine-mapping은 데이터에 있는 변이 사이에서만 고름. <i>ARMS2/HTRA1</i> locus에서는 예전 패널에 없던 structural variant가 새 패널에서 가장 강한 연관 변이로 올라옴(imputation R² 0.89) <a class="src" href="https://doi.org/10.1038/nature15393" target="_blank" rel="noopener">1000G 2015</a></p></div>
+        </div>
+
+        <!-- ───────── 8. 방법 ───────── -->
+        <h2 id="methods">방법과 도구<small>Methods &amp; tools</small></h2>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>방법</th><th>하는 일</th><th>입력</th><th>한계 · 비고</th></tr></thead>
+            <tbody>
+              <tr><th>ABF<span class="ko">single causal</span></th><td>SNP별 Bayes factor를 정규화해 PIP와 credible set <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a></td><td>β̂ · SE 또는 z</td><td>신호가 둘 이상이면 가장 강한 것만 잡음. coloc이 같은 계산을 씀(<a href="./coloc.html#abf">coloc 페이지</a>)</td></tr>
+              <tr><th>CAVIARBF</th><td>causal 배치를 전부 열거</td><td>z + LD</td><td>causal 수가 늘면 계산량이 커짐. FINEMAP의 비교 대상 <a class="src" href="https://doi.org/10.1093/bioinformatics/btw018" target="_blank" rel="noopener">Benner 2016</a></td></tr>
+              <tr><th>FINEMAP</th><td>shotgun stochastic search로 사후확률이 높은 배치를 탐색 <a class="src" href="https://doi.org/10.1093/bioinformatics/btw018" target="_blank" rel="noopener">Benner 2016</a></td><td>z + LD</td><td>CAVIARBF보다 수천 배 빠르고 정확도 비슷 <a class="src" href="https://doi.org/10.1093/bioinformatics/btw018" target="_blank" rel="noopener">Benner 2016</a></td></tr>
+              <tr><th>SuSiE<span class="ko">susieR</span></th><td>효과 L개를 IBSS로 맞추고 효과마다 credible set <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a></td><td>개인 genotype + phenotype</td><td>같은 FDR에서 PIP 검출력 최고, FINEMAP보다 약 30배 빠름(원 논문 시뮬레이션) <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a></td></tr>
+              <tr><th>SuSiE-RSS<span class="ko"><code>susie_rss</code></span></th><td>SuSiE를 summary statistics로 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a></td><td>z + LD + N</td><td>in-sample LD면 개인 자료 결과와 같음. 바깥 LD면 진단 필요 <a class="src" href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener">Zou 2022</a></td></tr>
+              <tr><th>CARMA</th><td>annotation을 함께 모델링하고 LD 불일치 SNP를 찾아 뺌 <a class="src" href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener">Yang 2023</a></td><td>z + LD (+ annotation)</td><td>meta-analysis처럼 바깥 LD를 쓸 수밖에 없을 때</td></tr>
+              <tr><th>COJO<span class="ko">GCTA</span></th><td>stepwise 조건부 · 결합 분석으로 독립 신호 수를 셈 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a></td><td>summary statistics + LD 패널</td><td>credible set을 내지 않음. fine-mapping 앞 단계</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="lede" style="margin-top:12px">흐름: <a href="./locus-lead.html">locus와 lead variant</a> → <a href="./locus-lead.html#conditional">독립 신호 세기</a> → fine-mapping → <a href="./coloc.html">colocalization</a> · <a href="../index.html#article/variant-to-gene">variant-to-gene</a> → 기능 실험</p>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">fine-mapping · fine mapping · statistical fine-mapping · 미세 매핑 · PIP · posterior inclusion probability · credible set · 95% credible set · approximate Bayes factor · ABF · single effect regression · SER · SuSiE · SuSiE-RSS · susieR · IBSS · FINEMAP · CAVIAR · CAVIARBF · CARMA · PolyFun · PAINTOR · COJO · LD mismatch · allele flip · purity · coverage · trans-ethnic fine-mapping</p></details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>1분 요약</h3><div class="related-list">
+          <a href="../index.html#article/fine-mapping">Fine-mapping 용어 카드 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../01-genetics/ld.html">Linkage disequilibrium (그림) →</a>
+          <a href="./locus-lead.html">Locus &amp; lead variant (그림) →</a>
+          <a href="./locus-lead.html#conditional">Conditional analysis (그림) →</a>
+          <a href="./coloc.html">Colocalization (그림) →</a>
+          <a href="../index.html#article/functional-annotation">Functional annotation →</a>
+          <a href="../index.html#article/variant-to-gene">Variant-to-gene mapping →</a>
+          <a href="../02-association/manhattan.html#sumstats">GWAS summary statistics (그림) →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://stephenslab.github.io/susieR/" target="_blank" rel="noopener noreferrer">susieR 문서 ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener noreferrer">Schaid 2018, Nat Rev Genet — fine-mapping 리뷰 ↗</a>
+          <a href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener noreferrer">Pasaniuc 2016, Nat Rev Genet — summary statistics ↗</a>
+          <a href="https://doi.org/10.1093/bioinformatics/btw018" target="_blank" rel="noopener noreferrer">Benner 2016, Bioinformatics — FINEMAP ↗</a>
+          <a href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener noreferrer">Wang 2020, JRSS-B — SuSiE ↗</a>
+          <a href="https://doi.org/10.1371/journal.pgen.1010299" target="_blank" rel="noopener noreferrer">Zou 2022, PLoS Genet — SuSiE-RSS ↗</a>
+          <a href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener noreferrer">Yang 2023, Nat Genet — CARMA ↗</a>
+          <a href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener noreferrer">Yang 2012, Nat Genet — COJO ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-24<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../gwas-fig.js"></script>
+</body>
+</html>

@@ -1,13 +1,14 @@
 /* ===========================================================
-   GWAS 03 Post-GWAS 시각 페이지 전용(coloc.html …).
-   그림은 site-meta/gwas-figures/make-coloc-figures.py가 GEN 구간에 주입한다 — 훅 목록은 맨 아래.
+   GWAS 시각 페이지 공용 그림 스타일 (01-genetics · 02-association · 03-postgwas 모두).
+   2026-11-24 03-postgwas/postgwas.css에서 옮김(visual-page.md §9.2 — 두 번째 섹션이 쓰기 시작해서).
+   그림은 site-meta/gwas-figures/make-*-figures.py가 GEN 구간에 주입한다 — 훅 목록은 맨 아래.
    그림 안 의미 색(r² 단계 · PP0–PP4 · trait 1/2 · 신호 A/B)은 데이터 색이라 생성기에 둔다(design.md §2).
    =========================================================== */
 
 .g-svg { display: block; width: 100%; height: auto; min-width: 600px; }
 .g-svg text { font-family: var(--sans); }
 
-/* 모드 토글: .seg[data-fig] 버튼 → figure[data-mode] · 해당 .g-ov에 .on (postgwas.js) */
+/* 모드 토글: .seg[data-fig] 버튼 → figure[data-mode] · 해당 .g-ov에 .on (gwas-fig.js) */
 .g-ov { display: none; }
 .g-ov.on { display: inline; }
 
@@ -57,10 +58,31 @@
 .g-okband { fill: #E6F2EA; }
 .g-maskband { fill: #F4F5F6; }
 
+/* fine-mapping.html — PIP 막대(stem) · 누적 PIP 선 · 0.95 기준선 */
+.g-stem { stroke-width: 2; }
+.g-bar { stroke: none; }
+.g-cum { fill: none; stroke: var(--text); stroke-width: 1.6; }
+.g-thr { stroke: #6B736E; stroke-width: 1; stroke-dasharray: 4 3; }
+.g-sig.sm { font-size: 12px; }
+
+/* locus-lead.html — 재조합 선 · 유전자 줄 · 효과 크기 CI · 시뮬레이션에 넣은 효과 */
+.g-recomb { fill: none; stroke-width: 1.4; opacity: .75; }
+.g-gene { stroke: #6B736E; stroke-width: 1.6; }
+.g-exon { fill: #6B736E; }
+.g-ci { stroke-width: 2.4; stroke-linecap: round; }
+.g-truth { fill: #fff; stroke: var(--text); stroke-width: 1.4; }
+
+/* 01-genetics/ld.html — LD 행렬 위 블록 경계선 */
+.g-blk { stroke: #6B736E; stroke-width: .8; stroke-dasharray: 3 2; opacity: .8; }
+.g-subs { font-size: 9px; }
+
 /* 흔한 오해 목록: 제목이 한국어 문장이라 고정폭 대신 본문 글꼴 */
 .fixlist .fix code { font-family: var(--sans); font-size: .9rem; }
 
 /* ── 훅 목록 (g- 접두사 · visual-page.md §4) ──
    g-svg g-ov(.on) g-ttl(.sm) g-sub g-tick g-lab g-note(.dim .ok) g-em g-hd g-h g-hko g-cnt g-sig
    g-grid g-ax g-eq g-here g-vline(.thin) g-pt(.off) g-lead g-snp g-rowhl g-barframe g-ppv(.on)
-   g-line g-l1 g-l2 g-l3 g-dot g-pp(.main) g-okband g-maskband */
+   g-line g-l1 g-l2 g-l3 g-dot g-pp(.main) g-okband g-maskband
+   g-stem g-bar g-cum g-thr g-sig.sm (fine-mapping)
+   g-recomb g-gene g-exon g-ci g-truth (locus-lead)
+   g-blk g-subs (ld) */

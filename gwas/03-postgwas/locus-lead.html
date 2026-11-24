@@ -1,0 +1,2168 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="GWAS locus와 lead variant, regional plot 읽기, lead SNP로 조건화해 독립 신호 세기(conditional analysis · COJO), LD 때문에 가려지거나 부풀려지는 신호">
+  <title>GWAS peak 하나에 신호는 몇 개인가? · GWAS</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/spa.css">
+  <link rel="stylesheet" href="../gwas.css">
+  <link rel="stylesheet" href="../../assets/css/article.css">
+  <link rel="stylesheet" href="../gwas-fig.css">
+</head>
+<body class="vpage" data-domain="gwas">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html"><img class="mark" src="../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../index.html"><span>/ GWAS</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../gwas/index.html" aria-current="page">GWAS</a>
+        <a href="../../omics/index.html">Omics</a>
+        <a href="../../single-cell/index.html">Single-cell</a>
+        <a href="../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../disease/index.html">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../index.html">HaLab Wiki</a><span>›</span><a href="../index.html">GWAS</a><span>›</span><a href="../index.html#section/postgwas">Post-GWAS</a><span>›</span>Locus · conditional analysis</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">Post-GWAS — Signal resolution</p>
+        <h1>GWAS peak 하나에 신호는 몇 개인가?</h1>
+        <p class="definition">Locus · lead variant — genome-wide 유의 SNP 주변을 한 구간(locus)으로 묶고, 그 안에서 p-value가 가장 작은 SNP를 <b>lead(index) SNP</b>로 부름 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a>. Conditional analysis — lead SNP를 공변량으로 넣고 나머지 SNP를 다시 검정해 같은 locus의 <b>독립 신호</b>를 찾는 분석 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a></p>
+
+        <!-- ───────── 1. locus 정의 ───────── -->
+        <h2 id="locus">locus를 어디까지로 잡나<small>Defining a locus</small></h2>
+        <p class="lede">표준 흐름은 유의 SNP 목록으로 region을 정하고, region마다 LD 구조와 유전자를 본 뒤, 효과가 대략 독립인 subregion으로 나눠 하나씩 fine-mapping하는 순서 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a>. locus 경계를 정하는 공통 규칙은 없고 연구마다 다름</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>방식</th><th>예</th><th>주의</th></tr></thead>
+            <tbody>
+              <tr><th>lead 중심 고정 거리 창</th><td>lead ±500 kb(총 1 Mb) <a class="src" href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener">Yang 2023</a> · 1 Mb 안 최소 p를 lead로, 기존 locus에서 ±500 kb 밖이고 조건부 p도 5×10⁻⁸ 미만이면 새 locus <a class="src" href="https://doi.org/10.1038/s41586-019-1310-4" target="_blank" rel="noopener">Wojcik 2019</a></td><td>창 크기가 연구마다 크게 다름. FINEMAP 예제는 2 Mb · 6 Mb <a class="src" href="https://doi.org/10.1093/bioinformatics/btw018" target="_blank" rel="noopener">Benner 2016</a></td></tr>
+              <tr><th>LD clumping</th><td>1 Mb 안에서 lead끼리 r² &lt; 0.01이 되게 묶고, 묶인 SNP를 함께 넣은 joint analysis에서도 유의한 것만 남김 <a class="src" href="https://doi.org/10.1038/s41586-025-09720-6" target="_blank" rel="noopener">Wainschtein 2025</a> · MR 도구변수용 예: r² 0.001, 창 10,000 kb <a class="src" href="https://doi.org/10.7554/eLife.34408" target="_blank" rel="noopener">Hemani 2018</a></td><td>GWAS 표본과 조상이 비슷한 reference로 해야 함 <a class="src" href="https://doi.org/10.7554/eLife.34408" target="_blank" rel="noopener">Hemani 2018</a></td></tr>
+              <tr><th>haplotype block</th><td>Haploview식 block으로 SNP를 묶음 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></td><td>block 경계가 모형 파라미터 · 계산법 · marker 밀도 · allele frequency에 따라 달라짐 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></td></tr>
+              <tr><th>독립 LD block</th><td>데이터에서 추정한 대략 독립인 LD block을 경계로 씀 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a></td><td>LD 행렬을 다루기 쉽게 하려는 목적이 큼</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h4>거리만으로 자르면 안 되는 곳</h4>
+          <p>아주 긴 구간에서 SNP들이 완벽히 상관되는 곳이 있음. inversion polymorphism · 낮은 재조합률 · 자연선택 때문일 수 있음. 예: 17번 염색체의 알려진 inversion은 CEU 염색체의 20%에 있음 <a class="src" href="https://doi.org/10.1038/nature04226" target="_blank" rel="noopener">HapMap 2005</a> · HLA · <i>APOE</i>는 long-range LD와 극단적인 통계량 때문에 fine-mapping에서 따로 빼기도 함 <a class="src" href="https://doi.org/10.1038/s41588-023-01392-0" target="_blank" rel="noopener">Yang 2023</a></p>
+        </div>
+
+        <!-- ───────── 2. regional plot ───────── -->
+        <h2 id="regional">regional plot 읽기<small>LocusZoom-style plot</small></h2>
+        <p class="lede">세로축 −log₁₀ p, 가로축 염색체 위치. 점 색 = index SNP와의 r², 겹쳐 그린 선 = 그 자리의 재조합률, 아래 = 유전자 구조 <a class="src" href="https://doi.org/10.1093/bioinformatics/btq419" target="_blank" rel="noopener">Pruim 2010</a>. peak SNP는 다이아몬드, 나머지는 peak와의 LD 등급(빨강 → 주황 → 초록 → 파랑)으로 칠하는 것이 관례 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></p>
+        <figure class="fig" id="fig-regional" data-mode="A">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-regional" role="group" aria-label="index SNP">
+              <button type="button" data-mode="A" aria-pressed="true">index = 왼쪽 peak</button>
+              <button type="button" data-mode="B" aria-pressed="false">index = 오른쪽 peak</button>
+            </div>
+          </div>
+          <div class="fig-scroll" data-scroll="center">
+<!--GEN:REGIONAL-->
+<svg class="g-svg " viewBox="0 0 760 340" role="img" aria-labelledby="llregionalT llregionalD" xmlns="http://www.w3.org/2000/svg">
+<title id="llregionalT">regional plot — index SNP를 바꾸면 점 색이 바뀐다</title>
+<desc id="llregionalD">가상 locus의 regional association plot이다. 세로축은 −log10 p, 가로축은 위치, 점 색은 index SNP와의 LD(r²)다. 파란 선은 이 시뮬레이션이 재조합을 넣은 블록 경계이고, 아래 줄은 위치를 보여 주기 위한 가상 유전자다. 왼쪽 peak를 index로 두면 오른쪽 peak의 점들은 모두 회색(r² < 0.2)이라 따로 떨어진 신호로 읽힌다.</desc>
+<text class="g-ttl" x="56" y="39">GWAS 결과<tspan class="g-sub" dx="8">N = 5,000 · 정량 형질</tspan></text>
+<line class="g-grid" x1="56" x2="700" y1="220.0" y2="220.0"/>
+<text class="g-tick" x="50" y="223.5" text-anchor="end">0</text>
+<line class="g-grid" x1="56" x2="700" y1="134.0" y2="134.0"/>
+<text class="g-tick" x="50" y="137.5" text-anchor="end">15</text>
+<line class="g-grid" x1="56" x2="700" y1="48.0" y2="48.0"/>
+<text class="g-tick" x="50" y="51.5" text-anchor="end">30</text>
+<line class="g-ax" x1="56" x2="700" y1="220" y2="220"/>
+<text class="g-lab" transform="translate(22,134.0) rotate(-90)" text-anchor="middle">−log₁₀ p</text>
+<polyline class="g-recomb" points="56.0,217.2 58.1,217.2 60.3,217.2 62.4,217.2 64.6,217.2 66.7,217.2 68.9,217.2 71.0,217.2 73.2,217.2 75.3,217.2 77.5,217.2 79.6,217.2 81.8,217.2 83.9,217.2 86.1,217.2 88.2,217.2 90.3,217.2 92.5,217.2 94.6,217.2 96.8,217.2 98.9,217.2 101.1,217.2 103.2,217.2 105.4,217.2 107.5,217.2 109.7,217.2 111.8,217.2 114.0,217.2 116.1,217.2 118.3,217.2 120.4,217.2 122.5,217.2 124.7,217.2 126.8,217.2 129.0,217.2 131.1,217.2 133.3,217.2 135.4,217.2 137.6,217.2 139.7,217.2 141.9,217.2 144.0,217.2 146.2,217.2 148.3,217.2 150.5,217.2 152.6,217.2 154.7,217.2 156.9,217.2 159.0,217.2 161.2,217.2 163.3,217.0 165.5,215.2 167.6,207.8 169.8,188.7 171.9,161.6 174.1,147.8 176.2,161.6 178.4,188.7 180.5,207.8 182.7,215.2 184.8,217.0 186.9,217.2 189.1,217.2 191.2,217.2 193.4,217.2 195.5,217.2 197.7,217.2 199.8,217.2 202.0,217.2 204.1,217.2 206.3,217.2 208.4,217.2 210.6,217.2 212.7,217.2 214.9,217.2 217.0,217.2 219.1,217.2 221.3,217.2 223.4,217.2 225.6,217.2 227.7,217.2 229.9,217.2 232.0,217.2 234.2,217.2 236.3,217.2 238.5,217.2 240.6,217.2 242.8,217.2 244.9,217.2 247.1,217.2 249.2,217.2 251.3,217.2 253.5,217.2 255.6,217.2 257.8,217.2 259.9,217.2 262.1,217.2 264.2,217.2 266.4,217.2 268.5,217.2 270.7,217.2 272.8,217.2 275.0,217.2 277.1,217.2 279.3,217.2 281.4,217.2 283.5,217.2 285.7,217.2 287.8,217.2 290.0,217.2 292.1,217.2 294.3,217.2 296.4,217.2 298.6,217.2 300.7,217.2 302.9,217.0 305.0,215.2 307.2,207.8 309.3,188.7 311.5,161.6 313.6,147.8 315.7,161.6 317.9,188.7 320.0,207.8 322.2,215.2 324.3,217.0 326.5,217.2 328.6,217.2 330.8,217.2 332.9,217.2 335.1,217.2 337.2,217.2 339.4,217.2 341.5,217.2 343.7,217.2 345.8,217.2 347.9,217.2 350.1,217.2 352.2,217.2 354.4,217.2 356.5,217.2 358.7,217.2 360.8,217.2 363.0,217.2 365.1,217.2 367.3,217.2 369.4,217.2 371.6,217.2 373.7,217.2 375.9,217.2 378.0,217.2 380.1,217.2 382.3,217.2 384.4,217.2 386.6,217.2 388.7,217.2 390.9,217.2 393.0,217.2 395.2,217.2 397.3,217.2 399.5,217.0 401.6,215.2 403.8,207.8 405.9,188.7 408.1,161.6 410.2,147.8 412.3,161.6 414.5,188.7 416.6,207.8 418.8,215.2 420.9,217.0 423.1,217.2 425.2,217.2 427.4,217.2 429.5,217.2 431.7,217.2 433.8,217.2 436.0,217.2 438.1,217.2 440.3,217.2 442.4,217.2 444.5,217.2 446.7,217.2 448.8,217.2 451.0,217.2 453.1,217.2 455.3,217.2 457.4,217.2 459.6,217.2 461.7,217.2 463.9,217.2 466.0,217.2 468.2,217.2 470.3,217.2 472.5,217.2 474.6,217.2 476.7,217.2 478.9,217.2 481.0,217.2 483.2,217.2 485.3,217.2 487.5,217.2 489.6,217.2 491.8,217.2 493.9,217.2 496.1,217.2 498.2,217.2 500.4,217.2 502.5,217.2 504.7,217.2 506.8,217.2 508.9,217.2 511.1,217.2 513.2,217.2 515.4,217.2 517.5,217.2 519.7,217.2 521.8,217.2 524.0,217.2 526.1,217.2 528.3,217.2 530.4,217.2 532.6,217.2 534.7,217.2 536.9,217.2 539.0,217.2 541.1,217.2 543.3,217.2 545.4,217.2 547.6,217.2 549.7,217.0 551.9,215.2 554.0,207.8 556.2,188.7 558.3,161.6 560.5,147.8 562.6,161.6 564.8,188.7 566.9,207.8 569.1,215.2 571.2,217.0 573.3,217.2 575.5,217.2 577.6,217.2 579.8,217.2 581.9,217.2 584.1,217.2 586.2,217.2 588.4,217.2 590.5,217.2 592.7,217.2 594.8,217.2 597.0,217.2 599.1,217.2 601.3,217.2 603.4,217.2 605.5,217.2 607.7,217.2 609.8,217.2 612.0,217.2 614.1,217.2 616.3,217.2 618.4,217.2 620.6,217.2 622.7,217.2 624.9,217.2 627.0,217.2 629.2,217.2 631.3,217.2 633.5,217.2 635.6,217.2 637.7,217.2 639.9,217.2 642.0,217.2 644.2,217.2 646.3,217.2 648.5,217.2 650.6,217.2 652.8,217.2 654.9,217.2 657.1,217.2 659.2,217.2 661.4,217.2 663.5,217.2 665.7,217.2 667.8,217.2 669.9,217.2 672.1,217.2 674.2,217.2 676.4,217.2 678.5,217.2 680.7,217.2 682.8,217.2 685.0,217.2 687.1,217.2 689.3,217.2 691.4,217.2 693.6,217.2 695.7,217.2 697.9,217.2 700.0,217.2" stroke="#2F6DB5"/>
+<text class="g-lab" transform="translate(718,180.0) rotate(90)" text-anchor="middle" fill="#2F6DB5">재조합</text>
+<g class="g-ov on" data-ov="A">
+<circle class="g-pt" cx="272.9" cy="220.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="593.7" cy="220.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="689.6" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="230.0" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="83.4" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="223.9" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="130.4" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="228.7" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="295.2" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="293.5" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="269.2" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="306.2" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="308.3" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="171.1" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="597.3" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.1" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="268.3" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="672.7" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="108.8" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="487.1" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="115.5" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="181.0" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="259.7" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="90.9" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="305.9" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.6" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="229.0" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="310.0" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="249.9" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="223.0" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="145.5" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="71.7" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="127.5" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="312.4" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="308.8" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="263.8" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="671.9" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="461.1" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="233.7" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="264.2" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="586.1" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="273.3" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="227.6" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="700.0" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="248.5" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="227.9" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="310.7" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="583.1" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="303.0" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="289.5" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="70.7" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="113.7" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="295.4" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="223.4" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="285.7" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="102.7" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="263.3" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="191.2" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="254.1" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="311.8" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="270.5" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="290.3" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="416.0" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="232.2" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="675.9" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="127.1" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="249.7" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="240.6" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.7" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="251.6" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="697.3" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="628.2" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="566.9" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="235.4" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="290.3" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="78.2" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="217.1" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.4" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="204.9" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="361.6" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="235.5" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="240.0" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="172.7" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="274.0" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="201.6" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="230.7" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="259.7" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="179.4" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="245.7" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="71.1" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="233.1" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="219.0" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="115.1" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="129.8" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="240.6" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="196.5" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.6" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="151.2" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="266.8" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="213.0" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="188.6" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="145.8" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="181.3" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.5" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="203.4" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="275.4" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="676.2" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="227.2" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="212.6" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="232.7" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="81.1" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.8" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="174.0" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="188.1" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="204.3" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="59.1" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="239.2" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="186.9" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="144.3" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.3" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="251.7" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="117.6" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="192.4" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="235.7" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="82.3" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="212.2" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="361.6" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="202.5" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="131.7" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="122.4" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="142.6" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.0" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="193.2" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="99.9" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="214.0" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="592.1" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="162.9" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="209.0" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="592.8" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="210.4" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="196.1" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="609.9" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="92.5" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="148.4" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="98.8" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="197.8" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="596.4" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="148.7" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="619.6" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="342.3" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="102.3" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="694.3" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="588.9" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="684.0" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="170.7" cy="217.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="137.9" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="638.3" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="112.3" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="644.7" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="620.8" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="169.9" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="686.6" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="90.8" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.0" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="157.7" cy="217.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="655.9" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="90.0" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="519.3" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="324.9" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="103.4" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="201.6" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="637.9" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="98.5" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="127.4" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="673.3" cy="216.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="693.5" cy="216.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="350.7" cy="216.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="560.3" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="87.0" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="331.0" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="118.1" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="612.6" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="102.1" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.0" cy="216.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="149.5" cy="216.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="114.3" cy="216.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="649.2" cy="215.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="167.1" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="390.0" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="156.0" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="323.5" cy="215.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="623.5" cy="215.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="146.8" cy="215.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.0" cy="214.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="620.6" cy="214.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="612.3" cy="214.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="659.7" cy="214.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="632.9" cy="214.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="396.8" cy="213.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="556.1" cy="213.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="618.6" cy="213.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="652.0" cy="213.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="675.7" cy="213.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="602.7" cy="213.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="612.0" cy="213.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="663.2" cy="213.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="410.1" cy="213.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="392.2" cy="212.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="155.3" cy="212.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="402.6" cy="212.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="442.1" cy="212.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="651.7" cy="212.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="664.6" cy="212.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="607.4" cy="212.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="662.4" cy="212.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="380.2" cy="212.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="592.5" cy="212.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="602.6" cy="212.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="347.5" cy="211.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="458.2" cy="211.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="393.8" cy="211.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="665.1" cy="210.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="688.3" cy="210.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="364.3" cy="210.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="376.4" cy="210.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="417.3" cy="210.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="693.4" cy="210.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="362.1" cy="209.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="459.7" cy="209.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="565.2" cy="209.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="393.0" cy="209.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="394.4" cy="209.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="371.5" cy="209.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="578.9" cy="209.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="369.7" cy="208.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="364.2" cy="208.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="577.2" cy="207.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="670.8" cy="207.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="675.5" cy="207.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="390.8" cy="206.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="339.9" cy="206.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="335.5" cy="206.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="341.2" cy="206.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="351.3" cy="206.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="403.9" cy="206.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="429.0" cy="206.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="430.3" cy="205.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="586.4" cy="205.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="336.5" cy="204.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="426.4" cy="204.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="328.9" cy="204.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="329.3" cy="204.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="418.2" cy="204.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="588.2" cy="203.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="432.9" cy="203.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="321.6" cy="203.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="412.6" cy="202.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="480.6" cy="201.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="411.0" cy="201.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="442.5" cy="201.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="314.0" cy="201.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="501.2" cy="201.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="408.1" cy="200.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="427.5" cy="200.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="453.4" cy="199.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="439.2" cy="199.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="452.8" cy="198.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="450.1" cy="198.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="388.0" cy="198.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="475.6" cy="198.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="483.3" cy="197.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="465.9" cy="196.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="497.3" cy="196.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="448.1" cy="196.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="416.1" cy="196.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="508.6" cy="195.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="488.2" cy="195.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="442.9" cy="195.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="465.4" cy="195.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="523.8" cy="195.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="469.3" cy="194.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="512.9" cy="194.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="509.2" cy="194.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="514.8" cy="193.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="461.5" cy="193.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="512.3" cy="192.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="349.5" cy="191.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="472.5" cy="191.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="334.7" cy="190.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="521.6" cy="190.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="516.8" cy="189.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="356.6" cy="188.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="536.3" cy="188.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="408.9" cy="187.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="549.5" cy="186.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="538.3" cy="186.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="396.3" cy="186.4" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="494.3" cy="186.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="507.6" cy="185.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="556.8" cy="185.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="554.6" cy="183.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="499.7" cy="183.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="400.0" cy="182.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="538.6" cy="182.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="405.4" cy="182.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="429.2" cy="181.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="524.2" cy="181.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="521.6" cy="181.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="426.5" cy="180.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="453.1" cy="179.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="523.5" cy="179.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="506.6" cy="178.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="372.5" cy="178.2" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="520.7" cy="177.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="416.5" cy="177.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="364.8" cy="177.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="447.0" cy="174.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="543.2" cy="173.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="401.1" cy="172.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="411.3" cy="172.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="437.4" cy="172.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="539.7" cy="171.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="440.3" cy="171.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="476.1" cy="170.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="516.2" cy="167.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="525.6" cy="165.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="387.0" cy="161.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="332.9" cy="160.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="355.4" cy="160.0" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="323.1" cy="159.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="334.1" cy="158.1" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="504.5" cy="157.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="539.8" cy="152.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="550.6" cy="151.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="346.1" cy="148.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="317.0" cy="147.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="534.6" cy="138.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="539.4" cy="128.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="548.7" cy="122.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="349.1" cy="103.6" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="317.2" cy="98.8" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="347.2" cy="95.9" r="3.1" fill="#D2453B"/>
+<path class="g-lead" d="M334.6,72.8L340.1,78.3L334.6,83.8L329.1,78.3Z"/>
+<text class="g-note" x="343.6" y="82.3">index SNP</text>
+<text class="g-note" x="557.7" y="126.1">index와 r² 0.00</text>
+</g>
+<g class="g-ov" data-ov="B">
+<circle class="g-pt" cx="272.9" cy="220.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="593.7" cy="220.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="689.6" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="230.0" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="83.4" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="223.9" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="130.4" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="228.7" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="295.2" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="293.5" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="269.2" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="306.2" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="308.3" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="171.1" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="597.3" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.1" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="268.3" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="672.7" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="108.8" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="487.1" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="115.5" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="181.0" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="259.7" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="90.9" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="305.9" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.6" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="229.0" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="310.0" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="249.9" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="223.0" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="145.5" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="71.7" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="127.5" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="312.4" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="308.8" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="263.8" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="671.9" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="461.1" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="233.7" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="264.2" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="586.1" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="273.3" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="227.6" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="700.0" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="248.5" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="227.9" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="310.7" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="583.1" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="303.0" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="289.5" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="70.7" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="113.7" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="295.4" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="223.4" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="285.7" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="102.7" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="263.3" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="191.2" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="254.1" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="311.8" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="270.5" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="290.3" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="416.0" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="232.2" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="675.9" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="127.1" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="249.7" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="240.6" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.7" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="251.6" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="697.3" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="628.2" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="566.9" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="235.4" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="290.3" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="78.2" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="217.1" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.4" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="204.9" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="361.6" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="235.5" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="240.0" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="172.7" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="274.0" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="201.6" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="230.7" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="259.7" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="179.4" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="245.7" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="71.1" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="233.1" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="219.0" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="115.1" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="129.8" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="240.6" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="196.5" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.6" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="151.2" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="266.8" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="213.0" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="188.6" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="145.8" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="181.3" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.5" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="203.4" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="275.4" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="676.2" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="227.2" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="212.6" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="232.7" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="81.1" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.8" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="174.0" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="188.1" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="204.3" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="59.1" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="239.2" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="186.9" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="144.3" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.3" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="251.7" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="117.6" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="192.4" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="235.7" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="82.3" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="212.2" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="361.6" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="202.5" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="131.7" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="122.4" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="142.6" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.0" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="193.2" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="99.9" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="214.0" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="592.1" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="162.9" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="209.0" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="592.8" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="210.4" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="196.1" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="609.9" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="92.5" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="148.4" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="98.8" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="197.8" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="596.4" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="148.7" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="619.6" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="342.3" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="102.3" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="694.3" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="588.9" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="684.0" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="170.7" cy="217.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="137.9" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="638.3" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="112.3" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="644.7" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="620.8" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="169.9" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="686.6" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="90.8" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.0" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="157.7" cy="217.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="655.9" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="90.0" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="519.3" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="324.9" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="103.4" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="201.6" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="637.9" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="98.5" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="127.4" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="673.3" cy="216.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="693.5" cy="216.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="350.7" cy="216.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="560.3" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="87.0" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="331.0" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="118.1" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="612.6" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="102.1" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.0" cy="216.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="149.5" cy="216.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="114.3" cy="216.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="649.2" cy="215.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="167.1" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="390.0" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="156.0" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="323.5" cy="215.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="623.5" cy="215.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="146.8" cy="215.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.0" cy="214.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="620.6" cy="214.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="612.3" cy="214.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="659.7" cy="214.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="632.9" cy="214.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="396.8" cy="213.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="556.1" cy="213.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="618.6" cy="213.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="652.0" cy="213.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="675.7" cy="213.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="602.7" cy="213.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="612.0" cy="213.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="663.2" cy="213.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="410.1" cy="213.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="392.2" cy="212.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="155.3" cy="212.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="402.6" cy="212.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="442.1" cy="212.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="651.7" cy="212.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="664.6" cy="212.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="607.4" cy="212.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="662.4" cy="212.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="380.2" cy="212.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="592.5" cy="212.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="602.6" cy="212.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="347.5" cy="211.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="458.2" cy="211.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="393.8" cy="211.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="665.1" cy="210.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="688.3" cy="210.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="364.3" cy="210.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="376.4" cy="210.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="417.3" cy="210.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="693.4" cy="210.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="362.1" cy="209.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="459.7" cy="209.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="565.2" cy="209.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="393.0" cy="209.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="394.4" cy="209.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="371.5" cy="209.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="578.9" cy="209.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="369.7" cy="208.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="364.2" cy="208.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="577.2" cy="207.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="670.8" cy="207.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="675.5" cy="207.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="390.8" cy="206.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="339.9" cy="206.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="335.5" cy="206.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="341.2" cy="206.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="351.3" cy="206.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="403.9" cy="206.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="429.0" cy="206.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="430.3" cy="205.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="586.4" cy="205.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="336.5" cy="204.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="426.4" cy="204.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="328.9" cy="204.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="329.3" cy="204.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="418.2" cy="204.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="588.2" cy="203.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="432.9" cy="203.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="321.6" cy="203.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="412.6" cy="202.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="480.6" cy="201.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="411.0" cy="201.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="442.5" cy="201.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="314.0" cy="201.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="501.2" cy="201.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="408.1" cy="200.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="427.5" cy="200.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="453.4" cy="199.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="439.2" cy="199.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="452.8" cy="198.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="450.1" cy="198.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="388.0" cy="198.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="475.6" cy="198.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="483.3" cy="197.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="465.9" cy="196.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="497.3" cy="196.7" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="448.1" cy="196.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="416.1" cy="196.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="508.6" cy="195.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="488.2" cy="195.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="442.9" cy="195.4" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="465.4" cy="195.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="523.8" cy="195.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="469.3" cy="194.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="512.9" cy="194.4" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="509.2" cy="194.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="514.8" cy="193.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="461.5" cy="193.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="512.3" cy="192.2" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="349.5" cy="191.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="472.5" cy="191.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="334.7" cy="190.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="521.6" cy="190.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="516.8" cy="189.4" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="356.6" cy="188.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="536.3" cy="188.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="408.9" cy="187.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="549.5" cy="186.7" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="538.3" cy="186.7" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="396.3" cy="186.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="494.3" cy="186.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="507.6" cy="185.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="556.8" cy="185.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="554.6" cy="183.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="499.7" cy="183.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="400.0" cy="182.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="538.6" cy="182.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="405.4" cy="182.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="429.2" cy="181.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="524.2" cy="181.4" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="521.6" cy="181.1" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="426.5" cy="180.5" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="453.1" cy="179.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="523.5" cy="179.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="506.6" cy="178.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="372.5" cy="178.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="520.7" cy="177.8" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="416.5" cy="177.1" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="364.8" cy="177.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="447.0" cy="174.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="543.2" cy="173.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="401.1" cy="172.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="411.3" cy="172.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="437.4" cy="172.0" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="539.7" cy="171.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="440.3" cy="171.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="476.1" cy="170.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="516.2" cy="167.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="525.6" cy="165.3" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="387.0" cy="161.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="332.9" cy="160.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="355.4" cy="160.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="323.1" cy="159.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="334.1" cy="158.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="504.5" cy="157.2" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="539.8" cy="152.8" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="550.6" cy="151.0" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="346.1" cy="148.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="317.0" cy="147.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="534.6" cy="138.3" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="539.4" cy="128.7" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="349.1" cy="103.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="317.2" cy="98.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="347.2" cy="95.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="334.6" cy="78.3" r="3.1" fill="#C5CCD3"/>
+<path class="g-lead" d="M548.7,116.6L554.2,122.1L548.7,127.6L543.2,122.1Z"/>
+<text class="g-note" x="557.7" y="126.1">index SNP</text>
+<text class="g-note" x="343.6" y="82.3">index와 r² 0.00</text>
+</g>
+<text class="g-ttl sm" x="56" y="248">유전자<tspan class="g-sub" dx="8">가상 · 위치 예시</tspan></text>
+<line class="g-gene" x1="75.3" x2="154.7" y1="262" y2="262"/>
+<rect class="g-exon" x="72.3" y="257" width="6" height="10"/>
+<rect class="g-exon" x="98.8" y="257" width="6" height="10"/>
+<rect class="g-exon" x="125.3" y="257" width="6" height="10"/>
+<rect class="g-exon" x="151.7" y="257" width="6" height="10"/>
+<path class="g-exon" d="M154.7,262l-6,-4v8z"/>
+<text class="g-note" x="115.0" y="280" text-anchor="middle">G1</text>
+<line class="g-gene" x1="193.4" x2="276.0" y1="262" y2="262"/>
+<rect class="g-exon" x="190.4" y="257" width="6" height="10"/>
+<rect class="g-exon" x="217.9" y="257" width="6" height="10"/>
+<rect class="g-exon" x="245.5" y="257" width="6" height="10"/>
+<rect class="g-exon" x="273.0" y="257" width="6" height="10"/>
+<path class="g-exon" d="M193.4,262l6,-4v8z"/>
+<text class="g-note" x="234.7" y="280" text-anchor="middle">G2</text>
+<line class="g-gene" x1="337.2" x2="397.3" y1="262" y2="262"/>
+<rect class="g-exon" x="334.2" y="257" width="6" height="10"/>
+<rect class="g-exon" x="354.2" y="257" width="6" height="10"/>
+<rect class="g-exon" x="374.3" y="257" width="6" height="10"/>
+<rect class="g-exon" x="394.3" y="257" width="6" height="10"/>
+<path class="g-exon" d="M397.3,262l-6,-4v8z"/>
+<text class="g-note" x="367.3" y="280" text-anchor="middle">G3</text>
+<line class="g-gene" x1="433.8" x2="544.4" y1="262" y2="262"/>
+<rect class="g-exon" x="430.8" y="257" width="6" height="10"/>
+<rect class="g-exon" x="467.7" y="257" width="6" height="10"/>
+<rect class="g-exon" x="504.5" y="257" width="6" height="10"/>
+<rect class="g-exon" x="541.4" y="257" width="6" height="10"/>
+<path class="g-exon" d="M433.8,262l6,-4v8z"/>
+<text class="g-note" x="489.1" y="280" text-anchor="middle">G4</text>
+<line class="g-gene" x1="598.0" x2="676.4" y1="262" y2="262"/>
+<rect class="g-exon" x="595.0" y="257" width="6" height="10"/>
+<rect class="g-exon" x="621.2" y="257" width="6" height="10"/>
+<rect class="g-exon" x="647.3" y="257" width="6" height="10"/>
+<rect class="g-exon" x="673.4" y="257" width="6" height="10"/>
+<path class="g-exon" d="M676.4,262l-6,-4v8z"/>
+<text class="g-note" x="637.2" y="280" text-anchor="middle">G5</text>
+<line class="g-ax" x1="56" x2="700" y1="288" y2="288"/>
+<line class="g-ax" x1="56.0" x2="56.0" y1="288" y2="292"/>
+<text class="g-tick" x="56.0" y="303" text-anchor="middle">0</text>
+<line class="g-ax" x1="163.3" x2="163.3" y1="288" y2="292"/>
+<text class="g-tick" x="163.3" y="303" text-anchor="middle">100</text>
+<line class="g-ax" x1="270.7" x2="270.7" y1="288" y2="292"/>
+<text class="g-tick" x="270.7" y="303" text-anchor="middle">200</text>
+<line class="g-ax" x1="378.0" x2="378.0" y1="288" y2="292"/>
+<text class="g-tick" x="378.0" y="303" text-anchor="middle">300</text>
+<line class="g-ax" x1="485.3" x2="485.3" y1="288" y2="292"/>
+<text class="g-tick" x="485.3" y="303" text-anchor="middle">400</text>
+<line class="g-ax" x1="592.7" x2="592.7" y1="288" y2="292"/>
+<text class="g-tick" x="592.7" y="303" text-anchor="middle">500</text>
+<line class="g-ax" x1="700.0" x2="700.0" y1="288" y2="292"/>
+<text class="g-tick" x="700.0" y="303" text-anchor="middle">600</text>
+<text class="g-lab" x="378.0" y="320" text-anchor="middle">위치 (kb) · 가상 locus</text>
+<text class="g-note" x="56" y="8">색 = index SNP(◆)와의 r²</text>
+<circle cx="61" cy="19" r="4" fill="#C5CCD3"/>
+<text class="g-note" x="69" y="23">< 0.2</text>
+<circle cx="127" cy="19" r="4" fill="#7FB2DD"/>
+<text class="g-note" x="135" y="23">0.2–0.4</text>
+<circle cx="193" cy="19" r="4" fill="#7DAE58"/>
+<text class="g-note" x="201" y="23">0.4–0.6</text>
+<circle cx="259" cy="19" r="4" fill="#E8913A"/>
+<text class="g-note" x="267" y="23">0.6–0.8</text>
+<circle cx="325" cy="19" r="4" fill="#D2453B"/>
+<text class="g-note" x="333" y="23">0.8–1</text>
+<line x1="470" x2="492" y1="15" y2="15" stroke="#2F6DB5" stroke-width="1.6"/><text class="g-note" x="497" y="19">재조합</text>
+</svg>
+<!--/GEN:REGIONAL-->
+          </div>
+          <figcaption>
+            seed 고정 시뮬레이션의 가상 locus(SNP <!--GEN:N_HERE-->343<!--/GEN:N_HERE-->개). <a href="./fine-mapping.html#multiple">fine-mapping 페이지</a> 그림 3과 같은 형질(신호 둘) · 파란 선 = 이 시뮬레이션이 재조합을 넣은 블록 경계(cM/Mb 값 아님) · 유전자 G1–G5는 위치를 보여 주려고 넣은 가상 유전자.
+          </figcaption>
+        </figure>
+        <div class="callout blue">
+          <h4>그림에서 볼 것</h4>
+          <p><b>신호 폭</b> = index SNP와 LD로 함께 끌려 올라온 범위. 재조합 지점(파란 선 봉우리)에서 색이 끊김. index와 약하게만 상관된 강한 연관 SNP가 보이면 같은 locus에 독립 신호가 둘 이상일 수 있음 <a class="src" href="https://doi.org/10.1093/bioinformatics/btq419" target="_blank" rel="noopener">Pruim 2010</a>. 이 그림에서 두 peak 사이 r²는 <!--GEN:R1_R2-->0.00<!--/GEN:R1_R2-->. 다만 그림은 힌트일 뿐이고, 신호 수는 <a href="#conditional">조건부 분석</a>으로 셈.</p>
+        </div>
+        <div class="callout">
+          <h4>점 색의 r²는 내 표본의 LD가 아님</h4>
+          <p>색은 참조 패널에서 계산한 LD. Pruim 2010 당시 선택지는 HapMap Phase II의 CEU · YRI · JPT+CHB와 1000 Genomes CEU <a class="src" href="https://doi.org/10.1093/bioinformatics/btq419" target="_blank" rel="noopener">Pruim 2010</a> · 같은 locus도 imputation 패널(HapMap 2 · 1000G phase 3 · HRC)에 따라 보이는 변이와 peak 모양이 달라짐 <a class="src" href="https://doi.org/10.1038/ng.3643" target="_blank" rel="noopener">McCarthy 2016</a> · GWAS Catalog 대표 변이 하나당 LD proxy 수가 AFR 평균 14.4개, 다른 대륙군 30.3–44.4개 <a class="src" href="https://doi.org/10.1038/nature15393" target="_blank" rel="noopener">1000G 2015</a>. 신호 폭과 후보 목록이 참조 집단에 따라 달라짐</p>
+        </div>
+
+        <!-- ───────── 3. 조건부 분석 ───────── -->
+        <h2 id="conditional">lead로 조건화하면 남는 신호<small>Conditional analysis</small></h2>
+        <p class="lede">lead SNP를 공변량으로 넣고 region의 나머지 SNP를 다시 검정. 유의한 secondary SNP가 나오면 그것도 공변량에 더하고, 더 이상 유의한 조건부 검정이 없을 때까지 반복 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a>. 하나의 causal과 상관된 SNP들은 한 번에 하나씩 보면 모두 연관돼 보이지만, 함께 모형에 넣으면 causal만 남는 것이 기대 결과 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></p>
+        <figure class="fig" id="fig-steps" data-mode="s0">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-steps" role="group" aria-label="단계">
+              <button type="button" data-mode="s0" aria-pressed="true">조건 없음</button>
+              <button type="button" data-mode="s1" aria-pressed="false">1번째로 조건화</button>
+              <button type="button" data-mode="s2" aria-pressed="false">1 · 2번째로 조건화</button>
+            </div>
+          </div>
+          <div class="fig-scroll" data-scroll="end">
+<!--GEN:STEPS-->
+<svg class="g-svg " viewBox="0 0 760 270" role="img" aria-labelledby="llstepsT llstepsD" xmlns="http://www.w3.org/2000/svg">
+<title id="llstepsT">lead SNP로 차례로 조건화하면 남는 신호</title>
+<desc id="llstepsD">같은 가상 locus에서 causal 변이 둘이 한 블록 안에 있는 형질이다. 단일 SNP 분석에서는 peak 하나만 보인다. 1번째 선택 SNP로 조건화하면 그 peak가 사라지고, 단일 분석에서 거의 보이지 않던 두 번째 신호가 genome-wide 기준을 넘는다. 두 SNP로 조건화하면 기준을 넘는 SNP가 남지 않아 선택이 멈춘다.</desc>
+<text class="g-lab" transform="translate(22,130.0) rotate(-90)" text-anchor="middle">−log₁₀ p</text>
+<line class="g-ax" x1="56.0" x2="56.0" y1="220" y2="224"/>
+<text class="g-tick" x="56.0" y="235" text-anchor="middle">0</text>
+<line class="g-ax" x1="170.3" x2="170.3" y1="220" y2="224"/>
+<text class="g-tick" x="170.3" y="235" text-anchor="middle">100</text>
+<line class="g-ax" x1="284.7" x2="284.7" y1="220" y2="224"/>
+<text class="g-tick" x="284.7" y="235" text-anchor="middle">200</text>
+<line class="g-ax" x1="399.0" x2="399.0" y1="220" y2="224"/>
+<text class="g-tick" x="399.0" y="235" text-anchor="middle">300</text>
+<line class="g-ax" x1="513.3" x2="513.3" y1="220" y2="224"/>
+<text class="g-tick" x="513.3" y="235" text-anchor="middle">400</text>
+<line class="g-ax" x1="627.7" x2="627.7" y1="220" y2="224"/>
+<text class="g-tick" x="627.7" y="235" text-anchor="middle">500</text>
+<line class="g-ax" x1="742.0" x2="742.0" y1="220" y2="224"/>
+<text class="g-tick" x="742.0" y="235" text-anchor="middle">600</text>
+<text class="g-lab" x="399.0" y="252" text-anchor="middle">위치 (kb) · 가상 locus</text>
+<line class="g-grid" x1="56" x2="742" y1="220.0" y2="220.0"/>
+<text class="g-tick" x="50" y="223.5" text-anchor="end">0</text>
+<line class="g-grid" x1="56" x2="742" y1="130.0" y2="130.0"/>
+<text class="g-tick" x="50" y="133.5" text-anchor="end">10</text>
+<line class="g-grid" x1="56" x2="742" y1="40.0" y2="40.0"/>
+<text class="g-tick" x="50" y="43.5" text-anchor="end">20</text>
+<line class="g-ax" x1="56" x2="742" y1="220" y2="220"/>
+<line class="g-thr" x1="56" x2="742" y1="154.3" y2="154.3"/>
+<text class="g-note" x="60" y="149.3">p = 5×10⁻⁸</text>
+<g class="g-ov on" data-ov="s0">
+<text class="g-ttl" x="56" y="26">조건 없음(단일 SNP 분석)<tspan class="g-sub" dx="8">COJO · reference 3,000명의 LD</tspan></text>
+<circle class="g-pt" cx="238.4" cy="220.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="119.4" cy="220.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="85.2" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.5" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="134.6" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="277.3" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.6" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="212.1" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="219.0" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="273.0" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="211.1" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="725.0" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="213.0" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="157.4" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="223.2" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.6" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="136.7" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="214.0" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="135.3" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.0" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="196.7" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="214.6" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="189.4" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="411.8" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="227.6" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="143.2" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="258.1" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="154.4" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="148.3" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="154.7" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="275.8" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="222.4" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="151.7" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="238.8" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="178.6" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="300.7" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="690.6" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="729.5" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="200.0" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="704.3" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="79.6" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="131.7" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="205.2" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="702.8" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="239.9" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="342.4" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="280.5" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="178.2" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="180.3" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="289.7" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="349.0" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="264.4" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="234.3" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="177.4" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="197.2" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.7" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="207.1" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.1" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="93.1" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="201.3" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="162.5" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="243.7" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.6" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.5" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="414.2" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="211.1" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="224.3" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="245.3" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="267.0" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="381.6" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="251.1" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="241.4" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="155.6" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.1" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="284.5" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="181.6" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="220.5" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.4" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="239.1" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="690.9" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="242.1" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.3" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.3" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="370.6" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="665.5" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="205.6" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="704.9" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="118.9" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="360.9" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.7" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.6" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="276.8" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="132.1" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="169.8" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="164.3" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="742.0" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="150.1" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="106.5" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="288.2" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="121.6" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="122.1" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="701.9" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="699.0" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.5" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="222.8" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.2" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.6" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="309.0" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="265.4" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="322.2" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="174.3" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="229.6" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.1" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="318.1" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="277.8" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="72.1" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="89.0" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="283.1" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="712.9" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="638.4" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="244.3" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="376.2" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="408.6" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="261.0" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="202.2" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="234.9" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="425.2" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="187.5" cy="217.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="340.9" cy="217.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.5" cy="217.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="638.2" cy="217.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="319.1" cy="217.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="657.4" cy="217.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="104.8" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="103.9" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="94.9" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="82.8" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.4" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="310.8" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="322.5" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="311.1" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.0" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="412.6" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="739.1" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.3" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="152.7" cy="217.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="353.7" cy="217.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="117.4" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="366.6" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="423.6" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="325.3" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="244.7" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="324.7" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.2" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="354.7" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="409.7" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="104.0" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="151.4" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="305.6" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="397.3" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="359.8" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="712.1" cy="217.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="305.6" cy="217.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="368.7" cy="217.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="328.5" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="233.9" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="433.2" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="161.8" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="240.3" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="93.1" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="330.8" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="643.4" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="382.1" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="92.2" cy="216.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.1" cy="216.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="515.2" cy="216.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="116.0" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="392.1" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="414.9" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="72.7" cy="216.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="401.3" cy="216.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="329.2" cy="216.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="439.5" cy="216.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="416.5" cy="215.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="327.4" cy="215.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="655.3" cy="215.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="132.2" cy="215.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="419.1" cy="215.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.0" cy="215.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="358.4" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.3" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="84.0" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="334.0" cy="215.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="390.1" cy="215.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="195.4" cy="215.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="59.3" cy="215.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="102.8" cy="215.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="715.9" cy="215.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="118.1" cy="215.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="632.6" cy="215.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="646.1" cy="214.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="368.2" cy="214.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="366.2" cy="214.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="71.7" cy="214.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="189.1" cy="214.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="670.5" cy="214.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="346.7" cy="214.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="264.5" cy="214.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="730.9" cy="214.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="660.5" cy="214.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="282.2" cy="214.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.7" cy="214.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="687.9" cy="214.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="426.6" cy="214.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="676.3" cy="214.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.9" cy="214.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="352.9" cy="214.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="112.2" cy="214.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="683.1" cy="214.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="431.9" cy="213.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="613.0" cy="213.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="326.6" cy="213.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="631.7" cy="213.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="393.1" cy="213.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="273.0" cy="213.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="620.6" cy="213.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="588.8" cy="213.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="338.9" cy="213.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="593.2" cy="213.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="369.9" cy="213.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="710.9" cy="213.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="347.1" cy="213.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="713.6" cy="213.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="415.9" cy="213.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="374.9" cy="212.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="656.3" cy="212.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="352.8" cy="212.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="600.3" cy="212.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.1" cy="212.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="126.7" cy="212.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="334.3" cy="212.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.9" cy="212.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="727.7" cy="212.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="381.6" cy="212.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="617.5" cy="211.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.0" cy="211.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="431.0" cy="211.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="664.9" cy="211.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="675.8" cy="211.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="365.1" cy="211.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="611.2" cy="211.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.8" cy="211.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="549.6" cy="211.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="428.2" cy="210.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="487.6" cy="210.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="304.8" cy="210.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.1" cy="210.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="622.9" cy="209.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.9" cy="209.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="422.5" cy="209.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="418.5" cy="209.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="352.2" cy="209.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="621.0" cy="209.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="695.1" cy="207.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="598.4" cy="206.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="623.7" cy="206.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="350.9" cy="206.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="340.5" cy="205.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="464.1" cy="205.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="628.7" cy="203.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.5" cy="202.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="657.6" cy="202.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="453.4" cy="201.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="439.5" cy="196.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="451.7" cy="194.7" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="468.1" cy="194.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="441.9" cy="189.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="435.9" cy="189.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="487.9" cy="188.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="454.7" cy="186.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="479.4" cy="186.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="450.5" cy="184.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="467.7" cy="183.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="503.0" cy="183.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="457.5" cy="183.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="508.3" cy="183.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="499.7" cy="180.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="473.7" cy="180.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="475.8" cy="180.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="434.2" cy="179.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="544.7" cy="178.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="492.6" cy="177.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="542.7" cy="177.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="526.0" cy="176.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="478.7" cy="176.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="530.3" cy="175.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="492.1" cy="175.2" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="496.3" cy="174.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="453.5" cy="174.0" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="511.1" cy="173.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="479.0" cy="172.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="528.6" cy="172.0" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="538.2" cy="171.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="522.9" cy="170.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="546.9" cy="170.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="537.0" cy="169.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="542.0" cy="169.2" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="538.7" cy="168.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="434.5" cy="168.0" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="516.3" cy="167.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="552.0" cy="166.2" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="554.0" cy="165.0" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="571.3" cy="163.2" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="484.4" cy="162.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="552.0" cy="161.7" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="440.0" cy="161.2" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="575.0" cy="160.5" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="472.5" cy="159.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="503.5" cy="159.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="450.6" cy="159.2" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="440.9" cy="158.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="551.0" cy="157.4" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="554.7" cy="156.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="554.3" cy="154.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="465.4" cy="153.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="589.4" cy="151.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="587.1" cy="151.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="467.3" cy="150.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="581.7" cy="150.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="486.0" cy="149.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="536.0" cy="148.8" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="567.6" cy="147.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="546.3" cy="147.2" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="569.7" cy="146.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="570.1" cy="146.4" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="462.3" cy="143.1" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="556.3" cy="132.7" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="582.8" cy="120.6" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="571.3" cy="119.6" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="533.7" cy="106.9" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="565.8" cy="69.7" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="580.9" cy="68.6" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="570.9" cy="62.5" r="3.1" fill="#D2453B"/>
+<path class="g-lead" d="M570.9,56.5L576.9,62.5L570.9,68.5L564.9,62.5Z"/>
+<text class="g-note" x="560.9" y="66.5" text-anchor="end">1번째 선택 · −log₁₀p 17.5</text>
+</g>
+<g class="g-ov" data-ov="s1">
+<text class="g-ttl" x="56" y="26">1번째 선택 SNP로 조건화<tspan class="g-sub" dx="8">COJO · reference 3,000명의 LD</tspan></text>
+<circle class="g-pt off" cx="565.8" cy="220.0" r="3.1"/>
+<circle class="g-pt off" cx="570.9" cy="220.0" r="3.1"/>
+<circle class="g-pt off" cx="580.9" cy="220.0" r="3.1"/>
+<circle class="g-pt" cx="593.2" cy="220.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="588.8" cy="220.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="508.3" cy="219.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="702.8" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="135.3" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="205.6" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.6" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="439.5" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="134.6" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="542.7" cy="219.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="280.5" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="119.4" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="178.6" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="411.8" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="154.7" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="454.7" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="201.3" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="725.0" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="197.2" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="227.6" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="211.1" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="441.9" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="154.4" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="151.7" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="503.0" cy="219.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="479.4" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="544.7" cy="219.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="690.6" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="131.7" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="342.4" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="136.7" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="276.8" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="178.2" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="435.9" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="148.3" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="381.6" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="205.2" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="467.7" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.7" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="79.6" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="177.4" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="196.7" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="729.5" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="704.3" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.4" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.6" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="349.0" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="222.4" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="162.5" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="202.2" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="370.6" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="277.3" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="214.6" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="414.2" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="273.0" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="526.0" cy="219.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="214.0" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="72.1" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="223.2" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="530.3" cy="219.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="85.2" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="121.6" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="150.1" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="712.9" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="546.9" cy="219.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="187.5" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.5" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="89.0" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="118.9" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="704.9" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="289.7" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="213.0" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="238.4" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="219.0" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="143.2" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="638.4" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="180.3" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="742.0" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="157.4" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.6" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="300.7" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="690.9" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="457.5" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="515.2" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="739.1" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="538.2" cy="218.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="211.1" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="275.8" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="155.6" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="82.8" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.1" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="475.8" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.3" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="104.8" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="164.3" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="701.9" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="549.6" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="93.1" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="450.5" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="360.9" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.0" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="181.6" cy="218.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="238.8" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="492.6" cy="218.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="189.4" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="212.1" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="242.1" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="408.6" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="665.5" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="264.4" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="473.7" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="132.1" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="258.1" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="267.0" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="174.3" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="200.0" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.6" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="122.1" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.6" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.5" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="106.5" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="169.8" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="699.0" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="542.0" cy="218.2" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="384.4" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="533.7" cy="218.1" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="234.3" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="224.3" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="243.7" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="638.2" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="284.5" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="423.6" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="239.9" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="376.2" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="368.7" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.7" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="657.4" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="354.7" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="207.1" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="288.2" cy="217.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.1" cy="217.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="425.2" cy="217.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="353.7" cy="217.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="496.3" cy="217.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="220.5" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="511.1" cy="217.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="287.5" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.3" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="241.4" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="117.4" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="239.1" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="712.1" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="478.7" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.3" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="251.1" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="366.6" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="359.8" cy="217.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="309.0" cy="217.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="538.7" cy="217.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="104.0" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="322.2" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="551.0" cy="217.4" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="233.9" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.0" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="492.1" cy="217.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="265.4" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="283.1" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="643.4" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="487.6" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="245.3" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="229.6" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="277.8" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="103.9" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="340.9" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="222.8" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.1" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="94.9" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="330.8" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="328.5" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="161.8" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="151.4" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="152.7" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="318.1" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="397.3" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="132.2" cy="217.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="412.6" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.2" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="582.8" cy="216.9" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="382.1" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.1" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="552.0" cy="216.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="101.2" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="319.1" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="234.9" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="554.7" cy="216.6" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="261.0" cy="216.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="409.7" cy="216.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="334.0" cy="216.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="311.1" cy="216.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="522.9" cy="216.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="322.5" cy="216.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="325.3" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="310.8" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="434.2" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="93.1" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="401.3" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="392.1" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="116.0" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="462.3" cy="216.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="244.3" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.5" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="655.3" cy="216.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="358.4" cy="216.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.0" cy="216.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="324.7" cy="216.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="516.3" cy="216.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="687.9" cy="216.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="92.2" cy="216.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="72.7" cy="215.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="433.2" cy="215.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="244.7" cy="215.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="419.1" cy="215.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="528.6" cy="215.8" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="305.6" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="390.1" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="472.5" cy="215.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="305.6" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="195.4" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="556.3" cy="215.6" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="730.9" cy="215.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.9" cy="215.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="571.3" cy="215.5" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="118.1" cy="215.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="414.9" cy="215.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="84.0" cy="215.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="352.9" cy="215.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.3" cy="215.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="537.0" cy="215.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="366.2" cy="215.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="346.7" cy="215.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="329.2" cy="215.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="464.1" cy="215.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="368.2" cy="215.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="416.5" cy="215.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="676.3" cy="215.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="112.2" cy="215.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="189.1" cy="215.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="431.9" cy="215.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="683.1" cy="215.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="554.3" cy="214.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="536.0" cy="214.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="282.2" cy="214.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="646.1" cy="214.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="327.4" cy="214.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="71.7" cy="214.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="240.3" cy="214.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="660.5" cy="214.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="347.1" cy="214.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="102.8" cy="214.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="715.9" cy="214.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="713.6" cy="214.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="631.7" cy="214.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="59.3" cy="214.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="670.5" cy="214.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="587.1" cy="214.2" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="393.1" cy="214.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="620.6" cy="214.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="338.9" cy="214.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="554.0" cy="214.1" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="499.7" cy="214.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="589.4" cy="213.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="503.5" cy="213.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="632.6" cy="213.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="581.7" cy="213.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="374.9" cy="213.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="552.0" cy="213.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="575.0" cy="213.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="727.7" cy="213.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="369.9" cy="213.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="273.0" cy="213.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="567.6" cy="213.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="334.3" cy="213.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="710.9" cy="213.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.0" cy="213.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="613.0" cy="213.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="570.1" cy="213.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="656.3" cy="213.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="426.6" cy="213.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="569.7" cy="213.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="600.3" cy="213.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="264.5" cy="213.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="352.8" cy="212.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="326.6" cy="212.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.7" cy="212.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.9" cy="212.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="126.7" cy="212.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="617.5" cy="212.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="571.3" cy="212.5" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="664.9" cy="212.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="546.3" cy="212.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="627.8" cy="212.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="304.8" cy="212.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="440.0" cy="212.0" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="415.9" cy="211.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="365.1" cy="211.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="428.2" cy="211.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="453.5" cy="211.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="450.6" cy="211.5" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="627.1" cy="211.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="479.0" cy="211.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="451.7" cy="211.2" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="439.5" cy="211.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="381.6" cy="211.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="352.2" cy="210.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="431.0" cy="210.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="465.4" cy="210.5" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="487.9" cy="210.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="611.2" cy="210.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="422.5" cy="210.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="675.8" cy="210.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="418.5" cy="210.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="434.5" cy="209.7" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="468.1" cy="209.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="622.9" cy="209.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.1" cy="209.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="621.0" cy="208.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.9" cy="208.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="350.9" cy="207.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="484.4" cy="207.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="340.5" cy="207.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="695.1" cy="206.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="623.7" cy="206.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="598.4" cy="206.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="440.9" cy="203.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="628.7" cy="203.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.5" cy="202.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="657.6" cy="201.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="486.0" cy="201.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="467.3" cy="198.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="453.4" cy="143.5" r="3.1" fill="#C5CCD3"/>
+<line class="g-vline thin" x1="570.9" x2="570.9" y1="40" y2="220" stroke="#6B736E"/>
+<text class="g-note dim" x="574.9" y="50">조건 1</text>
+<path class="g-lead" d="M453.4,137.5L459.4,143.5L453.4,149.5L447.4,143.5Z"/>
+<text class="g-note" x="443.4" y="147.5" text-anchor="end">2번째 선택 · −log₁₀p 8.5</text>
+</g>
+<g class="g-ov" data-ov="s2">
+<text class="g-ttl" x="56" y="26">1 · 2번째 선택 SNP로 조건화<tspan class="g-sub" dx="8">COJO · reference 3,000명의 LD</tspan></text>
+<circle class="g-pt off" cx="453.4" cy="220.0" r="3.1"/>
+<circle class="g-pt off" cx="580.9" cy="220.0" r="3.1"/>
+<circle class="g-pt off" cx="570.9" cy="220.0" r="3.1"/>
+<circle class="g-pt off" cx="565.8" cy="220.0" r="3.1"/>
+<circle class="g-pt" cx="648.6" cy="220.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="280.5" cy="220.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="205.6" cy="220.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="465.4" cy="219.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="593.2" cy="219.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="690.6" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="588.8" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="131.7" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="434.5" cy="219.8" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="135.3" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="704.3" cy="219.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="342.4" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="154.7" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="136.7" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="197.2" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="201.3" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="411.8" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="79.6" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="729.5" cy="219.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="439.5" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="119.4" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="702.8" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="134.6" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="178.6" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="381.6" cy="219.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="227.6" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="178.2" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.6" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="211.1" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="453.5" cy="219.5" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="105.4" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="202.2" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="725.0" cy="219.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="276.8" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="154.4" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="177.4" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="148.3" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="690.9" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="151.7" cy="219.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="118.9" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="187.5" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="273.0" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="150.1" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="93.1" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="742.0" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="181.6" cy="219.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="277.3" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="196.7" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="450.6" cy="219.2" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="214.6" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="85.2" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.7" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="712.9" cy="219.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="214.0" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="289.7" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="222.4" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="205.2" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="349.0" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="515.2" cy="219.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="370.6" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="300.7" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="408.6" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="739.1" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="143.2" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="162.5" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.1" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="89.0" cy="219.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="716.3" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.5" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="275.8" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="472.5" cy="218.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="252.6" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="549.6" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="219.0" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="121.6" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="223.2" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="213.0" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="72.1" cy="218.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="503.5" cy="218.8" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="440.0" cy="218.8" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="414.2" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="238.4" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="211.1" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="155.6" cy="218.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="82.8" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="157.4" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.6" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="180.3" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="464.1" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="238.8" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="169.8" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="423.6" cy="218.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.0" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="360.9" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="104.8" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="699.0" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="267.0" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="264.4" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="242.1" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="132.1" cy="218.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="536.0" cy="218.5" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="479.0" cy="218.4" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="302.6" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="704.9" cy="218.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="258.1" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="212.1" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="189.4" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="243.7" cy="218.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="164.3" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="638.4" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="122.1" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="701.9" cy="218.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="284.5" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.5" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="106.5" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="582.8" cy="218.1" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="234.3" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="239.9" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="200.0" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="252.7" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="224.3" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="288.2" cy="218.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="368.7" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="174.3" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="665.5" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="104.0" cy="218.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.5" cy="217.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="712.1" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="484.4" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="233.9" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="105.1" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="376.2" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="220.5" cy="217.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="207.1" cy="217.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="657.4" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.3" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="117.4" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="241.4" cy="217.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="251.1" cy="217.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="309.0" cy="217.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="239.1" cy="217.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="569.7" cy="217.5" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="161.8" cy="217.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="334.0" cy="217.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="425.2" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="533.7" cy="217.4" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="648.3" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="277.8" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.4" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="571.3" cy="217.4" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="265.4" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="283.1" cy="217.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="322.2" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="353.7" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="132.2" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.1" cy="217.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="245.3" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="103.9" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="581.7" cy="217.2" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="638.2" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="318.1" cy="217.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="354.7" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="340.9" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="434.2" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="229.6" cy="217.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="589.4" cy="217.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="643.4" cy="217.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="94.9" cy="217.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="567.6" cy="217.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="222.8" cy="216.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.2" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="412.6" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="328.5" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="151.4" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="570.1" cy="216.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="735.0" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="116.0" cy="216.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="409.7" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="556.3" cy="216.7" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="366.6" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="261.0" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="101.2" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="487.6" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="587.1" cy="216.7" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="234.9" cy="216.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="319.1" cy="216.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="359.8" cy="216.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="311.1" cy="216.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.1" cy="216.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="330.8" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="287.0" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="244.3" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="322.5" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="152.7" cy="216.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="93.1" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="325.3" cy="216.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="571.3" cy="216.2" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="247.5" cy="216.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="244.7" cy="216.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="72.7" cy="216.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="324.7" cy="216.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="730.9" cy="216.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="687.9" cy="216.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="554.3" cy="216.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="310.8" cy="216.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="397.3" cy="216.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="92.2" cy="216.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="368.2" cy="215.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="575.0" cy="215.8" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="352.9" cy="215.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="366.2" cy="215.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="433.2" cy="215.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="516.3" cy="215.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="462.3" cy="215.8" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="118.1" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="305.6" cy="215.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="382.1" cy="215.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="305.6" cy="215.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="655.3" cy="215.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="392.1" cy="215.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.9" cy="215.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="401.3" cy="215.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="552.0" cy="215.3" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="358.4" cy="215.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="195.4" cy="215.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="414.9" cy="215.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="84.0" cy="215.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="419.1" cy="215.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="676.3" cy="215.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="546.3" cy="215.1" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="329.2" cy="215.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="102.8" cy="215.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="554.0" cy="215.0" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="416.5" cy="215.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="282.2" cy="214.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="440.9" cy="214.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="646.1" cy="214.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="112.2" cy="214.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="683.1" cy="214.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="431.9" cy="214.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="189.1" cy="214.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="390.1" cy="214.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="327.4" cy="214.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.3" cy="214.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="240.3" cy="214.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="59.3" cy="214.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="71.7" cy="214.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="346.7" cy="214.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="713.6" cy="214.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="492.1" cy="214.3" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="478.7" cy="214.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="660.5" cy="214.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="552.0" cy="214.2" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="334.3" cy="214.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="631.7" cy="214.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="393.1" cy="213.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="486.0" cy="213.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="347.1" cy="213.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="511.1" cy="213.7" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="496.3" cy="213.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="538.7" cy="213.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="620.6" cy="213.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="727.7" cy="213.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="352.8" cy="213.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="632.6" cy="213.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="670.5" cy="213.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="426.6" cy="213.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="374.9" cy="213.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="365.1" cy="213.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="450.5" cy="213.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="715.9" cy="213.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="735.0" cy="213.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="338.9" cy="213.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="492.6" cy="213.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="273.0" cy="213.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="264.5" cy="213.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="487.9" cy="213.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="369.9" cy="213.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="600.3" cy="213.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="302.7" cy="212.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="467.3" cy="212.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="656.3" cy="212.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="473.7" cy="212.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="468.1" cy="212.7" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="710.9" cy="212.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="435.9" cy="212.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="126.7" cy="212.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="457.5" cy="212.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="475.8" cy="212.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="326.6" cy="212.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="304.8" cy="212.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="617.5" cy="212.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="384.9" cy="212.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="664.9" cy="212.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="554.7" cy="212.1" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="542.0" cy="212.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="415.9" cy="211.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="613.0" cy="211.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="428.2" cy="211.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.8" cy="211.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="538.2" cy="211.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="441.9" cy="211.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="467.7" cy="211.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.1" cy="211.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="611.2" cy="211.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="526.0" cy="211.0" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="537.0" cy="210.9" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="530.3" cy="210.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="675.8" cy="210.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="352.2" cy="210.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="381.6" cy="210.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="422.5" cy="210.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="431.0" cy="210.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="418.5" cy="210.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="551.0" cy="210.0" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="454.7" cy="210.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="546.9" cy="209.8" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="439.5" cy="209.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="499.7" cy="209.4" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="528.6" cy="209.1" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="479.4" cy="208.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="508.3" cy="208.7" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="621.0" cy="208.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="451.7" cy="208.4" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="648.9" cy="208.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="58.1" cy="208.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="350.9" cy="208.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="503.0" cy="207.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="622.9" cy="207.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="340.5" cy="207.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="542.7" cy="207.1" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="598.4" cy="207.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="623.7" cy="207.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="522.9" cy="206.9" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="544.7" cy="206.6" r="3.1" fill="#7FB2DD"/>
+<circle class="g-pt" cx="695.1" cy="206.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="627.5" cy="203.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="628.7" cy="202.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="657.6" cy="201.1" r="3.1" fill="#C5CCD3"/>
+<line class="g-vline thin" x1="570.9" x2="570.9" y1="40" y2="220" stroke="#6B736E"/>
+<text class="g-note dim" x="574.9" y="50">조건 1</text>
+<line class="g-vline thin" x1="453.4" x2="453.4" y1="40" y2="220" stroke="#6B736E"/>
+<text class="g-note dim" x="457.4" y="50">조건 2</text>
+<text class="g-note ok" x="227.5" y="132.3" text-anchor="middle">기준을 넘는 SNP 없음(최대 2.1) → 멈춤</text>
+</g>
+<text class="g-note" x="430" y="8">색 = 1번째 선택 SNP와의 r²</text>
+<circle cx="435" cy="19" r="4" fill="#C5CCD3"/>
+<text class="g-note" x="443" y="23">< 0.2</text>
+<circle cx="501" cy="19" r="4" fill="#7FB2DD"/>
+<text class="g-note" x="509" y="23">0.2–0.4</text>
+<circle cx="567" cy="19" r="4" fill="#7DAE58"/>
+<text class="g-note" x="575" y="23">0.4–0.6</text>
+<circle cx="633" cy="19" r="4" fill="#E8913A"/>
+<text class="g-note" x="641" y="23">0.6–0.8</text>
+<circle cx="699" cy="19" r="4" fill="#D2453B"/>
+<text class="g-note" x="707" y="23">0.8–1</text>
+</svg>
+<!--/GEN:STEPS-->
+          </div>
+          <figcaption>같은 가상 locus · causal 변이 둘이 한 블록 안에 있는 형질(아래 그림 3의 "가려짐") · 조건부 p는 COJO 방식으로 summary statistics와 reference 표본 <!--GEN:REF_N-->3,000<!--/GEN:REF_N-->명의 LD에서 계산 · 속 빈 점 = 선택된 SNP와 R² &gt; 0.9라 colinear로 뺀 SNP <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a></figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>단계</th><th>조건</th><th>결과</th></tr></thead>
+            <tbody>
+              <tr><th>1</th><td>없음</td><td>가장 강한 SNP를 선택(−log₁₀p <!--GEN:S1-->17.5<!--/GEN:S1-->)</td></tr>
+              <tr><th>2</th><td>1번째 SNP</td><td>단일 분석에서 −log₁₀p <!--GEN:S2_MARG-->2.1<!--/GEN:S2_MARG-->였던 SNP가 <!--GEN:S2-->8.5<!--/GEN:S2-->로 올라와 기준(7.3)을 넘음 → 선택</td></tr>
+              <tr><th>3</th><td>1 · 2번째 SNP</td><td>남은 최대 −log₁₀p <!--GEN:S3-->2.1<!--/GEN:S3--> → 멈춤. 이 locus의 독립 신호 = 2개</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h4>조건부 임계값은 정해져 있지 않음</h4>
+          <p>연구마다 genome-wide 기준(5×10⁻⁸)부터 10⁻⁴ · 0.05까지 씀 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a>. 단계가 늘수록 검정 수가 대략 단계 수 × SNP 수로 쌓여 거짓양성 위험이 커지고, SNP 수가 표본 수에 가깝고 기준이 느슨하면 선택이 불안정해져 설명 분산을 과대평가함 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></p>
+        </div>
+        <p class="lede" style="margin-top:12px">실제 규모: height GWAS의 근사 조건부 분석에서 genome-wide 유의 연관 697개 중 34개가 같은 locus의 더 강한 SNP와 r² &gt; 0.1인 secondary 연관 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a> · GTEx에서 표본이 가장 큰 조직은 eGene의 최대 50%가 독립 cis-eQTL 2개 이상 <a class="src" href="https://doi.org/10.1126/science.aaz1776" target="_blank" rel="noopener">GTEx 2020</a></p>
+
+        <!-- ───────── 4. masking ───────── -->
+        <h2 id="masking">가려지는 신호, 부풀려지는 신호<small>Masking and inflation</small></h2>
+        <p class="lede">두 causal의 증가 allele가 <b>음의 상관</b>이면 효과가 서로 상쇄돼 단일 SNP 분석에서 신호가 가려지고, <b>양의 상관</b>이면 marginal 효과가 부풀려짐 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a>. 위 그림 2의 두 번째 신호가 가려진 경우</p>
+        <figure class="fig" id="fig-forest" data-mode="mask">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-forest" role="group" aria-label="LD 방향">
+              <button type="button" data-mode="mask" aria-pressed="true">가려짐</button>
+              <button type="button" data-mode="infl" aria-pressed="false">부풀려짐</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:FOREST-->
+<svg class="g-svg " viewBox="0 0 760 280" role="img" aria-labelledby="llforestT llforestD" xmlns="http://www.w3.org/2000/svg">
+<title id="llforestT">LD로 묶인 두 causal — 단일 SNP 분석과 함께 적합한 결과</title>
+<desc id="llforestD">같은 블록 안 causal 변이 두 개의 효과 크기를 단일 SNP 분석(회색)과 두 SNP를 함께 넣은 회귀(초록)로 비교한다. 증가 allele가 음의 상관이면 단일 분석에서 두 번째 효과가 절반 아래로 줄어 신호가 가려지고, 양의 상관이면 두 효과가 모두 부풀려진다. 함께 적합하면 두 경우 모두 시뮬레이션에 넣은 값(◇) 근처로 돌아온다.</desc>
+<line class="g-ax" x1="210" x2="560" y1="232" y2="232"/>
+<line class="g-ax" x1="210.0" x2="210.0" y1="232" y2="236"/>
+<text class="g-tick" x="210.0" y="249" text-anchor="middle">-0.1</text>
+<line class="g-ax" x1="280.0" x2="280.0" y1="232" y2="236"/>
+<text class="g-tick" x="280.0" y="249" text-anchor="middle">0</text>
+<line class="g-ax" x1="350.0" x2="350.0" y1="232" y2="236"/>
+<text class="g-tick" x="350.0" y="249" text-anchor="middle">0.1</text>
+<line class="g-ax" x1="420.0" x2="420.0" y1="232" y2="236"/>
+<text class="g-tick" x="420.0" y="249" text-anchor="middle">0.2</text>
+<line class="g-ax" x1="490.0" x2="490.0" y1="232" y2="236"/>
+<text class="g-tick" x="490.0" y="249" text-anchor="middle">0.3</text>
+<line class="g-ax" x1="560.0" x2="560.0" y1="232" y2="236"/>
+<text class="g-tick" x="560.0" y="249" text-anchor="middle">0.4</text>
+<line class="g-eq" x1="280.0" x2="280.0" y1="56" y2="232"/>
+<text class="g-lab" x="385.0" y="266" text-anchor="middle">효과 크기 β (표준화 형질 1 SD 단위 · 95% CI)</text>
+<text class="g-hd" x="590" y="50">−log₁₀p</text>
+<text class="g-note dim" x="590" y="66">단일 → 함께</text>
+<g class="g-ov on" data-ov="mask">
+<text class="g-ttl" x="20" y="30">가려짐 — 증가 allele가 음의 상관<tspan class="g-sub" dx="8">두 causal 사이 r = -0.35</tspan></text>
+<text class="g-ttl sm" x="20" y="104">causal 1</text>
+<text class="g-note dim" x="20" y="120">SNP 277</text>
+<line class="g-ci" x1="380.3" x2="440.2" y1="89" y2="89" stroke="#9AA3A0"/>
+<circle cx="410.3" cy="89" r="4.5" fill="#9AA3A0"/>
+<text class="g-note" x="200" y="93" text-anchor="end">단일</text>
+<line class="g-ci" x1="413.3" x2="477.0" y1="111" y2="111" stroke="var(--theme)"/>
+<circle cx="445.1" cy="111" r="4.5" fill="var(--theme)"/>
+<text class="g-note" x="200" y="115" text-anchor="end">함께</text>
+<path class="g-truth" d="M418.5,76l6,6l-6,6l-6,-6z"/>
+<text class="g-cnt" x="590" y="105">16.8 → 23.5</text>
+<text class="g-ttl sm" x="20" y="184">causal 2</text>
+<text class="g-note dim" x="20" y="200">SNP 217</text>
+<line class="g-ci" x1="296.8" x2="391.2" y1="169" y2="169" stroke="#9AA3A0"/>
+<circle cx="344.0" cy="169" r="4.5" fill="#9AA3A0"/>
+<text class="g-note" x="200" y="173" text-anchor="end">단일</text>
+<line class="g-ci" x1="385.1" x2="485.0" y1="191" y2="191" stroke="var(--theme)"/>
+<circle cx="435.1" cy="191" r="4.5" fill="var(--theme)"/>
+<text class="g-note" x="200" y="195" text-anchor="end">함께</text>
+<path class="g-truth" d="M426.6,156l6,6l-6,6l-6,-6z"/>
+<text class="g-cnt" x="590" y="185">2.1 → 8.9</text>
+</g>
+<g class="g-ov" data-ov="infl">
+<text class="g-ttl" x="20" y="30">부풀려짐 — 증가 allele가 양의 상관<tspan class="g-sub" dx="8">두 causal 사이 r = 0.35</tspan></text>
+<text class="g-ttl sm" x="20" y="104">causal 1</text>
+<text class="g-note dim" x="20" y="120">SNP 277</text>
+<line class="g-ci" x1="446.2" x2="505.5" y1="89" y2="89" stroke="#9AA3A0"/>
+<circle cx="475.8" cy="89" r="4.5" fill="#9AA3A0"/>
+<text class="g-note" x="200" y="93" text-anchor="end">단일</text>
+<line class="g-ci" x1="412.4" x2="475.5" y1="111" y2="111" stroke="var(--theme)"/>
+<circle cx="444.0" cy="111" r="4.5" fill="var(--theme)"/>
+<text class="g-note" x="200" y="115" text-anchor="end">함께</text>
+<path class="g-truth" d="M418.5,76l6,6l-6,6l-6,-6z"/>
+<text class="g-cnt" x="590" y="105">37.6 → 23.6</text>
+<text class="g-ttl sm" x="20" y="184">causal 2</text>
+<text class="g-note dim" x="20" y="200">SNP 222</text>
+<line class="g-ci" x1="391.9" x2="448.2" y1="169" y2="169" stroke="#9AA3A0"/>
+<circle cx="420.0" cy="169" r="4.5" fill="#9AA3A0"/>
+<text class="g-note" x="200" y="173" text-anchor="end">단일</text>
+<line class="g-ci" x1="336.4" x2="395.9" y1="191" y2="191" stroke="var(--theme)"/>
+<circle cx="366.1" cy="191" r="4.5" fill="var(--theme)"/>
+<text class="g-note" x="200" y="195" text-anchor="end">함께</text>
+<path class="g-truth" d="M367.3,156l6,6l-6,6l-6,-6z"/>
+<text class="g-cnt" x="590" y="185">21.7 → 7.9</text>
+</g>
+<path class="g-truth" d="M600,206l6,6l-6,6l-6,-6z"/><text class="g-note" x="612" y="216">시뮬레이션에 넣은 효과</text>
+</svg>
+<!--/GEN:FOREST-->
+          </div>
+          <figcaption>같은 가상 locus · 한 블록 안 causal 둘 · 회색 = 단일 SNP 분석, 초록 = 두 SNP를 함께 넣은 회귀(개인 자료) · 가려짐: 두 causal 사이 r = <!--GEN:MASK_R-->-0.35<!--/GEN:MASK_R-->, 두 번째 causal −log₁₀p <!--GEN:MASK_LP-->2.1 → 8.9<!--/GEN:MASK_LP-->, 첫 번째도 <!--GEN:MASK_LEAD-->16.8 → 23.5<!--/GEN:MASK_LEAD--> · 부풀려짐: r = <!--GEN:INFL_R-->0.35<!--/GEN:INFL_R-->, 두 번째 causal β <!--GEN:INFL_B-->0.20 → 0.12(넣은 값 0.12)<!--/GEN:INFL_B--></figcaption>
+        </figure>
+        <div class="callout">
+          <h4>실제 사례</h4>
+          <p><i>EFEMP1</i> rs1367226은 단일 SNP P = 0.198이었지만 leading SNP와 함께 적합하자 P = 5.0×10⁻¹¹ · <i>IGF2BP2</i> rs6784185도 P = 0.088에서 2.2×10⁻¹⁰ · 2차 SNP를 넣으면 leading SNP도 강해짐(rs3791675 1.1×10⁻²⁸ → 3.0×10⁻³⁷) <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a> · <i>SNCA</i>에서 단일 SNP P = 0.13이던 rs7687945가 lead로 조건화하자 3×10⁻⁵(두 SNP r² 0.168) <a class="src" href="https://doi.org/10.1093/bioinformatics/btw018" target="_blank" rel="noopener">Benner 2016</a></p>
+        </div>
+
+        <!-- ───────── 5. COJO ───────── -->
+        <h2 id="cojo">summary statistics만으로: COJO<small>Conditional &amp; joint analysis</small></h2>
+        <p class="lede">개인 genotype 없이 marginal effect와 SNP 상관행렬만으로 joint effect를 복원할 수 있음 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a>. COJO는 meta-analysis 요약통계(β · SE · allele frequency)와 reference 표본의 LD로 다중 회귀에 필요한 XᵀX를 다시 만들어 조건부 · 결합 분석을 함 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a></p>
+        <div class="cases">
+          <div style="--c:var(--theme)"><span class="lv">입력</span><h4>요약통계 + reference LD</h4><p>SNP별 β · SE · allele frequency · N, 그리고 같은 집단 reference 표본의 SNP 간 상관 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a></p></div>
+          <div style="--c:var(--theme)"><span class="lv">계산</span><h4>joint effect</h4><p>β̂<sub>joint</sub> = V⁻¹Dβ̂<sub>marginal</sub> (V = LD 행렬, D = V의 대각) · var(β̂) = σ²<sub>J</sub>V⁻¹ <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a></p></div>
+          <div style="--c:var(--theme)"><span class="lv">선택</span><h4>stepwise</h4><p>최상위 SNP(p &lt; 5×10⁻⁸)로 시작 → 조건부 p 최소 SNP 추가(선택된 SNP들과 R² &gt; 0.9면 colinear로 제외) → 결합 적합에서 기준 미달 SNP 제거 → 반복 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a></p></div>
+        </div>
+        <h3 class="subhd">reference 표본의 조건</h3>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>조건</th><th>근거</th></tr></thead>
+            <tbody>
+              <tr><th>같은 집단</th><td>discovery와 같은 모집단에서 뽑은 표본 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a> · reference LD가 분석 표본을 대표하지 못하면 joint effect가 편향되어 신호 수 판단이 틀림 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></td></tr>
+              <tr><th>크기</th><td>2,000명 이상, 5,000명을 넘으면 추가 이득 작음 · 시뮬레이션에서 reference 6,654명이면 개인 자료로 한 조건부 분석과 p 상관 0.99 초과 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a></td></tr>
+              <tr><th>잔차 분산</th><td>표현형 분산 수준으로 고정. 고정하지 않으면 SNP가 늘수록 잔차가 줄어 거짓양성이 연쇄적으로 늘어남 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a></td></tr>
+              <tr><th>이 페이지</th><td>reference <!--GEN:REF_N-->3,000<!--/GEN:REF_N-->명으로 계산한 COJO 조건부 −log₁₀p와 개인 자료로 푼 정확한 값의 상관 <!--GEN:COJO_R-->0.986<!--/GEN:COJO_R--> · 최대 차이 <!--GEN:COJO_D-->0.8<!--/GEN:COJO_D--> (그림 2의 2단계)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout blue">
+          <h4>GIANT height에 적용한 결과</h4>
+          <p>n = 133,653에서 결합 유의 SNP 247개, 그중 87개가 36 locus에 2개 이상씩 · leading 38개는 표현형 분산 2.5%, 87개 전부는 4.1% 설명 · 독립 코호트 QIMR(n = 3,924) 예측 R² 4.8% <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a> · BMI는 같은 기준에서 신호가 여럿인 locus가 하나도 없었음 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a>. 형질마다 locus 안 구조가 다름</p>
+        </div>
+
+        <!-- ───────── 6. 흔한 오해 ───────── -->
+        <h2 id="read">결과 읽기의 흔한 오해<small>Reading loci and signals</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>secondary 신호 없음 = 신호 하나 ✗</code><p class="why">검정력이 낮아 놓친 것일 수 있음 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></p></div>
+          <div class="fix"><code>멀리 떨어지면 독립 ✗</code><p class="why">chr11의 rs1814175와 rs5017948은 1.76 Mb 떨어져 있는데 r ≈ 0.6이었고, 결합 분석에서 둘 다 유의 기준을 넘지 못함 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a></p></div>
+          <div class="fix"><code>독립 신호 둘 = causal 둘 · 기전 둘 ✗</code><p class="why">locus 안 연관 SNP가 여럿이라는 사실에서 causal이 여럿이라는 추론은 간접적 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a> · 통계적으로 독립인 신호가 생물학적으로 독립인 기전이라는 뜻도 아님</p></div>
+          <div class="fix"><code>lead SNP = causal ✗</code><p class="why">causal 둘과 중간 정도 상관인 SNP는 두 신호가 합쳐져 marginal 신호가 가장 커질 수 있음 <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a> · <a href="./fine-mapping.html#lead">fine-mapping 페이지</a></p></div>
+          <div class="fix"><code>stepwise로 고른 조합 = 가장 잘 맞는 조합 ✗</code><p class="why">조건부 분석으로 고른 3-SNP 조합보다 FINEMAP 상위 configuration 3개의 likelihood가 50–190배 큼 <a class="src" href="https://doi.org/10.1093/bioinformatics/btw018" target="_blank" rel="noopener">Benner 2016</a> · stepwise는 매 단계 변수 하나를 고르고 그 선택의 불확실성을 남기지 않음 <a class="src" href="https://doi.org/10.1111/rssb.12388" target="_blank" rel="noopener">Wang 2020</a></p></div>
+          <div class="fix"><code>p-value는 causal에서 멀수록 커짐 ✗</code><p class="why"><i>APOE</i> 주변 Alzheimer disease 연관처럼 거리에 따라 단조롭지 않고 오르내릴 수 있음. LD가 강한 region에서는 SNP 하나씩 보는 해석이 오도될 수 있음 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></p></div>
+          <div class="fix"><code>저빈도 변이도 똑같이 정확 ✗</code><p class="why">summary statistics 기반 조건부 분석의 정확도는 low-frequency variant에서 떨어짐 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a></p></div>
+        </div>
+
+        <!-- ───────── 7. 다음 단계 · 도구 ───────── -->
+        <h2 id="next">다음 단계와 도구<small>From signals to variants</small></h2>
+        <p class="lede">조건부 분석은 신호 개수를 세는 데 유용하지만 variant별 causal 확률을 주지 않음. locus 구조를 정리한 뒤 확률 기반 fine-mapping으로 넘김 <a class="src" href="https://doi.org/10.1093/bioinformatics/btw018" target="_blank" rel="noopener">Benner 2016</a>. 신호별로 single causal 사후확률을 따로 구하는 흐름도 가능하지만, 여러 causal을 직접 모형화하는 fine-mapping보다 정확도가 낮음 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a></p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>도구</th><th>하는 일</th><th>비고</th></tr></thead>
+            <tbody>
+              <tr><th>LocusZoom</th><td>regional plot. 웹 폼 · batch mode · 로컬 설치 <a class="src" href="https://doi.org/10.1093/bioinformatics/btq419" target="_blank" rel="noopener">Pruim 2010</a></td><td>SNP 이름과 p만 있으면 됨. 영역은 index SNP + 창 · 좌표 · 유전자 이름으로 지정</td></tr>
+              <tr><th>PLINK</th><td>특정 SNP(들)에 조건을 건 scan과 joint effect 검정 <a class="src" href="https://doi.org/10.1086/519795" target="_blank" rel="noopener">Purcell 2007</a></td><td>개인 genotype 필요 · LD clumping</td></tr>
+              <tr><th>GCTA-COJO</th><td>summary statistics + reference LD로 stepwise 조건부 · 결합 분석 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a></td><td>reference는 같은 집단 2,000명 이상</td></tr>
+              <tr><th>FINEMAP · SuSiE</th><td>신호마다 causal 후보의 PIP와 credible set</td><td><a href="./fine-mapping.html">fine-mapping 페이지</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="lede" style="margin-top:12px">흐름: <a href="../01-genetics/ld.html">LD</a> → locus와 lead → 독립 신호 세기 → <a href="./fine-mapping.html">fine-mapping</a> → <a href="./coloc.html">colocalization</a> · <a href="../index.html#article/variant-to-gene">variant-to-gene</a></p>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">locus · loci · lead SNP · lead variant · index SNP · top SNP · sentinel SNP · regional plot · regional association plot · LocusZoom · recombination rate · conditional analysis · conditional association · joint analysis · COJO · GCTA-COJO · stepwise selection · secondary signal · independent signal · allelic heterogeneity · LD clumping · masking · colinearity</p></details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>1분 요약</h3><div class="related-list">
+          <a href="../index.html#article/locus-lead">Locus &amp; lead variant 용어 카드 →</a>
+          <a href="../index.html#article/conditional">Conditional analysis 용어 카드 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../01-genetics/ld.html">Linkage disequilibrium (그림) →</a>
+          <a href="./fine-mapping.html">Fine-mapping (그림) →</a>
+          <a href="./coloc.html">Colocalization (그림) →</a>
+          <a href="../02-association/manhattan.html">Manhattan · QQ · summary statistics (그림) →</a>
+          <a href="../index.html#article/plink">PLINK →</a>
+          <a href="../index.html#article/dbsnp-ldlink">dbSNP &amp; LDlink →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="http://locuszoom.org/" target="_blank" rel="noopener noreferrer">LocusZoom ↗</a>
+          <a href="https://yanglab.westlake.edu.cn/software/gcta/" target="_blank" rel="noopener noreferrer">GCTA-COJO 문서 ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener noreferrer">Schaid 2018, Nat Rev Genet — fine-mapping 리뷰 ↗</a>
+          <a href="https://doi.org/10.1093/bioinformatics/btq419" target="_blank" rel="noopener noreferrer">Pruim 2010, Bioinformatics — LocusZoom ↗</a>
+          <a href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener noreferrer">Yang 2012, Nat Genet — COJO ↗</a>
+          <a href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener noreferrer">Pasaniuc 2016, Nat Rev Genet — summary statistics ↗</a>
+          <a href="https://doi.org/10.1093/bioinformatics/btw018" target="_blank" rel="noopener noreferrer">Benner 2016, Bioinformatics — FINEMAP ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-24<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../gwas-fig.js"></script>
+</body>
+</html>
