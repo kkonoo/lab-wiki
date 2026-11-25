@@ -163,7 +163,7 @@
             <thead><tr><th>연결 방법</th><th>보는 것</th><th>근거</th></tr></thead>
             <tbody>
               <tr><th>가장 가까운 유전자</th><td>변이에서 TSS까지 거리</td><td>CD4 T cell enhancer 변이 405개 중 가장 강한 접촉 상대가 가장 가까운 유전자인 경우는 <!--GEN:NEAR_PCT-->60.5%<!--/GEN:NEAR_PCT--> <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a></td></tr>
-              <tr><th>ABC model</th><td>enhancer 활성과 promoter 접촉 빈도의 곱</td><td>수천 건의 CRISPR 교란 결과로 만들고 검증한 예측 모델 <a class="src" href="https://doi.org/10.1038/s41588-019-0538-0" target="_blank" rel="noopener">Fulco 2019</a></td></tr>
+              <tr><th>ABC model</th><td>enhancer 활성과 promoter 접촉 빈도의 곱</td><td>수천 건의 CRISPR 교란 결과로 만들고 검증한 예측 모델 <a class="src" href="https://doi.org/10.1038/s41588-019-0538-0" target="_blank" rel="noopener">Fulco 2019</a>. 모형의 구조와 예측 성능은 GWAS 쪽 <a href="../../../gwas/03-postgwas/variant-to-gene.html#regulatory">조절 지도로 잇기</a>에서 다룸</td></tr>
               <tr><th>allele별 접촉 측정</th><td>변이 쪽 allele이 실제로 접촉하는 promoter</td><td>변이 하나가 접촉한 promoter는 평균 2.81개. 접촉 1위 유전자의 56%는 OpenTargets L2G의 우선순위와 일치 <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a></td></tr>
               <tr><th>eQTL과 colocalization</th><td>같은 변이가 발현과 형질 모두에 연관되는지</td><td>통계 방법은 GWAS의 <a href="../../../gwas/03-postgwas/coloc.html">coloc</a> 페이지. QTL은 이 절의 다음 질문 <a href="./qtl.html">QTL은 무엇이고, 왜 세포와 조직마다 다른가?</a></td></tr>
             </tbody>
@@ -173,6 +173,7 @@
           <h4>접촉이 달라져도 발현이 늘 달라지지는 않음</h4>
           <p>allele에 따라 접촉이 달라진 변이 45개 중 16개(35.5%)만 연결된 유전자에서 allelic imbalance를 보임. 유전체 전체 배경(2,313개 중 231개, 10.0%)보다는 높지만 절반에 못 미침 <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a>.</p>
         </div>
+        <p>네 방법이 서로 다른 것을 재므로 한 줄만으로는 표적을 정하기 어려움. 증거를 겹칠 때 정밀해지는 만큼 놓치는 것도 생기는 문제는 GWAS 쪽 <a href="../../../gwas/03-postgwas/variant-to-gene.html#combine">증거를 겹치면 정밀해지고 그만큼 놓침</a>에서 다룸.</p>
 
         <!-- ───────── 5. 세포형과 맥락 ───────── -->
         <h2 id="context">세포형과 맥락<small>Cell type and context</small></h2>
