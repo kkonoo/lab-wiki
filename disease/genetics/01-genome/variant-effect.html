@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="missense · nonsense · frameshift · splice가 단백질에 하는 일, 망가뜨리는 변이와 기능을 바꾸는 변이의 구분, 서열만으로 매기는 예측 점수와 직접 재 본 값의 비교, 그리고 비암호화 쪽에 남은 공백">
+  <title>변이는 단백질을 어떻게 바꾸나? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">유전체와 변이</a><span>›</span>변이의 효과</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">유전체와 변이 · From variant to protein</p>
+        <h1>변이는 단백질을 어떻게 바꾸나?</h1>
+        <p class="definition">같은 한 염기 바뀜이라도 단백질에 하는 일이 다름. 아미노산 하나를 바꾸기도 하고, 사슬을 중간에서 끊기도 하고, 읽는 틀을 통째로 밀기도 하고, 이어 붙이는 자리를 깨뜨리기도 함</p>
+
+        <!-- ───────── 1. 분류 ───────── -->
+        <h2 id="classes">단백질을 바꾸는 방식<small>How a variant changes a protein</small></h2>
+        <p class="lede">분류의 목적은 이름을 붙이는 것이 아니라, 효과의 크기를 가늠하고 분석에서 어떻게 다룰지를 정하는 것.</p>
+
+        <figure class="fig" id="fig-classes" data-mode="types">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-classes" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="types" aria-pressed="true">사슬에 생기는 일</button>
+              <button type="button" data-mode="uses" aria-pressed="false">점수가 들어가는 자리</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:CLASSES-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="veClassesT veClassesD" xmlns="http://www.w3.org/2000/svg">
+<title id="veClassesT">변이가 단백질에 하는 일과 예측 점수의 쓰임</title>
+<desc id="veClassesD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 아미노산 사슬을 칸으로 그린 도식 다섯 줄로, 정상 사슬과 견주어 missense는 한 칸만 색이 바뀌고, nonsense는 그 자리부터 뒤가 사라지며, frameshift는 그 뒤 칸이 전부 다른 색이 되고, canonical splice는 가운데 한 덩이가 점선으로 빠지는 것을 보여 준다. 둘째 화면은 서열 기반 예측 점수에서 화살표 네 개가 뻗어 나가 인과 변이 좁히기, 유전율 쪼개기, 희귀 변이 모으기, 임상 변이 분류의 네 자리로 들어가는 것을 보여 준다.</desc>
+<g class="g-ov" data-ov="types"><text x="380" y="40" class="g-lab em" text-anchor="middle">같은 한 염기 바뀜이 사슬에 하는 일</text><rect x="180" y="78" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="208" y="78" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="236" y="78" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="264" y="78" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="292" y="78" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="320" y="78" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="348" y="78" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="376" y="78" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="404" y="78" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="432" y="78" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="460" y="78" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="488" y="78" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="180" y="120" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="208" y="120" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="236" y="120" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="264" y="120" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="292" y="120" width="24" height="22" rx="3" fill="#D9822B"/><rect x="320" y="120" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="348" y="120" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="376" y="120" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="404" y="120" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="432" y="120" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="460" y="120" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="488" y="120" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="180" y="162" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="208" y="162" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="236" y="162" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="264" y="162" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="292" y="162" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="320" y="162" width="24" height="22" rx="3" fill="#B3261E"/><rect x="348" y="162" width="24" height="22" rx="3" fill="#B3261E"/><rect x="376" y="162" width="24" height="22" rx="3" fill="#B3261E"/><rect x="404" y="162" width="24" height="22" rx="3" fill="#B3261E"/><rect x="432" y="162" width="24" height="22" rx="3" fill="#B3261E"/><rect x="460" y="162" width="24" height="22" rx="3" fill="#B3261E"/><rect x="488" y="162" width="24" height="22" rx="3" fill="#B3261E"/><rect x="180" y="204" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="208" y="204" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="236" y="204" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="264" y="204" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="292" y="204" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="320" y="204" width="24" height="22" rx="3" fill="#D9822B"/><rect x="348" y="204" width="24" height="22" rx="3" fill="#D9822B"/><rect x="376" y="204" width="24" height="22" rx="3" fill="#D9822B"/><rect x="404" y="204" width="24" height="22" rx="3" fill="#D9822B"/><rect x="432" y="204" width="24" height="22" rx="3" fill="#D9822B"/><rect x="460" y="204" width="24" height="22" rx="3" fill="#D9822B"/><rect x="488" y="204" width="24" height="22" rx="3" fill="#D9822B"/><rect x="180" y="246" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="208" y="246" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="236" y="246" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="264" y="246" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="292" y="246" width="24" height="22" rx="3" fill="none" stroke="#B3261E" stroke-width="1.6" stroke-dasharray="4 3"/><rect x="320" y="246" width="24" height="22" rx="3" fill="none" stroke="#B3261E" stroke-width="1.6" stroke-dasharray="4 3"/><rect x="348" y="246" width="24" height="22" rx="3" fill="none" stroke="#B3261E" stroke-width="1.6" stroke-dasharray="4 3"/><rect x="376" y="246" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="404" y="246" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="432" y="246" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="460" y="246" width="24" height="22" rx="3" fill="#5B6B7A"/><rect x="488" y="246" width="24" height="22" rx="3" fill="#5B6B7A"/><text x="166" y="94" class="g-note em" text-anchor="end">정상</text><text x="526" y="94" class="g-small" text-anchor="start">아미노산이 차례대로 이어짐</text><text x="166" y="136" class="g-note em" text-anchor="end">missense</text><text x="526" y="136" class="g-small" text-anchor="start">한 자리만 다른 아미노산으로</text><text x="166" y="178" class="g-note em" text-anchor="end">nonsense</text><text x="526" y="178" class="g-small" text-anchor="start">그 자리에서 사슬이 끊김</text><text x="166" y="220" class="g-note em" text-anchor="end">frameshift</text><text x="526" y="220" class="g-small" text-anchor="start">그 뒤가 전부 다른 아미노산으로</text><text x="166" y="262" class="g-note em" text-anchor="end">canonical splice</text><text x="526" y="262" class="g-small" text-anchor="start">exon 한 덩이가 빠짐</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">사슬에 생기는 일</text><text x="44" y="341" class="g-band-t" text-anchor="start">칸 하나가 아미노산 하나다 — 색이 바뀐 칸은 다른 아미노산, 붉은 칸은 사라진 부분이다.</text><text x="44" y="360" class="g-band-t" text-anchor="start">뒤의 세 줄을 묶어 predicted loss-of-function이라 부른다.</text></g>
+<g class="g-ov" data-ov="uses"><text x="380" y="40" class="g-lab em" text-anchor="middle">서열 기반 점수가 들어가는 네 자리</text><rect x="60" y="108" width="190" height="60" rx="6" fill="#2563C9"/><text x="155" y="138" class="g-box-t" text-anchor="middle">서열 기반 예측 점수</text><text x="155" y="182" class="g-small" text-anchor="middle">보존 신호 또는 기능 측정값으로 학습</text><line x1="258" y1="102" x2="291" y2="102" class="g-arrow"/><path d="M300 102 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><rect x="306" y="86" width="404" height="34" rx="5" class="g-band"/><line x1="258" y1="152" x2="291" y2="152" class="g-arrow"/><path d="M300 152 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><rect x="306" y="136" width="404" height="34" rx="5" class="g-band"/><line x1="258" y1="202" x2="291" y2="202" class="g-arrow"/><path d="M300 202 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><rect x="306" y="186" width="404" height="34" rx="5" class="g-band"/><line x1="258" y1="252" x2="291" y2="252" class="g-arrow"/><path d="M300 252 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><rect x="306" y="236" width="404" height="34" rx="5" class="g-band"/><text x="320" y="108" class="g-band-t hd" text-anchor="start">인과 변이를 좁힐 때</text><text x="520" y="108" class="g-band-t" text-anchor="start">사전확률로</text><text x="320" y="158" class="g-band-t hd" text-anchor="start">유전율을 쪼갤 때</text><text x="520" y="158" class="g-band-t" text-anchor="start">기능 범주 annotation으로</text><text x="320" y="208" class="g-band-t hd" text-anchor="start">희귀 변이를 모을 때</text><text x="520" y="208" class="g-band-t" text-anchor="start">선별 기준과 가중치로</text><text x="320" y="258" class="g-band-t hd" text-anchor="start">임상 변이 분류</text><text x="520" y="258" class="g-band-t" text-anchor="start">보조 증거로</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">점수가 들어가는 자리</text><text x="44" y="341" class="g-band-t" text-anchor="start">후보 변이가 검증할 수 있는 수보다 훨씬 많기 때문에, 점수는 거르는 단계마다 들어간다.</text><text x="44" y="360" class="g-band-t" text-anchor="start">그래서 '어느 점수가 가장 좋은가'가 아니라 '이 자리에 무엇이 맞는가'로 고른다.</text></g>
+</svg>
+<!--/GEN:CLASSES-->
+          </div>
+          <figcaption>두 화면 모두 눈금 없는 도식. 점수가 들어가는 네 자리는 <a class="src" href="https://doi.org/10.1038/s41576-026-00990-y" target="_blank" rel="noopener">Engelhardt 2026</a>의 정리를 따름.</figcaption>
+        </figure>
+
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>종류</th><th>단백질에 생기는 일</th><th>대개의 효과</th></tr></thead>
+            <tbody>
+              <tr><th>synonymous</th><td>아미노산이 그대로임</td><td>대체로 작음. 다만 splicing이나 번역 속도를 건드릴 수 있음</td></tr>
+              <tr><th>missense</th><td>아미노산 하나가 다른 것으로 바뀜</td><td>자리에 따라 천차만별 — 이 쪽의 가장 어려운 부분</td></tr>
+              <tr><th>nonsense</th><td>종결 신호가 생겨 사슬이 중간에서 끊김</td><td>대체로 큼</td></tr>
+              <tr><th>frameshift</th><td>읽는 틀이 밀려 그 뒤가 전부 달라짐</td><td>대체로 큼</td></tr>
+              <tr><th>canonical splice</th><td>exon을 이어 붙이는 자리를 깨뜨림</td><td>대체로 큼. exon이 빠지거나 intron이 남음</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>뒤의 셋을 묶어 predicted loss-of-function, 줄여서 pLoF라고 부름. 종류별 효과 크기 차이는 빈도 분포에도 자국을 남김 — 효과가 큰 범주일수록 드문 쪽에 몰림 <a href="./allele-frequency.html#selection">해로운 변이를 낮은 빈도에 붙잡아 두는 힘</a>.</p>
+
+        <!-- ───────── 2. 방향 ───────── -->
+        <h2 id="direction">망가뜨리는가, 바꾸는가<small>Loss or gain</small></h2>
+        <p class="lede">"효과가 크다"는 말로는 부족함. 기능을 잃는 것과 없던 기능이 생기는 것은 결과가 다름.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>방향</th><th>내용</th></tr></thead>
+            <tbody>
+              <tr><th>loss-of-function</th><td>단백질이 제 일을 못 하게 됨. pLoF로 분류되는 변이가 여기 들어감</td></tr>
+              <tr><th>gain-of-function</th><td>원래 없던 활성이 생기거나 조절을 벗어나 과하게 작동함</td></tr>
+              <tr><th>dominant-negative</th><td>망가진 단백질이 정상 단백질의 일까지 방해함. 한 copy만 바뀌어도 문제가 됨</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>방향을 읽는 일은 약을 만들 때 특히 중요함. 어느 방향으로 바꿔야 하는지가 그 유전자를 억제할지 보강할지를 정하기 때문 — <a href="../05-function/genetics-to-drugs.html">유전학 근거는 약 개발에 어떻게 쓰이나?</a>. 한 copy만 망가져도 질환이 되는 경우의 기전은 02절에서 따로 다룸.</p>
+
+        <!-- ───────── 3. 예측 ───────── -->
+        <h2 id="predict">서열만으로 점수를 매기기<small>Predicting from sequence</small></h2>
+        <p class="lede">후보 변이는 늘 검증할 수 있는 수보다 훨씬 많음. 그래서 서열만 보고 점수를 매기는 방법이 먼저 들어감.</p>
+        <p>크게 두 갈래. 하나는 여러 종의 서열을 맞춰 보고 보존된 자리일수록 중요하다고 읽는 쪽, 다른 하나는 참조 유전체와 세포주에서 잰 기능 측정값을 정답으로 삼아 학습하는 쪽 <a class="src" href="https://doi.org/10.1038/s41576-026-00990-y" target="_blank" rel="noopener">Engelhardt 2026</a>.</p>
+        <p>이 점수가 쓰이는 자리가 넷. 인과 변이를 좁힐 때의 사전확률, 유전율을 기능 범주별로 쪼갤 때의 annotation, 희귀 변이를 유전자 단위로 모을 때의 선별 기준과 가중치, 그리고 임상 변이 분류의 보조 증거 <a class="src" href="https://doi.org/10.1038/s41576-026-00990-y" target="_blank" rel="noopener">Engelhardt 2026</a>.</p>
+
+        <!-- ───────── 4. 측정 ───────── -->
+        <h2 id="measure">직접 재 본 값<small>Measuring instead of guessing</small></h2>
+        <p class="lede">예측 대신 실제로 만들어 재는 길도 있음. 한 exon에서 가능한 거의 모든 변이를 원래 자리에 넣고 기능을 한꺼번에 측정하는 방식.</p>
+        <p><i>BRCA1</i>이 대표 사례. 종양 억제 기능을 떠받치는 RING·BRCT 도메인을 담은 exon 13개에서, 가능한 single-nucleotide 변이의 96.5%를 측정했음. 4,000개에 가까운 변이의 기능 점수가 두 덩어리로 갈렸고, 기존 임상 주석과 거의 완전히 일치했음 <a class="src" href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener">Findlay 2018</a>.</p>
+
+        <figure class="fig" id="fig-measure" data-mode="sge">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-measure" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="sge" aria-pressed="true">직접 잰 결과</button>
+              <button type="button" data-mode="gap" aria-pressed="false">남아 있는 공백</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:MEASURE-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="veMeasureT veMeasureD" xmlns="http://www.w3.org/2000/svg">
+<title id="veMeasureT">직접 잰 결과와 남아 있는 공백</title>
+<desc id="veMeasureD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 상자 다섯 개로, BRCA1에서 가능한 single-nucleotide 변이의 96.5%인 4,000개 가까이를 측정했고 기능 점수가 두 덩이로 갈렸으며 임상 주석과의 일치가 ROC 곡선 아래 면적 0.983, 특이도 98.2%에서 민감도 96.7%였고 그 exon들에 의미가 불확실한 변이가 약 400개 있었음을 적어 둔다. 둘째 화면은 칸 두 개로, 단백질을 바꾸는 변이 쪽에는 사람 deep mutational scanning 31개 assay를 모은 표준 묶음이 있지만 비암호화 변이 쪽에는 그에 맞먹는 공개 정답지가 없다는 것을 보여 준다.</desc>
+<g class="g-ov" data-ov="sge"><text x="380" y="40" class="g-lab em" text-anchor="middle">BRCA1의 거의 모든 변이를 원래 자리에서 재면</text><rect x="36" y="78" width="340" height="92" rx="6" class="g-band"/><text x="50" y="102" class="g-band-t hd" text-anchor="start">측정한 변이</text><text x="50" y="128" class="g-lab em" text-anchor="start" style="font-size:16px">가능한 SNV의 96.5%</text><text x="50" y="150" class="g-small" text-anchor="start">4,000개에 가까운 변이</text><rect x="390" y="78" width="340" height="92" rx="6" class="g-band"/><text x="404" y="102" class="g-band-t hd" text-anchor="start">기능 점수의 모양</text><text x="404" y="128" class="g-lab em" text-anchor="start" style="font-size:16px">두 덩이로 갈림</text><text x="404" y="150" class="g-small" text-anchor="start">끊는 변이와 그렇지 않은 변이</text><rect x="36" y="186" width="222" height="92" rx="6" class="g-band"/><text x="50" y="210" class="g-band-t hd" text-anchor="start">임상 주석과의 일치</text><text x="50" y="236" class="g-lab em" text-anchor="start" style="font-size:16px">AUC 0.983</text><text x="50" y="258" class="g-small" text-anchor="start">ROC 곡선 아래 면적</text><rect x="272" y="186" width="222" height="92" rx="6" class="g-band"/><text x="286" y="210" class="g-band-t hd" text-anchor="start">특이도 98.2%에서</text><text x="286" y="236" class="g-lab em" text-anchor="start" style="font-size:16px">민감도 96.7%</text><text x="286" y="258" class="g-small" text-anchor="start">서열 기반 점수보다 나았음</text><rect x="508" y="186" width="222" height="92" rx="6" class="g-band"/><text x="522" y="210" class="g-band-t hd" text-anchor="start">그 exon의 미해결 변이</text><text x="522" y="236" class="g-lab em" text-anchor="start" style="font-size:16px">약 400개</text><text x="522" y="258" class="g-small" text-anchor="start">의미 불확실 또는 해석 불일치</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">직접 잰 결과</text><text x="44" y="341" class="g-band-t" text-anchor="start">exon 13개는 종양 억제 기능을 떠받치는 RING·BRCT 도메인을 담은 구간이다.</text><text x="44" y="360" class="g-band-t" text-anchor="start">원래 자리에 넣어 재기 때문에 splicing이나 전사체 안정성에 생기는 효과까지 함께 잡힌다.</text></g>
+<g class="g-ov" data-ov="gap"><text x="380" y="40" class="g-lab em" text-anchor="middle">정답지가 있는 쪽과 없는 쪽</text><rect x="60" y="96" width="300" height="160" rx="8" fill="#2563C9" style="fill-opacity:.12" stroke="#8A949C" stroke-width="1.1"/><rect x="400" y="96" width="300" height="160" rx="8" fill="#B3261E" style="fill-opacity:.12" stroke="#8A949C" stroke-width="1.1"/><text x="210" y="126" class="g-note em" text-anchor="middle">단백질을 바꾸는 변이</text><text x="210" y="168" class="g-note" text-anchor="middle">사람 DMS 31개 assay를 모은 표준 묶음</text><text x="210" y="206" class="g-small" text-anchor="middle">모델끼리 같은 자로 견줄 수 있음</text><text x="550" y="126" class="g-note em" text-anchor="middle">비암호화 변이</text><text x="550" y="168" class="g-note" text-anchor="middle">그에 맞먹는 공개 정답지가 없음</text><text x="550" y="206" class="g-small" text-anchor="middle">임상 DB와 fine-mapping 라벨에 기댐</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">남아 있는 공백</text><text x="44" y="341" class="g-band-t" text-anchor="start">예측 모델을 채점하려면 독립적으로 잰 정답지가 있어야 한다.</text><text x="44" y="360" class="g-band-t" text-anchor="start">비암호화 쪽은 그 자리가 비어 있어, 비교가 간접 라벨에 의존한다.</text></g>
+</svg>
+<!--/GEN:MEASURE-->
+          </div>
+          <figcaption>첫 화면의 값은 관찰값 <a class="src" href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener">Findlay 2018</a>. 둘째 화면은 자원의 유무를 나타낸 도식 <a class="src" href="https://doi.org/10.1038/s41586-026-11005-5" target="_blank" rel="noopener">Ye 2026</a>.</figcaption>
+        </figure>
+
+        <p>임상 주석을 정답으로 두고 재면 ROC 곡선 아래 면적이 0.983, 특이도 98.2%에서 민감도 96.7%였음. 같은 변이들에 대해 서열 기반 점수보다 나았음 <a class="src" href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener">Findlay 2018</a>. 이 exon들에는 의미가 불확실하거나 해석이 엇갈리는 변이가 약 400개 있었음.</p>
+        <p>실험 방법 자체와 그 사촌들(MPRA · CRISPR screen · Perturb-seq)은 <a href="../05-function/perturbation.html">변이를 직접 바꿔서 확인하려면?</a>에 있음.</p>
+
+        <!-- ───────── 5. 예측과 측정 ───────── -->
+        <h2 id="compare">예측과 측정이 만나는 곳<small>Where the two meet</small></h2>
+        <p class="lede">직접 잰 지도는 예측 모델을 채점하는 정답지가 됨. 그 채점에서 드러나는 것이 있음.</p>
+        <p>사람 deep mutational scanning 31개 assay를 모은 표준 묶음으로 모델들을 견주면, 유전체 전체를 다루도록 학습한 모델 가운데 가장 나은 것도 단백질별로 따로 학습한 모델이나 missense 특화 모델보다는 낮았음 <a class="src" href="https://doi.org/10.1038/s41586-026-11005-5" target="_blank" rel="noopener">Ye 2026</a>. 범용 모델끼리 비교하는 데는 쓸 만해도, 어느 missense가 더 해로운지를 가장 잘 맞히는 것은 여전히 그 단백질을 위해 만든 모델.</p>
+        <div class="callout">
+          <h4>비암호화 쪽에는 정답지가 없음</h4>
+          <p>단백질 쪽에는 표준화된 실험 지도 묶음이 있지만, 비암호화 변이에는 그에 맞먹는 규모의 공개 정답지가 없음. 그래서 비암호화 예측의 비교는 임상 데이터베이스와 fine-mapping 결과 같은 간접 라벨에 기대고 있음 <a class="src" href="https://doi.org/10.1038/s41586-026-11005-5" target="_blank" rel="noopener">Ye 2026</a>. 비암호화 변이가 발현을 어떻게 바꾸는지는 <a href="../05-function/regulation.html">05절</a>에서 다룸.</p>
+        </div>
+
+        <!-- ───────── 6. 한계 ───────── -->
+        <h2 id="limits">남은 한계<small>What limits both routes</small></h2>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>한계</th><th>내용</th></tr></thead>
+            <tbody>
+              <tr><th>잴 수 있는 유전자가 제한됨</th><td>세포가 살아남느냐로 기능을 읽는 방식이라, 그런 표현형을 가진 유전자와 맞는 세포주가 있어야 함. 한 번에 exon 하나씩</td></tr>
+              <tr><th>커버리지가 100%는 아님</th><td><i>BRCA1</i> 사례에서도 가능한 변이의 96.5%까지 <a class="src" href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener">Findlay 2018</a></td></tr>
+              <tr><th>표현형이 조직의 위험과 다를 수 있음</th><td>세포 증식으로 읽은 기능이 사람 조직에서의 질환 위험을 그대로 대변하지는 않음</td></tr>
+              <tr><th>예측 점수는 용도마다 다름</th><td>하나로 줄 세울 수 없음. 어디에 쓸지를 먼저 정하고 그 용도에서 평가함 <a class="src" href="https://doi.org/10.1038/s41576-026-00990-y" target="_blank" rel="noopener">Engelhardt 2026</a></td></tr>
+              <tr><th>비암호화 정답지의 부재</th><td>표준 실험 지도가 없어 비교 자체가 간접 라벨에 의존함 <a class="src" href="https://doi.org/10.1038/s41586-026-11005-5" target="_blank" rel="noopener">Ye 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>synonymous 변이는 효과가 없음 ✗</code><p class="why">아미노산은 그대로여도 splicing이나 번역 속도를 건드릴 수 있음</p></div>
+          <div class="fix"><code>pLoF로 분류되면 기능이 망가진 것 ✗</code><p class="why">주석 오류가 그쪽에 몰리는 경향이 있어 별도 검증이 필요함 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a></p></div>
+          <div class="fix"><code>효과가 크면 질환 방향도 같음 ✗</code><p class="why">기능을 잃는 것과 없던 기능이 생기는 것은 결과가 다르고, 약을 설계할 때 반대 방향이 됨</p></div>
+          <div class="fix"><code>예측 점수 하나로 변이를 줄 세울 수 있음 ✗</code><p class="why">용도마다 좋은 점수가 다름. 어디에 쓸지를 먼저 정하고 그 용도에서 평가함 <a class="src" href="https://doi.org/10.1038/s41576-026-00990-y" target="_blank" rel="noopener">Engelhardt 2026</a></p></div>
+          <div class="fix"><code>유전체 전체를 학습한 모델이 가장 정확함 ✗</code><p class="why">사람 DMS 31개 assay 비교에서 단백질별로 학습한 모델이 더 나았음 <a class="src" href="https://doi.org/10.1038/s41586-026-11005-5" target="_blank" rel="noopener">Ye 2026</a></p></div>
+          <div class="fix"><code>직접 재면 분류 문제가 끝남 ✗</code><p class="why">잴 수 있는 유전자와 exon이 제한되고, 세포 수준 표현형이 조직의 위험을 다 대변하지 못함 <a class="src" href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener">Findlay 2018</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">variant effect · 변이 효과 · synonymous · 동의 치환 · missense · 과오 돌연변이 · nonsense · 무의미 돌연변이 · frameshift · 틀이동 · canonical splice site · splice donor · splice acceptor · exon skipping · intron retention · pLoF · predicted loss-of-function · LOFTEE · loss-of-function · LoF · gain-of-function · GoF · dominant-negative · haploinsufficiency · VUS · variant of uncertain significance · ClinVar · ACMG · variant effect prediction · VEP · CADD · PhyloP · AlphaMissense · PrimateAI-3D · genomic language model · deep mutational scanning · DMS · ProteinGym · MAVE · multiplex assay of variant effect · saturation genome editing · SGE · BRCA1 · RING domain · BRCT domain · ROC · AUC · 민감도 · 특이도</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>교과서</h3>
+          <p class="text-ref"><b>Strachan &amp; Read HMG 5판</b><br>11.4 변이가 단백질에 미치는 영향 · 16.1–16.2 기능 상실과 기능 획득. 분류와 방향의 틀은 교과서에 있고, 예측 모델 비교와 대규모 실험 지도는 논문으로 채움</p>
+        </div>
+        <div class="aside-box"><h3>이 절의 다른 질문</h3><div class="related-list">
+          <a href="./allele-frequency.html">왜 어떤 변이는 흔하고 어떤 변이는 드문가? →</a>
+          <a href="./variant-types.html">변이에는 어떤 종류가 있나? →</a>
+          <a href="./index.html">유전체와 변이 목록 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../05-function/perturbation.html">변이를 직접 바꿔서 확인하려면? →</a>
+          <a href="../05-function/regulation.html">비암호화 변이는 유전자 발현을 어떻게 바꾸나? →</a>
+          <a href="../05-function/genetics-to-drugs.html">유전학 근거는 약 개발에 어떻게 쓰이나? →</a>
+          <a href="../../../gwas/03-postgwas/fine-mapping.html">Fine-mapping (그림) →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener noreferrer">Findlay 2018, Nature — BRCA1의 거의 모든 변이를 원래 자리에서 재기 ↗</a>
+          <a href="https://doi.org/10.1038/s41586-026-11005-5" target="_blank" rel="noopener noreferrer">Ye 2026, Nature — 실험 지도로 서열 기반 예측 모델을 채점하기 ↗</a>
+          <a href="https://doi.org/10.1038/s41576-026-00990-y" target="_blank" rel="noopener noreferrer">Engelhardt 2026, Nat Rev Genet — 예측 점수가 쓰이는 자리와 그 한계 ↗</a>
+          <a href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener noreferrer">Karczewski 2020, Nature — pLoF 주석의 함정과 걸러내기 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>

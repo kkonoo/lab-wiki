@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="한 집단 안에서 빈도 분포가 왜 그 모양인가. 새 변이는 드물 수밖에 없고, purifying selection이 해로운 변이를 낮은 빈도에 붙잡아 둔다. gnomAD의 LOEUF가 그 힘을 유전자 단위로 재는 방법">
+  <title>왜 어떤 변이는 흔하고 어떤 변이는 드문가? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">유전체와 변이</a><span>›</span>빈도 분포</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">유전체와 변이 · Why most variants are rare</p>
+        <h1>왜 어떤 변이는 흔하고 어떤 변이는 드문가?</h1>
+        <p class="definition">한 집단 안에서 보면 변이의 대부분이 드묾. 이유가 둘 — 새로 생긴 변이는 아직 퍼질 시간이 없었고, 해로운 변이는 퍼지기 전에 걸러짐</p>
+
+        <!-- ───────── 1. 모양 ───────── -->
+        <h2 id="shape">분포의 모양<small>The shape of the spectrum</small></h2>
+        <p class="lede">변이를 빈도순으로 늘어놓으면 한쪽으로 심하게 쏠림. 드문 변이가 압도적으로 많고 흔한 변이는 적음.</p>
+        <p>이 쪽은 <b>한 집단 안</b>의 모양만 다룸. 같은 변이의 빈도가 집단마다 다른 문제, 곧 고정 차이·F<sub>ST</sub>·대륙군별 분포는 GWAS 쪽 <a href="../../../gwas/01-genetics/ancestry.html#frequency">집단마다 다른 allele frequency</a>에 있음. 같은 숫자를 두 곳에 적지 않으려고 이 쪽에서는 그 값을 쓰지 않음.</p>
+
+        <figure class="fig" id="fig-spectrum" data-mode="shape">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-spectrum" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="shape" aria-pressed="true">빈도 분포의 모양</button>
+              <button type="button" data-mode="scale" aria-pressed="false">무엇으로 재나</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:SPECTRUM-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="afSpecT afSpecD" xmlns="http://www.w3.org/2000/svg">
+<title id="afSpecT">빈도 분포의 모양과 그것을 재는 자원</title>
+<desc id="afSpecD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 막대 여섯 개로, 한 번만 관찰되는 singleton이 가장 많고 빈도가 올라갈수록 변이의 수가 가파르게 줄어드는 모양을 눈금 없이 보여 준다. 둘째 화면은 상자 다섯 개로, exome 125,748명과 genome 15,708명을 모아 고신뢰 loss-of-function 변이 443,769개를 추렸고 그중 413,097개가 16,694개 유전자의 대표 전사체 위에 떨어지며, 제약 지표를 매긴 유전자 19,197개를 구간당 약 1,920개씩 열 구간으로 나누었다는 것을 적어 둔다.</desc>
+<g class="g-ov" data-ov="shape"><text x="380" y="40" class="g-lab em" text-anchor="middle">빈도순으로 늘어놓으면 한쪽으로 심하게 쏠림</text><text x="150" y="68" class="g-small" text-anchor="start">세로축 — 변이의 수 (눈금 없는 도식)</text><line x1="130" y1="256" x2="712" y2="256" class="g-axis"/><rect x="150" y="86.0" width="74" height="170.0" rx="3" fill="#D9822B"/><text x="187" y="278" class="g-small" text-anchor="middle">singleton</text><rect x="242" y="188.0" width="74" height="68.0" rx="3" fill="#D9822B"/><text x="279" y="278" class="g-small" text-anchor="middle">0.01% 미만</text><rect x="334" y="220.3" width="74" height="35.7" rx="3" fill="#D9822B"/><text x="371" y="278" class="g-small" text-anchor="middle">0.01–0.1%</text><rect x="426" y="237.3" width="74" height="18.7" rx="3" fill="#5B6B7A"/><text x="463" y="278" class="g-small" text-anchor="middle">0.1–1%</text><rect x="518" y="246.7" width="74" height="9.3" rx="3" fill="#2563C9"/><text x="555" y="278" class="g-small" text-anchor="middle">1–5%</text><rect x="610" y="250.1" width="74" height="6.0" rx="3" fill="#2563C9"/><text x="647" y="278" class="g-small" text-anchor="middle">5% 이상</text><text x="380" y="302" class="g-small" text-anchor="middle">가로축 — 집단에서의 빈도</text><rect x="30" y="318" width="700" height="71" rx="6" class="g-band"/><text x="44" y="340" class="g-band-t hd" text-anchor="start">빈도 분포의 모양</text><text x="44" y="359" class="g-band-t" text-anchor="start">드문 쪽이 압도적으로 많다 — 모든 변이가 한 사람에게서 시작하기 때문이다.</text><text x="44" y="378" class="g-band-t" text-anchor="start">해로운 변이는 퍼지기 전에 걸러지므로 드문 쪽에 더 몰린다.</text></g>
+<g class="g-ov" data-ov="scale"><text x="380" y="40" class="g-lab em" text-anchor="middle">빈도와 제약을 재는 자원</text><rect x="36" y="78" width="340" height="92" rx="6" class="g-band"/><text x="50" y="102" class="g-band-t hd" text-anchor="start">모은 사람</text><text x="50" y="128" class="g-lab em" text-anchor="start" style="font-size:16px">exome 125,748명</text><text x="50" y="150" class="g-small" text-anchor="start">genome 15,708명을 더해 141,456명</text><rect x="390" y="78" width="340" height="92" rx="6" class="g-band"/><text x="404" y="102" class="g-band-t hd" text-anchor="start">고신뢰 loss-of-function 변이</text><text x="404" y="128" class="g-lab em" text-anchor="start" style="font-size:16px">443,769개</text><text x="404" y="150" class="g-small" text-anchor="start">그중 413,097개가 대표 전사체 위</text><rect x="36" y="186" width="222" height="92" rx="6" class="g-band"/><text x="50" y="210" class="g-band-t hd" text-anchor="start">대표 전사체를 가진 유전자</text><text x="50" y="236" class="g-lab em" text-anchor="start" style="font-size:16px">16,694개</text><text x="50" y="258" class="g-small" text-anchor="start">pLoF가 떨어진 유전자 수</text><rect x="272" y="186" width="222" height="92" rx="6" class="g-band"/><text x="286" y="210" class="g-band-t hd" text-anchor="start">제약 지표를 매긴 유전자</text><text x="286" y="236" class="g-lab em" text-anchor="start" style="font-size:16px">19,197개</text><text x="286" y="258" class="g-small" text-anchor="start">열 구간으로 나눔</text><rect x="508" y="186" width="222" height="92" rx="6" class="g-band"/><text x="522" y="210" class="g-band-t hd" text-anchor="start">한 구간에 들어가는 유전자</text><text x="522" y="236" class="g-lab em" text-anchor="start" style="font-size:16px">약 1,920개</text><text x="522" y="258" class="g-small" text-anchor="start">LOEUF 십분위</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">무엇으로 재나</text><text x="44" y="341" class="g-band-t" text-anchor="start">LOEUF는 유전자마다 '관찰/기대' 비를 구한 뒤 그 신뢰구간의 90% 상한을 쓴 값이다.</text><text x="44" y="360" class="g-band-t" text-anchor="start">상한을 쓰는 이유는 기대값이 작은 유전자에서 비 하나만으로는 확신할 수 없기 때문이다.</text></g>
+</svg>
+<!--/GEN:SPECTRUM-->
+          </div>
+          <figcaption>첫 화면은 눈금 없는 도식. 둘째 화면의 값은 관찰값 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a>.</figcaption>
+        </figure>
+
+        <!-- ───────── 2. 새 변이 ───────── -->
+        <h2 id="new">새 변이는 드물 수밖에 없음<small>New variants start at one</small></h2>
+        <p class="lede">모든 변이는 한 사람에게서 시작함. 그 사람에게 하나 있는 상태가 출발점.</p>
+        <p>한 표본에서 딱 한 번 관찰되는 변이를 singleton이라 부름. 변이가 생긴 시점과 그것이 어떤 계통에 전해졌는지는 <a href="./variant-origin.html">변이는 언제, 어디서 생기나?</a>에 있음.</p>
+        <p>출발점이 같아도 그다음이 다름. 영향이 없거나 거의 없는 변이는 세대를 거치며 우연에 따라 오르내리다 드물게 흔해지고, 해로운 변이는 그 과정에서 걸러짐. 그래서 지금 보이는 분포의 모양은 "얼마나 오래됐나"와 "얼마나 해로운가"가 겹쳐 만든 것.</p>
+
+        <!-- ───────── 3. 걸러내는 힘 ───────── -->
+        <h2 id="selection">해로운 변이를 낮은 빈도에 붙잡아 두는 힘<small>Purifying selection</small></h2>
+        <p class="lede">해로운 변이가 아예 생기지 않는 것이 아님. 생기되 퍼지지 못함. 그 결과가 빈도 분포에 자국으로 남음.</p>
+        <p>이 자국을 재는 방법이 있음. 같은 돌연변이 발생 가능성을 보정한 뒤 singleton의 비율을 기능 범주별로 비교하는 것. 값이 높을수록 그 범주의 변이가 낮은 빈도 쪽에 몰려 있다는 뜻이고, 몰려 있다는 것은 걸러지고 있다는 뜻 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a>.</p>
+        <p>그러니 "드물다"는 성질 자체가 해석의 단서가 됨. 어떤 종류의 변이가 유난히 드문 쪽에 몰려 있으면, 그 종류가 기능에 미치는 영향이 크다고 읽음.</p>
+
+        <!-- ───────── 4. 유전자 단위 ───────── -->
+        <h2 id="constraint">유전자마다 얼마나 걸러지나<small>Constraint per gene</small></h2>
+        <p class="lede">같은 논리를 유전자 하나하나에 적용할 수 있음. 그 유전자에서 단백질을 끊는 변이가 기대보다 얼마나 적게 관찰되는지를 봄.</p>
+        <p>gnomAD는 사람 125,748명의 exome과 15,708명의 genome을 모아, 고신뢰 loss-of-function 변이 443,769개를 추려 냄. 그 가운데 413,097개가 16,694개 유전자의 대표 전사체 위에 떨어짐 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a>.</p>
+        <p>여기서 유전자마다 "관찰/기대" 비를 구하고, 그 신뢰구간의 90% 상한을 지표로 삼음. 이것이 LOEUF. 유전자 19,197개를 이 값으로 줄 세워 약 1,920개씩 열 구간으로 나눔 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a>. 상한을 쓰는 이유는 작은 유전자 때문. 관찰이 0이고 기대가 2인 유전자는 비만 보면 완벽하게 제약된 것처럼 보이지만, 표본이 적어 확신할 수 없다는 사실을 상한이 함께 담음.</p>
+
+        <figure class="fig" id="fig-constraint" data-mode="deciles">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-constraint" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="deciles" aria-pressed="true">제약의 눈금 위에서</button>
+              <button type="button" data-mode="enrich" aria-pressed="false">환자에서의 농축</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:CONSTRAINT-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="afConsT afConsD" xmlns="http://www.w3.org/2000/svg">
+<title id="afConsT">제약의 눈금과 환자에서의 농축</title>
+<desc id="afConsD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 LOEUF 십분위를 가로로 늘어놓은 띠 위에 세 유전자 집합을 올린 도식으로, 한 copy만 망가져도 문제가 되는 haploinsufficient 유전자가 가장 제약된 쪽에, 열성 질환 유전자가 가운데에, 후각 수용체 유전자가 제약이 약한 쪽에 놓인다. 둘째 화면은 막대 네 개로, 지적장애와 발달지연 환자에서 가장 제약된 구간의 de novo 변이가 대조군의 약 11배, 그다음 구간에서 2.9배, 나머지 구간에서 1배이고, 자폐에서는 가장 제약된 구간에서 4.4배임을 보여 준다.</desc>
+<g class="g-ov" data-ov="deciles"><text x="380" y="40" class="g-lab em" text-anchor="middle">제약의 눈금 위에 유전자 집합을 올려 보면</text><rect x="110.0" y="132" width="56.0" height="26" rx="3" fill="#B3261E" style="fill-opacity:0.85"/><rect x="169.0" y="132" width="56.0" height="26" rx="3" fill="#5B6B7A" style="fill-opacity:0.78"/><rect x="228.0" y="132" width="56.0" height="26" rx="3" fill="#5B6B7A" style="fill-opacity:0.71"/><rect x="287.0" y="132" width="56.0" height="26" rx="3" fill="#5B6B7A" style="fill-opacity:0.64"/><rect x="346.0" y="132" width="56.0" height="26" rx="3" fill="#5B6B7A" style="fill-opacity:0.57"/><rect x="405.0" y="132" width="56.0" height="26" rx="3" fill="#2563C9" style="fill-opacity:0.50"/><rect x="464.0" y="132" width="56.0" height="26" rx="3" fill="#2563C9" style="fill-opacity:0.43"/><rect x="523.0" y="132" width="56.0" height="26" rx="3" fill="#2563C9" style="fill-opacity:0.36"/><rect x="582.0" y="132" width="56.0" height="26" rx="3" fill="#2563C9" style="fill-opacity:0.29"/><rect x="641.0" y="132" width="56.0" height="26" rx="3" fill="#2563C9" style="fill-opacity:0.22"/><text x="110" y="118" class="g-small" text-anchor="start">제약 강함 — 끊는 변이가 기대보다 훨씬 적음</text><text x="700" y="118" class="g-small" text-anchor="end">제약 약함</text><text x="380" y="180" class="g-small" text-anchor="middle">가로축 — LOEUF 십분위 (왼쪽이 가장 제약된 구간)</text><rect x="110.0" y="196" width="153.4" height="22" rx="5" fill="#B3261E" style="fill-opacity:.3"/><rect x="275.2" y="240" width="259.6" height="22" rx="5" fill="#5B6B7A" style="fill-opacity:.3"/><rect x="546.6" y="284" width="153.4" height="22" rx="5" fill="#2563C9" style="fill-opacity:.3"/><text x="186.7" y="212" class="g-note em" text-anchor="middle">haploinsufficient</text><text x="405" y="256" class="g-note em" text-anchor="middle">열성 질환 유전자</text><text x="623.3" y="300" class="g-note em" text-anchor="middle">후각 수용체 유전자</text><rect x="30" y="318" width="700" height="52" rx="6" class="g-band"/><text x="44" y="340" class="g-band-t hd" text-anchor="start">제약의 눈금 위에서</text><text x="44" y="359" class="g-band-t" text-anchor="start">막대 위치는 방향만 나타낸 도식이다 — 한 copy만 망가져도 문제가 되는 유전자가 가장 제약된 쪽에 몰린다.</text></g>
+<g class="g-ov" data-ov="enrich"><text x="380" y="40" class="g-lab em" text-anchor="middle">제약이 강한 유전자의 de novo 변이가 환자에 몰림</text><text x="150" y="68" class="g-small" text-anchor="start">세로축 — 대조군 대비 배수</text><line x1="150" y1="258" x2="700" y2="258" class="g-axis"/><line x1="150" y1="258.0" x2="700" y2="258.0" class="g-grid"/><text x="142" y="262" class="g-small" text-anchor="end">0</text><line x1="150" y1="217.5" x2="700" y2="217.5" class="g-grid"/><text x="142" y="221.5" class="g-small" text-anchor="end">3배</text><line x1="150" y1="177.0" x2="700" y2="177.0" class="g-grid"/><text x="142" y="181" class="g-small" text-anchor="end">6배</text><line x1="150" y1="136.5" x2="700" y2="136.5" class="g-grid"/><text x="142" y="140.5" class="g-small" text-anchor="end">9배</text><line x1="150" y1="96.0" x2="700" y2="96.0" class="g-grid"/><text x="142" y="100" class="g-small" text-anchor="end">12배</text><rect x="186" y="109.5" width="92" height="148.5" rx="3" fill="#B3261E"/><text x="232" y="100.5" class="g-bar-t" text-anchor="middle">11배</text><text x="232" y="280" class="g-small" text-anchor="middle">가장 제약된 구간</text><text x="232" y="298" class="g-note" text-anchor="middle">지적장애 · 발달지연</text><rect x="314" y="218.8" width="92" height="39.1" rx="3" fill="#5B6B7A"/><text x="360" y="209.85" class="g-bar-t" text-anchor="middle">2.9배</text><text x="360" y="280" class="g-small" text-anchor="middle">그다음 구간</text><text x="360" y="298" class="g-note" text-anchor="middle">지적장애 · 발달지연</text><rect x="442" y="244.5" width="92" height="13.5" rx="3" fill="#5B6B7A"/><text x="488" y="235.5" class="g-bar-t" text-anchor="middle">1배</text><text x="488" y="280" class="g-small" text-anchor="middle">나머지 구간</text><text x="488" y="298" class="g-note" text-anchor="middle">지적장애 · 발달지연</text><rect x="570" y="198.6" width="92" height="59.4" rx="3" fill="#2563C9"/><text x="616" y="189.6" class="g-bar-t" text-anchor="middle">4.4배</text><text x="616" y="280" class="g-small" text-anchor="middle">가장 제약된 구간</text><text x="616" y="298" class="g-note" text-anchor="middle">자폐</text><rect x="30" y="318" width="700" height="52" rx="6" class="g-band"/><text x="44" y="340" class="g-band-t hd" text-anchor="start">환자에서의 농축</text><text x="44" y="359" class="g-band-t" text-anchor="start">환자 5,305명과 대조 2,179명, 자폐는 6,430명을 견준 값이다. 제약 지표가 질환 자료와 맞는다는 근거다.</text></g>
+</svg>
+<!--/GEN:CONSTRAINT-->
+          </div>
+          <figcaption>첫 화면의 유전자 집합 위치는 방향만 나타낸 도식. 둘째 화면의 배수는 관찰값 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a>.</figcaption>
+        </figure>
+
+        <p>이 눈금 위에 알려진 유전자 집합을 올려 보면 방향이 맞음. 한 copy만 망가져도 문제가 생기는 haploinsufficient 유전자는 가장 제약된 쪽에 몰리고, 열성 질환 유전자는 가운데에 퍼지며, 후각 수용체 유전자는 거의 제약을 받지 않는 쪽에 있음 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a>.</p>
+        <p>환자 자료에서도 같은 방향이 나옴. 지적장애·발달지연 환자 5,305명과 대조 2,179명을 견주면, 가장 제약된 구간의 유전자에서 생긴 de novo loss-of-function 변이가 환자 쪽에 약 11배 몰려 있음. 그다음 구간에서 2.9배이고 나머지 구간에서는 증가가 없음. 자폐 환자 6,430명에서는 가장 제약된 구간에서 4.4배 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a>.</p>
+
+        <!-- ───────── 5. 쓰임 ───────── -->
+        <h2 id="use">빈도를 분석에 쓰는 법<small>How frequency is used</small></h2>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>쓰임</th><th>어떻게</th></tr></thead>
+            <tbody>
+              <tr><th>희귀 변이 분석의 전제</th><td>빈도 기준으로 변이를 추린 뒤 유전자 단위로 모아 검정함. 어느 기준을 쓰느냐가 결과를 크게 바꿈</td></tr>
+              <tr><th>임상 해석의 1차 필터</th><td>집단에서 충분히 흔한 변이는 중증 질환의 원인이기 어렵다는 논리. gnomAD가 사실상 표준 참조 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a></td></tr>
+              <tr><th>유전자 우선순위</th><td>제약이 강한 유전자에서 나온 변이에 더 무게를 둠. 질환 유전자 발굴의 검정력을 올림 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a></td></tr>
+              <tr><th>구조를 읽는 축</th><td>효과 크기와 함께 놓으면 질환마다 다른 유전 구조가 보임 — <a href="../04-polygenic/architecture.html#map">빈도와 효과 크기의 지도</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 6. 함정 ───────── -->
+        <h2 id="limits">빈도 값의 함정<small>What a frequency does not tell you</small></h2>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>함정</th><th>내용</th></tr></thead>
+            <tbody>
+              <tr><th>표본이 곧 분모</th><td>빈도는 누구를 몇 명 모았는지에 달린 값. 표본에 없는 집단의 변이는 빈도가 낮게 나옴</td></tr>
+              <tr><th>0이 "없음"은 아님</th><td>매핑이 되지 않는 자리에서는 변이가 있어도 호출되지 않음. 품질 필터에서 탈락해 빈도가 비어 보이기도 함 — <a href="./reference.html#graph">참조가 가린 자리</a></td></tr>
+              <tr><th>loss-of-function 주석의 오류</th><td>pLoF로 분류된 변이에 주석 오류가 몰리는 경향이 있어 별도 검증이 필요함 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a></td></tr>
+              <tr><th>참조 자료의 구성</th><td>일부 질환 코호트가 의도적으로 빠져 있어, 그 질환과 얽힌 변이의 빈도를 그대로 읽으면 안 됨 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a></td></tr>
+              <tr><th>집단 사이 비교는 다른 문제</th><td>이 쪽은 한 집단 안의 모양만 다룸. 집단 사이의 빈도 차이는 <a href="../../../gwas/01-genetics/ancestry.html#frequency">GWAS 쪽</a>에 있음</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>드문 변이는 해로운 변이 ✗</code><p class="why">드문 데에는 "아직 퍼질 시간이 없었다"는 이유도 있음. 해로움은 빈도 하나가 아니라 기능 범주별 쏠림으로 읽음 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a></p></div>
+          <div class="fix"><code>빈도가 0이면 그런 변이가 없는 것 ✗</code><p class="why">매핑이 안 되는 자리이거나 품질 필터에서 탈락한 경우가 있음 — <a href="./reference.html#graph">GBA1 사례</a></p></div>
+          <div class="fix"><code>제약이 강한 유전자 = 질환 유전자 ✗</code><p class="why">제약은 선택압의 지표일 뿐. 다만 제약이 강한 쪽에서 나온 de novo 변이가 환자에 11배 몰리는 것은 사실 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a></p></div>
+          <div class="fix"><code>관찰/기대 비만 보면 제약을 알 수 있음 ✗</code><p class="why">작은 유전자는 기대값이 작아 비가 불안정함. 그래서 신뢰구간의 상한을 지표로 씀 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a></p></div>
+          <div class="fix"><code>pLoF로 주석되면 기능이 망가진 것 ✗</code><p class="why">주석 오류가 그쪽에 몰리는 경향이 있어 검증이 필요함 <a class="src" href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener">Karczewski 2020</a></p></div>
+          <div class="fix"><code>빈도는 그 변이의 고유한 성질 ✗</code><p class="why">누구를 몇 명 모았는지에 달린 값. 집단 사이 차이는 따로 다룸 — <a href="../../../gwas/01-genetics/ancestry.html#frequency">GWAS 쪽</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">allele frequency · 대립유전자 빈도 · minor allele frequency · MAF · allele frequency spectrum · site frequency spectrum · 빈도 스펙트럼 · singleton · rare variant · 희귀 변이 · common variant · low-frequency variant · purifying selection · 정화 선택 · negative selection · constraint · 제약 · mutational constraint · pLI · LOEUF · loss-of-function observed/expected upper bound fraction · observed/expected · o/e · pLoF · predicted loss-of-function · LOFTEE · MAPS · mutability-adjusted proportion of singletons · haploinsufficient · haploinsufficiency · recessive · olfactory receptor · gnomAD · ExAC · de novo · allele count · AC · allele number · AN</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>교과서</h3>
+          <p class="text-ref"><b>Strachan &amp; Read HMG 5판</b><br>11.3 변이의 빈도 · 12.3 집단에서의 선택. 빈도와 선택의 기본 틀은 교과서에 있고, biobank 규모의 constraint 지표는 2019년 뒤의 것이라 논문으로 채움</p>
+        </div>
+        <div class="aside-box"><h3>이 절의 다른 질문</h3><div class="related-list">
+          <a href="./variant-origin.html">변이는 언제, 어디서 생기나? →</a>
+          <a href="./variant-types.html">변이에는 어떤 종류가 있나? →</a>
+          <a href="./reference.html">참조 유전체는 왜 하나로는 부족한가? →</a>
+          <a href="./index.html">유전체와 변이 목록 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../../../gwas/01-genetics/ancestry.html#frequency">집단마다 다른 allele frequency (그림) →</a>
+          <a href="../04-polygenic/architecture.html#map">빈도와 효과 크기의 지도 →</a>
+          <a href="../../../gwas/index.html#article/maf">GWAS · MAF 카드 →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41586-020-2308-7" target="_blank" rel="noopener noreferrer">Karczewski 2020, Nature — 141,456명에서 잰 사람 유전자의 제약 스펙트럼 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>

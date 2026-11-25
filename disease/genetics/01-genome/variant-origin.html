@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="변이가 생긴 시점이 전달 범위를 정함. 부모에게 없던 de novo 변이, 몸이 만들어지는 동안 생긴 모자이크, 나이와 함께 자라는 혈액 클론, 그리고 언제 생겼는지를 VAF와 trio 설계로 가르는 방법">
+  <title>변이는 언제, 어디서 생기나? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">유전체와 변이</a><span>›</span>변이의 기원</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">유전체와 변이 · When variants arise</p>
+        <h1>변이는 언제, 어디서 생기나?</h1>
+        <p class="definition">변이가 생긴 <b>시점</b>이 그 변이가 어디까지 퍼지는지를 정함. 생식세포 계열에서 생기면 자손의 모든 세포로 가고, 수정 뒤에 생기면 그때 갈라져 나온 세포들에만 남음</p>
+
+        <!-- ───────── 1. 시점이 범위를 정함 ───────── -->
+        <h2 id="when">시점이 범위를 정함<small>Timing sets the reach</small></h2>
+        <p class="lede">같은 염기 치환이라도 언제 생겼느냐에 따라 전신에 있기도 하고 한 조직의 일부 세포에만 있기도 함.</p>
+        <p>축이 둘. 하나는 <b>수정 전인가 뒤인가</b> — 앞이면 자손에게 전해지고 뒤면 전해지지 않음. 다른 하나는 <b>얼마나 이른 시점인가</b> — 발생 초기일수록 더 많은 세포 계통이 그 변이를 물려받음.</p>
+
+        <figure class="fig" id="fig-when" data-mode="timeline">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-when" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="timeline" aria-pressed="true">생긴 시점과 범위</button>
+              <button type="button" data-mode="vaf" aria-pressed="false">자료에서 보이는 모양</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:WHEN-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="voWhenT voWhenD" xmlns="http://www.w3.org/2000/svg">
+<title id="voWhenT">변이가 생긴 시점과 그 범위</title>
+<desc id="voWhenD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 발생의 시간을 가로축으로 둔 도식으로, 생식세포 계열에서 생긴 변이는 자손의 모든 세포로 가고, 발생 초기에 생긴 변이는 여러 조직에 섞여 남으며, 성체 조직에서 생긴 변이는 그 조직의 일부 세포에만 남는 것을 세 줄의 막대로 보여 준다. 둘째 화면은 variant allele fraction을 가로축으로 둔 도식으로, germline 이형접합이 50% 근처에 놓이고 모자이크가 그보다 낮은 넓은 구간에 퍼지며 혈액 클론의 탐지 한계가 약 2에서 3퍼센트임을 보여 준다.</desc>
+<g class="g-ov" data-ov="timeline"><text x="380" y="40" class="g-lab em" text-anchor="middle">언제 생겼느냐가 어디까지 퍼지는지를 정함</text><line x1="110" y1="252" x2="700" y2="252" class="g-dna"/><line x1="110" y1="246" x2="110" y2="258" class="g-axis"/><text x="110" y="276" class="g-small" text-anchor="middle">수정란</text><line x1="290" y1="246" x2="290" y2="258" class="g-axis"/><text x="290" y="276" class="g-small" text-anchor="middle">발생 초기</text><line x1="470" y1="246" x2="470" y2="258" class="g-axis"/><text x="470" y="276" class="g-small" text-anchor="middle">조직 분화</text><line x1="660" y1="246" x2="660" y2="258" class="g-axis"/><text x="660" y="276" class="g-small" text-anchor="middle">성체</text><text x="380" y="298" class="g-small" text-anchor="middle">가로축 — 발생의 시간</text><rect x="110" y="96" width="590" height="20" rx="4" fill="#2563C9" style="fill-opacity:.22"/><circle cx="110" cy="106" r="7" fill="#2563C9"/><line x1="110" y1="116" x2="110" y2="244" class="g-mid"/><rect x="290" y="148" width="410" height="20" rx="4" fill="#D9822B" style="fill-opacity:.22"/><circle cx="290" cy="158" r="7" fill="#D9822B"/><line x1="290" y1="168" x2="290" y2="244" class="g-mid"/><rect x="530" y="200" width="170" height="20" rx="4" fill="#5B6B7A" style="fill-opacity:.22"/><circle cx="530" cy="210" r="7" fill="#5B6B7A"/><line x1="530" y1="220" x2="530" y2="244" class="g-mid"/><text x="110" y="88" class="g-note em" text-anchor="start">생식세포 계열에서</text><text x="126" y="111" class="g-small" text-anchor="start">자손의 모든 세포 — 다음 세대로 전달됨</text><text x="290" y="140" class="g-note em" text-anchor="start">발생 초기에</text><text x="306" y="163" class="g-small" text-anchor="start">여러 조직에 섞여 남음 — 전달 안 됨</text><text x="530" y="192" class="g-note em" text-anchor="start">성체 조직에서</text><text x="546" y="215" class="g-small" text-anchor="start">일부 세포에만</text><rect x="30" y="310" width="700" height="71" rx="6" class="g-band"/><text x="44" y="332" class="g-band-t hd" text-anchor="start">시점과 범위</text><text x="44" y="351" class="g-band-t" text-anchor="start">변이가 이른 시점에 생길수록 더 많은 세포 계통이 그것을 물려받는다.</text><text x="44" y="370" class="g-band-t" text-anchor="start">수정 전이면 자손에게 전해지고, 수정 뒤면 그 사람 안에서만 모자이크로 남는다.</text></g>
+<g class="g-ov" data-ov="vaf"><text x="380" y="40" class="g-lab em" text-anchor="middle">같은 변이라도 read에서 보이는 비율이 다름</text><line x1="120" y1="190" x2="700" y2="190" class="g-axis"/><line x1="120.0" y1="185" x2="120.0" y2="195" class="g-axis"/><text x="120" y="214" class="g-small" text-anchor="middle">0%</text><line x1="216.7" y1="185" x2="216.7" y2="195" class="g-axis"/><text x="216.667" y="214" class="g-small" text-anchor="middle">10%</text><line x1="313.3" y1="185" x2="313.3" y2="195" class="g-axis"/><text x="313.333" y="214" class="g-small" text-anchor="middle">20%</text><line x1="410.0" y1="185" x2="410.0" y2="195" class="g-axis"/><text x="410" y="214" class="g-small" text-anchor="middle">30%</text><line x1="506.7" y1="185" x2="506.7" y2="195" class="g-axis"/><text x="506.667" y="214" class="g-small" text-anchor="middle">40%</text><line x1="603.3" y1="185" x2="603.3" y2="195" class="g-axis"/><text x="603.333" y="214" class="g-small" text-anchor="middle">50%</text><line x1="700.0" y1="185" x2="700.0" y2="195" class="g-axis"/><text x="700" y="214" class="g-small" text-anchor="middle">60%</text><text x="380" y="238" class="g-small" text-anchor="middle">가로축 — variant allele fraction</text><rect x="139.3" y="136" width="415.7" height="36" rx="5" fill="#D9822B" style="fill-opacity:.28"/><text x="347.167" y="159" class="g-note em" text-anchor="middle">모자이크 — 시점과 조직에 따라</text><circle cx="603.3" cy="154" r="8" fill="#2563C9"/><text x="603.333" y="134" class="g-note em" text-anchor="middle">germline 이형접합</text><line x1="144.2" y1="94" x2="144.2" y2="190" class="g-thr"/><text x="154.167" y="106" class="g-note warn" text-anchor="start">혈액 클론 탐지 한계 약 2–3%</text><rect x="30" y="310" width="700" height="71" rx="6" class="g-band"/><text x="44" y="332" class="g-band-t hd" text-anchor="start">자료에서 보이는 모양</text><text x="44" y="351" class="g-band-t" text-anchor="start">germline 이형접합 변이는 그 자리를 덮은 read의 절반쯤에서 보인다.</text><text x="44" y="370" class="g-band-t" text-anchor="start">모자이크는 그보다 낮은 비율에서 보이고, 너무 낮으면 잡음과 가려지지 않는다.</text></g>
+</svg>
+<!--/GEN:WHEN-->
+          </div>
+          <figcaption>첫 화면은 눈금 없는 도식. 둘째 화면의 탐지 한계 2–3%만 관찰값 <a class="src" href="https://doi.org/10.1038/s41588-026-02594-y" target="_blank" rel="noopener">Walkowiak 2026</a>.</figcaption>
+        </figure>
+
+        <!-- ───────── 2. 생식세포 계열 ───────── -->
+        <h2 id="germline">부모에게 없던 변이<small>De novo in the germline</small></h2>
+        <p class="lede">부모 두 사람의 유전체에는 없는데 자손에게 있는 변이를 de novo라고 부름. 부모와 자녀를 함께 시퀀싱하는 trio 설계로 찾음.</p>
+        <p>이 변이가 분석에서 특별한 자리를 차지하는 이유가 있음. 흔한 변이 연관은 신호가 넓은 구간에 걸쳐 어느 유전자인지 가리기 어려운데, 단백질을 끊는 de novo 변이는 유전자를 <b>하나씩 지목</b>할 수 있음 <a class="src" href="https://doi.org/10.1016/j.cell.2019.12.036" target="_blank" rel="noopener">Satterstrom 2020</a>. 집단 전체의 위험에 얼마나 기여하는지는 <a href="../04-polygenic/architecture.html#by-disease">질환마다 유전 구조는 어떻게 다른가?</a>에서 따로 다룸.</p>
+        <p>비암호화 영역의 de novo는 사정이 다름. 범주 하나하나로는 신호가 보이지 않고, 여러 범주를 합친 점수로만 기여가 드러남 <a class="src" href="https://doi.org/10.1126/science.aat6576" target="_blank" rel="noopener">An 2018</a>. 어느 자리가 원인인지는 아직 지목하지 못함.</p>
+        <p>효과 크기 쪽에서도 눈에 띄는 비대칭이 있음. de novo로 생긴 희귀 변이와 CNV는 뇌 구조 변화나 인지 손상과 뚜렷하게, 그리고 큰 효과로 연관되는데, 질환 자체의 소인은 polygenic score 쪽이 더 많이 설명함 <a class="src" href="https://doi.org/10.1038/s41380-026-03654-9" target="_blank" rel="noopener">Owen 2026</a>. 드물고 효과가 큰 변이는 중간 표현형에서 더 또렷하게 보임.</p>
+
+        <!-- ───────── 3. 체세포 ───────── -->
+        <h2 id="somatic">몸이 만들어지는 동안<small>Somatic mosaicism</small></h2>
+        <p class="lede">수정 뒤에 생긴 변이는 그 세포에서 갈라져 나온 계통에만 남음. 한 사람 안에 유전체가 다른 세포 집단이 섞여 있는 상태, 곧 모자이크.</p>
+        <p>범위는 시점이 정함. 수정란이 몇 번 나뉘기 전에 생긴 변이는 여러 배엽에 걸쳐 퍼지고, 특정 조직이 자리를 잡은 뒤에 생긴 변이는 그 조직 안에서도 일부 세포에만 남음. 그래서 어느 조직을 뽑아 읽었는지가 보이는 모자이크를 정함.</p>
+        <p>자료에서는 비율로 나타남. 양쪽 염색체 중 하나에 있는 germline 이형접합 변이는 그 자리를 덮은 read의 절반쯤에서 보이는데, 모자이크 변이는 그보다 낮은 비율에서 보임. 이 비율을 variant allele fraction이라 부름.</p>
+
+        <!-- ───────── 4. 혈액의 클론 ───────── -->
+        <h2 id="blood">나이와 함께 자라는 클론<small>Clonal haematopoiesis</small></h2>
+        <p class="lede">체세포 변이가 가장 잘 연구된 조직이 혈액. 조혈줄기세포 하나하나에 변이가 쌓이고, 그 가운데 일부가 적합도 이점을 얻어 퍼짐.</p>
+        <p>쌓이는 양이 작지 않음. 보통의 수명 동안 조혈줄기세포 하나에 체세포 변이가 1,000–1,500개 쌓이고, 70세 시점이면 한 사람의 조혈줄기세포 풀 전체에 유전자마다 평균 70개의 서로 다른 단백질 암호화 변이가 흩어져 있음 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a>.</p>
+        <p>그중 일부가 클론으로 자람. 점돌연변이로 생기는 clonal haematopoiesis, 대규모 염색체 변화로 생기는 mosaic chromosomal alteration, 그리고 성염색체를 통째로 잃는 mosaic loss of Y가 같은 스펙트럼 위에 놓임 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a>.</p>
+
+        <figure class="fig" id="fig-blood" data-mode="age">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-blood" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="age" aria-pressed="true">나이에 따른 유병률</button>
+              <button type="button" data-mode="load" aria-pressed="false">쌓이는 변이의 양</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:BLOOD-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="voBloodT voBloodD" xmlns="http://www.w3.org/2000/svg">
+<title id="voBloodT">혈액에서 자라는 클론</title>
+<desc id="voBloodD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 막대 두 개로, mosaic loss of Y의 유병률이 40세에 2.5%에서 70세에 43.6%로 오르는 것을 보여 주고 UK Biobank 남성 205,011명 가운데 20%에서 검출됐음을 적어 둔다. 둘째 화면은 상자 다섯 개로, 조혈줄기세포 하나에 수명 동안 1,000에서 1,500개의 체세포 변이가 쌓이고 70세에는 유전자마다 평균 70개의 서로 다른 단백질 암호화 변이가 풀 전체에 흩어져 있으며, Y 소실의 유전율이 31.7%, 상염색체 신호가 156개, 현재 흡연의 위험이 1.62배임을 적어 둔다.</desc>
+<g class="g-ov" data-ov="age"><text x="380" y="40" class="g-lab em" text-anchor="middle">Y 소실은 나이와 함께 흔해짐</text><text x="150" y="64" class="g-small" text-anchor="start">세로축 — mosaic loss of Y 유병률 (%)</text><line x1="150" y1="252" x2="700" y2="252" class="g-axis"/><line x1="150" y1="252.0" x2="700" y2="252.0" class="g-grid"/><text x="142" y="256" class="g-small" text-anchor="end">0</text><line x1="150" y1="220.0" x2="700" y2="220.0" class="g-grid"/><text x="142" y="224" class="g-small" text-anchor="end">10</text><line x1="150" y1="188.0" x2="700" y2="188.0" class="g-grid"/><text x="142" y="192" class="g-small" text-anchor="end">20</text><line x1="150" y1="156.0" x2="700" y2="156.0" class="g-grid"/><text x="142" y="160" class="g-small" text-anchor="end">30</text><line x1="150" y1="124.0" x2="700" y2="124.0" class="g-grid"/><text x="142" y="128" class="g-small" text-anchor="end">40</text><line x1="150" y1="92.0" x2="700" y2="92.0" class="g-grid"/><text x="142" y="96" class="g-small" text-anchor="end">50</text><rect x="260" y="244.0" width="140" height="8.0" rx="3" fill="#5B6B7A"/><text x="330" y="235" class="g-bar-t" text-anchor="middle">2.5%</text><text x="330" y="276" class="g-note" text-anchor="middle">40세</text><rect x="480" y="112.5" width="140" height="139.5" rx="3" fill="#D9822B"/><text x="550" y="103.48" class="g-bar-t" text-anchor="middle">43.6%</text><text x="550" y="276" class="g-note" text-anchor="middle">70세</text><text x="380" y="288" class="g-note em" text-anchor="middle">UK Biobank 남성 205,011명 가운데 20%에서 검출됨</text><rect x="30" y="310" width="700" height="52" rx="6" class="g-band"/><text x="44" y="332" class="g-band-t hd" text-anchor="start">나이에 따른 유병률</text><text x="44" y="351" class="g-band-t" text-anchor="start">살아가면서 쌓이는 체세포 변화라 나이와 함께 유병률이 오른다. 현재 흡연자는 위험이 1.62배다.</text></g>
+<g class="g-ov" data-ov="load"><text x="380" y="40" class="g-lab em" text-anchor="middle">조혈줄기세포에 쌓이는 변이</text><rect x="36" y="78" width="340" height="92" rx="6" class="g-band"/><text x="50" y="102" class="g-band-t hd" text-anchor="start">줄기세포 하나에 쌓이는 체세포 변이</text><text x="50" y="128" class="g-lab em" text-anchor="start" style="font-size:16px">1,000–1,500개</text><text x="50" y="150" class="g-small" text-anchor="start">보통의 수명 동안</text><rect x="390" y="78" width="340" height="92" rx="6" class="g-band"/><text x="404" y="102" class="g-band-t hd" text-anchor="start">70세에 유전자마다</text><text x="404" y="128" class="g-lab em" text-anchor="start" style="font-size:16px">평균 70개</text><text x="404" y="150" class="g-small" text-anchor="start">서로 다른 단백질 암호화 변이가 풀 전체에</text><rect x="36" y="186" width="222" height="92" rx="6" class="g-band"/><text x="50" y="210" class="g-band-t hd" text-anchor="start">Y 소실의 유전율</text><text x="50" y="236" class="g-lab em" text-anchor="start" style="font-size:16px">31.7%</text><text x="50" y="258" class="g-small" text-anchor="start">95% CI 29.9–33.6</text><rect x="272" y="186" width="222" height="92" rx="6" class="g-band"/><text x="286" y="210" class="g-band-t hd" text-anchor="start">상염색체 신호</text><text x="286" y="236" class="g-lab em" text-anchor="start" style="font-size:16px">156개</text><text x="286" y="258" class="g-small" text-anchor="start">757,114명에서 재현</text><rect x="508" y="186" width="222" height="92" rx="6" class="g-band"/><text x="522" y="210" class="g-band-t hd" text-anchor="start">현재 흡연</text><text x="522" y="236" class="g-lab em" text-anchor="start" style="font-size:16px">위험 1.62배</text><text x="522" y="258" class="g-small" text-anchor="start">95% CI 1.57–1.66</text><rect x="30" y="300" width="700" height="52" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">쌓이는 변이의 양</text><text x="44" y="341" class="g-band-t" text-anchor="start">체세포 변화인데도 유전율이 잡힌다 — 물려받은 변이가 클론이 자랄 가능성을 바꾸기 때문이다.</text></g>
+</svg>
+<!--/GEN:BLOOD-->
+          </div>
+          <figcaption>값은 모두 관찰값 <a class="src" href="https://doi.org/10.1038/s41586-019-1765-3" target="_blank" rel="noopener">Thompson 2019</a> · <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a>.</figcaption>
+        </figure>
+
+        <p>규모를 잰 사례가 mosaic loss of Y. UK Biobank 남성 205,011명 가운데 20%에서 검출됐고, 유병률이 40세에 2.5%에서 70세에 43.6%로 올라감 <a class="src" href="https://doi.org/10.1038/s41586-019-1765-3" target="_blank" rel="noopener">Thompson 2019</a>. 현재 흡연자는 위험이 1.62배(95% CI 1.57–1.66).</p>
+        <div class="callout blue">
+          <h4>체세포 변화인데 유전율이 있음</h4>
+          <p>Y를 잃는 것은 살아가면서 생기는 체세포 사건인데도 유전율이 31.7%(95% CI 29.9–33.6)로 추정됨. 상염색체에서 156개의 독립 신호가 나왔고 유럽계·일본계 757,114명에서 재현됐음 <a class="src" href="https://doi.org/10.1038/s41586-019-1765-3" target="_blank" rel="noopener">Thompson 2019</a>. 물려받은 변이가 "체세포 변이가 생기고 클론이 자랄 가능성"을 바꾸는 것 — 타고난 것과 살아가며 생긴 것이 갈라진 두 범주가 아님을 보여 주는 자리.</p>
+        </div>
+
+        <!-- ───────── 5. 어떻게 가르나 ───────── -->
+        <h2 id="detect">언제 생겼는지를 어떻게 아나<small>Telling them apart</small></h2>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>단서</th><th>무엇을 가르나</th></tr></thead>
+            <tbody>
+              <tr><th>trio 비교</th><td>부모 두 사람에게 없고 자녀에게 있으면 de novo. 생식세포 계열에서 생겼는지를 가르는 가장 직접적인 방법 <a class="src" href="https://doi.org/10.1016/j.cell.2019.12.036" target="_blank" rel="noopener">Satterstrom 2020</a></td></tr>
+              <tr><th>variant allele fraction</th><td>germline 이형접합이면 절반 가까이, 모자이크면 그보다 낮음. 혈액의 클론은 VAF 약 2–3%부터 안정적으로 잡힘 <a class="src" href="https://doi.org/10.1038/s41588-026-02594-y" target="_blank" rel="noopener">Walkowiak 2026</a></td></tr>
+              <tr><th>조직 비교</th><td>여러 조직에서 같은 변이가 보이면 더 이른 시점, 한 조직에만 보이면 더 늦은 시점</td></tr>
+              <tr><th>나이와의 관계</th><td>나이가 들수록 비율이 오르면 살아가며 생겨 쌓이는 쪽 <a class="src" href="https://doi.org/10.1038/s41586-019-1765-3" target="_blank" rel="noopener">Thompson 2019</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>전처리에서 걸리는 함정도 있음. 같은 자리를 덮는 대규모 염색체 변화가 있으면 점돌연변이의 VAF가 왜곡되므로, 클론 분석에서는 그 영역에 변화가 있는 사람을 먼저 빼고 셈 <a class="src" href="https://doi.org/10.1038/s41588-026-02594-y" target="_blank" rel="noopener">Walkowiak 2026</a>.</p>
+
+        <!-- ───────── 6. 모르는 것 ───────── -->
+        <h2 id="limits">아직 모르는 것<small>Still open</small></h2>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>열린 질문</th><th>지금 상태</th></tr></thead>
+            <tbody>
+              <tr><th>비암호화 de novo의 인과 자리</th><td>집계 점수로는 기여가 보이는데 어느 변이가 원인인지는 지목하지 못함 <a class="src" href="https://doi.org/10.1126/science.aat6576" target="_blank" rel="noopener">An 2018</a></td></tr>
+              <tr><th>아직 훑지 않은 변이 종류</th><td>CNV 밖의 희귀 구조변이, 비암호화 변이, 체세포 변이, 침투가 불완전한 희귀 변이가 체계적으로 탐색되지 않은 채 남아 있음 <a class="src" href="https://doi.org/10.1038/s41380-026-03654-9" target="_blank" rel="noopener">Owen 2026</a></td></tr>
+              <tr><th>클론이 원인인가 표지인가</th><td>대규모 염색체 변화가 질환을 일으키는지, 아니면 유전체 불안정의 표지인지 인과 방향이 열려 있음</td></tr>
+              <tr><th>무엇이 클론 확장을 정하나</th><td>면역 감시가 클론을 억제한다는 가설은 대규모 검정에서 신호가 없었음. 38만 명 규모에서 예측 MHC 결합과 클론 크기 사이에 연관이 잡히지 않음 <a class="src" href="https://doi.org/10.1038/s41588-026-02594-y" target="_blank" rel="noopener">Walkowiak 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>한 사람의 유전체는 하나 ✗</code><p class="why">수정 뒤에 생긴 변이 때문에 조직과 세포마다 유전체가 조금씩 다름. 혈액에서는 70세에 유전자마다 평균 70개의 서로 다른 단백질 변이가 흩어져 있음 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a></p></div>
+          <div class="fix"><code>체세포 변이는 유전과 무관 ✗</code><p class="why">Y 소실의 유전율이 31.7%로 추정됨. 물려받은 변이가 체세포 변화가 일어날 가능성을 바꿈 <a class="src" href="https://doi.org/10.1038/s41586-019-1765-3" target="_blank" rel="noopener">Thompson 2019</a></p></div>
+          <div class="fix"><code>de novo 변이는 드무니 중요하지 않음 ✗</code><p class="why">유전자를 하나씩 지목할 수 있어 "어느 유전자냐"에 답함 <a class="src" href="https://doi.org/10.1016/j.cell.2019.12.036" target="_blank" rel="noopener">Satterstrom 2020</a>. 뇌 구조·인지 같은 중간 표현형에서는 polygenic score보다 효과가 큼 <a class="src" href="https://doi.org/10.1038/s41380-026-03654-9" target="_blank" rel="noopener">Owen 2026</a></p></div>
+          <div class="fix"><code>혈액을 읽으면 그 사람의 유전체를 다 봄 ✗</code><p class="why">어느 조직을 뽑았는지가 보이는 모자이크를 정함. 혈액에서 보이는 클론은 혈액의 것</p></div>
+          <div class="fix"><code>VAF가 낮으면 잡음 ✗</code><p class="why">낮은 VAF는 모자이크의 신호일 수 있음. 혈액 클론은 VAF 약 2–3%부터 안정적으로 잡힘 <a class="src" href="https://doi.org/10.1038/s41588-026-02594-y" target="_blank" rel="noopener">Walkowiak 2026</a></p></div>
+          <div class="fix"><code>클론이 자라는 것은 면역이 못 막아서 ✗</code><p class="why">38만 명 규모에서 예측 MHC 결합과 클론 유병률·크기 사이에 연관이 없었음 <a class="src" href="https://doi.org/10.1038/s41588-026-02594-y" target="_blank" rel="noopener">Walkowiak 2026</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">de novo variant · de novo mutation · 신생 변이 · germline · 생식세포 계열 · somatic · 체세포 · mosaicism · 모자이시즘 · 모자이크 · somatic mosaicism · trio · trio sequencing · proband · VAF · variant allele fraction · 변이 대립유전자 비율 · heterozygous · 이형접합 · clonal haematopoiesis · 클론성 조혈 · CHIP · clonal haematopoiesis of indeterminate potential · HSC · haematopoietic stem cell · 조혈줄기세포 · mosaic chromosomal alteration · mCA · mosaic loss of Y · LOY · mLOY · mLOX · X-inactivation skewing · driver gene · DNMT3A · TET2 · JAK2 · clone size · 클론 크기 · PTV · protein-truncating variant · CNV · penetrance</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>교과서</h3>
+          <p class="text-ref"><b>Strachan &amp; Read HMG 5판</b><br>11.1–11.2 변이의 기원과 DNA 수선 · 5.3 비멘델 형질. 생식세포와 체세포를 가르는 틀은 교과서에 있고, biobank 규모의 모자이크·클론 수치는 논문으로 채움</p>
+        </div>
+        <div class="aside-box"><h3>이 절의 다른 질문</h3><div class="related-list">
+          <a href="./variant-types.html">변이에는 어떤 종류가 있나? →</a>
+          <a href="./sequencing.html">유전체는 어떻게 읽나? →</a>
+          <a href="./genome.html">사람 유전체에는 무엇이 들어 있나? →</a>
+          <a href="./index.html">유전체와 변이 목록 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../04-polygenic/architecture.html#by-disease">질환마다 유전 구조는 어떻게 다른가? →</a>
+          <a href="../../../gwas/index.html#article/variant">GWAS · Variant 카드 →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41586-019-1765-3" target="_blank" rel="noopener noreferrer">Thompson 2019, Nature — 혈액의 Y 소실과 그 유전적 소인 ↗</a>
+          <a href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener noreferrer">Poeschla 2026, Nat Rev Genet — 조혈줄기세포에 쌓이는 체세포 변이 ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02594-y" target="_blank" rel="noopener noreferrer">Walkowiak 2026, Nat Genet — 클론 검출 한계와 면역 감시 가설의 대규모 검정 ↗</a>
+          <a href="https://doi.org/10.1016/j.cell.2019.12.036" target="_blank" rel="noopener noreferrer">Satterstrom 2020, Cell — trio 설계로 유전자를 하나씩 지목하기 ↗</a>
+          <a href="https://doi.org/10.1126/science.aat6576" target="_blank" rel="noopener noreferrer">An 2018, Science — 비암호화 de novo는 집계 점수로만 보임 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>
