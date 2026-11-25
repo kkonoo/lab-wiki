@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="가산 모델 밖의 세 자리: 유전과 환경의 상호작용, 유전자끼리의 상호작용, 성별. 불리한 맥락에서 유전 효과가 증폭되는 것, epistasis가 사람에서 거의 잡히지 않는 이유, 성차를 locus 단위로 봐야 하는 이유">
+  <title>가산 모델 밖에는 무엇이 있나? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">다유전자 형질</a><span>›</span>가산 모델 밖</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">다유전자 형질 · Beyond the additive model</p>
+        <h1>가산 모델 밖에는 무엇이 있나?</h1>
+        <p class="definition">Epistasis(상위성): 한 locus의 효과가 다른 locus의 유전형에 달려 있는 현상 <a class="src" href="https://doi.org/10.1038/nrg3747" target="_blank" rel="noopener">Wei 2014</a>. 환경 쪽 짝이 gene-environment interaction(유전×환경 상호작용), 곧 유전 효과의 크기가 노출 수준에 따라 달라지는 것 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a></p>
+
+        <!-- ───────── 1. 왜 따로 묻나 ───────── -->
+        <h2 id="why">더해지기만 한다는 것은 가정<small>Additivity is an assumption</small></h2>
+        <p class="lede">가산 모델은 locus마다의 효과를 그냥 더함. 계산이 되고 분산의 많은 부분을 잡으므로 기본값이지만, 더해지기만 한다는 것 자체는 검정할 수 있는 가정.</p>
+        <p>그 가정 위에서 어디까지 갈 수 있는지는 앞 쪽에서 봤음 — 작은 효과가 많이 모이면 유전 점수 분포가 정규에 가까워지고, threshold를 하나 두면 0과 1짜리 표현형도 연속 척도에서 다룰 수 있음 <a href="./additive-model.html">질환 유무를 어떻게 연속된 위험으로 보나?</a>. 이 쪽은 그 가정이 깨지는 세 자리를 다룸 — 환경, 다른 locus, 그리고 성별.</p>
+        <p>가정이 얼마나 깨지는지를 정면으로 잰 작업이 있음. UK Biobank에서 질환 7개 각각의 polygenic score(PGS)에 맥락 75개에서 고른 노출 쌍을 붙여 모두 24,198개 모델을 전수 검정했을 때, 3,742개(15.46%)가 PGS 극단에서 가산 기대를 2 s.d. 넘게 벗어났음. 우연으로 기대되는 값은 2.1%여서 일곱 배 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a>.</p>
+        <div class="callout blue">
+          <h4>그렇다고 가산 모델을 버리지 않는 이유</h4>
+          <p>상호작용 항은 주효과보다 훨씬 큰 표본을 요구함. 사람에서 epistasis 검출이 대체로 실패해 온 데에는 검정력이 크게 작용함 <a class="src" href="https://doi.org/10.1038/s41576-019-0127-1" target="_blank" rel="noopener">Tam 2019</a>. 가산 모델은 버릴 틀이 아니라 벗어남을 재는 기준선.</p>
+        </div>
+
+        <!-- ───────── 2. 세 자리 ───────── -->
+        <h2 id="kinds">상호작용이 나타나는 세 자리<small>Three places to look</small></h2>
+        <p class="lede">무엇이 유전 효과를 조절하는가로 가름. 셋 다 검출 난이도와 쓰는 설계가 다름.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>자리</th><th>무엇이 조절하나</th><th>잡히는 단위</th><th>이 쪽에서 보는 곳</th></tr></thead>
+            <tbody>
+              <tr><th>유전 × 환경</th><td>노출 · 행동 · 사회경제 지표 · 생체지표 · 성별 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a></td><td>개별 SNP×환경은 거의 안 잡히고, 작은 조절이 모인 polygenic score 수준에서 잡힘</td><td><a href="#gxe">3절</a></td></tr>
+              <tr><th>유전 × 유전</th><td>다른 locus의 유전형 <a class="src" href="https://doi.org/10.1038/nrg3747" target="_blank" rel="noopener">Wei 2014</a></td><td>쌍 전수 검정은 거의 실패. 후보 modifier 하나로 좁힌 층화 설계에서 잡힘</td><td><a href="#epistasis">4절</a></td></tr>
+              <tr><th>유전 × 성별</th><td>성 염색체 dosage · XCI · 성호르몬 · 성별 자체를 맥락으로 둔 경우 <a class="src" href="https://doi.org/10.1038/s41576-018-0083-1" target="_blank" rel="noopener">Khramtsova 2018</a></td><td>genome-wide가 아니라 locus와 분자형질 단위</td><td><a href="#sex">5절</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>용어를 둘로 갈라 두는 것이 중요함. <b>statistical epistasis</b>는 모형에 넣은 상호작용 항이 유의한 것이고, <b>functional epistasis</b>는 분자나 경로 수준에서 실제로 맞물리는 것 <a class="src" href="https://doi.org/10.1038/nrg3747" target="_blank" rel="noopener">Wei 2014</a>. 앞의 것이 뒤의 것을 뜻하지 않고, 뒤의 것이 있어도 앞의 것으로 잡히지 않을 수 있음.</p>
+        <div class="callout">
+          <h4>사라진 유전율의 답일까</h4>
+          <p>상호작용이 그 간격의 후보로 오래 꼽혀 왔음. 다만 간격을 만드는 두 값이 모두 흔들림 — 찾아낸 효과의 합, 그리고 비교 대상인 narrow-sense heritability 추정치. 상호작용은 뒤쪽 값을 부풀려 간격을 실제보다 크게 보이게 할 수도 있음 <a class="src" href="https://doi.org/10.1038/nrg3747" target="_blank" rel="noopener">Wei 2014</a>. 간격을 읽는 틀은 <a href="./heritability.html#gap">유전율은 무엇을 재나?</a>에 있음.</p>
+        </div>
+
+        <!-- ───────── 3. G×E ───────── -->
+        <h2 id="gxe">맥락은 효과를 바꾸지 않고 키움<small>Amplification, not rewiring</small></h2>
+        <p class="lede">상호작용이 있다는 말을 "불리한 환경에서는 다른 유전자가 작동한다"로 읽기 쉬움. 전수 검정이 가리킨 쪽은 그 반대 — 같은 유전 효과의 크기가 커짐.</p>
+        <p>설계가 전수 검정이었음. UK Biobank self-reported White British 408,801명에서 질환 7개(관상동맥질환 · 2형 당뇨 · BMI와 WHR 기준 비만 · 염증성 장질환 · 만성 콩팥병 · 천식)의 PGS마다 맥락 75개에서 고른 노출 쌍을 모두 모형에 넣어 24,198개를 돌림. 서로 독립인 두 기준을 함께 썼음 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a>.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>기준</th><th>무엇을 보나</th><th>걸린 수</th><th>우연 기대</th></tr></thead>
+            <tbody>
+              <tr><th>logistic 상호작용항</th><td>score × 노출 × 노출 항이 유의한가(P &lt; 0.05)</td><td>5,469개 (22.6%)</td><td>최대 4.5배 초과</td></tr>
+              <tr><th>가산 기대곡선 이탈</th><td>score 극단에서 관측 위험이 가산 기대에서 2 s.d. 넘게 벌어지는가</td><td>3,742개 (15.46%)</td><td>2.1% — 일곱 배 초과</td></tr>
+              <tr><th>둘 다</th><td>두 기준을 함께 만족</td><td>746개 (3.1%)</td><td>약 네 배 초과</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>기전을 가른 자리가 이 작업의 핵심. 고위험 맥락과 저위험 맥락에서 SNP 효과를 따로 추정해 견주면, 두 효과의 상관이 거의 1인 쪽에 몰림 — 방향은 그대로이고 크기만 다름. 그 안에서 39.36%는 크기가 같고, 55.07%는 고위험 맥락에서 두 배, 2.32%는 세 배 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a>.</p>
+
+        <figure class="fig" id="fig-gxe" data-mode="shape">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-gxe" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="shape" aria-pressed="true">두 가지 기전</button>
+              <button type="button" data-mode="risk" aria-pressed="false">맥락별 위험</button>
+              <button type="button" data-mode="acc" aria-pressed="false">맥락별 설명력</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:GXE-->
+<svg class="g-svg" viewBox="0 0 760 400" role="img" aria-labelledby="baGxeT baGxeD" xmlns="http://www.w3.org/2000/svg">
+<title id="baGxeT">맥락이 유전 효과에 하는 일</title>
+<desc id="baGxeD">그림 세 장을 버튼으로 바꿔 본다. 첫 화면은 산점도 두 장으로, 왼쪽은 두 맥락의 변이 효과가 서로 무관하게 흩어진 모양이고 오른쪽은 효과가 한 직선 위에 모여 방향은 같고 크기만 약 두 배로 커진 모양이다. 둘째 화면은 막대그래프로, polygenic score 최하위 percentile에서는 고위험 맥락과 저위험 맥락이 모두 1%인데 최상위 percentile에서는 35%와 11%로 갈린다. 셋째 화면은 같은 score의 설명력을 세 집단에서 견준 막대로, 남성과 낮은 testosterone에서 15.4%, 층화하지 않은 전체에서 12.5%, 여성과 높은 testosterone에서 11.2%다.</desc>
+<g class="g-ov" data-ov="shape"><text x="380" y="40" class="g-lab em" text-anchor="middle">상호작용을 설명하는 두 가지 기전</text><text x="216" y="64" class="g-note em" text-anchor="middle">효과 재배열 — 다른 변이가 작동</text><rect x="96" y="76" width="240" height="192" rx="6" class="g-panel"/><line x1="104" y1="172" x2="328" y2="172" class="g-axis"/><line x1="216" y1="84" x2="216" y2="260" class="g-axis"/><line x1="170.6" y1="207.3" x2="261.4" y2="136.7" class="g-mid"/><circle cx="187.1" cy="216.6" r="4" class="g-pt"/><circle cx="240.8" cy="226.6" r="4" class="g-pt"/><circle cx="221.9" cy="189.1" r="4" class="g-pt"/><circle cx="143.4" cy="171.1" r="4" class="g-pt"/><circle cx="140.1" cy="180.5" r="4" class="g-pt"/><circle cx="145.4" cy="224.3" r="4" class="g-pt"/><circle cx="203.6" cy="130.3" r="4" class="g-pt"/><circle cx="154.2" cy="207.3" r="4" class="g-pt"/><circle cx="236.9" cy="114.8" r="4" class="g-pt"/><circle cx="228.7" cy="185.2" r="4" class="g-pt"/><circle cx="294.2" cy="229.9" r="4" class="g-pt"/><circle cx="274.8" cy="198.9" r="4" class="g-pt"/><circle cx="157.6" cy="220.8" r="4" class="g-pt"/><circle cx="184.6" cy="131.6" r="4" class="g-pt"/><circle cx="163.6" cy="161.6" r="4" class="g-pt"/><circle cx="238.8" cy="188.3" r="4" class="g-pt"/><circle cx="223.8" cy="227.8" r="4" class="g-pt"/><circle cx="143.7" cy="209.5" r="4" class="g-pt"/><circle cx="245.6" cy="181.2" r="4" class="g-pt"/><circle cx="185.5" cy="161.1" r="4" class="g-pt"/><circle cx="208.3" cy="197.6" r="4" class="g-pt"/><circle cx="264.3" cy="146.6" r="4" class="g-pt"/><circle cx="174.0" cy="162.5" r="4" class="g-pt"/><circle cx="220.1" cy="124.1" r="4" class="g-pt"/><circle cx="253.7" cy="199.1" r="4" class="g-pt"/><circle cx="294.8" cy="220.8" r="4" class="g-pt"/><circle cx="202.6" cy="139.2" r="4" class="g-pt"/><circle cx="158.9" cy="173.4" r="4" class="g-pt"/><circle cx="140.4" cy="150.5" r="4" class="g-pt"/><circle cx="259.4" cy="162.7" r="4" class="g-pt"/><circle cx="277.6" cy="195.8" r="4" class="g-pt"/><circle cx="248.1" cy="160.0" r="4" class="g-pt"/><circle cx="229.1" cy="177.6" r="4" class="g-pt"/><circle cx="271.8" cy="115.2" r="4" class="g-pt"/><circle cx="211.7" cy="151.0" r="4" class="g-pt"/><circle cx="143.9" cy="146.3" r="4" class="g-pt"/><circle cx="240.2" cy="109.0" r="4" class="g-pt"/><circle cx="268.8" cy="199.5" r="4" class="g-pt"/><circle cx="197.3" cy="150.5" r="4" class="g-pt"/><circle cx="137.6" cy="176.9" r="4" class="g-pt"/><circle cx="161.5" cy="220.9" r="4" class="g-pt"/><circle cx="143.6" cy="137.8" r="4" class="g-pt"/><circle cx="155.2" cy="204.2" r="4" class="g-pt"/><circle cx="198.1" cy="124.6" r="4" class="g-pt"/><circle cx="147.1" cy="178.5" r="4" class="g-pt"/><circle cx="224.1" cy="123.0" r="4" class="g-pt"/><text x="216" y="256" class="g-small" text-anchor="middle">두 효과가 서로 무관</text><text x="544" y="64" class="g-note em" text-anchor="middle">효과 증폭 — 같은 변이가 더 크게</text><rect x="424" y="76" width="240" height="192" rx="6" class="g-panel"/><line x1="432" y1="172" x2="656" y2="172" class="g-axis"/><line x1="544" y1="84" x2="544" y2="260" class="g-axis"/><line x1="498.6" y1="207.3" x2="589.4" y2="136.7" class="g-mid"/><line x1="500.8" y1="239.2" x2="587.2" y2="104.8" stroke="#B3261E" stroke-width="2"/><circle cx="512.7" cy="226.1" r="4" class="g-pt"/><circle cx="511.4" cy="219.9" r="4" class="g-pt"/><circle cx="552.3" cy="158.4" r="4" class="g-pt"/><circle cx="562.9" cy="146.3" r="4" class="g-pt"/><circle cx="564.6" cy="140.0" r="4" class="g-pt"/><circle cx="512.0" cy="218.2" r="4" class="g-pt"/><circle cx="539.9" cy="180.6" r="4" class="g-pt"/><circle cx="520.2" cy="211.3" r="4" class="g-pt"/><circle cx="583.4" cy="103.8" r="4" class="g-pt"/><circle cx="545.1" cy="183.0" r="4" class="g-pt"/><circle cx="530.9" cy="193.0" r="4" class="g-pt"/><circle cx="574.9" cy="120.1" r="4" class="g-pt"/><circle cx="550.4" cy="163.8" r="4" class="g-pt"/><circle cx="537.6" cy="184.6" r="4" class="g-pt"/><circle cx="551.0" cy="158.4" r="4" class="g-pt"/><circle cx="564.5" cy="137.7" r="4" class="g-pt"/><circle cx="543.3" cy="173.4" r="4" class="g-pt"/><circle cx="579.0" cy="115.6" r="4" class="g-pt"/><circle cx="545.5" cy="169.6" r="4" class="g-pt"/><circle cx="507.0" cy="228.2" r="4" class="g-pt"/><circle cx="575.8" cy="129.5" r="4" class="g-pt"/><circle cx="542.5" cy="176.8" r="4" class="g-pt"/><circle cx="575.7" cy="126.7" r="4" class="g-pt"/><circle cx="579.3" cy="113.5" r="4" class="g-pt"/><circle cx="547.7" cy="167.7" r="4" class="g-pt"/><circle cx="568.6" cy="137.2" r="4" class="g-pt"/><circle cx="542.3" cy="177.3" r="4" class="g-pt"/><circle cx="525.0" cy="197.5" r="4" class="g-pt"/><circle cx="556.8" cy="156.3" r="4" class="g-pt"/><circle cx="543.1" cy="172.3" r="4" class="g-pt"/><circle cx="524.3" cy="208.1" r="4" class="g-pt"/><circle cx="569.3" cy="133.8" r="4" class="g-pt"/><circle cx="577.4" cy="121.8" r="4" class="g-pt"/><circle cx="511.0" cy="216.6" r="4" class="g-pt"/><circle cx="567.4" cy="144.8" r="4" class="g-pt"/><circle cx="582.4" cy="108.2" r="4" class="g-pt"/><circle cx="542.3" cy="174.8" r="4" class="g-pt"/><circle cx="510.9" cy="220.2" r="4" class="g-pt"/><circle cx="536.7" cy="182.9" r="4" class="g-pt"/><circle cx="550.6" cy="161.3" r="4" class="g-pt"/><circle cx="509.8" cy="226.2" r="4" class="g-pt"/><circle cx="564.7" cy="133.8" r="4" class="g-pt"/><circle cx="557.8" cy="148.9" r="4" class="g-pt"/><circle cx="550.8" cy="158.8" r="4" class="g-pt"/><circle cx="580.9" cy="116.4" r="4" class="g-pt"/><circle cx="521.3" cy="208.7" r="4" class="g-pt"/><text x="544" y="256" class="g-small" text-anchor="middle">같은 방향, 약 두 배 크기</text><text x="380" y="290" class="g-small" text-anchor="middle">두 축 모두 변이 하나의 효과 — 가로는 저위험 맥락, 세로는 고위험 맥락</text><text x="380" y="306" class="g-small" text-anchor="middle">점선은 두 맥락의 효과가 같은 선, 오른쪽의 붉은 선은 두 배인 선</text><rect x="30" y="324" width="700" height="71" rx="6" class="g-band"/><text x="44" y="346" class="g-band-t hd" text-anchor="start">같은 구조의 크기만 올라간다</text><text x="44" y="365" class="g-band-t" text-anchor="start">전수 검정이 가리킨 쪽은 오른쪽이다. 두 맥락의 SNP 효과는 상관이 거의 1이고 크기만 달랐다.</text><text x="44" y="384" class="g-band-t" text-anchor="start">그 안에서 39.36%는 크기가 같고, 55.07%는 고위험 맥락에서 두 배, 2.32%는 세 배였다.</text></g>
+<g class="g-ov" data-ov="risk"><text x="380" y="40" class="g-lab em" text-anchor="middle">맥락이 다르면 꼭대기에서 세 배 벌어진다</text><line x1="150" y1="268" x2="712" y2="268" class="g-axis"/><text x="150" y="62" class="g-small" text-anchor="start">세로축 — 관상동맥질환 유병률</text><line x1="150" y1="268.0" x2="712" y2="268.0" class="g-grid"/><text x="142" y="272" class="g-small" text-anchor="end">0%</text><line x1="150" y1="224.0" x2="712" y2="224.0" class="g-grid"/><text x="142" y="228" class="g-small" text-anchor="end">10%</text><line x1="150" y1="180.0" x2="712" y2="180.0" class="g-grid"/><text x="142" y="184" class="g-small" text-anchor="end">20%</text><line x1="150" y1="136.0" x2="712" y2="136.0" class="g-grid"/><text x="142" y="140" class="g-small" text-anchor="end">30%</text><line x1="150" y1="92.0" x2="712" y2="92.0" class="g-grid"/><text x="142" y="96" class="g-small" text-anchor="end">40%</text><rect x="200.0" y="263.6" width="92" height="4.4" rx="3" fill="#B3261E"/><text x="246" y="254.6" class="g-bar-t" text-anchor="middle">1%</text><rect x="312.0" y="263.6" width="92" height="4.4" rx="3" fill="#2563C9"/><text x="358" y="254.6" class="g-bar-t" text-anchor="middle">1%</text><text x="302" y="290" class="g-note" text-anchor="middle">PGS 최하위</text><text x="302" y="307" class="g-small" text-anchor="middle">percentile</text><rect x="490.0" y="114.0" width="92" height="154.0" rx="3" fill="#B3261E"/><text x="536" y="105" class="g-bar-t" text-anchor="middle">35%</text><rect x="602.0" y="219.6" width="92" height="48.4" rx="3" fill="#2563C9"/><text x="648" y="210.6" class="g-bar-t" text-anchor="middle">11%</text><text x="592" y="290" class="g-note" text-anchor="middle">PGS 최상위</text><text x="592" y="307" class="g-small" text-anchor="middle">percentile</text><rect x="150" y="88" width="308" height="56" rx="6" class="g-band"/><rect x="164" y="102" width="14" height="14" rx="3" fill="#B3261E"/><text x="186" y="113" class="g-band-t" text-anchor="start">고위험 맥락 — 과거 흡연 · 낮은 ω6 지방산</text><rect x="164" y="126" width="14" height="14" rx="3" fill="#2563C9"/><text x="186" y="137" class="g-band-t" text-anchor="start">저위험 맥락 — 비흡연 · 높은 ω6 지방산</text><rect x="30" y="324" width="700" height="71" rx="6" class="g-band"/><text x="44" y="346" class="g-band-t hd" text-anchor="start">상호작용은 극단에서 보인다</text><text x="44" y="365" class="g-band-t" text-anchor="start">최하위 percentile에서는 두 맥락이 1%로 같고, 최상위에서 35%와 11%로 갈린다.</text><text x="44" y="384" class="g-band-t" text-anchor="start">저자들은 저위험 맥락에서 유전 위험의 영향이 3분의 1로 줄어든 것으로 읽는다.</text></g>
+<g class="g-ov" data-ov="acc"><text x="380" y="40" class="g-lab em" text-anchor="middle">같은 score인데 설명력이 맥락마다 다르다</text><line x1="130" y1="268" x2="712" y2="268" class="g-axis"/><text x="130" y="62" class="g-small" text-anchor="start">세로축 — 관상동맥질환 PGS의 R²</text><line x1="130" y1="268.0" x2="712" y2="268.0" class="g-grid"/><text x="122" y="272" class="g-small" text-anchor="end">0%</text><line x1="130" y1="224.0" x2="712" y2="224.0" class="g-grid"/><text x="122" y="228" class="g-small" text-anchor="end">5%</text><line x1="130" y1="180.0" x2="712" y2="180.0" class="g-grid"/><text x="122" y="184" class="g-small" text-anchor="end">10%</text><line x1="130" y1="136.0" x2="712" y2="136.0" class="g-grid"/><text x="122" y="140" class="g-small" text-anchor="end">15%</text><line x1="130" y1="92.0" x2="712" y2="92.0" class="g-grid"/><text x="122" y="96" class="g-small" text-anchor="end">20%</text><rect x="180.0" y="132.5" width="118" height="135.5" rx="3" fill="#B3261E"/><text x="239" y="123.48" class="g-bar-t" text-anchor="middle">15.4%</text><text x="239" y="290" class="g-note" text-anchor="middle">남성</text><text x="239" y="307" class="g-small" text-anchor="middle">낮은 testosterone</text><rect x="360.0" y="158.0" width="118" height="110.0" rx="3" fill="#5B6B7A"/><text x="419" y="149" class="g-bar-t" text-anchor="middle">12.5%</text><text x="419" y="290" class="g-note" text-anchor="middle">전체</text><text x="419" y="307" class="g-small" text-anchor="middle">층화 없음</text><rect x="540.0" y="169.4" width="118" height="98.6" rx="3" fill="#2563C9"/><text x="599" y="160.44" class="g-bar-t" text-anchor="middle">11.2%</text><text x="599" y="290" class="g-note" text-anchor="middle">여성</text><text x="599" y="307" class="g-small" text-anchor="middle">높은 testosterone</text><rect x="30" y="324" width="700" height="71" rx="6" class="g-band"/><text x="44" y="346" class="g-band-t hd" text-anchor="start">정확도가 조건부가 된다</text><text x="44" y="365" class="g-band-t" text-anchor="start">층화하지 않은 값 12.5%가 두 극단 사이에 놓인다 — 층화 없이 보고한 정확도는 평균이다.</text><text x="44" y="384" class="g-band-t" text-anchor="start">정확도의 상한을 정하는 표본 크기와 유전 구조는 GWAS 쪽 PRS 페이지에서 다룬다.</text></g>
+</svg>
+<!--/GEN:GXE-->
+          </div>
+          <figcaption>첫 화면의 점은 두 기전을 가르는 도식이고 눈금이 없음. 둘째·셋째 화면의 값은 모두 UK Biobank 관찰값 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a>.</figcaption>
+        </figure>
+
+        <p>관상동맥질환에서 과거 흡연과 낮은 ω6 지방산이 겹친 맥락의 net amplification이 60.62%였고, 같은 맥락의 SNP-based heritability가 저위험 맥락보다 8% 높았음(BOLT-REML). 유전 효과의 분산이 커지는 것과 유전율이 올라가는 것이 같이 움직임 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a>.</p>
+        <p>결과를 사람 쪽에서 보면 이렇게 나타남. 과거 흡연 · 낮은 ω6 지방산 맥락에서 polygenic score 최상위 percentile의 관상동맥질환 유병률이 35%, 최하위 percentile은 1%. 비흡연 · 높은 ω6 지방산 맥락에서는 같은 자리가 11%와 1% — 저위험 맥락에서 유전 위험의 영향이 3분의 1로 줄어듦 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a>.</p>
+        <div class="callout blue">
+          <h4>정확도가 조건부가 됨</h4>
+          <p>같은 score인데 설명력이 맥락마다 다름 — 관상동맥질환 polygenic score의 R²가 남성 · 낮은 testosterone 집단에서 15.4%, 여성 · 높은 testosterone 집단에서 11.2%, 층화 없는 전체에서 12.5% <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a>. 표본 크기와 유전 구조가 정확도의 상한을 정하는 쪽은 GWAS 쪽 <a href="../../../gwas/03-postgwas/prs.html#accuracy">PRS · 무엇이 정확도를 정하나</a>에 있음.</p>
+        </div>
+        <p>개입 대상을 고르는 쪽으로도 이어짐. 저자들이 제안한 지표가 proportion needed to benefit — 이득을 한 사람 보려면 몇 명이 행동을 바꿔야 하는가. 관상동맥질환에서 높은 콜레스테롤과 현재 흡연이 겹친 맥락을 집단 전체에 개입하면 21명당 1명이고, polygenic score 상위 20%로 좁히면 11명당 1명으로 두 배가 됨(그 구간 2,252명 · 환자 349명) <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a>.</p>
+
+        <!-- ───────── 4. Epistasis ───────── -->
+        <h2 id="epistasis">유전자끼리는 왜 거의 잡히지 않나<small>Why epistasis stays hidden</small></h2>
+        <p class="lede">모델 생물에서는 유전 구조의 핵심인데 사람에서는 거의 비어 있음 <a class="src" href="https://doi.org/10.1038/s41576-019-0127-1" target="_blank" rel="noopener">Tam 2019</a>. 이유가 둘 — 검정 수와 재현.</p>
+        <p>쌍을 모두 보려면 검정이 n(n−1)/2개. SNP 500,000개면 Bonferroni 보정 threshold가 −log10 척도에서 12.4까지 올라감. 주효과가 있는 SNP 하나로 좁혀 검정하면 7.0이고, 이 차이는 표본을 약 두 배로 늘린 것과 맞먹음 <a class="src" href="https://doi.org/10.1038/nrg3747" target="_blank" rel="noopener">Wei 2014</a>. 그래서 전수 탐색은 같은 자료에서 거의 아무것도 남기지 못함.</p>
+
+        <figure class="fig" id="fig-epi" data-mode="burden">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-epi" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="burden" aria-pressed="true">검정 수의 부담</button>
+              <button type="button" data-mode="strat" aria-pressed="false">층화와 상호작용 검정</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:EPI-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="baEpiT baEpiD" xmlns="http://www.w3.org/2000/svg">
+<title id="baEpiT">epistasis 검정이 어려운 두 이유</title>
+<desc id="baEpiD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 로그 눈금 두 축 위의 곡선으로, 검정에 넣은 SNP 수가 늘면 쌍 검정 수가 제곱으로 늘어 SNP 50만 개에서 1,250억 번이 되는 것을 보여 준다. 그 아래 띠에 같은 지점의 Bonferroni threshold가 전수 탐색에서 마이너스 로그 12.4, 주효과 SNP 하나로 좁힌 검정에서 7.0임을 적어 두었다. 둘째 화면은 오즈비 축 위의 가로 막대 두 개로, 알츠하이머병에서 DDHD1 변이가 APOE ε33 층에서는 오즈비 1.02로 1에 붙어 있고 ε44와 ε43 층에서는 0.93으로 보호적이며, 층간 효과차 검정은 유의한데 genome-wide 상호작용 항 검정은 유의에 못 미치는 것을 아래 띠에 적어 두었다.</desc>
+<g class="g-ov" data-ov="burden"><text x="380" y="40" class="g-lab em" text-anchor="middle">쌍을 모두 보려면 검정이 제곱으로 늘어난다</text><rect x="120" y="70" width="580" height="178" rx="6" class="g-panel"/><text x="120" y="56" class="g-small" text-anchor="start">세로축 — 쌍 검정 수 n(n−1)/2 (로그 눈금)</text><line x1="120.0" y1="70" x2="120.0" y2="248" class="g-grid"/><text x="120" y="268" class="g-small" text-anchor="middle">1만</text><line x1="372.1" y1="70" x2="372.1" y2="248" class="g-grid"/><text x="372.061" y="268" class="g-small" text-anchor="middle">10만</text><line x1="548.2" y1="70" x2="548.2" y2="248" class="g-grid"/><text x="548.244" y="268" class="g-small" text-anchor="middle">50만</text><line x1="624.1" y1="70" x2="624.1" y2="248" class="g-grid"/><text x="624.122" y="268" class="g-small" text-anchor="middle">100만</text><line x1="120" y1="248.0" x2="700" y2="248.0" class="g-grid"/><text x="112" y="252" class="g-small" text-anchor="end">1천만</text><line x1="120" y1="188.7" x2="700" y2="188.7" class="g-grid"/><text x="112" y="192.667" class="g-small" text-anchor="end">10억</text><line x1="120" y1="129.3" x2="700" y2="129.3" class="g-grid"/><text x="112" y="133.333" class="g-small" text-anchor="end">1천억</text><line x1="120" y1="70.0" x2="700" y2="70.0" class="g-grid"/><text x="112" y="74" class="g-small" text-anchor="end">1경</text><path d="M120.0 227.3L127.2 225.6L134.5 223.9L141.8 222.1L149.0 220.4L156.2 218.7L163.5 217.0L170.8 215.3L178.0 213.6L185.2 211.9L192.5 210.2L199.8 208.5L207.0 206.8L214.2 205.1L221.5 203.4L228.8 201.7L236.0 200.0L243.2 198.3L250.5 196.5L257.8 194.8L265.0 193.1L272.2 191.4L279.5 189.7L286.8 188.0L294.0 186.3L301.2 184.6L308.5 182.9L315.8 181.2L323.0 179.5L330.2 177.8L337.5 176.1L344.8 174.4L352.0 172.7L359.2 170.9L366.5 169.2L373.8 167.5L381.0 165.8L388.2 164.1L395.5 162.4L402.8 160.7L410.0 159.0L417.2 157.3L424.5 155.6L431.8 153.9L439.0 152.2L446.2 150.5L453.5 148.8L460.8 147.1L468.0 145.3L475.2 143.6L482.5 141.9L489.8 140.2L497.0 138.5L504.2 136.8L511.5 135.1L518.8 133.4L526.0 131.7L533.2 130.0L540.5 128.3L547.8 126.6L555.0 124.9L562.2 123.2L569.5 121.5L576.8 119.7L584.0 118.0L591.2 116.3L598.5 114.6L605.8 112.9L613.0 111.2L620.2 109.5L627.5 107.8L634.8 106.1L642.0 104.4L649.2 102.7L656.5 101.0L663.8 99.3L671.0 97.6L678.2 95.9L685.5 94.1L692.8 92.4L700.0 90.7" fill="none" stroke="#2563C9" stroke-width="2.4"/><circle cx="548.2" cy="126.5" r="5.5" class="g-var"/><text x="540" y="104" class="g-note em" text-anchor="end">SNP 50만 개 → 쌍 검정 1,250억 번</text><text x="380" y="286" class="g-small" text-anchor="middle">가로축 — 검정에 넣은 SNP 수 (로그 눈금)</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">검정 수의 부담</text><text x="44" y="341" class="g-band-t" text-anchor="start">SNP 50만 개에서 Bonferroni threshold는 전수 쌍 탐색이면 −log₁₀ 12.4다.</text><text x="44" y="360" class="g-band-t" text-anchor="start">주효과 SNP 하나로 좁히면 7.0이고, 그 차이는 표본을 두 배로 늘린 것과 맞먹는다.</text></g>
+<g class="g-ov" data-ov="strat"><text x="380" y="40" class="g-lab em" text-anchor="middle">층으로 나누면 보이고, 상호작용 항으로는 안 보인다</text><line x1="250" y1="220" x2="690" y2="220" class="g-axis"/><line x1="530.0" y1="106" x2="530.0" y2="220" class="g-thr"/><text x="330" y="240" class="g-small" text-anchor="middle">0.90</text><text x="430" y="240" class="g-small" text-anchor="middle">0.95</text><text x="530" y="240" class="g-small" text-anchor="middle">1.00</text><text x="630" y="240" class="g-small" text-anchor="middle">1.05</text><text x="380" y="262" class="g-small" text-anchor="middle">가로축 — DDHD1 rs10131116의 오즈비 (95% CI)</text><text x="238" y="133" class="g-note em" text-anchor="end">APOE ε33 층</text><text x="238" y="150" class="g-small" text-anchor="end">P = 0.042</text><line x1="530.0" y1="132" x2="630.0" y2="132" class="g-med"/><circle cx="570.0" cy="132" r="6" fill="#5B6B7A"/><text x="570" y="118" class="g-note em" text-anchor="middle">OR 1.02</text><text x="238" y="187" class="g-note em" text-anchor="end">APOE ε44 + ε43 층</text><text x="238" y="204" class="g-small" text-anchor="end">P = 6.61×10⁻⁹</text><line x1="330.0" y1="186" x2="430.0" y2="186" class="g-med"/><circle cx="390.0" cy="186" r="6" fill="#B3261E"/><text x="390" y="172" class="g-note em" text-anchor="middle">OR 0.93</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">같은 자료, 두 가지 검정</text><text x="44" y="341" class="g-band-t" text-anchor="start">층간 효과차 Δβ = −0.10 (s.e. 0.018) · P = 1.1×10⁻⁸ → 유의</text><text x="44" y="360" class="g-band-t" text-anchor="start">genome-wide 상호작용 항 P = 1.62×10⁻⁶ → threshold 2.5×10⁻⁸에 못 미침</text></g>
+</svg>
+<!--/GEN:EPI-->
+          </div>
+          <figcaption>첫 화면의 곡선은 n(n−1)/2 계산값이고 threshold 두 개는 SNP 500,000개 기준 <a class="src" href="https://doi.org/10.1038/nrg3747" target="_blank" rel="noopener">Wei 2014</a>. 둘째 화면의 오즈비와 P값은 알츠하이머병 코호트 meta 분석 관찰값 <a class="src" href="https://doi.org/10.1038/s41588-026-02713-9" target="_blank" rel="noopener">Thomassen 2026</a>.</figcaption>
+        </figure>
+
+        <p>재현 쪽은 더 냉정함. 알츠하이머병에서 어떤 형태로든 epistasis를 보고한 논문 100편 넘게 모아 같은 검정으로 다시 돌렸을 때 명목 유의(P &lt; 0.05)에 남은 쌍이 27개였고, 대부분 APOE ε4가 끼어 있었음. 그마저 집단 층화를 보정하지 않았고 재현 근거도 없었음 <a class="src" href="https://doi.org/10.1038/nrg3747" target="_blank" rel="noopener">Wei 2014</a>.</p>
+        <p>견고한 예가 아주 없지는 않음. 건선에서 HLA-C와 ERAP1의 위험 allele은 둘을 함께 가질 때만 효과를 냈고, 강직성 척추염에서 ERAP1과 HLA-B27도 같은 꼴이었음 <a class="src" href="https://doi.org/10.1038/nrg3747" target="_blank" rel="noopener">Wei 2014</a>. 둘 다 HLA 영역이 한쪽에 들어 있음.</p>
+
+        <h3>후보 하나로 좁히면 보이는 것</h3>
+        <p>전수 탐색 대신 효과가 큰 locus 하나를 modifier로 두고 표본을 층으로 나누면 검정 부담이 급격히 줄어듦. 알츠하이머병 GWAS를 APOE 유전형으로 ε33 · ε44+ε43 · ε22+ε32 세 층으로 나눠 각 층에서 따로 돌린 작업이 그 예 <a class="src" href="https://doi.org/10.1038/s41588-026-02713-9" target="_blank" rel="noopener">Thomassen 2026</a>.</p>
+        <p>가장 강한 신호가 DDHD1의 rs10131116. ε4 보유층에서 OR 0.93(95% CI 0.90–0.95, P = 6.61×10⁻⁹)로 보호적인데, ε33 층에서는 OR 1.02(1.00–1.05, P = 0.042)로 사실상 없음. 층간 효과차는 Δβ = −0.10(s.e. 0.018, P = 1.1×10⁻⁸) <a class="src" href="https://doi.org/10.1038/s41588-026-02713-9" target="_blank" rel="noopener">Thomassen 2026</a>. 관심 영역 29곳에 Bonferroni 보정(P &lt; 0.0017)을 걸어 효과차가 유의한 곳이 7개였고, ε4가 있으면 효과가 줄어드는 쪽이 SLC50A1 · TMEM106B · NPAS3, 커지는 쪽이 BIN1 · HLA-DRA-1 · CLU · DDHD1이었음.</p>
+        <p>층 다중검정을 어떻게 걸지도 따로 다뤘음. 층별 효과 추정치가 서로 상관되므로 층 수만큼 Bonferroni를 거는 것은 과보정. Li &amp; Ji 고유값 분해로 유효 독립검정 수를 1.4로 얻었지만 보수적으로 2를 택해 P &lt; 2.5×10⁻⁸을 썼음 <a class="src" href="https://doi.org/10.1038/s41588-026-02713-9" target="_blank" rel="noopener">Thomassen 2026</a>.</p>
+        <p>같은 자료에서 정식으로 SNP × APOE ε4 보유 상호작용 GWAS를 돌리면 그림이 달라짐. 상호작용 항이 genome-wide 유의에 이른 곳은 APOE locus뿐이었고, 가장 강한 후보인 DDHD1조차 P = 1.62×10⁻⁶에 그쳤음 <a class="src" href="https://doi.org/10.1038/s41588-026-02713-9" target="_blank" rel="noopener">Thomassen 2026</a>.</p>
+        <div class="callout">
+          <h4>모순이 아니라 검정력의 실증</h4>
+          <p>층화 효과차 검정은 7곳을 내고 genome-wide 상호작용 검정은 거의 아무것도 내지 않음. 두 결과가 어긋나는 것이 아니라, 상호작용 검정의 표본 요구량이 주효과 검정보다 훨씬 크다는 사실이 그대로 드러난 것. 그래서 후보 영역을 좁히는 설계가 기본이 되고, 그 영역을 같은 자료의 주효과로 골랐는지(선택 편의)를 함께 보고해야 함.</p>
+        </div>
+        <p>실험 쪽 대안도 있음. 상호작용 항 없이 큰 조합 perturbation screen을 돌려 epistasis를 잡는 접근. 다만 거기서 관측되는 상호작용의 상당수가 직접적인 인과 epistasis가 아니라, 같은 유전자나 isoform을 건드리는 여러 transcription factor의 파급 효과 <a class="src" href="https://doi.org/10.1038/s41576-026-00990-y" target="_blank" rel="noopener">Engelhardt 2026</a>. 실험 설계 쪽은 <a href="../05-function/perturbation.html">변이를 직접 바꿔서 확인하려면?</a>에 있음.</p>
+
+        <!-- ───────── 5. 성차 ───────── -->
+        <h2 id="sex">성별 — 가장 잘 보이는 맥락<small>Sex as context</small></h2>
+        <p class="lede">성차를 "남녀의 유전 구조가 다르다"로 읽으면 자료와 어긋남. 전역 구조는 거의 같고, 차이는 소수 locus와 분자형질에서 나타남.</p>
+        <p>같은 질환 안에서 남녀 유전상관이 높게 유지됨 — 근위축성 측삭경화증 rg 0.95(P = 2.62×10⁻⁹) · 알츠하이머병 0.93(P = 3.21×10⁻¹⁹) · 파킨슨병 0.85(P = 3.30×10⁻³¹) <a class="src" href="https://doi.org/10.1093/brain/awaf474" target="_blank" rel="noopener">Lona-Durazo 2026</a>. 유전율도 비슷함 — UK Biobank 약 15만 명에서 성별 유전율을 추정할 검정력이 있던 형질 551개 가운데 남녀 값이 유의하게 다른 것은 14개(2.5%)뿐 <a class="src" href="https://doi.org/10.1038/s41576-018-0083-1" target="_blank" rel="noopener">Khramtsova 2018</a>. 쌍둥이 설계에서도 형질 122개 가운데 4%만 차이를 보였고, 외상후 스트레스장애 · 류마티스 관절염 · 고혈압 · 알레르기성 비염이 그 예외.</p>
+        <p>그래서 성차 탐색은 genome-wide 유전상관이 아니라 locus와 분자형질 단위의 효과차 검정으로 설계함.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>모델</th><th>내용</th><th>예측되는 것</th></tr></thead>
+            <tbody>
+              <tr><th>Carter effect</th><td>유병률이 낮은 성은 발병하려면 더 큰 유전 소인이 필요 — 성 의존 liability threshold</td><td>유병률이 낮은 성에서 유전율이 더 높고, 그 성 환자의 친족에서 재발 위험이 높음</td></tr>
+              <tr><th>효과 크기 · 빈도 차이</th><td>같은 변이의 효과나 빈도가 성별로 다름</td><td>성별로 나눈 GWAS에서 잡히는 locus가 갈림</td></tr>
+              <tr><th>성 염색체</th><td>X dosage · XCI escape · skewed XCI · Y</td><td>X 연관 변이에서 남녀 비대칭</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>세 모델의 틀은 Khramtsova 2018. 첫 모델, 곧 Carter effect의 이름은 1960년대에 유문 협착증을 관찰한 Cedric Carter에서 왔음 — 여성 환자가 더 드문데 여성 환자의 친족 쪽 위험이 더 높았고, 더 드문 성이 발병하려면 더 큰 소인이 필요하다는 읽기로 이어짐 <a class="src" href="https://doi.org/10.1038/s41576-018-0083-1" target="_blank" rel="noopener">Khramtsova 2018</a>.</p>
+
+        <h3>X dosage의 가장 직접적인 근거</h3>
+        <p>성 염색체 수가 다른 사람에서 위험이 어떻게 바뀌는지를 보는 쪽이 사람에서 가장 직접적. 47,XXX가 primary Sjögren 환자 약 344명당 1명, 전신 홍반성 루푸스 환자 약 404명당 1명으로 나타남 — 일반 인구는 약 1,000명당 1명 <a class="src" href="https://doi.org/10.1038/s41584-026-01405-2" target="_blank" rel="noopener">Volkmann 2026</a>.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>핵형</th><th>질환</th><th>46,XX 대비</th><th>46,XY 대비</th></tr></thead>
+            <tbody>
+              <tr><th>47,XXX</th><td>primary Sjögren</td><td>2.9배</td><td>41배</td></tr>
+              <tr><th>47,XXX</th><td>전신 홍반성 루푸스</td><td>2.5배</td><td>25배</td></tr>
+              <tr><th>47,XXY</th><td>전신 홍반성 루푸스</td><td>—</td><td>14배</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>같은 종설 안에 반례가 함께 있음. 류마티스 관절염은 여성 우세인데도 47,XXX 농축이 관찰되지 않았음 <a class="src" href="https://doi.org/10.1038/s41584-026-01405-2" target="_blank" rel="noopener">Volkmann 2026</a>. X dosage 하나로 여성 우세를 다 설명하지 못한다는 뜻. 한쪽 X가 세포 다수에서 우선 불활성화되는 skewed XCI는 류마티스 관절염 여성 44명 가운데 31.5%에서 관찰됐고 건강 여성에서는 17.4%였음.</p>
+        <p>성별을 맥락으로 둔 polygenic score 쪽에서도 성별과 성보정 testosterone이 관상동맥질환과 2형 당뇨 양쪽에서 여러 상호작용을 보인 핵심 맥락이었음. 남성 · 낮은 testosterone 집단과 여성 · 높은 testosterone 집단의 10년 관상동맥질환 발생률 차이가 중간 score에서 4.8%, 최상위 percentile에서 19%로 벌어짐 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a>. 평균의 차이가 아니라 기울기의 차이.</p>
+        <div class="callout">
+          <h4>차등발현 유전자와 성별 특이 eQTL은 다른 집합</h4>
+          <p>폐 조직 면역세포를 기부자 120명에서 성별로 나눠 eQTL을 따로 추정했을 때, 성별 간 효과 크기가 유의하게 다른 eGene은 117개뿐이었고 그 가운데 98%가 넘는 유전자는 남녀 발현량에 차이가 없었음. 반대로 성별 차등발현 전사체는 1,700개가 넘었음(여성 쪽 높음 793 · 남성 쪽 높음 907) <a class="src" href="https://doi.org/10.1038/s41590-026-02596-2" target="_blank" rel="noopener">Schmiedel 2026</a>. 두 목록을 같은 근거로 섞어 쓰지 않음.</p>
+        </div>
+
+        <!-- ───────── 6. 주장을 깎는 것들 ───────── -->
+        <h2 id="limits">상호작용 주장을 깎는 것들<small>What weakens a claim</small></h2>
+        <p class="lede">상호작용은 보고되기는 쉽고 버티기는 어려움. 아래 일곱 가지를 먼저 확인함.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>깎는 것</th><th>왜</th></tr></thead>
+            <tbody>
+              <tr><th>척도 의존성</th><td>가산 척도에서 상호작용으로 보이는 것이 곱셈 척도에서 사라질 수 있음. 어느 척도에서 정의했는지를 먼저 밝혀야 함 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a></td></tr>
+              <tr><th>역인과</th><td>식이 · 운동 같은 노출은 이미 시작된 질환에 대한 행동 반응일 수 있음. 손상이 되돌릴 수 없는 뒤라면 맥락을 바꿔도 이득이 없음 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a></td></tr>
+              <tr><th>유전형과 노출의 상관</th><td>유전형이 노출 자체를 예측하면 상호작용과 구분이 어려움</td></tr>
+              <tr><th>층 특이 ≠ 상호작용</th><td>층마다 표본과 검정력이 달라, 한 층에서만 유의한 것은 그 자체로 근거가 아님. 공식 효과차 검정이나 상호작용 검정을 붙여야 함 <a class="src" href="https://doi.org/10.1038/s41588-026-02713-9" target="_blank" rel="noopener">Thomassen 2026</a></td></tr>
+              <tr><th>층화는 표본을 쪼갬</th><td>성별로 나누면 표본이 절반이 되므로 보고되는 성차 유전자 수는 거의 항상 하한 <a class="src" href="https://doi.org/10.1038/s41590-026-02596-2" target="_blank" rel="noopener">Schmiedel 2026</a></td></tr>
+              <tr><th>재현</th><td>개별 상호작용 대부분이 미검증. All of Us 유럽계 부분집합에서 상호작용 모형의 R² 개선은 재현됐지만 score 극단의 이탈은 크게 줄었고, 관상동맥질환 유병률이 14.9% 대 11.7%로 두 코호트가 애초에 다름 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a></td></tr>
+              <tr><th>측정 공백</th><td>성차의 주요 후보인 X 염색체가 분자 자료에서 비어 있음. UK Biobank에서 X에 있는 면역 단백질 34종이 측정됐지만 유의한 cis-pQTL이 하나도 없어 분석에서 통째로 빠짐 <a class="src" href="https://doi.org/10.1093/brain/awaf474" target="_blank" rel="noopener">Lona-Durazo 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>집단도 한 가지로 묶여 있음. 위의 전수 검정은 UK Biobank self-reported White British 단독이고, 사회적 결정요인까지 포함한 상호작용을 여러 집단으로 넓히는 일이 남은 과제 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a>. 맥락이 인과인지도 관찰 자료로는 가릴 수 없어, 개입으로 실제 이득이 생기는지는 임상시험 틀에서 봐야 함.</p>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>상호작용이 안 잡히면 없는 것 ✗</code><p class="why">상호작용 항은 주효과보다 표본을 훨씬 많이 요구함. 사람에서 epistasis 검출이 실패해 온 것은 크게 검정력 문제 <a class="src" href="https://doi.org/10.1038/s41576-019-0127-1" target="_blank" rel="noopener">Tam 2019</a></p></div>
+          <div class="fix"><code>상호작용이 사라진 유전율의 답 ✗</code><p class="why">간격의 비교 대상인 유전율 추정치 자체를 부풀렸을 가능성이 있고, 대규모 통합과 재현도 거의 실패했음 <a class="src" href="https://doi.org/10.1038/nrg3747" target="_blank" rel="noopener">Wei 2014</a></p></div>
+          <div class="fix"><code>불리한 맥락에서는 다른 유전자가 작동 ✗</code><p class="why">고위험 맥락과 저위험 맥락의 SNP 효과는 거의 완전히 상관되고 크기만 커짐 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a></p></div>
+          <div class="fix"><code>상호작용이 있으면 가산 모델은 틀린 것 ✗</code><p class="why">24,198개 모델 가운데 두 기준을 함께 만족한 것이 3.1%. 가산 모델은 폐기 대상이 아니라 벗어남을 재는 기준선 <a class="src" href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener">Nagpal 2026</a></p></div>
+          <div class="fix"><code>한 층에서만 유의하면 상호작용 ✗</code><p class="why">층마다 검정력이 달라 그 자체로는 근거가 아님. 같은 자료에서 genome-wide 상호작용 검정은 APOE locus만 냈음 <a class="src" href="https://doi.org/10.1038/s41588-026-02713-9" target="_blank" rel="noopener">Thomassen 2026</a></p></div>
+          <div class="fix"><code>성차가 있으면 유전 구조가 다른 것 ✗</code><p class="why">질환 안의 남녀 유전상관이 0.85–0.95로 높게 유지됨. 차이는 소수 locus 쪽 <a class="src" href="https://doi.org/10.1093/brain/awaf474" target="_blank" rel="noopener">Lona-Durazo 2026</a></p></div>
+          <div class="fix"><code>성별 차등발현 유전자가 성별 특이 eQTL ✗</code><p class="why">117개 eGene 가운데 98%가 넘게 남녀 발현량 차이가 없었음. 두 집합이 거의 겹치지 않음 <a class="src" href="https://doi.org/10.1038/s41590-026-02596-2" target="_blank" rel="noopener">Schmiedel 2026</a></p></div>
+          <div class="fix"><code>X dosage가 여성 우세 질환을 설명 ✗</code><p class="why">류마티스 관절염은 여성 우세인데도 47,XXX 농축이 없었음 <a class="src" href="https://doi.org/10.1038/s41584-026-01405-2" target="_blank" rel="noopener">Volkmann 2026</a></p></div>
+          <div class="fix"><code>조합 CRISPR screen에서 보이면 epistasis ✗</code><p class="why">관측되는 상호작용의 상당수가 같은 유전자나 isoform을 건드리는 여러 transcription factor의 파급 효과 <a class="src" href="https://doi.org/10.1038/s41576-026-00990-y" target="_blank" rel="noopener">Engelhardt 2026</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">epistasis · 상위성 · 상호작용 · statistical epistasis · functional epistasis · gene-environment interaction · G×E · GxE · PGS×context · PGS×C · amplification · 증폭 · uncorrelated effects · effect modification · interaction term · 상호작용항 · scale dependence · 척도 의존성 · reverse causation · 역인과 · genotype–environment correlation · proportion needed to benefit · PNB · number needed to treat · NNT · sex differences · 성차 · sex as a biological variable · SABV · Carter effect · sex-dependent liability threshold · sex-differentiated GWAS · sex-biased eGene · X-chromosome inactivation · XCI · XCI escape · skewed XCI · X dosage · aneuploidy · 47,XXX · triple X syndrome · 47,XXY · Klinefelter syndrome · modifier · stratified GWAS · Li &amp; Ji · effective number of independent tests · mash · BOLT-REML</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>교과서</h3>
+          <p class="text-ref"><b>Strachan &amp; Read HMG 5판</b><br>18.4 GWAS의 한계 가운데 "사라진 유전율이 유전자끼리 · 유전자와 환경의 상호작용 때문인가"(590쪽) · 18.1 복합 질환의 역학적 접근. 상호작용을 사라진 유전율의 후보로 두고 묻는 틀은 교과서에 있고, 전수 검정 결과와 성차 설계는 논문으로 채움</p>
+        </div>
+        <div class="aside-box"><h3>이 절의 다른 질문</h3><div class="related-list">
+          <a href="./additive-model.html">질환 유무를 어떻게 연속된 위험으로 보나? →</a>
+          <a href="./heritability.html">유전율은 무엇을 재나? →</a>
+          <a href="./architecture.html">질환마다 유전 구조는 어떻게 다른가? →</a>
+          <a href="./index.html">다유전자 형질 목록 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../../../gwas/03-postgwas/prs.html#accuracy">PRS · 무엇이 정확도를 정하나 (그림) →</a>
+          <a href="../../../gwas/03-postgwas/genetic-correlation.html#heritability">GWAS · heritability 수치와 분할 (그림) →</a>
+          <a href="../05-function/perturbation.html">변이를 직접 바꿔서 확인하려면? →</a>
+          <a href="../05-function/qtl.html">QTL이 세포·조직마다 달라지는 이유 →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41588-026-02674-z" target="_blank" rel="noopener noreferrer">Nagpal 2026, Nat Genet — PGS×맥락 24,198쌍 전수 검정과 amplification ↗</a>
+          <a href="https://doi.org/10.1038/nrg3747" target="_blank" rel="noopener noreferrer">Wei 2014, Nat Rev Genet — epistasis 검정 부담과 재현 실패 ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02713-9" target="_blank" rel="noopener noreferrer">Thomassen 2026, Nat Genet — APOE 층화 GWAS와 상호작용 검정의 괴리 ↗</a>
+          <a href="https://doi.org/10.1038/s41576-018-0083-1" target="_blank" rel="noopener noreferrer">Khramtsova 2018, Nat Rev Genet — 성차를 설명하는 세 모델 ↗</a>
+          <a href="https://doi.org/10.1038/s41584-026-01405-2" target="_blank" rel="noopener noreferrer">Volkmann 2026, Nat Rev Rheumatol — X dosage와 XCI의 사람 근거 ↗</a>
+          <a href="https://doi.org/10.1093/brain/awaf474" target="_blank" rel="noopener noreferrer">Lona-Durazo 2026, Brain — 성별 층화 pQTL MR과 남녀 유전상관 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>

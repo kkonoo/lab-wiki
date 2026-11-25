@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="유전체와 변이. 사람 유전체에 무엇이 들어 있나 · 참조 유전체가 하나로는 부족한 이유 · 읽는 방식마다 보이는 것이 다른 이유 · 변이의 종류와 크기 · 변이가 생기는 시점 · 빈도 분포 · 단백질에 미치는 영향">
+  <title>유전체와 변이 · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+</head>
+<body data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="현재 위치"><a href="../index.html">Human genetics</a><span>›</span>유전체와 변이</nav>
+      <header class="page-header">
+        <p class="eyebrow">01 · GENOME AND VARIATION</p>
+        <h1>유전체와 변이</h1>
+        <p class="lead">사람 유전체에 무엇이 들어 있고 사람마다 무엇이 다른지를 다루는 절. 좌표계가 되는 참조 유전체 · 읽는 방식 · 변이의 종류와 기원 · 빈도와 효과 · HMG 6–7 · 9 · 11 · 15–16장</p>
+      </header>
+      <div class="question-list">
+        <section class="question-block">
+          <div class="question-head"><small>QUESTION 01</small><h2>사람 유전체에는 무엇이 들어 있나?</h2><p>HMG 9.1–9.3 · 염색체와 유전자 · 비암호화 영역 · 반복서열의 비율</p></div>
+          <div><div class="concept-row"><strong>유전체의 구성</strong><p>단백질 암호화 영역의 몫 · 반복서열이 차지하는 몫 · 참조 버전마다 채워진 정도</p><span class="row-link">준비 중</span></div></div>
+        </section>
+        <section class="question-block">
+          <div class="question-head"><small>QUESTION 02</small><h2>참조 유전체는 왜 하나로는 부족한가?</h2><p>HMG 7.1 · GRCh38과 T2T-CHM13 · pangenome graph · reference bias</p></div>
+          <div><div class="concept-row"><strong>참조 유전체</strong><p>좌표계가 하나라는 것의 뜻 · GRCh38에 남은 빈틈 · T2T가 메운 것 · reference bias · 여러 haplotype을 담는 그래프 · 이득이 몰리는 영역</p><a class="row-link" href="./reference.html">읽기 →</a></div></div>
+        </section>
+        <section class="question-block">
+          <div class="question-head"><small>QUESTION 03</small><h2>유전체는 어떻게 읽나?</h2><p>HMG 6.4–6.5 · 7.1 · array · WES · WGS · long-read · 변이 호출</p></div>
+          <div><div class="concept-row"><strong>읽는 방식</strong><p>세 가지 선택지와 trade-off · 한 런에서 두 층을 얻는 blended 설계 · 비용과 잡히는 변이 수 · 호출 흐름과 직교 검증 · 방식마다 남는 사각지대</p><a class="row-link" href="./sequencing.html">읽기 →</a></div></div>
+        </section>
+        <section class="question-block">
+          <div class="question-head"><small>QUESTION 04</small><h2>변이에는 어떤 종류가 있나?</h2><p>HMG 11장 · 15.3 · SNV · indel · SV · CNV · tandem repeat · 전이인자</p></div>
+          <div><div class="concept-row"><strong>변이의 종류</strong><p>크기 순으로 늘어놓은 지도 · 유전체에서 차지하는 비율 · tandem repeat이 특별한 이유 · 전이인자와 HERV · 카탈로그가 한쪽으로 기운 이유</p><a class="row-link" href="./variant-types.html">읽기 →</a></div></div>
+        </section>
+        <section class="question-block">
+          <div class="question-head"><small>QUESTION 05</small><h2>변이는 언제, 어디서 생기나?</h2><p>HMG 11.1–11.2 · 5.3 · germline de novo · 체세포 모자이크 · clonal hematopoiesis</p></div>
+          <div><div class="concept-row"><strong>변이의 기원</strong><p>수정란에서 조직까지 변이가 생긴 시점 · 부계 나이 효과 · 체세포 모자이크 · 혈액의 클론 확장</p><span class="row-link">준비 중</span></div></div>
+        </section>
+        <section class="question-block">
+          <div class="question-head"><small>QUESTION 06</small><h2>왜 어떤 변이는 흔하고 어떤 변이는 드문가?</h2><p>HMG 11.3 · 12.3 · allele frequency spectrum · gnomAD · constraint</p></div>
+          <div><div class="concept-row"><strong>빈도 분포</strong><p>빈도 스펙트럼의 모양 · gnomAD가 재는 것 · 유전자별 제약(pLI · LOEUF) · purifying selection</p><span class="row-link">준비 중</span></div></div>
+        </section>
+        <section class="question-block">
+          <div class="question-head"><small>QUESTION 07</small><h2>변이는 단백질을 어떻게 바꾸나?</h2><p>HMG 11.4 · 16.1–16.2 · missense · nonsense · splice · LoF</p></div>
+          <div><div class="concept-row"><strong>변이의 효과</strong><p>단백질을 바꾸는 방식의 분류 · 예측 점수가 하는 일 · saturation editing 실험값과의 대조</p><span class="row-link">준비 중</span></div></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container"><span>Updated 2026-11-25</span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="참조 유전체는 정답 서열이 아니라 좌표계. GRCh38에 남은 151 Mb의 빈틈, T2T-CHM13이 메운 것, 그래도 남는 reference bias, 여러 haplotype을 한 그래프에 담는 pangenome, 그리고 이득이 어느 영역에 몰리는지">
+  <title>참조 유전체는 왜 하나로는 부족한가? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">유전체와 변이</a><span>›</span>참조 유전체</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">유전체와 변이 · Reference genome</p>
+        <h1>참조 유전체는 왜 하나로는 부족한가?</h1>
+        <p class="definition">Reference genome(참조 유전체): read를 정렬하고 변이 좌표를 매기는 기준이 되는 표준 사람 유전체 어셈블리. 지금 표준은 GRCh38이고, 빈틈이 없는 T2T-CHM13으로 옮겨 가는 중 <a class="src" href="https://doi.org/10.1126/science.abj6987" target="_blank" rel="noopener">Nurk 2022</a></p>
+
+        <!-- ───────── 1. 좌표계 ───────── -->
+        <h2 id="why">정답이 아니라 좌표계<small>A coordinate system, not a truth</small></h2>
+        <p class="lede">참조 유전체는 "정상인의 서열"이 아님. 모든 정렬 위치와 변이 좌표가 거기 묶이기 때문에 쓰는 기준선.</p>
+        <p>그래서 참조에 빠진 구간과 틀린 구간은 그대로 변이 호출의 오류가 됨. 어떤 read가 어디에 놓이는지가 참조의 모양에 달려 있고, 놓이지 못한 read는 분석에서 통째로 사라짐.</p>
+        <p>"하나로는 부족하다"는 말이 가리키는 문제는 둘. 하나는 <b>빈틈</b> — 참조에 아직 서열이 없는 구간이 있음. 다른 하나는 <b>치우침</b> — 서열이 다 있어도 참조는 haploid 하나뿐이라, 참조와 다른 allele을 가진 read가 불리해짐. 앞의 것은 더 완전한 참조로 풀고, 뒤의 것은 여러 haplotype을 담는 참조로 풀어 감.</p>
+
+        <!-- ───────── 2. 빈틈 ───────── -->
+        <h2 id="gaps">GRCh38에 남아 있는 것<small>What GRCh38 still misses</small></h2>
+        <p class="lede">표준 참조의 primary scaffold에는 아직 약 151 Mb의 gap과 약 9 Mb의 잘못 중복되거나 붕괴된 영역이 남아 있음 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a>.</p>
+        <p>보조 수단도 잘 쓰이지 않음. GRCh38에는 대안 서열을 담은 alternate contig가 붙어 있지만, primary scaffold와 서열이 비슷해 오히려 매핑을 모호하게 만들기 때문에 실무에서는 대개 버림 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a>.</p>
+        <p>빈틈과 오류는 자료에 흔적을 남김. GRCh38을 기준으로 1000 Genomes 표본을 보면, 집단에서 관찰되지 않는 haplotype 전이가 18,813쌍 나타남(1,390개의 좁은 구간, 중앙값 3,703 bp). 같은 분석을 T2T-CHM13에서 하면 209쌍뿐 <a class="src" href="https://doi.org/10.1126/science.abl3533" target="_blank" rel="noopener">Aganezov 2022</a>. 그 불일치 쌍의 88.9%가 참조를 만들 때 이어 붙인 BAC clone의 경계를 가로지름 — 참조의 제작 이력이 LD 구조로 새어 나온 것.</p>
+
+        <!-- ───────── 3. 빈틈을 메우면 ───────── -->
+        <h2 id="t2t">빈틈을 메우면 돌아오는 것<small>What a complete assembly returns</small></h2>
+        <p class="lede">T2T-CHM13은 남아 있던 8%를 메워 Y를 뺀 모든 염색체를 빈틈 없이 이었음. 전체 3.055 Gb.</p>
+        <p>새로 들어온 서열이 약 2억 bp이고 그 안에 유전자 예측 1,956개가 있음. 그중 99개가 단백질을 암호화할 것으로 예측됨. 메워진 곳은 centromere의 satellite array 전부, 최근에 생긴 segmental duplication, 그리고 다섯 acrocentric 염색체의 짧은 팔 <a class="src" href="https://doi.org/10.1126/science.abj6987" target="_blank" rel="noopener">Nurk 2022</a>.</p>
+
+        <figure class="fig" id="fig-t2t" data-mode="fill">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-t2t" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="fill" aria-pressed="true">두 참조의 차이</button>
+              <button type="button" data-mode="recover" aria-pressed="false">호출에 미친 영향</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:T2T-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="refT2tT refT2tD" xmlns="http://www.w3.org/2000/svg">
+<title id="refT2tT">GRCh38과 T2T-CHM13의 차이</title>
+<desc id="refT2tD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 가로 막대 두 개로, 위의 GRCh38 막대에는 빈틈을 뜻하는 흰 칸이 일곱 군데 뚫려 있고 아래의 T2T-CHM13 막대는 빈틈이 없으며 오른쪽 끝에 새로 들어온 약 2억 bp가 연한 칸으로 덧붙어 있다. 둘째 화면은 상자 다섯 개로, 참조를 바꿔 다시 호출했을 때 고품질 변이가 100만 개 이상 늘고, 샘플당 허위 변이가 수만 개 줄고, 임상적으로 중요한 유전자 269개의 위양성이 최대 12분의 1이 되며, 새 서열에서 추정 loss-of-function 변이 210개가 드러났다는 것을 적어 두었다.</desc>
+<g class="g-ov" data-ov="fill"><text x="380" y="40" class="g-lab em" text-anchor="middle">빈틈이 남은 참조와 빈틈을 메운 참조</text><text x="138" y="107" class="g-note em" text-anchor="end">GRCh38</text><rect x="150" y="90" width="500" height="26" rx="4" fill="#5B6B7A"/><rect x="180.0" y="90" width="14.0" height="26" fill="#fff"/><rect x="180.0" y="90" width="14.0" height="26" fill="none" stroke="#B3261E" stroke-width="1.4"/><rect x="245.0" y="90" width="22.5" height="26" fill="#fff"/><rect x="245.0" y="90" width="22.5" height="26" fill="none" stroke="#B3261E" stroke-width="1.4"/><rect x="315.0" y="90" width="11.0" height="26" fill="#fff"/><rect x="315.0" y="90" width="11.0" height="26" fill="none" stroke="#B3261E" stroke-width="1.4"/><rect x="385.0" y="90" width="27.5" height="26" fill="#fff"/><rect x="385.0" y="90" width="27.5" height="26" fill="none" stroke="#B3261E" stroke-width="1.4"/><rect x="460.0" y="90" width="13.0" height="26" fill="#fff"/><rect x="460.0" y="90" width="13.0" height="26" fill="none" stroke="#B3261E" stroke-width="1.4"/><rect x="520.0" y="90" width="20.0" height="26" fill="#fff"/><rect x="520.0" y="90" width="20.0" height="26" fill="none" stroke="#B3261E" stroke-width="1.4"/><rect x="590.0" y="90" width="15.0" height="26" fill="#fff"/><rect x="590.0" y="90" width="15.0" height="26" fill="none" stroke="#B3261E" stroke-width="1.4"/><text x="150" y="142" class="g-small" text-anchor="start">흰 칸 — 빈틈 약 151 Mb · 잘못 중복되거나 붕괴된 영역 약 9 Mb</text><text x="138" y="199" class="g-note em" text-anchor="end">T2T-CHM13</text><rect x="150" y="182" width="500" height="26" rx="4" fill="#2563C9"/><rect x="650" y="182" width="40.0" height="26" rx="4" fill="#2563C9" style="fill-opacity:.45"/><text x="150" y="234" class="g-small" text-anchor="start">연한 칸 — 새로 들어온 약 2억 bp · 그 안에 유전자 예측 1,956개(단백질 99개)</text><text x="380" y="272" class="g-note" text-anchor="middle">참조를 바꾸면 집단에 없는 haplotype 전이가 18,813쌍에서 209쌍으로 줄어듦</text><rect x="30" y="304" width="700" height="71" rx="6" class="g-band"/><text x="44" y="326" class="g-band-t hd" text-anchor="start">두 참조의 차이</text><text x="44" y="345" class="g-band-t" text-anchor="start">T2T-CHM13은 남아 있던 8%를 메워 Y를 뺀 모든 염색체를 빈틈 없이 이었다(전체 3.055 Gb).</text><text x="44" y="364" class="g-band-t" text-anchor="start">메워진 곳은 centromere satellite · segmental duplication · acrocentric 염색체 단완이다.</text></g>
+<g class="g-ov" data-ov="recover"><text x="380" y="40" class="g-lab em" text-anchor="middle">참조를 바꾸면 변이 목록이 달라짐</text><rect x="36" y="78" width="222" height="92" rx="6" class="g-band"/><text x="50" y="102" class="g-band-t hd" text-anchor="start">고품질 변이</text><text x="50" y="128" class="g-lab em" text-anchor="start" style="font-size:16px">100만 개 이상 증가</text><text x="50" y="150" class="g-small" text-anchor="start">1000 Genomes 3,202명</text><rect x="272" y="78" width="222" height="92" rx="6" class="g-band"/><text x="286" y="102" class="g-band-t hd" text-anchor="start">허위 변이</text><text x="286" y="128" class="g-lab em" text-anchor="start" style="font-size:16px">샘플당 수만 개 감소</text><text x="286" y="150" class="g-small" text-anchor="start">같은 자료를 다시 부른 결과</text><rect x="508" y="78" width="222" height="92" rx="6" class="g-band"/><text x="522" y="102" class="g-band-t hd" text-anchor="start">미해결이던 영역</text><text x="522" y="128" class="g-lab em" text-anchor="start" style="font-size:16px">샘플당 수십만 개</text><text x="522" y="150" class="g-small" text-anchor="start">그동안 풀리지 않던 구간에서만</text><rect x="36" y="186" width="340" height="92" rx="6" class="g-band"/><text x="50" y="210" class="g-band-t hd" text-anchor="start">임상적으로 중요한 유전자 269개</text><text x="50" y="236" class="g-lab em" text-anchor="start" style="font-size:16px">위양성 최대 1/12</text><text x="50" y="258" class="g-small" text-anchor="start">잘못 부른 변이가 가장 크게 줄어든 곳</text><rect x="390" y="186" width="340" height="92" rx="6" class="g-band"/><text x="404" y="210" class="g-band-t hd" text-anchor="start">새 서열에서 드러난 추정 LoF</text><text x="404" y="236" class="g-lab em" text-anchor="start" style="font-size:16px">210개 · 유전자 189개</text><text x="404" y="258" class="g-small" text-anchor="start">그 가운데 31개는 임상적 의미</text><rect x="30" y="304" width="700" height="71" rx="6" class="g-band"/><text x="44" y="326" class="g-band-t hd" text-anchor="start">호출에 미친 영향</text><text x="44" y="345" class="g-band-t" text-anchor="start">빈 구간이 채워져 새 변이가 나오고, 틀린 구간이 바로잡혀 허위 호출이 빠진다.</text><text x="44" y="364" class="g-band-t" text-anchor="start">더해진 서열이 기능 없는 반복서열만은 아니라는 것이 LoF 210개가 말해 주는 바다.</text></g>
+</svg>
+<!--/GEN:T2T-->
+          </div>
+          <figcaption>숫자는 모두 관찰값 <a class="src" href="https://doi.org/10.1126/science.abj6987" target="_blank" rel="noopener">Nurk 2022</a> · <a class="src" href="https://doi.org/10.1126/science.abl3533" target="_blank" rel="noopener">Aganezov 2022</a> · <a class="src" href="https://doi.org/10.1038/s41576-026-01000-x" target="_blank" rel="noopener">Liu 2026</a>. 막대와 빈틈의 위치·폭은 도식이고 실제 비율이 아님.</figcaption>
+        </figure>
+
+        <p>참조를 바꾸면 호출 결과가 실제로 달라짐. 1000 Genomes 3,202명을 T2T-CHM13으로 다시 부르면 유전체 전체에서 고품질 변이가 100만 개 넘게 늘고, 그동안 풀리지 않던 영역에서만 샘플당 수십만 개가 새로 나옴. 동시에 샘플당 수만 개의 허위 변이가 사라지는데, 임상적으로 중요한 유전자 269개에서는 위양성이 최대 12분의 1로 줄어듦 <a class="src" href="https://doi.org/10.1126/science.abl3533" target="_blank" rel="noopener">Aganezov 2022</a>.</p>
+        <p>더해진 서열이 기능 없는 반복서열만은 아님. 같은 구간에서 새로 드러난 추정 loss-of-function 변이가 210개이고 189개 유전자에 걸쳐 있으며, 그 가운데 31개는 임상적 의미가 있는 것으로 정리됨 <a class="src" href="https://doi.org/10.1038/s41576-026-01000-x" target="_blank" rel="noopener">Liu 2026</a>.</p>
+
+        <!-- ───────── 4. 치우침 ───────── -->
+        <h2 id="bias">완전해도 남는 치우침<small>Reference bias</small></h2>
+        <p class="lede">빈틈을 다 메워도 두 번째 문제가 남음. 참조가 haploid 하나라는 것.</p>
+        <p>short read를 서열 하나에 맞추면 참조와 같은 allele을 가진 read가 더 잘 붙음. 참조와 다른 allele 쪽은 mismatch가 쌓여 정렬 점수가 낮아지고, 심하면 매핑 자체가 되지 않음. 결과적으로 호출이 reference allele 쪽으로 치우침 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a>.</p>
+        <p>T2T-CHM13도 이 문제를 풀지 못함. 빈틈은 메웠지만 한 사람에게서 온 haploid 하나라서 haplotype 사이의 차이, 사람 사이의 차이를 전혀 담지 않음.</p>
+        <p>그 차이가 작지도 않음. 정확하게 교정한 long read를 <b>다른 사람</b>의 고품질 어셈블리에 맞추면 mismatch가 0.15–0.19%, 50 bp 이하 indel이 0.14–0.19% 남음 <a class="src" href="https://doi.org/10.1038/s41586-026-10563-y" target="_blank" rel="noopener">Stanojević 2026</a>. 흔히 인용되는 "사람끼리 0.1% 차이"보다 큰 값이고, 이것이 참조 기반 분석의 바닥 잡음.</p>
+        <div class="callout">
+          <h4>가려지는 곳은 따로 있음</h4>
+          <p>치우침은 유전체 전체에 고르게 퍼지지 않고 서로 닮은 서열이 몰린 곳에 쌓임. GBA1은 GBAP1 pseudogene과 coding 서열이 96% 같아서 short read가 어느 쪽에서 왔는지 가리지 못함 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a>. 이런 영역을 dark region이라 부름.</p>
+        </div>
+
+        <!-- ───────── 5. 그래프 ───────── -->
+        <h2 id="graph">여러 haplotype을 한 참조에<small>Pangenome graph</small></h2>
+        <p class="lede">치우침의 원인이 "서열이 하나"라면 해법은 여럿을 담는 것. 여러 haplotype을 한 자료구조, 대개 sequence graph에 넣은 것이 pangenome reference.</p>
+        <p>아이슬란드 사례가 전 과정을 한 연구에서 보여 줌. 자국 haplotype 698개를 조립해 HPRC의 94개, T2T-CHM13, GRCh38과 합쳐 788개 haplotype짜리 참조를 만들었고, 거기 담긴 phased small variant가 51,418,313개. 좌표계는 GRCh38을 그대로 써서 기존 annotation과 도구를 그대로 쓸 수 있게 둠 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a>.</p>
+
+        <figure class="fig" id="fig-graph" data-mode="map">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-graph" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="map" aria-pressed="true">read가 놓이는 위치</button>
+              <button type="button" data-mode="dark" aria-pressed="false">가려진 영역의 크기</button>
+              <button type="button" data-mode="where" aria-pressed="false">이득이 몰리는 곳</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:GRAPH-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="refGraphT refGraphD" xmlns="http://www.w3.org/2000/svg">
+<title id="refGraphT">선형 참조와 그래프 참조</title>
+<desc id="refGraphD">그림 세 장을 버튼으로 바꿔 본다. 첫 화면은 도식 두 장으로, 왼쪽의 선형 참조에서는 참조와 다른 allele을 가진 read가 mismatch 때문에 버려지고, 오른쪽의 그래프 참조에서는 참조가 두 갈래로 갈라져 그 read도 제 길에 붙는다. 둘째 화면은 가로 막대 네 개로, 매핑 방식에 따라 가려지는 영역이 그래프 쪽 40.71 Mb에서 선형 쪽 57.34 · 69.13 · 69.96 Mb까지 달라지는 것을 보여 준다. 셋째 화면은 묶음 막대로, 고신뢰 영역에서는 네 방식의 F1이 99.21에서 99.36까지 거의 같은데 저신뢰 영역에서는 82.62에서 83.28로 벌어지는 것을 보여 준다.</desc>
+<g class="g-ov" data-ov="map"><text x="380" y="40" class="g-lab em" text-anchor="middle">참조가 하나일 때와 여럿일 때, 같은 read가 놓이는 위치</text><rect x="40" y="60" width="300" height="212" rx="6" class="g-panel"/><text x="190" y="84" class="g-note em" text-anchor="middle">선형 참조 — 서열 하나</text><line x1="62" y1="214" x2="318" y2="214" stroke="#5B6B7A" stroke-width="6" stroke-linecap="round"/><text x="190" y="240" class="g-small" text-anchor="middle">참조 서열</text><rect x="82" y="108" width="104" height="15" rx="3" fill="#2563C9"/><rect x="138" y="150" width="104" height="15" rx="3" fill="#2563C9" style="fill-opacity:.35"/><rect x="169.2" y="150" width="3" height="15" fill="#B3261E"/><rect x="192.1" y="150" width="3" height="15" fill="#B3261E"/><rect x="215.0" y="150" width="3" height="15" fill="#B3261E"/><text x="196" y="120" class="g-small" text-anchor="start">참조와 같은 allele</text><text x="298" y="186" class="g-note warn" text-anchor="end">참조와 다른 allele — 점수가 낮아 버려짐</text><rect x="420" y="60" width="300" height="212" rx="6" class="g-panel"/><text x="570" y="84" class="g-note em" text-anchor="middle">그래프 참조 — haplotype 여럿</text><line x1="442" y1="214" x2="520" y2="214" stroke="#2563C9" stroke-width="6" stroke-linecap="round"/><line x1="620" y1="214" x2="698" y2="214" stroke="#2563C9" stroke-width="6" stroke-linecap="round"/><path d="M520 214 L540 196 L600 196 L620 214" fill="none" stroke="#2563C9" stroke-width="5"/><path d="M520 214 L540 232 L600 232 L620 214" fill="none" stroke="#2563C9" stroke-width="5"/><text x="570" y="264" class="g-small" text-anchor="middle">갈라지는 지점 — 두 allele이 모두 참조 안에 있음</text><rect x="462" y="108" width="104" height="15" rx="3" fill="#2563C9"/><rect x="518" y="150" width="104" height="15" rx="3" fill="#2563C9"/><rect x="549.2" y="150" width="3" height="15" fill="#B3261E"/><rect x="572.1" y="150" width="3" height="15" fill="#B3261E"/><rect x="595.0" y="150" width="3" height="15" fill="#B3261E"/><text x="576" y="120" class="g-small" text-anchor="start">참조와 같은 allele</text><text x="678" y="186" class="g-note em" text-anchor="end">다른 allele도 제 길에 붙음</text><rect x="30" y="304" width="700" height="71" rx="6" class="g-band"/><text x="44" y="326" class="g-band-t hd" text-anchor="start">치우침이 생기는 곳</text><text x="44" y="345" class="g-band-t" text-anchor="start">선형 참조에서는 참조와 다른 allele을 가진 read가 mismatch 때문에 불리해진다 — reference bias.</text><text x="44" y="364" class="g-band-t" text-anchor="start">두 allele을 모두 참조에 담아 두면 그 read도 제자리를 찾는다. 닮은 서열이 몰린 곳에서 차이가 크다.</text></g>
+<g class="g-ov" data-ov="dark"><text x="380" y="40" class="g-lab em" text-anchor="middle">매핑 방식에 따라 가려지는 영역의 크기</text><text x="236" y="107" class="g-note" text-anchor="end">Weaver (HPRC-ICE 그래프)</text><rect x="250" y="92" width="237.5" height="22" rx="3" fill="#2563C9"/><text x="497.475" y="108" class="g-bar-t" text-anchor="start">40.71 Mb</text><text x="236" y="151" class="g-note" text-anchor="end">BWA-MEM (GRCh38 선형)</text><rect x="250" y="136" width="334.5" height="22" rx="3" fill="#5B6B7A"/><text x="594.483" y="152" class="g-bar-t" text-anchor="start">57.34 Mb</text><text x="236" y="195" class="g-note" text-anchor="end">DRAGEN (GRCh38 선형)</text><rect x="250" y="180" width="403.3" height="22" rx="3" fill="#5B6B7A"/><text x="663.258" y="196" class="g-bar-t" text-anchor="start">69.13 Mb</text><text x="236" y="239" class="g-note" text-anchor="end">GiraffePPR (HPRC 그래프)</text><rect x="250" y="224" width="408.1" height="22" rx="3" fill="#5B6B7A"/><text x="668.1" y="240" class="g-bar-t" text-anchor="start">69.96 Mb</text><text x="380" y="286" class="g-note em" text-anchor="middle">같은 코호트에서 믿을 만한 변이는 그래프 쪽이 6.17%(5,751,644개) 더 나왔음</text><rect x="30" y="304" width="700" height="71" rx="6" class="g-band"/><text x="44" y="326" class="g-band-t hd" text-anchor="start">가려진 영역</text><text x="44" y="345" class="g-band-t" text-anchor="start">dark region은 coverage나 매핑 품질이 너무 낮아 사실상 들여다볼 수 없는 구간이다.</text><text x="44" y="364" class="g-band-t" text-anchor="start">표본이 5,830명 적은데도 믿을 만한 변이가 더 나온 것은 이 구간이 줄었기 때문이다.</text></g>
+<g class="g-ov" data-ov="where"><text x="380" y="40" class="g-lab em" text-anchor="middle">차이는 어려운 영역에서만 벌어짐</text><text x="126" y="70" class="g-small" text-anchor="start">세로축 — HG002 벤치마크 F1 (%)</text><line x1="126" y1="262" x2="712" y2="262" class="g-axis"/><line x1="126" y1="262.0" x2="712" y2="262.0" class="g-grid"/><text x="118" y="266" class="g-small" text-anchor="end">80</text><line x1="126" y1="218.0" x2="712" y2="218.0" class="g-grid"/><text x="118" y="222" class="g-small" text-anchor="end">85</text><line x1="126" y1="174.0" x2="712" y2="174.0" class="g-grid"/><text x="118" y="178" class="g-small" text-anchor="end">90</text><line x1="126" y1="130.0" x2="712" y2="130.0" class="g-grid"/><text x="118" y="134" class="g-small" text-anchor="end">95</text><line x1="126" y1="86.0" x2="712" y2="86.0" class="g-grid"/><text x="118" y="90" class="g-small" text-anchor="end">100</text><rect x="176" y="93.0" width="48" height="169.0" rx="3" fill="#5B6B7A"/><text x="200" y="83.952" class="g-bar-t" text-anchor="middle">99.21</text><rect x="234" y="91.6" width="48" height="170.4" rx="3" fill="#5B6B7A"/><text x="258" y="82.632" class="g-bar-t" text-anchor="middle">99.36</text><rect x="292" y="92.1" width="48" height="169.9" rx="3" fill="#5B6B7A"/><text x="316" y="83.072" class="g-bar-t" text-anchor="middle">99.31</text><rect x="350" y="92.1" width="48" height="169.9" rx="3" fill="#2563C9"/><text x="374" y="83.072" class="g-bar-t" text-anchor="middle">99.31</text><text x="292" y="286" class="g-note" text-anchor="middle">고신뢰 영역</text><rect x="476" y="238.2" width="48" height="23.8" rx="3" fill="#5B6B7A"/><text x="500" y="229.24" class="g-bar-t" text-anchor="middle">82.70</text><rect x="534" y="237.4" width="48" height="24.6" rx="3" fill="#5B6B7A"/><text x="558" y="228.448" class="g-bar-t" text-anchor="middle">82.79</text><rect x="592" y="238.9" width="48" height="23.1" rx="3" fill="#5B6B7A"/><text x="616" y="229.944" class="g-bar-t" text-anchor="middle">82.62</text><rect x="650" y="233.1" width="48" height="28.9" rx="3" fill="#2563C9"/><text x="674" y="224.136" class="g-bar-t" text-anchor="middle">83.28</text><text x="592" y="286" class="g-note" text-anchor="middle">저신뢰 영역</text><rect x="30" y="304" width="700" height="71" rx="6" class="g-band"/><text x="44" y="326" class="g-band-t hd" text-anchor="start">이득이 몰리는 곳</text><text x="44" y="345" class="g-band-t" text-anchor="start">막대는 왼쪽부터 BWA-MEM · DRAGEN · GiraffePPR · Weaver이고 마지막 하나만 그래프 참조다.</text><text x="44" y="364" class="g-band-t" text-anchor="start">유전체 전체 평균은 97.06에서 97.34까지로 거의 같다 — 차이는 저신뢰 영역에서만 벌어진다.</text></g>
+</svg>
+<!--/GEN:GRAPH-->
+          </div>
+          <figcaption>첫 화면은 눈금 없는 도식. 둘째·셋째 화면의 값은 아이슬란드 57,630명과 HG002 벤치마크에서 나온 관찰값 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a>.</figcaption>
+        </figure>
+
+        <p>효과는 숫자로 나타남. 같은 사람들의 short read 57,630명분을 이 그래프에 다시 매핑하니, 표본이 5,830명 더 많은 기존 선형 참조 callset보다 믿을 만한 변이가 6.17%(5,751,644개) 많이 나왔음. 가려진 영역도 40.71 Mb로 줄어, 선형 참조의 57.34 Mb보다 작았음. chip으로 유전형을 얻은 182,338명의 대치에서도 잘 대치되는 변이가 11.88%(6,947,790개) 늘었음 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a>.</p>
+        <p>그 안에 실제 질환 변이가 들어 있었음. GBA1의 p.Leu483Pro가 위험 allele 빈도 0.22%로 호출됐고 파킨슨병 오즈비 2.55(P = 2.94×10⁻⁶), 60세 미만 발병에서는 7.33(P = 4.69×10⁻⁸)이었음. UK Biobank 429,193명을 같은 위치만 다시 매핑해 4.91(P = 1.25×10⁻¹¹)로 재현했고 합치면 3.36(P = 1.30×10⁻¹⁵) <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a>.</p>
+        <div class="callout blue">
+          <h4>"공개 DB에 없다"가 "그 집단에 없다"는 아님</h4>
+          <p>이 변이는 아이슬란드의 기존 선형 callset에도, UK Biobank에도 없었고 gnomAD 4.1.0에서는 품질 필터에서 탈락한 상태였음. 유럽계(non-Finnish)에서 관측된 위험 allele이 89개뿐이었는데, 아이슬란드 빈도 0.22%로 환산하면 기대값은 2,600개 수준 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a>. 빈도 조회가 "0 또는 아주 낮음"으로 나오면 정말 드문 변이인지, 매핑이 안 되는 곳인지부터 의심하는 편이 안전함.</p>
+        </div>
+
+        <!-- ───────── 6. 한계 ───────── -->
+        <h2 id="limits">어디까지 믿을 것인가<small>What is still unsettled</small></h2>
+        <p class="lede">그래프 참조의 이득은 유전체 평균이 아니라 어려운 영역에 몰려 있고, 늘어난 호출의 정확도는 아직 직접 검증되지 않았음.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>남은 문제</th><th>내용</th></tr></thead>
+            <tbody>
+              <tr><th>이득이 영역에 몰림</th><td>유전체 전체 평균 F1은 97.34 · 97.30 · 97.24 · 97.06으로 차이가 0.3%p 미만이고, 고신뢰 영역에서는 선형 쪽 파이프라인이 앞서기도 함(99.36 대 99.31). 갈리는 곳은 저신뢰 영역뿐 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a></td></tr>
+              <tr><th>늘어난 호출의 정확도</th><td>6.17%가 다 참인지 잴 truth set이 없음. 같은 read를 쓴 일란성 쌍둥이 88쌍에서 변이 수는 4.9% 늘었는데 유전형 일치율은 오히려 떨어짐 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a></td></tr>
+              <tr><th>구조변이는 아직 반쪽</th><td>아이슬란드 어셈블리의 구조변이는 그래프 복잡도와 품질 때문에 일부러 넣지 않았음. 복잡한 구조변이는 그대로 미해결 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a></td></tr>
+              <tr><th>집단 편중</th><td>새로 찾은 두 변이가 모두 아이슬란드 어셈블리에만 있었음 — 자기 집단의 haplotype이 참조에 들어가 있지 않으면 그 집단의 희귀 변이는 계속 보이지 않음. 이 사례 자체도 단일 북유럽 집단 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a></td></tr>
+              <tr><th>조립 쪽도 미완</th><td>read 교정을 거친 뒤에도 centromere satellite와 segmental duplication의 오류율이 10 kb당 11.8로 나머지 유전체(2.5)의 약 다섯 배 <a class="src" href="https://doi.org/10.1038/s41586-026-10563-y" target="_blank" rel="noopener">Stanojević 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>전환 비용도 실무 과제로 남아 있음. 지금 있는 GWAS 요약통계와 molecular QTL 자원이 전부 GRCh38 좌표에 묶여 있어, 참조를 바꾸면 그것들을 옮기는 일이 따라옴. 그래서 HPRC-ICE도 그래프를 쓰되 출력 좌표는 GRCh38로 되돌려 주는 쪽을 택했음 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a>.</p>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>참조 유전체는 정상인의 서열 ✗</code><p class="why">정렬과 좌표의 기준선일 뿐. T2T-CHM13은 한 세포주에서 온 haploid 하나 <a class="src" href="https://doi.org/10.1126/science.abj6987" target="_blank" rel="noopener">Nurk 2022</a></p></div>
+          <div class="fix"><code>T2T로 바꾸면 reference bias가 사라짐 ✗</code><p class="why">빈틈은 메워지지만 haplotype 사이의 차이는 담기지 않음. 치우침은 참조가 하나라서 생기는 문제 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a></p></div>
+          <div class="fix"><code>참조를 바꿔도 변이 목록은 비슷함 ✗</code><p class="why">1000 Genomes 재호출에서 고품질 변이가 100만 개 넘게 늘고 샘플당 수만 개의 허위 변이가 사라짐 <a class="src" href="https://doi.org/10.1126/science.abl3533" target="_blank" rel="noopener">Aganezov 2022</a></p></div>
+          <div class="fix"><code>그래프 참조가 모든 영역에서 더 정확함 ✗</code><p class="why">유전체 평균 차이는 0.3%p 미만이고 고신뢰 영역에서는 밀리기도 함. 차이는 저신뢰 영역에서만 뚜렷함 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a></p></div>
+          <div class="fix"><code>변이가 더 많이 나오면 더 정확한 것 ✗</code><p class="why">일란성 쌍둥이 88쌍에서 변이 수가 4.9% 늘었는데 유전형 일치율은 오히려 떨어졌음 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a></p></div>
+          <div class="fix"><code>공개 DB에 없으면 그 집단에 없는 변이 ✗</code><p class="why">GBA1 p.Leu483Pro는 gnomAD 4.1.0에서 품질 필터 탈락 상태였고 UK Biobank에서도 누락돼 있었음 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a></p></div>
+          <div class="fix"><code>pangenome이 구조변이까지 해결 ✗</code><p class="why">HPRC-ICE는 구조변이를 그래프에 넣지 않았음. 지금 이득은 small variant에 한정 <a class="src" href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener">Holley 2026</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">reference genome · 참조 유전체 · 참조 게놈 · GRCh38 · hg38 · T2T · telomere-to-telomere · T2T-CHM13 · CHM13 · primary scaffold · alternate contig · ALT contig · liftOver · reference bias · 참조 편향 · dark region · low-mappability region · mappability · MAPQ · pseudogene · segmental duplication · SD · centromere · satellite array · acrocentric · pangenome · pangenome reference · sequence graph · graph genome · HPRC · Human Pangenome Reference Consortium · HPRC-ICE · haplotype · phased assembly · dual assembly · trio binning · long read · PacBio HiFi · ONT · Oxford Nanopore · ultra-long read · Simplex · Duplex · HERRO · Verkko · BWA-MEM · DRAGEN · Giraffe · Weaver · DeepVariant · NGA50 · QV · F1 score</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>교과서</h3>
+          <p class="text-ref"><b>Strachan &amp; Read HMG 5판</b><br>7.1 유전체 프로젝트. 참조 유전체가 어떻게 만들어졌는지의 역사는 교과서에 있고, T2T · pangenome · reference bias는 2019년 이후의 내용이라 논문으로 채움</p>
+        </div>
+        <div class="aside-box"><h3>이 절의 다른 질문</h3><div class="related-list">
+          <a href="./sequencing.html">유전체는 어떻게 읽나? →</a>
+          <a href="./variant-types.html">변이에는 어떤 종류가 있나? →</a>
+          <a href="./index.html">유전체와 변이 목록 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../05-function/qtl.html">QTL이 세포·조직마다 달라지는 이유 →</a>
+          <a href="../../../gwas/01-genetics/ancestry.html">집단 구조와 조상 보정 (그림) →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1126/science.abj6987" target="_blank" rel="noopener noreferrer">Nurk 2022, Science — T2T-CHM13 완전 어셈블리 ↗</a>
+          <a href="https://doi.org/10.1126/science.abl3533" target="_blank" rel="noopener noreferrer">Aganezov 2022, Science — 참조를 바꾸면 변이 호출이 어떻게 달라지나 ↗</a>
+          <a href="https://doi.org/10.1038/s41586-026-10924-7" target="_blank" rel="noopener noreferrer">Holley 2026, Nature — 집단 특이 pangenome과 가려졌던 질환 변이 ↗</a>
+          <a href="https://doi.org/10.1038/s41586-026-10563-y" target="_blank" rel="noopener noreferrer">Stanojević 2026, Nature — 단일 플랫폼 T2T 조립과 평가 기준의 흔들림 ↗</a>
+          <a href="https://doi.org/10.1038/s41576-026-01000-x" target="_blank" rel="noopener noreferrer">Liu 2026, Nat Rev Genet — T2T가 회수한 LoF 변이와 종간 비교 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>

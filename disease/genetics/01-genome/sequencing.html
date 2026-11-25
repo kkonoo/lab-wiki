@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SNP array · WES · WGS · long-read가 각각 무엇을 볼 수 있나. 한 런에서 두 층을 얻는 blended 설계, read에서 변이 목록까지의 흐름, 직교 검증, 그리고 방식마다 남는 사각지대">
+  <title>유전체는 어떻게 읽나? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">유전체와 변이</a><span>›</span>읽는 방식</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">유전체와 변이 · Sequencing strategies</p>
+        <h1>유전체는 어떻게 읽나?</h1>
+        <p class="definition">유전체를 읽는 방식을 고르는 일은 예산 문제이기 전에 <b>어떤 변이를 볼 수 있는가</b>를 정하는 문제. 축은 셋 — 비용, coverage, 잡히는 변이의 종류</p>
+
+        <!-- ───────── 1. 왜 선택이 먼저인가 ───────── -->
+        <h2 id="why">플랫폼이 보이는 것을 정함<small>The platform decides what you can see</small></h2>
+        <p class="lede">같은 사람의 DNA라도 어떤 방식으로 읽었는지에 따라 나오는 변이 목록이 다름. 못 본 변이는 분석에서 없는 것과 같음.</p>
+        <p>흔한 SNP로 대규모 연관 분석을 싸게 돌릴지, 드문 coding 변이를 직접 잡을지, 구조변이와 비코딩까지 볼지가 여기서 갈림. 잘못 고르면 비용은 비용대로 쓰고 목표로 한 변이는 끝내 보지 못함.</p>
+        <p>읽은 결과가 좌표 위에 놓이는 방식은 <a href="./reference.html">참조 유전체</a>가 정함. 이 쪽은 그 앞 단계 — 무엇을 얼마나 읽을 것인가를 다룸.</p>
+
+        <!-- ───────── 2. 선택지 ───────── -->
+        <h2 id="platforms">네 가지 선택지<small>Array, exome, genome, long read</small></h2>
+        <p class="lede">직접 재는 범위가 다르고, 그래서 강한 곳과 약한 곳이 다름.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>방식</th><th>직접 재는 것</th><th>강한 곳</th><th>약한 곳</th></tr></thead>
+            <tbody>
+              <tr><th>SNP array</th><td>미리 고른 common tag SNP</td><td>대규모 코호트를 싸게 훑기. 나머지는 참조 패널로 대치</td><td>드문 변이 · 패널에 없는 haplotype</td></tr>
+              <tr><th>WES</th><td>유전체의 coding 1–2%</td><td>드문 coding 변이와 멘델 질환. 첫 응용이 Miller syndrome의 <i>DHODH</i> <a class="src" href="https://doi.org/10.1038/ng.499" target="_blank" rel="noopener">Ng 2010</a></td><td>비코딩 전체 · 구조변이</td></tr>
+              <tr><th>WGS</th><td>유전체 전장</td><td>비코딩과 구조변이까지. 깊게 읽으면 드문 변이도 직접 호출</td><td>비용</td></tr>
+              <tr><th>long read</th><td>전장을 긴 조각으로</td><td>반복영역 · 구조변이 · haplotype 가르기 · 조립</td><td>비용과 계산량</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>long-read 안에서는 오랫동안 "정확도냐 길이냐"의 선택이었음. 그 구도가 바뀌는 중 — ONT Simplex read를 딥러닝으로 교정해 10 kb당 오류를 334.48개에서 3.78개로 낮추면, 플랫폼 하나만으로도 T2T 수준 조립에 닿음 <a class="src" href="https://doi.org/10.1038/s41586-026-10563-y" target="_blank" rel="noopener">Stanojević 2026</a>. 다만 계산 비용이 가볍지 않음. HG002를 66× coverage로 처리할 때 전체 약 69시간 가운데 64시간이 read끼리 전부 맞춰 보는 정렬에 들어갔고(64 thread, 최대 102 GB RAM), read 길이 자체가 여전히 결정적이라는 점도 그대로임.</p>
+
+        <!-- ───────── 3. 섞어 읽기 ───────── -->
+        <h2 id="blend">한 런에서 두 층을 얻기<small>Blending exome and genome</small></h2>
+        <p class="lede">WES와 WGS를 따로 돌리는 대신, 같은 DNA에서 만든 두 라이브러리 풀을 섞어 한 번에 시퀀싱하는 설계.</p>
+        <p>PCR-free genome 풀과 exome capture 풀을 33 대 67로 섞어 한 런에 올림. 그러면 샘플 하나에서 깊은 exome(평균 30–40×)과 얕은 genome(평균 1–4×)이 함께 나옴 <a class="src" href="https://doi.org/10.1038/s41588-026-02669-w" target="_blank" rel="noopener">Boltz 2026</a>. 역할 분담이 분명함 — 드문 coding 변이는 깊은 exome에서 직접 호출하고, 유전체 전체의 흔한 변이는 얕은 read를 참조 패널로 대치해 채움.</p>
+
+        <figure class="fig" id="fig-plat" data-mode="design">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-plat" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="design" aria-pressed="true">섞어 읽는 방식</button>
+              <button type="button" data-mode="variants" aria-pressed="false">잡히는 변이의 몫</button>
+              <button type="button" data-mode="cost" aria-pressed="false">샘플당 비용</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:PLAT-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="seqPlatT seqPlatD" xmlns="http://www.w3.org/2000/svg">
+<title id="seqPlatT">섞어 읽는 설계와 그 결과</title>
+<desc id="seqPlatD">그림 세 장을 버튼으로 바꿔 본다. 첫 화면은 흐름 도식으로, DNA 한 샘플에서 PCR-free genome 풀과 exome capture 풀을 만들어 33 대 67로 섞어 한 런에 올리면 깊은 exome 30–40배와 얕은 genome 1–4배가 함께 나온다. 둘째 화면은 묶음 막대로, 깊은 WGS를 100으로 두었을 때 blended와 array+대치가 각각 몇 퍼센트를 잡는지를 coding과 비코딩, 드문 변이와 흔한 변이 네 범주로 나눠 보여 준다. 셋째 화면은 가로 막대로 샘플당 비용이 350달러, 99달러, 65달러임을 보여 준다.</desc>
+<g class="g-ov" data-ov="design"><text x="380" y="40" class="g-lab em" text-anchor="middle">같은 DNA에서 두 층을 한 번에</text><rect x="40" y="148" width="118" height="48" rx="6" fill="#5B6B7A"/><text x="99" y="176.5" class="g-box-t" text-anchor="middle">DNA 한 샘플</text><line x1="166" y1="172" x2="187" y2="172" class="g-arrow"/><path d="M196 172 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><rect x="200" y="104" width="150" height="44" rx="6" fill="#2563C9"/><text x="275" y="130.5" class="g-box-t" text-anchor="middle">PCR-free genome 풀</text><rect x="200" y="196" width="150" height="44" rx="6" fill="#2563C9"/><text x="275" y="222.5" class="g-box-t" text-anchor="middle">exome capture 풀</text><line x1="358" y1="126" x2="379" y2="126" class="g-arrow"/><path d="M388 126 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><line x1="358" y1="218" x2="379" y2="218" class="g-arrow"/><path d="M388 218 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><rect x="392" y="148" width="118" height="48" rx="6" fill="#2563C9"/><text x="451" y="176.5" class="g-box-t" text-anchor="middle">33 : 67로 섞어</text><text x="451" y="214" class="g-small" text-anchor="middle">한 런에 올림</text><line x1="518" y1="172" x2="539" y2="172" class="g-arrow"/><path d="M548 172 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><rect x="552" y="104" width="170" height="44" rx="6" fill="#2563C9"/><text x="637" y="130.5" class="g-box-t" text-anchor="middle">깊은 exome 30–40×</text><rect x="552" y="196" width="170" height="44" rx="6" fill="#2563C9"/><text x="637" y="222.5" class="g-box-t" text-anchor="middle">얕은 genome 1–4×</text><text x="637" y="162" class="g-small" text-anchor="middle">드문 coding 변이를 직접 호출</text><text x="637" y="256" class="g-small" text-anchor="middle">흔한 변이는 참조 패널로 대치</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">blended genome exome</text><text x="44" y="341" class="g-band-t" text-anchor="start">exome과 genome을 따로 돌리지 않고 같은 DNA의 두 라이브러리 풀을 섞어 한 번에 시퀀싱한다.</text><text x="44" y="360" class="g-band-t" text-anchor="start">QC를 통과한 샘플마다 두 층이 모두 있으므로 흔한 변이와 드문 변이를 같은 틀에서 견줄 수 있다.</text></g>
+<g class="g-ov" data-ov="variants"><text x="380" y="40" class="g-lab em" text-anchor="middle">깊은 WGS를 100으로 두었을 때 잡히는 변이의 몫</text><line x1="104" y1="262" x2="716" y2="262" class="g-axis"/><text x="104" y="76" class="g-small" text-anchor="start">세로축 — 30× WGS 대비 비율 (%)</text><line x1="104" y1="262.0" x2="716" y2="262.0" class="g-grid"/><text x="96" y="266" class="g-small" text-anchor="end">0</text><line x1="104" y1="219.5" x2="716" y2="219.5" class="g-grid"/><text x="96" y="223.5" class="g-small" text-anchor="end">25</text><line x1="104" y1="177.0" x2="716" y2="177.0" class="g-grid"/><text x="96" y="181" class="g-small" text-anchor="end">50</text><line x1="104" y1="134.5" x2="716" y2="134.5" class="g-grid"/><text x="96" y="138.5" class="g-small" text-anchor="end">75</text><line x1="104" y1="92.0" x2="716" y2="92.0" class="g-grid"/><text x="96" y="96" class="g-small" text-anchor="end">100</text><rect x="128" y="92.0" width="32" height="170.0" rx="3" fill="#5B6B7A"/><text x="144" y="84" class="g-bar-t" text-anchor="middle">100</text><rect x="166" y="101.0" width="32" height="161.0" rx="3" fill="#2563C9"/><text x="182" y="93.01" class="g-bar-t" text-anchor="middle">94.7</text><rect x="204" y="215.1" width="32" height="46.9" rx="3" fill="#D9822B"/><text x="220" y="207.08" class="g-bar-t" text-anchor="middle">27.6</text><text x="185" y="286" class="g-note" text-anchor="middle">coding · 드묾</text><rect x="278" y="92.0" width="32" height="170.0" rx="3" fill="#5B6B7A"/><text x="294" y="84" class="g-bar-t" text-anchor="middle">100</text><rect x="316" y="101.5" width="32" height="160.5" rx="3" fill="#2563C9"/><text x="332" y="93.52" class="g-bar-t" text-anchor="middle">94.4</text><rect x="354" y="149.6" width="32" height="112.4" rx="3" fill="#D9822B"/><text x="370" y="141.63" class="g-bar-t" text-anchor="middle">66.1</text><text x="335" y="286" class="g-note" text-anchor="middle">coding · 흔함</text><rect x="428" y="92.0" width="32" height="170.0" rx="3" fill="#5B6B7A"/><text x="444" y="84" class="g-bar-t" text-anchor="middle">100</text><rect x="466" y="158.0" width="32" height="104.0" rx="3" fill="#2563C9"/><text x="482" y="149.96" class="g-bar-t" text-anchor="middle">61.2</text><rect x="504" y="220.3" width="32" height="41.6" rx="3" fill="#D9822B"/><text x="520" y="212.35" class="g-bar-t" text-anchor="middle">24.5</text><text x="485" y="286" class="g-note" text-anchor="middle">비코딩 · 드묾</text><rect x="578" y="92.0" width="32" height="170.0" rx="3" fill="#5B6B7A"/><text x="594" y="84" class="g-bar-t" text-anchor="middle">100</text><rect x="616" y="126.3" width="32" height="135.7" rx="3" fill="#2563C9"/><text x="632" y="118.34" class="g-bar-t" text-anchor="middle">79.8</text><rect x="654" y="147.1" width="32" height="114.9" rx="3" fill="#D9822B"/><text x="670" y="139.08" class="g-bar-t" text-anchor="middle">67.6</text><text x="635" y="286" class="g-note" text-anchor="middle">비코딩 · 흔함</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">잡히는 변이의 몫</text><text x="44" y="341" class="g-band-t" text-anchor="start">막대는 왼쪽부터 30× WGS · blended · array+대치다. 드문 비코딩 변이에서 격차가 가장 크다.</text><text x="44" y="360" class="g-band-t" text-anchor="start">array는 흔한 변이를 잘 따라오지만 드문 coding 변이는 깊은 WGS의 27.6%만 잡는다.</text></g>
+<g class="g-ov" data-ov="cost"><text x="380" y="40" class="g-lab em" text-anchor="middle">샘플당 비용과 그 대가</text><text x="226" y="121" class="g-note em" text-anchor="end">30× WGS</text><rect x="240" y="104" width="367.5" height="26" rx="3" fill="#5B6B7A"/><text x="617.5" y="122" class="g-bar-t" text-anchor="start">US$350 · 1배</text><text x="226" y="177" class="g-note em" text-anchor="end">blended</text><rect x="240" y="160" width="104.0" height="26" rx="3" fill="#2563C9"/><text x="353.95" y="178" class="g-bar-t" text-anchor="start">US$99 · 0.28배</text><text x="226" y="233" class="g-note em" text-anchor="end">array + 대치</text><rect x="240" y="216" width="68.2" height="26" rx="3" fill="#D9822B"/><text x="318.25" y="234" class="g-bar-t" text-anchor="start">US$65 · 0.19배</text><text x="380" y="288" class="g-note em" text-anchor="middle">값이 싸질수록 드문 비코딩 변이부터 먼저 사라짐</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">샘플당 비용</text><text x="44" y="341" class="g-band-t" text-anchor="start">같은 샘플을 세 방식으로 처리해 견준 값이다(array는 1,000 샘플 이상 대량 단가).</text><text x="44" y="360" class="g-band-t" text-anchor="start">비용의 3분의 1 이하로 깊은 WGS가 잡는 드문 coding 변이의 94.7%를 얻는 것이 blended 설계의 논점이다.</text></g>
+</svg>
+<!--/GEN:PLAT-->
+          </div>
+          <figcaption>첫 화면은 흐름 도식. 둘째·셋째 화면의 값은 같은 샘플을 세 방식으로 처리해 비교한 관찰값 <a class="src" href="https://doi.org/10.1038/s41588-026-02669-w" target="_blank" rel="noopener">Boltz 2026</a>.</figcaption>
+        </figure>
+
+        <p>운영 기준도 숫자로 정해져 있음 — 샘플당 전체 염기 9.5 Gb 초과, exome 염기의 90% 초과가 10× 이상, read의 10–65%가 capture 영역 근처 <a class="src" href="https://doi.org/10.1038/s41588-026-02669-w" target="_blank" rel="noopener">Boltz 2026</a>.</p>
+        <div class="callout blue">
+          <h4>따로 만들지 않아서 생기는 이점</h4>
+          <p>exome과 array를 따로 만들면 한쪽만 실패한 샘플이 생김. 섞어 읽으면 QC를 통과한 샘플마다 두 층이 모두 있으므로, 흔한 변이와 드문 변이를 같은 QC 틀 안에서 견줄 수 있음 <a class="src" href="https://doi.org/10.1038/s41588-026-02669-w" target="_blank" rel="noopener">Boltz 2026</a>.</p>
+        </div>
+
+        <!-- ───────── 4. 호출 ───────── -->
+        <h2 id="calling">read에서 변이 목록까지<small>From reads to a variant list</small></h2>
+        <p class="lede">읽은 뒤에도 일이 남음. read를 참조에 정렬하고, 각 위치에서 변이를 부르고, 사람마다 유전형을 매기고, 믿을 수 없는 것을 걸러 냄.</p>
+        <p>오랫동안 표준이던 흐름이 GATK best practices — 정렬 · 재정렬 · 품질 재보정 · 발견과 유전형 지정 · 기계학습 필터, 여러 사람을 모아 한 번에 부르는 joint calling까지 <a class="src" href="https://doi.org/10.1038/ng.806" target="_blank" rel="noopener">DePristo 2011</a>.</p>
+        <p>그다음 세대는 통계 모형을 신경망으로 바꿨음. 같은 위치에 쌓인 read를 이미지로 인코딩해 CNN에 넣는 방식으로, 같은 비교에서 다음으로 좋은 방법의 오류 9,531건 대비 4,652건을 기록함 <a class="src" href="https://doi.org/10.1038/nbt.4235" target="_blank" rel="noopener">Poplin 2018</a>.</p>
+        <p>성능을 견주는 틀도 따로 있음. 기준 정답(truth set)을 두고, 같은 변이를 서로 다르게 표기한 것을 먼저 정규화한 뒤 비교하며, 변이 종류와 유전체 맥락별로 나눠 보고하는 것이 표준 <a class="src" href="https://doi.org/10.1038/s41587-019-0054-x" target="_blank" rel="noopener">Krusche 2019</a>.</p>
+
+        <!-- ───────── 5. 검증 ───────── -->
+        <h2 id="check">맞는지 어떻게 확인하나<small>Orthogonal checks</small></h2>
+        <p class="lede">호출기 자체 지표만으로는 부족함. 다른 방식으로 잰 값과 맞춰 보는 직교 검증을 붙임.</p>
+        <p>대표적인 방법이 같은 사람을 array로도 재서 대조하는 것. 뇌 기증자 코호트에서 WGS와 array를 겹치는 사람에게서 325,246,554개 유전형을 맞춰 보니 일치율이 99.7%였음 <a class="src" href="https://doi.org/10.1093/brain/awag057" target="_blank" rel="noopener">Hupalo 2026</a>.</p>
+        <p>같은 코호트가 쓴 다른 점검도 참고할 만함 — 성별은 X·Y의 coverage로 추정해 자가보고와 대조했고, 사후 조직이라 생길 수 있는 체세포 모자이시즘은 VAF가 낮은 구간(0.05–0.35)과 높은 구간(0.65–0.95)의 변이 수 비로 점검했음 <a class="src" href="https://doi.org/10.1093/brain/awag057" target="_blank" rel="noopener">Hupalo 2026</a>.</p>
+
+        <!-- ───────── 6. 사각지대 ───────── -->
+        <h2 id="limits">방식마다 남는 사각지대<small>What each design still misses</small></h2>
+        <p class="lede">어떤 설계도 전부를 보지 못함. 무엇을 포기했는지를 같이 적어 두는 것이 중요함.</p>
+
+        <figure class="fig" id="fig-blind" data-mode="region">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-blind" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="region" aria-pressed="true">영역에 따라 갈리는 일치율</button>
+              <button type="button" data-mode="sv" aria-pressed="false">저비용 설계의 구조변이</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:BLIND-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="seqBlindT seqBlindD" xmlns="http://www.w3.org/2000/svg">
+<title id="seqBlindT">읽는 방식마다 남는 사각지대</title>
+<desc id="seqBlindD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 막대 두 개로, 서로 다른 두 변이 호출 방법의 SNV 일치율이 고신뢰 영역 안에서는 99.7%인데 밖에서는 76.5%로 떨어지는 것을 보여 준다. 둘째 화면은 묶음 막대로, 얕은 genome read로 부른 deletion의 정밀도가 99.14%인데 recall은 34.78%, 50 bp 초과 insertion은 각각 79.31%와 23.04%임을 보여 준다.</desc>
+<g class="g-ov" data-ov="region"><text x="380" y="40" class="g-lab em" text-anchor="middle">같은 자료인데 영역에 따라 일치율이 갈림</text><line x1="140" y1="244" x2="700" y2="244" class="g-axis"/><text x="140" y="64" class="g-small" text-anchor="start">세로축 — 두 방법의 SNV 일치율 (%)</text><line x1="140" y1="244.0" x2="700" y2="244.0" class="g-grid"/><text x="132" y="248" class="g-small" text-anchor="end">0</text><line x1="140" y1="206.0" x2="700" y2="206.0" class="g-grid"/><text x="132" y="210" class="g-small" text-anchor="end">25</text><line x1="140" y1="168.0" x2="700" y2="168.0" class="g-grid"/><text x="132" y="172" class="g-small" text-anchor="end">50</text><line x1="140" y1="130.0" x2="700" y2="130.0" class="g-grid"/><text x="132" y="134" class="g-small" text-anchor="end">75</text><line x1="140" y1="92.0" x2="700" y2="92.0" class="g-grid"/><text x="132" y="96" class="g-small" text-anchor="end">100</text><rect x="250" y="92.5" width="140" height="151.5" rx="3" fill="#5B6B7A"/><text x="320" y="83.456" class="g-bar-t" text-anchor="middle">99.7%</text><text x="320" y="270" class="g-note" text-anchor="middle">고신뢰 영역 안</text><rect x="470" y="127.7" width="140" height="116.3" rx="3" fill="#B3261E"/><text x="540" y="118.72" class="g-bar-t" text-anchor="middle">76.5%</text><text x="540" y="270" class="g-note" text-anchor="middle">고신뢰 영역 밖</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">영역에 따라 갈리는 일치율</text><text x="44" y="341" class="g-band-t" text-anchor="start">truth set이 보증하는 고신뢰 영역 밖에서는 호출기끼리 결과가 크게 갈린다.</text><text x="44" y="360" class="g-band-t" text-anchor="start">그래서 호출기 성능은 숫자 하나가 아니라 영역과 변이 종류를 나눠 읽는다.</text></g>
+<g class="g-ov" data-ov="sv"><text x="380" y="40" class="g-lab em" text-anchor="middle">부른 것은 맞는데 대부분을 놓침</text><line x1="140" y1="244" x2="700" y2="244" class="g-axis"/><text x="140" y="64" class="g-small" text-anchor="start">세로축 — 깊은 WGS를 정답으로 둔 값 (%)</text><line x1="140" y1="244.0" x2="700" y2="244.0" class="g-grid"/><text x="132" y="248" class="g-small" text-anchor="end">0</text><line x1="140" y1="206.0" x2="700" y2="206.0" class="g-grid"/><text x="132" y="210" class="g-small" text-anchor="end">25</text><line x1="140" y1="168.0" x2="700" y2="168.0" class="g-grid"/><text x="132" y="172" class="g-small" text-anchor="end">50</text><line x1="140" y1="130.0" x2="700" y2="130.0" class="g-grid"/><text x="132" y="134" class="g-small" text-anchor="end">75</text><line x1="140" y1="92.0" x2="700" y2="92.0" class="g-grid"/><text x="132" y="96" class="g-small" text-anchor="end">100</text><rect x="240" y="93.3" width="72" height="150.7" rx="3" fill="#5B6B7A"/><text x="276" y="84.3072" class="g-bar-t" text-anchor="middle">99.14</text><text x="276" y="266" class="g-small" text-anchor="middle">정밀도</text><rect x="326" y="191.1" width="72" height="52.9" rx="3" fill="#B3261E"/><text x="362" y="182.134" class="g-bar-t" text-anchor="middle">34.78</text><text x="362" y="266" class="g-small" text-anchor="middle">recall</text><text x="319" y="286" class="g-note" text-anchor="middle">deletion</text><rect x="470" y="123.4" width="72" height="120.6" rx="3" fill="#5B6B7A"/><text x="506" y="114.449" class="g-bar-t" text-anchor="middle">79.31</text><text x="506" y="266" class="g-small" text-anchor="middle">정밀도</text><rect x="556" y="209.0" width="72" height="35.0" rx="3" fill="#B3261E"/><text x="592" y="199.979" class="g-bar-t" text-anchor="middle">23.04</text><text x="592" y="266" class="g-small" text-anchor="middle">recall</text><text x="549" y="286" class="g-note" text-anchor="middle">&gt;50 bp insertion</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">저비용 설계의 구조변이</text><text x="44" y="341" class="g-band-t" text-anchor="start">얕은 genome read로 부른 구조변이는 맞게 부른 비율은 높지만 전체의 3분의 1도 못 찾는다.</text><text x="44" y="360" class="g-band-t" text-anchor="start">같은 설계에서 exon 다섯 개 이상에 걸친 CNV는 recall 87%로 사정이 낫다.</text></g>
+</svg>
+<!--/GEN:BLIND-->
+          </div>
+          <figcaption>값은 모두 관찰값 <a class="src" href="https://doi.org/10.1038/s41587-019-0054-x" target="_blank" rel="noopener">Krusche 2019</a> · <a class="src" href="https://doi.org/10.1038/s41588-026-02669-w" target="_blank" rel="noopener">Boltz 2026</a>.</figcaption>
+        </figure>
+
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>사각지대</th><th>내용</th></tr></thead>
+            <tbody>
+              <tr><th>영역에 따른 성능 차이</th><td>서로 다른 두 방법의 SNV 일치율이 고신뢰 영역 안에서는 99.7%인데 밖에서는 76.5%로 떨어짐. 단일 지표로 호출기를 평가하지 않음 <a class="src" href="https://doi.org/10.1038/s41587-019-0054-x" target="_blank" rel="noopener">Krusche 2019</a></td></tr>
+              <tr><th>저비용 설계의 구조변이</th><td>얕은 genome read에서 부른 deletion은 정밀도 99.14%인데 recall이 34.78%, 50 bp 초과 insertion은 79.31%와 23.04%. 맞게 부른 것은 믿을 만한데 대부분을 놓침 <a class="src" href="https://doi.org/10.1038/s41588-026-02669-w" target="_blank" rel="noopener">Boltz 2026</a></td></tr>
+              <tr><th>비코딩 드문 변이</th><td>같은 설계에서 깊은 WGS 대비 61.2%만 잡힘. 드문 변이는 대치로 메울 수 없음 <a class="src" href="https://doi.org/10.1038/s41588-026-02669-w" target="_blank" rel="noopener">Boltz 2026</a></td></tr>
+              <tr><th>참조 패널의 집단 편중</th><td>흔한 변이(MAF 1% 이상)는 조상 배경과 무관하게 잘 대치되지만, 더 드문 쪽에서는 패널에 haplotype이 부족한 집단의 정확도가 떨어짐 <a class="src" href="https://doi.org/10.1038/s41588-026-02669-w" target="_blank" rel="noopener">Boltz 2026</a></td></tr>
+              <tr><th>long-read 교정의 한계</th><td>교정 뒤에도 centromere satellite와 segmental duplication의 오류율이 10 kb당 11.8로 나머지 유전체(2.5)의 약 다섯 배. 설계상 저빈도 변이 검출에도 맞지 않아 체세포 모자이시즘이나 종양 subclone에 그대로 쓰면 안 됨 <a class="src" href="https://doi.org/10.1038/s41586-026-10563-y" target="_blank" rel="noopener">Stanojević 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>어떤 변이가 어느 크기에 있고 어느 방식에 걸리는지는 <a href="./variant-types.html">변이에는 어떤 종류가 있나?</a>에서 이어서 다룸. 유전형 자료를 만들고 대치하는 절차 자체는 GWAS 쪽 <a href="../../../gwas/index.html#article/genotyping">Genotyping &amp; sequencing</a>과 <a href="../../../gwas/index.html#article/imputation">Genotype imputation</a> 카드에 있음.</p>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>WGS를 하면 모든 변이를 봄 ✗</code><p class="why">깊이와 read 길이에 따라 구조변이와 반복영역은 여전히 놓침. 얕은 genome read에서 deletion recall이 34.78% <a class="src" href="https://doi.org/10.1038/s41588-026-02669-w" target="_blank" rel="noopener">Boltz 2026</a></p></div>
+          <div class="fix"><code>array에 imputation을 붙이면 WGS와 같음 ✗</code><p class="why">흔한 변이는 비슷하게 따라오지만 드문 coding 변이는 깊은 WGS의 27.6%만 잡힘 <a class="src" href="https://doi.org/10.1038/s41588-026-02669-w" target="_blank" rel="noopener">Boltz 2026</a></p></div>
+          <div class="fix"><code>호출기 성능은 숫자 하나로 비교 가능 ✗</code><p class="why">두 방법의 일치율이 고신뢰 영역 안에서 99.7%, 밖에서 76.5%. 영역과 변이 종류를 나눠 보고해야 함 <a class="src" href="https://doi.org/10.1038/s41587-019-0054-x" target="_blank" rel="noopener">Krusche 2019</a></p></div>
+          <div class="fix"><code>정밀도가 높으면 잘 잡은 것 ✗</code><p class="why">deletion 정밀도 99.14%와 recall 34.78%가 같이 나옴. 부른 것이 맞다는 말과 다 불렀다는 말은 다름 <a class="src" href="https://doi.org/10.1038/s41588-026-02669-w" target="_blank" rel="noopener">Boltz 2026</a></p></div>
+          <div class="fix"><code>long read는 비싸기만 하고 정확도가 낮음 ✗</code><p class="why">교정으로 10 kb당 오류가 334.48에서 3.78로 내려감. 남은 문제는 반복영역의 오류율과 계산 비용 <a class="src" href="https://doi.org/10.1038/s41586-026-10563-y" target="_blank" rel="noopener">Stanojević 2026</a></p></div>
+          <div class="fix"><code>호출기 지표가 좋으면 자료도 맞음 ✗</code><p class="why">array 대조·성별 확인 같은 직교 검증을 따로 붙임. 뇌 기증자 코호트의 WGS–array 일치율이 99.7% <a class="src" href="https://doi.org/10.1093/brain/awag057" target="_blank" rel="noopener">Hupalo 2026</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">sequencing strategy · genotyping · SNP array · genotyping array · tag SNP · WES · whole-exome sequencing · 전장 엑솜 시퀀싱 · WGS · whole-genome sequencing · 전장 유전체 시퀀싱 · low-pass sequencing · low-coverage WGS · coverage · depth · read depth · exome capture · PCR-free library · blended genome exome · BGE · imputation · genotype imputation · reference panel · 참조 패널 · long read · PacBio HiFi · ONT · Oxford Nanopore · Simplex · Duplex · ultra-long read · read alignment · 정렬 · variant calling · 변이 호출 · joint calling · gVCF · VQSR · GATK · DeepVariant · DRAGEN · truth set · GIAB · GA4GH · benchmark · precision · PPV · recall · F1 score · concordance · 일치율 · VAF · variant allele fraction · mosaicism · 모자이시즘</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>교과서</h3>
+          <p class="text-ref"><b>Strachan &amp; Read HMG 5판</b><br>6.4–6.5 핵산 시퀀싱 · 7.1 유전체 프로젝트. 시퀀싱 원리와 세대별 흐름은 교과서에 있고, 비용·blended 설계·딥러닝 호출기는 논문으로 채움</p>
+        </div>
+        <div class="aside-box"><h3>이 절의 다른 질문</h3><div class="related-list">
+          <a href="./reference.html">참조 유전체는 왜 하나로는 부족한가? →</a>
+          <a href="./variant-types.html">변이에는 어떤 종류가 있나? →</a>
+          <a href="./index.html">유전체와 변이 목록 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../../../gwas/index.html#article/genotyping">GWAS · Genotyping &amp; sequencing 카드 →</a>
+          <a href="../../../gwas/index.html#article/imputation">GWAS · Genotype imputation 카드 →</a>
+          <a href="../../../gwas/01-genetics/ancestry.html#frequency">집단마다 다른 allele frequency (그림) →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41588-026-02669-w" target="_blank" rel="noopener noreferrer">Boltz 2026, Nat Genet — exome과 genome을 섞어 한 런에서 두 층 ↗</a>
+          <a href="https://doi.org/10.1038/s41587-019-0054-x" target="_blank" rel="noopener noreferrer">Krusche 2019, Nat Biotechnol — 변이 호출 벤치마크의 표준 틀 ↗</a>
+          <a href="https://doi.org/10.1038/nbt.4235" target="_blank" rel="noopener noreferrer">Poplin 2018, Nat Biotechnol — pileup을 이미지로 보는 호출기 ↗</a>
+          <a href="https://doi.org/10.1038/s41586-026-10563-y" target="_blank" rel="noopener noreferrer">Stanojević 2026, Nature — 단일 플랫폼 long-read 교정과 그 비용 ↗</a>
+          <a href="https://doi.org/10.1093/brain/awag057" target="_blank" rel="noopener noreferrer">Hupalo 2026, Brain — 9,543 genome 규모의 직교 검증 사례 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>
