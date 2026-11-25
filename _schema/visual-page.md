@@ -107,6 +107,20 @@ site/disease/<대>/<질환>/<섹션>/data.js       articleRows·paperLinks·glos
 - CSS 전환이 0.25~0.3s라 **토글 검사는 450ms 기다린 뒤** 측정한다.
 - 그림 안 글자의 문체는 스키마 §4.3.
 
+### 4.1 그리는 규칙 (2026-11-05)
+
+diagram-design(cathrynlavery/diagram-design, MIT)의 연결선 · 밀도 규칙 가운데 우리 그림에 맞는 것만 가져왔다. 기존 그림은 고치지 않고 **새 그림부터** 지킨다. 걸리는 것은 §6 `check_svg.py`가 잡는다.
+
+- **그릴지 먼저 본다.** 표 3열이나 문단으로 같은 말이 되면 그리지 않는다.
+- **밀도**: 상자 9개 · 화살표 12개를 넘으면 그림 두 장(전체 + 자세히)으로 나눈다. 강조(주조색 진한 면)는 그림 하나에 1–2곳.
+- **화살표는 가로 · 세로로만 꺾는다.** 비스듬한 직선 금지. 곡선은 혈관 · 림프관처럼 모양 자체가 내용일 때만.
+- **끝점이 아닌 상자 뒤로 지나가지 않는다.** 돌아간다. 정말 피할 수 없으면 점선(`4,3`)으로, 라벨은 보이는 끝에.
+- **한 변에 화살표가 여럿이면 붙는 점을 나눈다.** 변 길이 L에 N개면 k번째는 `L·k/(N+1)`, 서로 12px 이상(짧은 상자 8px). 한 점에서 두 갈래로 나가지 않는다.
+- **화살표 라벨은 선 위에 얹지 않는다.** 선에서 6–10px 띄우거나, 불투명 바탕(`rect`)을 깔고 그 위에 쓴다.
+- **한글 글자 폭은 글자마다 센다**: 한글 · 전각 1글자 = 1em, 그 밖(영문 · 숫자 · 기호 · 띄어쓰기) 0.6em. 합 × 글자 크기 + 좌우 여백으로 상자 폭을 정한다. "한글 몇 자"로만 세면 숫자 · 기호가 빠져 상자가 모자란다.
+- **한글은 12px 밑으로 줄이지 않는다.** 안 들어가면 글을 줄인다.
+- **접근성**: `<svg role="img" aria-labelledby="<id>T <id>D">` + `<title id="<id>T">` · `<desc id="<id>D">`(coloc 방식). id는 그림마다 다르게.
+
 ---
 
 ## 5. 새 시각 페이지를 만드는 절차
@@ -141,6 +155,18 @@ tr -dc '\000' < wiki/site/assets/css/article.css | wc -c
 - **Chromium 1440 / 1680 / 1920px**: 목차 sticky · 클릭 후 h2 `top` = 92px · 스파이 인덱스 일치 · 가로 넘침 0 · 모드 토글 동작(450ms 대기)
 - **좁은 폭 1280 / 820px**: 목차 `display:none` + 컬럼 원복
 
+### 그림 연결선 · 상자 폭 (`check_svg.py`, 2026-11-05)
+
+```bash
+python3 wiki/site-meta/tools/check_svg.py wiki/site/gwas/03-postgwas/coloc.html   # html 여러 개를 한 번에 줘도 된다
+```
+
+§4.1을 HTML 안 `<svg>`에서 잰다: `diagonal`(비스듬한 화살표) · `behind`(끝점 아닌 상자를 지남) · `port`(한 점에 화살표 끝 둘) · `on-line`(화살표가 글자 위를 지남) · `too-wide`(글자가 상자보다 넓음 — 글자 폭은 어림). 화살표 = `marker-end`/`marker-start`가 붙은 `path`·`line`, 상자 = 40×20 이상 `rect`(영역 클래스 `zone`·`lane`·`band`·`ov`·`frame`·`hl` 등과 그림 폭 80% 넘는 띠는 뺀다).
+
+- **0이 목표가 아니다** — 생성기를 고친 전후로 돌려 신규 0건을 본다. 기준선(2026-11-05, 그림 있는 29쪽): 102건(too-wide 58 · diagonal 24 · on-line 12 · behind 4 · port 4). 눈으로 확인한 진짜 예: sensing 그림 1 MAVS → IRF3 선이 `K⁺ 유출…` 알약 뒤를 지남(behind), MyD88 · TRIF에서 점선 · 실선이 한 점에서 나감(port).
+- 토글로 숨긴 오버레이 글자도 잰다 — 기본 화면에 안 보이는 글이 걸릴 수 있다.
+- 예전 immunology 생성기의 `check_fig`(viewBox 이탈 · 글자 겹침)는 저장소에 남아 있지 않다. 그 둘은 아직 이 스크립트에 없다.
+
 ### 검사에서 걸리는 오탐
 
 - **smooth scroll은 600ms로 안 끝난다.** 먼 거리는 1.2초까지 걸려 이동 중간값이 찍힌다 — `scrollY`가 멈출 때까지 폴링한 뒤 측정한다.
@@ -174,7 +200,8 @@ immunology 밖의 시각 페이지는 **아직 inline `<style>`**로 되어 있�
 | `neuro/general/brain-regions.html` | 3 | 0 |
 | `neuro/general/development.html` | 3 | 0 |
 | `neuro/general/neuroinflammation.html` | 3 | 0 |
-| `virus/index.html` | 4 | 0 |
+| `virus/general/index.html` | 2 | 0 |
+| `virus/hbv/index.html` | 3 | 0 |
 
 (`neuro/general/index.html`은 h2가 1개라 목차 대상이 아니다.)
 
@@ -195,6 +222,7 @@ gwas처럼 **용어 카드 SPA**(`<도메인>/index.html` 안 inline `sections`�
 
 - 그림·상호작용 없이는 핵심 구분이 안 되는 방법만 — 예: coloc(H3 vs H4) · fine-mapping(credible set·PIP) · regional plot·LD · MR(IV 가정).
 - 나머지는 카드로 충분하다. 도메인 전체를 교과서로 옮기지 않는다 — 그림 생성기는 논문이 바뀔 때마다 같이 고쳐야 하는 유지 비용이다.
+- 2026-11-24 gwas에서 두 등급으로 넓혔다. **A**는 그림 없이는 핵심 구분이 안 되는 방법, **B**는 그림이 이해를 크게 돕고 seed 고정 시뮬레이션으로 그릴 수 있는 개념이다. 도구 · DB 카드와 정의 한 줄로 끝나는 카드는 계속 카드로 둔다. 도메인별 목록과 순서는 `site-meta/<도메인>.md` §2.
 
 ### 9.2 경로
 
@@ -203,15 +231,17 @@ site/gwas/
 ├─ index.html              SPA(용어 카드). articlePages로 시각 페이지를 가리킨다
 ├─ glossary.js             용어 사전 SSOT — SPA와 시각 페이지가 같이 로드
 ├─ gwas.css                시각 페이지 공용 — article.css용 옛 색 이름 별칭(토큰·상단 바·.glossary-term은 base·spa가 맡음)
-└─ <NN-섹션>/<id>.html       예: 03-postgwas/coloc.html
-   └─ <섹션>.css · <섹션>.js   섹션 전용 그림 훅(§4, g- 접두사)
+├─ gwas-fig.css · gwas-fig.js  시각 페이지 공용 그림 훅(§4, g- 접두사) · 모드 토글 · 좁은 화면 스크롤 시작점
+└─ <NN-섹션>/<id>.html       예: 03-postgwas/coloc.html · 01-genetics/ld.html
 ```
 
+- 그림 훅과 토글은 처음에 `03-postgwas/postgwas.css · .js`에 있었고, 두 번째 섹션(01-genetics)이 쓰기 시작한 2026-11-24에 `gwas-fig.*`로 옮겼다. 한 섹션에서만 쓰는 훅이 생기면 그때 `<NN-섹션>/<섹션>.css`를 만든다.
+
 - 폴더 = SPA `sections`의 number + key(`postgwas` → `03-postgwas`). key가 도메인명과 겹치면 english 라벨 — gwas의 02는 `02-association`.
-- 파일명 = SPA article id(`coloc` → `coloc.html`).
+- 파일명 = SPA article id(`coloc` → `coloc.html`). 카드 여러 개를 한 페이지로 묶으면 대표 카드 id가 파일명이고, 나머지 카드는 `articlePages`에 `<경로>#<h2 id>`로 건다(예: `haplotype: "01-genetics/ld.html#haplotype"`).
 - 공용 자산 상대 깊이는 `../../assets/`(질환 시각 페이지는 `../../../`). 복사해 시작할 때 가장 먼저 고친다.
 - 그림 생성기는 `wiki/site-meta/<도메인>-figures/*.py` → `GEN` 마커(§4). 데이터는 **seed 고정 시뮬레이션** — 논문 그림을 옮겨 그리지 않는다. 본문 문장 속 시뮬레이션 수치도 `GEN` 인라인 마커로 넣는다(예: coloc `<!--GEN:FRAG_PP-->`).
-- 좁은 화면에서 가로 스크롤되는 그림은 `.fig-scroll[data-scroll="end|center"]`로 시작 위치를 정한다(신호가 오른쪽에 있으면 빈 축부터 보인다 — coloc 390px). 동작은 지금 `gwas/03-postgwas/postgwas.js`에만 있다 — 다른 섹션에서 쓰면 공용으로 옮긴다.
+- 좁은 화면에서 가로 스크롤되는 그림은 `.fig-scroll[data-scroll="end|center"]`로 시작 위치를 정한다(신호가 오른쪽에 있으면 빈 축부터 보인다 — coloc 390px). 동작은 `gwas/gwas-fig.js`(2026-11-24 섹션 공용으로 옮김) — 다른 도메인에서 쓰면 `assets/`로 옮긴다.
 - 도메인 유지보수 레이어는 `wiki/site-meta/<도메인>.md`(gwas → `site-meta/gwas.md`).
 
 ### 9.3 §1·§2 계약과 다른 점
@@ -242,5 +272,5 @@ immunology는 `articlePages`에 등록된 id를 열면 시각 페이지로 **이
 
 ### 9.6 검사 추가분
 
-- SPA: `articlePages`의 경로가 모두 실제 파일 · 등록 id 카드에 `.deep-link` 1개 · 섹션 목록 배지 수 = 그 섹션의 등록 수 · 콘솔 오류 0
+- SPA: `articlePages`의 경로가 모두 실제 파일(`#`이 붙으면 그 `h2[id]`도 있어야 함) · 등록 id 카드에 `.deep-link` 1개 · 섹션 목록 배지 수 = 그 섹션의 등록 수 · 콘솔 오류 0
 - 시각 페이지: `html[data-glossary]` > 0 · breadcrumb·"1분 요약" 링크가 SPA 라우트(`#section/…`·`#article/…`)로 열림

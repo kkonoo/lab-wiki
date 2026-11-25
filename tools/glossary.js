@@ -255,6 +255,16 @@ module.exports = function buildGlossary({ ROOT, items, DOMAINS, U }) {
     });
   }
 
+  // 2-5) disease/genetics/glossary.js — 정적 시각 페이지들이 같이 쓴다(SPA 없음, 카드도 없음)
+  if (all.includes("disease/genetics/glossary.js")) {
+    const ctx = { window: {}, document: { body: null } };
+    vm.createContext(ctx);
+    try { vm.runInContext(read("disease/genetics/glossary.js"), ctx, { timeout: 2000 }); } catch (err) { /* DOM 부분은 멈춘다 */ }
+    const G = ctx.window.GENETICS_GLOSSARY;
+    const pages = htmls.filter((r) => r.startsWith("disease/genetics/") && /genetics\/glossary\.js|\.\.\/glossary\.js/.test(read(r)));
+    if (G) addTerms(G.terms, (names) => appearsIn(pages)(names), new Map(), pages.map(textOf), domainOf("disease/genetics"));
+  }
+
   /* ── 3) 약어 풀이 ── */
   for (const r of htmls) {
     const html = read(r);

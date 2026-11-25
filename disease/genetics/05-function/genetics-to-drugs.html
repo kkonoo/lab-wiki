@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="유전학 근거로 약물 표적을 고르는 길: 성공률, GWAS·TWAS·MR·pQTL·보호 변이, 표적 후보가 줄어드는 단계, 억제와 활성화의 방향, 안전성 사전 점검, 유전 근거가 보장하지 않는 것">
+  <title>유전학 근거는 약 개발에 어떻게 쓰이나? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">변이에서 기능으로</a><span>›</span>유전학에서 약으로</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">변이에서 기능으로 · Genetics to drugs</p>
+        <h1>유전학 근거는 약 개발에 어떻게 쓰이나?</h1>
+        <p class="definition">약물 표적 유전학(drug-target genetics): 사람이 날 때부터 갖고 있는 변이를 자연 실험으로 삼아, 어떤 단백질을 약으로 건드릴지와 어느 방향으로 건드릴지를 임상시험 전에 가려내는 일 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a></p>
+
+        <!-- ───────── 1. 왜 ───────── -->
+        <h2 id="why">왜 유전학으로 표적을 고르나<small>Why genetics</small></h2>
+        <p class="lede">약은 대부분 실패함. 개발 단계에 들어간 치료제 가운데 승인까지 가는 것은 약 10%이고, 3상 실패의 절반 이상이 안전성과 효능 문제에서 비롯됨 <a class="src" href="https://doi.org/10.1038/nrg4017" target="_blank" rel="noopener">Harper 2015</a>.</p>
+        <p>유전 근거가 뚜렷한 표적은 성공 확률이 약 2배. 2015년 분석(Nelson 2015)의 수치를 종설이 정리한 것 <a class="src" href="https://doi.org/10.1038/nrg4017" target="_blank" rel="noopener">Harper 2015</a>.</p>
+        <p>이유는 측정 대상이 다르기 때문. 세포나 동물에서 보는 것은 단기 교란의 결과이지만, 유전 변이 보유자는 그 단백질이 평생 조금 더 많거나 적은 상태로 살아온 사람. 무작위 배정이 태어날 때 일어난 자연 실험으로 보고, 효능과 안전성을 임상시험 전에 가늠함 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a>.</p>
+        <div class="callout">
+          <h4>약을 고르는 일과 환자를 고르는 일</h4>
+          <p>이 쪽은 "무엇을 표적으로 삼을까"를 다룸. "이 약이 누구에게 잘 들을까"는 약물 반응 유전학(pharmacogenomics)의 질문으로 축이 다름. 관찰된 분자 변화가 원인이 아니라 질병의 결과일 수 있다는 점도 함께 봐야 함 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a>.</p>
+        </div>
+
+        <!-- ───────── 2. 경로 ───────── -->
+        <h2 id="routes">유전 근거에서 표적으로<small>Routes</small></h2>
+        <p class="lede">근거의 종류마다 말해 주는 것이 다름. 한 종류만으로 표적을 정하지 않음.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>근거</th><th>말해 주는 것</th><th>남는 문제</th></tr></thead>
+            <tbody>
+              <tr><th>GWAS 단일 locus</th><td>질환과 연관된 유전체 구간</td><td>구간 안의 원인 유전자가 아직 정해지지 않음 <a class="src" href="https://doi.org/10.1038/s41576-021-00387-z" target="_blank" rel="noopener">Reay 2021</a></td></tr>
+              <tr><th>TWAS</th><td>발현 예측값으로 유전자 단위 연관</td><td>효과 방향이 조직 · 세포형에 따라 달라짐 <a class="src" href="https://doi.org/10.1038/s41576-021-00387-z" target="_blank" rel="noopener">Reay 2021</a></td></tr>
+              <tr><th>Mendelian randomization과 colocalization</th><td>분자 형질에서 질환으로 가는 방향과 인과</td><td>도구변수 가정(관련성 · 독립성 · 배타성)이 깨지면 무너짐 <a class="src" href="https://doi.org/10.1038/s41576-021-00387-z" target="_blank" rel="noopener">Reay 2021</a></td></tr>
+              <tr><th>cis-pQTL</th><td>단백질 수준에서 본 표적 근거</td><td>FDA가 허가 · 승인한 혈액 단백질 검사 항목 가운데 cis-coding pQTL이 있는 것은 약 3분의 1 <a class="src" href="https://doi.org/10.1038/s41576-020-0268-2" target="_blank" rel="noopener">Suhre 2021</a></td></tr>
+              <tr><th>보호 변이(LoF · GoF)</th><td>그 단백질이 평생 적거나 많았던 사람의 표현형 — 효능과 안전성을 함께</td><td>음성 선택 때문에 LoF allele 자체가 없는 유전자가 많음 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>보호 변이에서 약으로 이어진 고전 사례 셋 <a class="src" href="https://doi.org/10.1038/nrg4017" target="_blank" rel="noopener">Harper 2015</a>: PCSK9 LoF → LDL과 관상동맥질환 위험이 낮음 → evolocumab · alirocumab. CCR5 Δ32 → HIV-1 감염 저항 → maraviroc(2007년 승인). SOST LoF → 뼈가 비정상적으로 단단해지는 sclerosteosis → 항sclerostin 항체 romosozumab.</p>
+        <p>흔한 변이에서 나온 사례도 있음. Crohn 병 위험을 낮추는 IL23R missense rs11209026(p.Arg381Gln)이 IL-23 축을 막는 가설의 근거가 됐고, ustekinumab과 risankizumab으로 이어짐 <a class="src" href="https://doi.org/10.1038/s41576-021-00387-z" target="_blank" rel="noopener">Reay 2021</a>. 류마티스관절염에서는 위험 locus 101개의 후보 유전자 98개를 in silico 파이프라인으로 좁혔더니 이미 승인된 RA 약의 표적과 겹쳤고, 다른 적응증 약의 재배치 후보도 함께 나왔음 <a class="src" href="https://doi.org/10.1038/nature12873" target="_blank" rel="noopener">Okada 2014</a>.</p>
+
+        <!-- ───────── 3. 깔때기 ───────── -->
+        <h2 id="funnel">후보는 어디서 줄어드나<small>From 1,229 to 19</small></h2>
+        <p class="lede">실제 파이프라인 하나를 단계별로 따라가 보면, 거르는 기준마다 수가 크게 줄어듦. 버튼으로 유럽계 자료와 아프리카계 자료를 비교할 수 있음.</p>
+        <figure class="fig" id="fig-funnel" data-mode="ea">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-funnel" role="group" aria-label="자료 집단">
+              <button type="button" data-mode="ea" aria-pressed="true">유럽계 자료</button>
+              <button type="button" data-mode="aa" aria-pressed="false">아프리카계 자료</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:FUNNEL-->
+<svg class="g-svg" viewBox="0 0 760 352" role="img" aria-labelledby="ptgFunnelT ptgFunnelD" xmlns="http://www.w3.org/2000/svg">
+<title id="ptgFunnelT">유전 근거에서 약물 표적 후보가 줄어드는 단계</title>
+<desc id="ptgFunnelD">가로 막대 다섯 개가 위에서 아래로 짧아지는 깔때기 그림이다. 유럽계 자료에서는 druggable 단백질 1,229개에서 출발해 Mendelian randomization에서 유의한 73개, 추가 조건을 통과한 19개, 대응 약이 있는 10개, 이미 알츠하이머병 임상에 올라온 약이 걸린 6개로 줄어든다. 아프리카계 자료에서는 같은 출발점에서 7개가 지명되는데, 유의 기준이 FDR이 아니라 nominal P 값이다. 막대 폭은 단계 표시일 뿐 수에 비례하지 않는다.</desc>
+<g class="g-ov" data-ov="ea"><rect x="40" y="56" width="300" height="34" rx="5" fill="#2563C9" style="fill-opacity:0.85"/><text x="190" y="78" class="g-box-t" text-anchor="middle">1,229</text><text x="356" y="72" class="g-lab" text-anchor="start">FDA 승인 약이 있는 druggable 단백질</text><text x="356" y="88" class="g-small" text-anchor="start">뇌 pQTL 3종 · eQTL 9종을 도구변수로 삼음</text><rect x="40" y="98" width="240" height="34" rx="5" fill="#2563C9" style="fill-opacity:0.75"/><text x="160" y="120" class="g-box-t" text-anchor="middle">73</text><text x="356" y="114" class="g-lab" text-anchor="start">MR에서 AD 위험과 연관(FDR &lt; 0.05)</text><text x="356" y="130" class="g-small" text-anchor="start">억제 방향 39개 · 활성화 방향 34개</text><rect x="40" y="140" width="175" height="34" rx="5" fill="#2563C9" style="fill-opacity:0.65"/><text x="127.5" y="162" class="g-box-t" text-anchor="middle">19</text><text x="356" y="156" class="g-lab" text-anchor="start">coloc · 유전자 지목 · 작용 방향 · 결합 자리까지 통과</text><text x="356" y="172" class="g-small" text-anchor="start">1,229개의 상위 2%</text><rect x="40" y="182" width="120" height="34" rx="5" fill="#2563C9" style="fill-opacity:0.55"/><text x="100" y="204" class="g-box-t" text-anchor="middle">10</text><text x="356" y="204" class="g-lab" text-anchor="start">대응하는 약이나 분자 30종이 있는 표적</text><rect x="40" y="224" width="80" height="34" rx="5" fill="#2563C9" style="fill-opacity:0.45"/><text x="80" y="246" class="g-box-t" text-anchor="middle">6</text><text x="356" y="240" class="g-lab" text-anchor="start">이미 AD 임상에 올라와 있는 약 7종이 걸린 표적</text><text x="356" y="256" class="g-small" text-anchor="start">승인된 AD 약과 겹친 것은 galantamine 하나</text><rect x="30" y="272" width="700" height="71" rx="6" class="g-band"/><text x="44" y="294" class="g-band-t hd" text-anchor="start">유럽계 자료로 돌린 경우</text><text x="44" y="313" class="g-band-t" text-anchor="start">막대 폭은 단계를 나타낼 뿐 수에 비례하지 않는다. 수치는 알츠하이머병 표적 지명 한 건의 값이다.</text><text x="44" y="332" class="g-band-t" text-anchor="start">단계마다 거르는 기준이 다르므로, 마지막 수가 작다고 앞 단계가 틀린 것은 아니다.</text></g>
+<g class="g-ov" data-ov="aa"><rect x="40" y="56" width="300" height="34" rx="5" fill="#2563C9" style="fill-opacity:0.85"/><text x="190" y="78" class="g-box-t" text-anchor="middle">1,229</text><text x="356" y="78" class="g-lab" text-anchor="start">같은 출발점 · 같은 도구변수</text><rect x="40" y="98" width="90" height="34" rx="5" fill="#2563C9" style="fill-opacity:0.55"/><text x="85" y="120" class="g-box-t" text-anchor="middle">7</text><text x="356" y="114" class="g-lab" text-anchor="start">nominal P &lt; 0.05에 xQTL × GWAS 쌍 3개 이상으로 지명</text><text x="356" y="130" class="g-small" text-anchor="start">유럽계에 쓴 FDR 기준을 쓰지 못함</text><text x="40" y="176" class="g-note" text-anchor="start">근거가 된 아프리카계 AD GWAS는 환자 2,784명 · 대조 5,222명</text><text x="40" y="200" class="g-note" text-anchor="start">표본이 작으면 같은 파이프라인이라도 유의 기준부터 달라짐</text><rect x="30" y="272" width="700" height="71" rx="6" class="g-band"/><text x="44" y="294" class="g-band-t hd" text-anchor="start">아프리카계 자료로 돌린 경우</text><text x="44" y="313" class="g-band-t" text-anchor="start">표적 목록의 길이 차이는 생물학의 차이가 아니라 표본 크기의 차이일 수 있다.</text><text x="44" y="332" class="g-band-t" text-anchor="start">지명된 표적을 다른 집단에 그대로 옮기기 전에 그 집단의 자료로 다시 본다.</text></g>
+</svg>
+<!--/GEN:FUNNEL-->
+          </div>
+          <figcaption>알츠하이머병 표적 지명 한 건의 수치 <a class="src" href="https://doi.org/10.1038/s41593-026-02472-0" target="_blank" rel="noopener">Hou 2026</a>. 막대 폭은 단계 표시일 뿐 수에 비례하지 않음.</figcaption>
+        </figure>
+        <p>출발점은 이미 승인된 약이 있는 druggable 단백질 1,229개. 뇌 조직의 pQTL 3종과 eQTL 9종을 도구변수로 삼아 알츠하이머병 GWAS를 결과 변수로 놓고 MR을 돌려 73개를 남겼고(억제 방향 39개 · 활성화 방향 34개), colocalization · 유전자 지목 · 알려진 작용 방향과의 일치 · 약이 붙을 구조적 자리까지 걸어 19개로 좁혔음 <a class="src" href="https://doi.org/10.1038/s41593-026-02472-0" target="_blank" rel="noopener">Hou 2026</a>.</p>
+        <p>그 19개 가운데 대응하는 약이나 분자 30종이 있는 표적이 10개였고, 그 약 중 7종(표적 6개)은 이미 알츠하이머병 임상시험 단계에 있었음. 승인된 알츠하이머병 약과 겹친 것은 galantamine 하나 <a class="src" href="https://doi.org/10.1038/s41593-026-02472-0" target="_blank" rel="noopener">Hou 2026</a>. 이런 파이프라인의 쓸모는 "지금 쓸 약"이 아니라 "어느 경로를 먼저 건드릴지"의 순서에 있음.</p>
+        <div class="callout blue">
+          <h4>집단에 따라 기준 자체가 달라짐</h4>
+          <p>같은 파이프라인을 아프리카계 자료로 돌렸을 때 지명된 표적은 7개인데, 유럽계에 쓴 FDR 기준이 아니라 nominal P &lt; 0.05에 xQTL × GWAS 쌍 3개 이상이라는 기준을 썼음. 근거가 된 아프리카계 알츠하이머병 GWAS가 환자 2,784명 · 대조 5,222명이기 때문 <a class="src" href="https://doi.org/10.1038/s41593-026-02472-0" target="_blank" rel="noopener">Hou 2026</a>. 표적 목록의 길이 차이가 생물학의 차이가 아닐 수 있음.</p>
+        </div>
+
+        <!-- ───────── 4. 방향 ───────── -->
+        <h2 id="direction">막을 것인가 켤 것인가<small>Direction of effect</small></h2>
+        <p class="lede">표적을 고르는 일의 절반은 방향을 고르는 일. 같은 유전자의 allele을 기능이 낮은 쪽부터 높은 쪽까지 늘어놓은 것을 allelic series라 부르고, 그 줄에서 위험이 어느 쪽으로 낮아지는지가 약이 밀 방향이 됨. 버튼으로 세 가지 경우를 비교할 수 있음.</p>
+        <figure class="fig" id="fig-ladder" data-mode="inhibit">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-ladder" role="group" aria-label="표적 사례">
+              <button type="button" data-mode="inhibit" aria-pressed="true">막는 쪽 · PCSK9</button>
+              <button type="button" data-mode="activate" aria-pressed="false">켜는 쪽 · PLCG2</button>
+              <button type="button" data-mode="flip" aria-pressed="false">방향이 반대 · CD40</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:LADDER-->
+<svg class="g-svg" viewBox="0 0 760 362" role="img" aria-labelledby="ptgLadderT ptgLadderD" xmlns="http://www.w3.org/2000/svg">
+<title id="ptgLadderT">같은 유전자의 allele을 기능 축에 늘어놓고 약이 밀 방향을 읽는 그림</title>
+<desc id="ptgLadderD">가로축은 표적 기능이 낮은 쪽에서 높은 쪽으로 가고, 상자 세 개가 기능이 낮은 allele, 정상, 기능이 높은 allele을 나타낸다. PCSK9 모드에서는 기능이 낮은 쪽이 콜레스테롤과 심혈관 위험이 낮아 약이 왼쪽으로 민다. PLCG2 모드에서는 기능이 낮은 쪽이 알츠하이머병 위험이 높고 기능이 높은 allele이 보호적이어서 약이 오른쪽으로 민다. CD40 모드에서는 같은 표적인데 질환에 따라 약이 밀 방향이 서로 반대이고, 막는 방향에는 심방세동 위험 신호가 붙는다.</desc>
+<defs><marker id="ptgArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3B4A5A"/></marker></defs>
+<line x1="40" y1="190" x2="720" y2="190" class="g-dna"/>
+<text x="40" y="128" class="g-small" text-anchor="start">표적 기능 낮음</text>
+<text x="720" y="128" class="g-small" text-anchor="end">표적 기능 높음</text>
+<g class="g-ov" data-ov="inhibit"><rect x="44" y="150" width="212" height="40" rx="4" fill="#2563C9"/><text x="150" y="174.5" class="g-box-t" text-anchor="middle">LoF allele</text><rect x="274" y="150" width="212" height="40" rx="4" fill="#9AA5AF"/><text x="380" y="174.5" class="g-box-t" text-anchor="middle">정상</text><rect x="504" y="150" width="212" height="40" rx="4" fill="#D9822B"/><text x="610" y="174.5" class="g-box-t" text-anchor="middle">GoF allele</text><text x="150" y="212" class="g-small" text-anchor="middle">LDL 낮음 · 관상동맥질환 적게 생김</text><text x="150" y="228" class="g-small" text-anchor="middle">위험 45% 낮음(유럽계)</text><text x="150" y="244" class="g-small" text-anchor="middle">90% 낮음(아프리카계)</text><text x="380" y="212" class="g-small" text-anchor="middle">집단 평균</text><text x="610" y="212" class="g-small" text-anchor="middle">가족성 고콜레스테롤혈증</text><text x="610" y="228" class="g-small" text-anchor="middle">LDL 높음 · 심혈관 위험 높음</text><path d="M610 268 H150" class="g-arrow" marker-end="url(#ptgArr)"/><text x="380" y="258" class="g-note" text-anchor="middle">약이 미는 방향 — PCSK9를 막는 항체(evolocumab · alirocumab)</text><rect x="30" y="286" width="700" height="71" rx="6" class="g-band"/><text x="44" y="308" class="g-band-t hd" text-anchor="start">PCSK9 — 막는 쪽이 치료 가설</text><text x="44" y="327" class="g-band-t" text-anchor="start">사람이 평생 갖고 사는 LoF allele이 효능과 안전성을 미리 보여 준 사례다.</text><text x="44" y="346" class="g-band-t" text-anchor="start">약은 그 allele이 만든 상태를 흉내 내는 방향으로 간다.</text></g>
+<g class="g-ov" data-ov="activate"><rect x="44" y="150" width="212" height="40" rx="4" fill="#2563C9"/><text x="150" y="174.5" class="g-box-t" text-anchor="middle">희귀 LoF</text><rect x="274" y="150" width="212" height="40" rx="4" fill="#9AA5AF"/><text x="380" y="174.5" class="g-box-t" text-anchor="middle">정상</text><rect x="504" y="150" width="212" height="40" rx="4" fill="#D9822B"/><text x="610" y="174.5" class="g-box-t" text-anchor="middle">P522R</text><text x="150" y="212" class="g-small" text-anchor="middle">AD 위험이 약 10배 높음</text><text x="150" y="228" class="g-small" text-anchor="middle">메타 OR 9.7 (95% CI 2.0–47.7)</text><text x="380" y="212" class="g-small" text-anchor="middle">집단 평균</text><text x="610" y="212" class="g-small" text-anchor="middle">기능이 올라간 allele</text><text x="610" y="228" class="g-small" text-anchor="middle">AD에 보호적</text><path d="M150 268 H610" class="g-arrow" marker-end="url(#ptgArr)"/><text x="380" y="258" class="g-note" text-anchor="middle">약이 미는 방향 — PLCγ2를 활성화하는 쪽</text><rect x="30" y="286" width="700" height="71" rx="6" class="g-band"/><text x="44" y="308" class="g-band-t hd" text-anchor="start">PLCG2 — 켜는 쪽이 치료 가설</text><text x="44" y="327" class="g-band-t" text-anchor="start">같은 유전자에서 기능 상실은 위험, 기능 증가는 보호로 방향이 맞물린다.</text><text x="44" y="346" class="g-band-t" text-anchor="start">다만 LoF 보유자가 열 명 단위여서 위험 배수의 구간은 매우 넓다.</text></g>
+<g class="g-ov" data-ov="flip"><rect x="44" y="150" width="212" height="40" rx="4" fill="#2563C9"/><text x="150" y="174.5" class="g-box-t" text-anchor="middle">CD40 낮음</text><rect x="274" y="150" width="212" height="40" rx="4" fill="#9AA5AF"/><text x="380" y="174.5" class="g-box-t" text-anchor="middle">정상</text><rect x="504" y="150" width="212" height="40" rx="4" fill="#D9822B"/><text x="610" y="174.5" class="g-box-t" text-anchor="middle">CD40 높음</text><text x="150" y="212" class="g-small" text-anchor="middle">자가면역 갑상선질환 위험 낮음</text><text x="380" y="212" class="g-small" text-anchor="middle">집단 평균</text><text x="610" y="212" class="g-small" text-anchor="middle">림프종 · 다발경화증 위험 낮음</text><path d="M380 252 H160" class="g-arrow" marker-end="url(#ptgArr)"/><text x="270" y="242" class="g-note" text-anchor="middle">자가면역 갑상선질환에서는 막는 쪽</text><path d="M380 282 H600" class="g-arrow" marker-end="url(#ptgArr)"/><text x="490" y="272" class="g-note" text-anchor="middle">림프종 · 다발경화증에서는 켜는 쪽</text><text x="40" y="306" class="g-note warn" text-anchor="start">막는 방향에서는 심방세동 위험 신호도 같이 나옴(β = −0.04, P &lt; 4.1×10⁻⁶)</text><rect x="30" y="318" width="700" height="52" rx="6" class="g-band"/><text x="44" y="340" class="g-band-t hd" text-anchor="start">CD40 — 적응증마다 방향이 반대</text><text x="44" y="359" class="g-band-t" text-anchor="start">표적 하나에 '유전 근거 있음'이라고 적어도 적응증을 건너 옮겨지지 않는다.</text></g>
+</svg>
+<!--/GEN:LADDER-->
+          </div>
+          <figcaption>기능 축에는 눈금이 없는 도식. 상자 아래 수치는 실제 논문 값으로 Harper 2015 · Coulon 2026 · Pietzner 2026에서 가져옴.</figcaption>
+        </figure>
+        <p><b>막는 쪽.</b> 가족성 고콜레스테롤혈증의 원인 가운데 PCSK9 GoF allele이 있음. 반대쪽인 LoF allele 보유자는 LDL이 매우 낮고 관상동맥질환이 적게 생겼는데, 보고된 감소 폭이 유럽계에서 약 45%, 아프리카계에서 약 90%. 이 관찰을 보고 PCSK9를 막는 항체를 일부러 개발한 것이 evolocumab과 alirocumab <a class="src" href="https://doi.org/10.1038/nrg4017" target="_blank" rel="noopener">Harper 2015</a>.</p>
+        <p><b>켜는 쪽.</b> PLCG2에서는 기능이 올라간 p.P522R이 알츠하이머병에 보호적이고, 드문 LoF 변이는 위험 쪽으로 나옴(두 코호트 메타 OR 9.7, 95% CI 2.0–47.7, P = 0.005). 기능 상실과 기능 증가가 서로 반대 방향을 가리키므로 활성화가 치료 가설이 됨 <a class="src" href="https://doi.org/10.1038/s41588-026-02709-5" target="_blank" rel="noopener">Coulon 2026</a>. 다만 LoF 보유자가 열 명 단위라 위험 배수의 신뢰구간이 매우 넓음.</p>
+        <p><b>방향이 적응증마다 반대인 경우.</b> CD40은 약 10종이 48개 적응증에서 개발 중인 표적인데, 혈장 CD40의 pQTL을 질환 402개와 맞춰 보니 림프종과 다발경화증에서는 켜는 쪽, 자가면역 갑상선질환에서는 막는 쪽으로 근거가 갈렸음. 막는 방향에서는 심방세동 위험이 올라가는 신호(β = −0.04, P &lt; 4.1×10⁻⁶)도 같이 나왔음 <a class="src" href="https://doi.org/10.1038/s41588-026-02697-6" target="_blank" rel="noopener">Pietzner 2026</a>.</p>
+        <div class="callout">
+          <h4>방향 근거는 층마다 어긋남</h4>
+          <p>MASLD 위험 변이를 reporter assay(MPRA)로 재고 같은 변이의 간 eQTL과 비교했을 때, 방향이 맞은 것은 겹친 338개 중 64% <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a>. 한 층의 부호만으로 작용 방향을 정하면 3분의 1가량이 어긋날 수 있음. 측정 축이 왜 다른지는 <a href="./perturbation.html">변이를 직접 바꿔서 확인하려면?</a>에서 다룸.</p>
+        </div>
+
+        <!-- ───────── 5. 안전성 ───────── -->
+        <h2 id="safety">안전성도 미리 볼 수 있나<small>Safety before the trial</small></h2>
+        <p class="lede">효능보다 더 유전학이 강한 자리. 그 단백질이 평생 적었던 사람에게 무슨 일이 있었는지가 곧 장기 투여의 예고편.</p>
+        <p>TYK2가 교과서적 사례. 동형접합 결손은 면역결핍으로 이어지지만, 흔한 coding allele p.P1104A는 기능을 낮추면서 건선 · 전신홍반루푸스 · 염증성 장질환에 보호적이고 광범위한 감염 위험과는 연관되지 않음. 다만 바이러스 감염과 결핵(동형접합에서) 쪽 위험은 보고됨. 이 사람 자료가 "얼마나 막아야 하는지"와 "어느 적응증이 반응할지"를 정했고, TYK2 억제제 deucravacitinib이 중등도 이상 판상건선에서 효과를 보여 승인됨 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a>.</p>
+        <p>표적의 도구변수로 표현형 수백 가지를 한꺼번에 훑는 PheWAS로 부작용 방향을 미리 보는 방법도 있음. 위 알츠하이머병 연구는 지명한 EPHX2의 도구변수로 UK Biobank 표현형을 훑어 다른 질환 쪽 유의 연관이 없음을 확인했음 <a class="src" href="https://doi.org/10.1038/s41593-026-02472-0" target="_blank" rel="noopener">Hou 2026</a>.</p>
+        <div class="callout">
+          <h4>유전학이 아무 말도 해 주지 못하는 표적</h4>
+          <p>음성 선택 때문에 LoF allele이 사실상 없는 유전자가 많고, 그중에 안전하고 효과적인 표적이 들어 있음. 큰 표본과 다양한 집단의 biobank가 있어야 기능을 크게 바꾸는 드문 allele이 모임 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a>.</p>
+        </div>
+
+        <!-- ───────── 6. 한계 ───────── -->
+        <h2 id="limits">유전 근거가 보장하지 않는 것<small>What it does not promise</small></h2>
+        <p class="lede">성공 확률이 2배라는 말은 확률이 바뀐다는 뜻이지 결과가 정해진다는 뜻이 아님.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>구멍</th><th>사례 · 수치</th></tr></thead>
+            <tbody>
+              <tr><th>연관이 있어도 개입은 실패</th><td>비타민 D 수용체를 만드는 VDR의 변이가 고혈압과 연관되지만, 비타민 D 보충 시험은 효과를 보이지 못했음 <a class="src" href="https://doi.org/10.1038/s41576-021-00387-z" target="_blank" rel="noopener">Reay 2021</a></td></tr>
+              <tr><th>측정 플랫폼이 표적 목록을 바꿈</th><td>질량분석으로 찾은 단백질 연관이 Olink에서 53.5%, SomaScan에서 43.5% 재현됐고, 반대로 SomaScan에서 찾은 것이 질량분석에서 재현된 비율은 22.9% <a class="src" href="https://doi.org/10.1038/s41588-026-02697-6" target="_blank" rel="noopener">Pietzner 2026</a></td></tr>
+              <tr><th>집단 편향</th><td>같은 파이프라인에서 아프리카계 표적 7개는 유의 기준 자체가 유럽계와 달랐음 <a class="src" href="https://doi.org/10.1038/s41593-026-02472-0" target="_blank" rel="noopener">Hou 2026</a></td></tr>
+              <tr><th>방향 근거의 층간 불일치</th><td>reporter 방향과 eQTL 방향의 일치율 64% <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a></td></tr>
+              <tr><th>표적 아닌 변화</th><td>질환에서 관찰된 분자 변화의 상당수가 원인이 아니라 염증의 결과 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>MR을 계산하는 방법 자체는 GWAS 쪽 <a href="../../../gwas/03-postgwas/mr.html">Mendelian randomization 쪽</a>에, 두 신호가 같은 변이를 공유하는지 따지는 방법은 <a href="../../../gwas/03-postgwas/coloc.html">colocalization</a> 쪽에 있음.</p>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>유전 근거가 있음 = 약이 됨 ✗</code><p class="why">성공 확률이 약 2배로 오르는 것이지 보장이 아님 <a class="src" href="https://doi.org/10.1038/nrg4017" target="_blank" rel="noopener">Harper 2015</a>. VDR 연관과 비타민 D 시험처럼 어긋나는 사례가 있음 <a class="src" href="https://doi.org/10.1038/s41576-021-00387-z" target="_blank" rel="noopener">Reay 2021</a></p></div>
+          <div class="fix"><code>질환과 연관된 locus = 표적 유전자 ✗</code><p class="why">구간 안의 원인 유전자부터 정해야 함 <a class="src" href="https://doi.org/10.1038/s41576-021-00387-z" target="_blank" rel="noopener">Reay 2021</a></p></div>
+          <div class="fix"><code>표적이 정해지면 방향은 따라옴 ✗</code><p class="why">CD40은 림프종 · 다발경화증에서 켜는 쪽, 자가면역 갑상선질환에서 막는 쪽 <a class="src" href="https://doi.org/10.1038/s41588-026-02697-6" target="_blank" rel="noopener">Pietzner 2026</a></p></div>
+          <div class="fix"><code>한 층의 효과 부호면 방향 근거로 충분 ✗</code><p class="why">reporter 방향과 eQTL 방향이 맞은 것은 338개 중 64% <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a></p></div>
+          <div class="fix"><code>보호 변이가 있으면 그 표적은 안전 ✗</code><p class="why">TYK2 p.P1104A는 광범위한 감염 위험과는 무관하지만 동형접합에서 결핵 위험이 보고됨 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a></p></div>
+          <div class="fix"><code>한 집단에서 나온 표적 목록 = 보편 목록 ✗</code><p class="why">아프리카계 표적 7개는 유의 기준부터 달랐고 근거 GWAS가 환자 2,784명 규모 <a class="src" href="https://doi.org/10.1038/s41593-026-02472-0" target="_blank" rel="noopener">Hou 2026</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">drug-target genetics · 약물 표적 유전학 · target identification · 표적 발굴 · target validation · 표적 검증 · drug repurposing · 약물 재배치 · protective allele · 보호 변이 · loss of function · LoF · gain of function · GoF · allelic series · genetic dose–response curve · druggable genome · mechanism of action · MoA · antagonist · agonist · Mendelian randomization · MR · colocalization · TWAS · cis-pQTL · PheWAS · pharmacogenomics · PCSK9 · evolocumab · alirocumab · CCR5 Δ32 · maraviroc · SOST · romosozumab · IL23R · ustekinumab · risankizumab · TYK2 · deucravacitinib · PLCG2 · CD40 · EPHX2</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>교과서</h3>
+          <p class="text-ref"><b>Strachan &amp; Read HMG 5판</b><br>20.5 약물유전학과 맞춤의학 · 22장 질환 치료의 유전학적 접근. 유전 근거로 표적을 고르는 최근 방법과 수치는 교과서에 없어 논문으로 채움</p>
+        </div>
+        <div class="aside-box"><h3>이 절의 다른 질문</h3><div class="related-list">
+          <a href="./regulation.html">비암호화 변이는 유전자 발현을 어떻게 바꾸나? →</a>
+          <a href="./qtl.html">QTL은 무엇이고, 왜 세포와 조직마다 다른가? →</a>
+          <a href="./perturbation.html">변이를 직접 바꿔서 확인하려면? →</a>
+          <a href="./forward-reverse.html">표현형에서 유전자로, 유전자에서 표현형으로 어떻게 가나? →</a>
+          <a href="./index.html">변이에서 기능으로 목록 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../../../gwas/03-postgwas/mr.html">Mendelian randomization (그림) →</a>
+          <a href="../../../gwas/03-postgwas/coloc.html">Colocalization (그림) →</a>
+          <a href="../../../gwas/03-postgwas/prs.html">PRS (그림) →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/nrg4017" target="_blank" rel="noopener noreferrer">Harper 2015, Nat Rev Genet — 보호 변이와 약물 표적 ↗</a>
+          <a href="https://doi.org/10.1038/s41576-021-00387-z" target="_blank" rel="noopener noreferrer">Reay 2021, Nat Rev Genet — GWAS 기반 약물 재배치 ↗</a>
+          <a href="https://doi.org/10.1038/s41576-020-0268-2" target="_blank" rel="noopener noreferrer">Suhre 2021, Nat Rev Genet — 유전학과 단백체 ↗</a>
+          <a href="https://doi.org/10.1038/nature12873" target="_blank" rel="noopener noreferrer">Okada 2014, Nature — RA 유전학에서 약물 표적으로 ↗</a>
+          <a href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener noreferrer">Ramírez-Valle 2024, Nat Rev Drug Discov — 인과 인간 생물학과 유전 용량–반응 ↗</a>
+          <a href="https://doi.org/10.1038/s41593-026-02472-0" target="_blank" rel="noopener noreferrer">Hou 2026, Nat Neurosci — 멀티오믹스 MR로 AD 표적 지명 ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02709-5" target="_blank" rel="noopener noreferrer">Coulon 2026, Nat Genet — PLCG2 기능 상실과 AD 위험 ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02697-6" target="_blank" rel="noopener noreferrer">Pietzner 2026, Nat Genet — pQTL × 질환 402개, CD40 방향 반전 ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener noreferrer">Zhu 2026, Nat Genet — reporter와 eQTL 방향 일치율 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>

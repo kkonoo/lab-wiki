@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="비암호화 조절 변이: 연관 변이가 비암호화 영역에 몰린 이유, promoter · enhancer · insulator, 변이가 조절을 바꾸는 네 길(TF motif · chromatin 상태 · 3D 접촉 · splicing), 표적 유전자 찾기, 세포형과 맥락">
+  <title>비암호화 변이는 유전자 발현을 어떻게 바꾸나? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">변이에서 기능으로</a><span>›</span>비암호화 조절 변이</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">변이에서 기능으로 · Noncoding regulatory variants</p>
+        <h1>비암호화 변이는 유전자 발현을 어떻게 바꾸나?</h1>
+        <p class="definition">비암호화 조절 변이(noncoding regulatory variant): 단백질 서열은 그대로 두고, 유전자가 어느 세포에서 얼마나 발현되는지를 바꾸는 변이. 질환 연관 변이의 대부분이 여기에 속함 <a class="src" href="https://doi.org/10.1038/s41576-023-00598-6" target="_blank" rel="noopener">Gaulton 2023</a></p>
+
+        <!-- ───────── 1. 위치 ───────── -->
+        <h2 id="where">연관 변이는 어디에 있나<small>Where associated variants fall</small></h2>
+        <p class="lede">GWAS로 찾은 질환 연관 변이의 90% 넘게가 단백질 암호화 서열 밖에 있음 <a class="src" href="https://doi.org/10.1038/s41576-023-00598-6" target="_blank" rel="noopener">Gaulton 2023</a>. 유전체 서열의 95% 넘게가 비암호화 영역이고, 유전자가 언제 어디서 발현될지 정하는 cis-regulatory element(CRE, 시스 조절 요소)가 이 영역에 있음 <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a>.</p>
+        <p>그래서 GWAS 신호 하나를 해석하려면 두 가지를 차례로 밝혀야 함.</p>
+        <ul>
+          <li>LD로 묶인 변이 가운데 어느 것이 causal variant인지. 통계로 좁히는 단계(<a href="../../../gwas/03-postgwas/fine-mapping.html">fine-mapping</a>)</li>
+          <li>그 변이가 어느 세포에서 어떤 유전자의 발현을 바꾸는지. 이 페이지가 다루는 단계</li>
+        </ul>
+
+        <!-- ───────── 2. 조절 요소 ───────── -->
+        <h2 id="elements">조절 요소의 종류<small>Promoter · enhancer · insulator</small></h2>
+        <p class="lede">CRE는 같은 염색체 위 표적 유전자의 전사를 조절하는 비암호화 DNA 서열. 대표적인 것이 promoter · enhancer · insulator <a class="src" href="https://doi.org/10.1038/s41576-022-00509-1" target="_blank" rel="noopener">Preissl 2022</a>. 요소마다 nucleosome에 붙는 histone modification과 결합 단백질이 달라서, 이 표지를 재면 요소의 종류와 활성 여부를 구분할 수 있음(HMG 10.2).</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>요소</th><th>자리</th><th>하는 일</th><th>측정 표지</th></tr></thead>
+            <tbody>
+              <tr><th>promoter</th><td>전사 시작점(TSS) 바로 앞</td><td>RNA polymerase와 기본 전사 인자가 모여 전사를 시작함</td><td>H3K4me3 · 열린 chromatin(HMG 10.5)</td></tr>
+              <tr><th>enhancer</th><td>표적 유전자의 위쪽이나 아래쪽. 1 Mb까지 떨어질 수 있고, 사이에 다른 유전자가 끼기도 함(HMG 10.5)</td><td>transcription factor(TF, 전사 인자)가 결합해 표적 promoter의 전사를 높임. 한 세포형에서 enhancer 표지를 가진 서열이 다른 세포형에서는 작동하지 않을 수 있음(HMG 10.5)</td><td>H3K4me1 · H3K27ac · 열린 chromatin(HMG 10.2 · 10.5)</td></tr>
+              <tr><th>insulator</th><td>TAD(안쪽끼리 자주 접촉하는 염색체 구간)의 경계(HMG 10.1)</td><td>양쪽에 놓인 enhancer와 promoter의 상호작용을 막음. CTCF가 결합하고, CTCF끼리 묶여 chromatin loop를 만듦(HMG 10.2)</td><td>CTCF 결합(HMG 10.2)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout blue">
+          <h4>enhancer가 멀리 있는 고전 사례</h4>
+          <p>사지 발생 유전자 SHH의 limb enhancer는 SHH에서 약 1 Mb 위쪽, 관계없는 유전자 LMBR1의 intron 안에 있음. 이 enhancer의 점돌연변이는 다지증(polydactyly)을 일으키지만, 변이가 놓인 LMBR1은 표현형과 관계가 없음(HMG 10.5). 변이가 들어 있는 유전자와 변이가 조절하는 유전자가 다를 수 있다는 뜻.</p>
+        </div>
+
+        <!-- ───────── 3. 네 길 ───────── -->
+        <h2 id="routes">변이가 조절을 바꾸는 길<small>Four routes</small></h2>
+        <p class="lede">비암호화 변이가 발현을 바꾸는 길은 크게 넷. 버튼을 눌러 하나씩 볼 수 있음.</p>
+        <figure class="fig" id="fig-routes" data-mode="motif">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-routes" role="group" aria-label="변이가 조절을 바꾸는 길">
+              <button type="button" data-mode="motif" aria-pressed="true">① TF motif</button>
+              <button type="button" data-mode="chromatin" aria-pressed="false">② chromatin 상태</button>
+              <button type="button" data-mode="contact" aria-pressed="false">③ 3D 접촉</button>
+              <button type="button" data-mode="splicing" aria-pressed="false">④ splicing</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:ROUTES-->
+<svg class="g-svg" viewBox="0 0 760 362" role="img" aria-labelledby="rgRouteT rgRouteD" xmlns="http://www.w3.org/2000/svg">
+<title id="rgRouteT">비암호화 변이가 유전자 조절을 바꾸는 네 가지 길</title>
+<desc id="rgRouteD">가상의 locus에 CTCF 자리, enhancer, promoter, 표적 유전자의 exon 세 개가 놓여 있다. 버튼으로 네 경우를 고른다. 첫째, enhancer 안의 변이가 transcription factor 결합 motif를 바꾼다. 둘째, 변이가 enhancer의 chromatin을 닫아 접근성을 낮춘다. 셋째, enhancer와 promoter 사이에 변이가 새 CTCF 자리를 만들어 두 요소의 접촉을 막는다. 넷째, exon과 intron 경계의 변이가 splicing을 바꿔 exon이 빠진다.</desc>
+<defs><marker id="rgArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3B4A5A"/></marker></defs>
+<line x1="30" y1="190" x2="730" y2="190" class="g-dna"/>
+<rect x="40" y="178" width="60" height="24" rx="4" fill="#6B5B95"/><text x="70.0" y="194.5" class="g-box-t" text-anchor="middle">CTCF</text>
+<rect x="160" y="176" width="140" height="28" rx="4" fill="#D9822B"/>
+<text x="206" y="194.5" class="g-box-t" text-anchor="middle">enhancer</text>
+<rect x="420" y="176" width="80" height="28" rx="4" fill="#2563C9"/><text x="460.0" y="194.5" class="g-box-t" text-anchor="middle">promoter</text>
+<path d="M500 176 V158 H528" class="g-arrow" marker-end="url(#rgArr)"/>
+<text x="514" y="150" class="g-small" text-anchor="middle">TSS</text>
+<rect x="540" y="180" width="30" height="20" rx="2" fill="#3B4A5A"/>
+<rect x="600" y="180" width="40" height="20" rx="2" fill="#3B4A5A"/>
+<rect x="670" y="180" width="40" height="20" rx="2" fill="#3B4A5A"/>
+<text x="70" y="232" class="g-lab" text-anchor="middle">insulator</text>
+<text x="625" y="246" class="g-lab" text-anchor="middle">표적 유전자</text>
+<circle cx="46" cy="34" r="5" class="g-var"/>
+<text x="58" y="38" class="g-note" text-anchor="start">변이</text>
+<line x1="104" y1="34" x2="130" y2="34" class="g-loop"/>
+<text x="138" y="38" class="g-note" text-anchor="start">enhancer–promoter 접촉</text>
+<g class="g-ov" data-ov="motif"><path d="M200 176 C200 70, 460 70, 460 176" class="g-loop"/><text x="330" y="86" class="g-small" text-anchor="middle">chromatin loop</text><ellipse cx="284" cy="158" rx="22" ry="12" class="g-tf weak"/><text x="284" y="162" class="g-note em" text-anchor="middle">TF</text><circle cx="284" cy="190" r="6" class="g-var"/><rect x="30" y="262" width="700" height="71" rx="6" class="g-band"/><text x="44" y="284" class="g-band-t hd" text-anchor="start">① TF motif</text><text x="44" y="303" class="g-band-t" text-anchor="start">allele 하나가 motif 서열을 바꾸면 transcription factor 결합이 약해지거나 새로 생김.</text><text x="44" y="322" class="g-band-t" text-anchor="start">그 결과 enhancer 활성이 달라지고 표적 유전자 발현이 바뀜.</text></g>
+<g class="g-ov" data-ov="chromatin"><path d="M200 176 C200 70, 460 70, 460 176" class="g-loop"/><text x="330" y="86" class="g-small" text-anchor="middle">chromatin loop</text><circle cx="259" cy="190" r="11" class="g-nuc"/><circle cx="281" cy="190" r="11" class="g-nuc"/><circle cx="296" cy="190" r="5" class="g-var"/><text x="270" y="166" class="g-note" text-anchor="middle">닫힌 chromatin</text><rect x="30" y="262" width="700" height="71" rx="6" class="g-band"/><text x="44" y="284" class="g-band-t hd" text-anchor="start">② chromatin 상태</text><text x="44" y="303" class="g-band-t" text-anchor="start">allele에 따라 nucleosome이 비켜나는 정도(accessibility)와 H3K27ac 같은 활성 표지가 달라짐.</text><text x="44" y="322" class="g-band-t" text-anchor="start">이렇게 accessibility를 바꾸는 변이를 caQTL로 찾음.</text></g>
+<g class="g-ov" data-ov="contact"><path d="M200 176 C200 70, 460 70, 460 176" class="g-loop off"/><text x="330" y="86" class="g-note warn" text-anchor="middle">접촉 막힘</text><path d="M200 176 C200 112, 358 112, 358 178" class="g-loop"/><rect x="330" y="178" width="56" height="24" rx="4" fill="#F3EEF8" stroke="#B3261E" stroke-width="2"/><text x="358.0" y="194.5" class="g-box-t" text-anchor="middle" style="fill:#6B5B95">CTCF</text><text x="358" y="232" class="g-lab" text-anchor="middle">변이가 만든 CTCF 자리</text><rect x="30" y="262" width="700" height="90" rx="6" class="g-band"/><text x="44" y="284" class="g-band-t hd" text-anchor="start">③ 3D 접촉</text><text x="44" y="303" class="g-band-t" text-anchor="start">rs4409785 위험 allele이 새 CTCF motif를 만듦.</text><text x="44" y="322" class="g-band-t" text-anchor="start">이 CTCF가 super-enhancer와 SESN3 promoter의 접촉을 막음.</text><text x="44" y="341" class="g-band-t" text-anchor="start">CD4 T cell에서 그 allele 쪽 SESN3 발현이 36.6% 낮음(Hamley 2026).</text></g>
+<g class="g-ov" data-ov="splicing"><path d="M200 176 C200 70, 460 70, 460 176" class="g-loop"/><text x="330" y="86" class="g-small" text-anchor="middle">chromatin loop</text><path d="M555 180 V166 H690 V180" class="g-splice"/><path d="M620 166 V180" class="g-splice"/><text x="588" y="158" class="g-note" text-anchor="middle">정상 연결</text><path d="M555 200 V214 H690 V200" class="g-splice skip"/><text x="730" y="230" class="g-note warn" text-anchor="end">exon 건너뜀</text><circle cx="599" cy="190" r="5" class="g-var"/><rect x="30" y="262" width="700" height="71" rx="6" class="g-band"/><text x="44" y="284" class="g-band-t hd" text-anchor="start">④ splicing</text><text x="44" y="303" class="g-band-t" text-anchor="start">exon–intron 경계(splice site)를 바꾸면 exon이 빠지거나 intron이 남음.</text><text x="44" y="322" class="g-band-t" text-anchor="start">병원성 변이의 10–30%가 splicing을 교란함(Shen 2026).</text></g>
+</svg>
+<!--/GEN:ROUTES-->
+          </div>
+          <figcaption>가상 locus 도해. ③의 기전과 수치는 rs4409785의 실제 측정값 <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a>, ④의 비율은 <a class="src" href="https://doi.org/10.1038/s41588-026-02629-4" target="_blank" rel="noopener">Shen 2026</a>.</figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>길</th><th>변이가 바꾸는 것</th><th>찾는 방법</th></tr></thead>
+            <tbody>
+              <tr><th>① TF motif</th><td>TF가 알아보는 짧은 결합 서열</td><td>이형접합 세포에서 두 allele의 신호 차이(allelic imbalance)를 보거나, MPRA로 allele마다 reporter 활성을 잼 <a class="src" href="https://doi.org/10.1038/s41576-023-00598-6" target="_blank" rel="noopener">Gaulton 2023</a></td></tr>
+              <tr><th>② chromatin 상태</th><td>chromatin accessibility와 histone 표지</td><td>genotype에 따라 accessibility가 달라지는 변이를 caQTL로 찾음 <a class="src" href="https://doi.org/10.1038/s41576-023-00598-6" target="_blank" rel="noopener">Gaulton 2023</a></td></tr>
+              <tr><th>③ 3D 접촉</th><td>enhancer와 promoter의 물리적 접촉</td><td>Micro Capture-C로 allele마다 접촉 상대를 따로 읽음 <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a></td></tr>
+              <tr><th>④ splicing</th><td>splice site와 그 주변 서열</td><td>SpliceAI 같은 서열 기반 예측. 임상 해석에서는 예측 점수를 찬반 근거 하나로만 씀 <a class="src" href="https://doi.org/10.1038/s41588-026-02629-4" target="_blank" rel="noopener">Shen 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h4>네 길은 겹칠 수 있음</h4>
+          <p>rs4409785는 여러 자가면역질환(MS · RA 등)과 연관된 변이. 위험 allele이 새 CTCF motif를 만들고(①), 그 CTCF가 super-enhancer와 SESN3 promoter의 접촉을 막아(③) SESN3 발현을 낮춤. 하나의 변이가 두 길에 함께 걸친 경우 <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a>.</p>
+        </div>
+
+        <!-- ───────── 4. 표적 유전자 ───────── -->
+        <h2 id="target">표적 유전자 찾기<small>Variant to gene</small></h2>
+        <p class="lede">enhancer는 수십 kb 떨어진 promoter와도 접촉하고, 한 enhancer가 여러 promoter와 접촉하기도 함. 그래서 변이에서 가장 가까운 유전자가 표적이라는 보장이 없음 <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a>.</p>
+        <figure class="fig" id="fig-target" data-mode="nearest">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-target" role="group" aria-label="표적 유전자를 정하는 방법">
+              <button type="button" data-mode="nearest" aria-pressed="true">가장 가까운 유전자 가정</button>
+              <button type="button" data-mode="contact" aria-pressed="false">접촉 측정</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:TARGET-->
+<svg class="g-svg" viewBox="0 44 760 286" role="img" aria-labelledby="rgTgtT rgTgtD" xmlns="http://www.w3.org/2000/svg">
+<title id="rgTgtT">연관 변이의 표적 유전자: 가장 가까운 유전자라는 가정과 실제 접촉 측정</title>
+<desc id="rgTgtD">가상의 locus에서 변이가 있는 enhancer 주변에 유전자 G1, G2, G3의 promoter가 있다. 가정 모드에서는 가장 가까운 G2를 표적으로 고른다. 측정 모드에서는 enhancer가 세 promoter와 모두 접촉하고 가장 먼 G3와 가장 강하게 접촉한다. 아래 막대는 Hamley 2026이 CD4 T cell enhancer 변이 405개를 측정한 결과로, 가장 강한 접촉 상대가 가장 가까운 유전자인 경우가 60.5%였다.</desc>
+<defs><marker id="rgArr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3B4A5A"/></marker></defs>
+<line x1="30" y1="170" x2="730" y2="170" class="g-dna"/>
+<rect x="110" y="158" width="50" height="24" rx="4" fill="#2563C9"/><text x="135.0" y="174.5" class="g-box-t" text-anchor="middle">G1</text>
+<rect x="370" y="158" width="50" height="24" rx="4" fill="#2563C9"/><text x="395.0" y="174.5" class="g-box-t" text-anchor="middle">G2</text>
+<rect x="520" y="158" width="50" height="24" rx="4" fill="#2563C9"/><text x="545.0" y="174.5" class="g-box-t" text-anchor="middle">G3</text>
+<rect x="270" y="156" width="60" height="28" rx="4" fill="#D9822B"/>
+<circle cx="300" cy="170" r="6" class="g-var"/>
+<text x="300" y="206" class="g-lab" text-anchor="middle">변이가 있는 enhancer</text>
+<g class="g-ov" data-ov="nearest"><path d="M318 156 V134 H395 V154" class="g-arrow" marker-end="url(#rgArr2)"/><text x="356" y="124" class="g-note em" text-anchor="middle">가장 가까운 TSS</text><rect x="30" y="236" width="700" height="71" rx="6" class="g-band"/><text x="44" y="258" class="g-band-t hd" text-anchor="start">최근접 유전자 가정</text><text x="44" y="277" class="g-band-t" text-anchor="start">가정: 연관 변이의 표적은 가장 가까운 유전자.</text><text x="44" y="296" class="g-band-t" text-anchor="start">거리만 보므로 측정 없이 바로 정할 수 있지만, 틀린 유전자를 고를 위험이 있음.</text></g>
+<g class="g-ov" data-ov="contact"><path d="M300 156 C300 60, 545 60, 545 158" class="g-contact" stroke-width="5"/><path d="M300 156 C300 92, 135 92, 135 158" class="g-contact" stroke-width="2.6" opacity=".75"/><path d="M300 156 C300 122, 395 122, 395 158" class="g-contact" stroke-width="1.4" opacity=".6"/><text x="422" y="74" class="g-note em" text-anchor="middle">접촉 1위</text><text x="730" y="120" class="g-small" text-anchor="end">선 굵기 = 접촉 빈도</text><text x="44" y="252" class="g-note em" text-anchor="start">CD4 T cell enhancer 변이 405개에서 가장 강한 접촉 상대(Hamley 2026)</text><rect x="44" y="262" width="406.6" height="18" class="g-bar1"/><rect x="450.6" y="262" width="265.4" height="18" class="g-bar2"/><text x="52" y="275.5" class="g-bar-t" fill="#fff" text-anchor="start">가장 가까운 유전자 60.5%</text><text x="708" y="275.5" class="g-bar-t" text-anchor="end">다른 유전자 39.5%</text><text x="44" y="302" class="g-note" text-anchor="start">변이당 접촉한 promoter 평균 2.81개 · 접촉 1위 promoter까지 거리 중앙값 32 kb(가장 가까운 TSS는 17 kb)</text></g>
+</svg>
+<!--/GEN:TARGET-->
+          </div>
+          <figcaption>위쪽 locus(G1–G3)는 가상 도해. 아래 막대와 수치는 면역 매개 염증질환과 연관된 enhancer 변이 405개를 활성화한 CD4 T cell에서 Micro Capture-C로 측정한 결과 <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a>.</figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>연결 방법</th><th>보는 것</th><th>근거</th></tr></thead>
+            <tbody>
+              <tr><th>가장 가까운 유전자</th><td>변이에서 TSS까지 거리</td><td>CD4 T cell enhancer 변이 405개 중 가장 강한 접촉 상대가 가장 가까운 유전자인 경우는 <!--GEN:NEAR_PCT-->60.5%<!--/GEN:NEAR_PCT--> <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a></td></tr>
+              <tr><th>ABC model</th><td>enhancer 활성과 promoter 접촉 빈도의 곱</td><td>수천 건의 CRISPR 교란 결과로 만들고 검증한 예측 모델 <a class="src" href="https://doi.org/10.1038/s41588-019-0538-0" target="_blank" rel="noopener">Fulco 2019</a></td></tr>
+              <tr><th>allele별 접촉 측정</th><td>변이 쪽 allele이 실제로 접촉하는 promoter</td><td>변이 하나가 접촉한 promoter는 평균 2.81개. 접촉 1위 유전자의 56%는 OpenTargets L2G의 우선순위와 일치 <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a></td></tr>
+              <tr><th>eQTL과 colocalization</th><td>같은 변이가 발현과 형질 모두에 연관되는지</td><td>통계 방법은 GWAS의 <a href="../../../gwas/03-postgwas/coloc.html">coloc</a> 페이지. QTL은 이 절의 다음 질문 <a href="./qtl.html">QTL은 무엇이고, 왜 세포와 조직마다 다른가?</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h4>접촉이 달라져도 발현이 늘 달라지지는 않음</h4>
+          <p>allele에 따라 접촉이 달라진 변이 45개 중 16개(35.5%)만 연결된 유전자에서 allelic imbalance를 보임. 유전체 전체 배경(2,313개 중 231개, 10.0%)보다는 높지만 절반에 못 미침 <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a>.</p>
+        </div>
+
+        <!-- ───────── 5. 세포형과 맥락 ───────── -->
+        <h2 id="context">세포형과 맥락<small>Cell type and context</small></h2>
+        <p class="lede">같은 변이라도 어느 세포에서, 어떤 자극 아래에서 재느냐에 따라 기능이 보이기도 하고 보이지 않기도 함. 그래서 질환과 관련된 세포형을 먼저 정하고 그 세포의 조절 요소 지도에 변이를 겹쳐 봄 <a class="src" href="https://doi.org/10.1038/s41576-023-00598-6" target="_blank" rel="noopener">Gaulton 2023</a>.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>사실</th><th>수치</th></tr></thead>
+            <tbody>
+              <tr><th>세포형별 조절 요소로 설명되는 신호</th><td>단일세포 ATAC으로 만든 세포형별 cCRE 목록에 후보 변이가 하나라도 걸리는 신호는 형질마다 약 60–80%. 확률이 높은 변이(PPA &gt; 0.10)만 보면 약 40–60% <a class="src" href="https://doi.org/10.1038/s41576-023-00598-6" target="_blank" rel="noopener">Gaulton 2023</a></td></tr>
+              <tr><th>세포주에 따라 다른 기능 변이</th><td>MASLD 위험 변이를 MPRA로 시험했을 때 allele 간 활성 차이가 있는 변이가 stellate cell line LX-2에서만 340개, hepatocyte line HepG2에서만 241개, 두 세포주 모두에서 124개 <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a></td></tr>
+              <tr><th>조직마다 다른 3D 구조</th><td>cohesin을 chromatin에 싣는 NIPBL의 결합 자리는 세포주 11개를 둘씩 비교했을 때 평균 5.7%만 겹침. CTCF는 48.3%, cohesin 구성 단백질 RAD21은 35.6% 겹침 <a class="src" href="https://doi.org/10.1038/s41588-026-02688-7" target="_blank" rel="noopener">Wang 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h4>근거와 한계</h4>
+          <p>MPRA는 서열 조각을 reporter에 붙여 시험하므로 몸 안의 방향과 다를 수 있음. MASLD 연구에서 liver eQTL과 겹친 기능 변이 338개 중 reporter 활성의 방향과 eQTL 효과의 방향이 같은 것은 64% <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a>. 실험 종류별로 무엇을 재는지는 이 절의 <a href="./perturbation.html">변이를 직접 바꿔서 확인하려면?</a>에서 다룸.</p>
+        </div>
+
+        <!-- ───────── 6. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>lead SNP에서 가장 가까운 유전자 = 원인 유전자 ✗</code><p class="why">CD4 T cell enhancer 변이 405개 중 가장 강한 접촉 상대가 가장 가까운 유전자인 경우는 60.5% <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a>. SHH limb enhancer처럼 다른 유전자의 intron 안에 있는 경우도 있음(HMG 10.5)</p></div>
+          <div class="fix"><code>변이가 있는 유전자 = 변이가 조절하는 유전자 ✗</code><p class="why">LMBR1 intron 안의 점돌연변이가 약 1 Mb 떨어진 SHH를 통해 다지증을 일으킴(HMG 10.5)</p></div>
+          <div class="fix"><code>접촉이 바뀌면 발현도 바뀜 ✗</code><p class="why">접촉이 달라진 변이 45개 중 allelic imbalance가 보인 것은 16개(35.5%) <a class="src" href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener">Hamley 2026</a></p></div>
+          <div class="fix"><code>한 세포주의 기능 변이 목록 = 다른 세포의 목록 ✗</code><p class="why">LX-2와 HepG2에서 기능 변이가 겹친 것은 124개, 한쪽에서만 보인 것은 340개와 241개 <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a></p></div>
+          <div class="fix"><code>reporter 실험의 방향 = 몸 안의 방향 ✗</code><p class="why">liver eQTL과 겹친 338개 중 방향이 같은 것은 64% <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">noncoding regulatory variant · 비암호화 변이 · 비코딩 변이 · 조절 변이 · regulatory variant · cis-regulatory element · CRE · cCRE · 시스 조절 요소 · promoter · 프로모터 · enhancer · 인핸서 · super-enhancer · insulator · CTCF · TAD · chromatin loop · transcription factor · TF motif · chromatin accessibility · caQTL · allelic imbalance · MPRA · variant-to-gene · V2G · nearest gene · ABC model · Micro Capture-C · MCC · neo-CTCF · splice site · SpliceAI · rs4409785 · SESN3 · SHH · LMBR1 · ZRS</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>교과서</h3>
+          <p class="text-ref"><b>Strachan &amp; Read HMG 5판</b><br>10.1 chromatin 접근성과 TAD · 10.2 histone 표지와 insulator · 10.5 promoter와 enhancer</p>
+        </div>
+        <div class="aside-box"><h3>이 절의 다른 질문</h3><div class="related-list">
+          <a href="./qtl.html">QTL은 무엇이고, 왜 세포와 조직마다 다른가? →</a>
+          <a href="./perturbation.html">변이를 직접 바꿔서 확인하려면? →</a>
+          <a href="./genetics-to-drugs.html">유전학 근거는 약 개발에 어떻게 쓰이나? →</a>
+          <a href="./forward-reverse.html">표현형에서 유전자로, 유전자에서 표현형으로 어떻게 가나? →</a>
+          <a href="./index.html">변이에서 기능으로 목록 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../../../gwas/03-postgwas/fine-mapping.html">Fine-mapping (그림) →</a>
+          <a href="../../../gwas/03-postgwas/coloc.html">Colocalization (그림) →</a>
+          <a href="../../../gwas/03-postgwas/locus-lead.html">Locus · conditional (그림) →</a>
+          <a href="../../../gwas/index.html#article/functional-annotation">Functional annotation 용어 카드 →</a>
+          <a href="../../../gwas/index.html#article/variant-to-gene">Variant-to-gene 용어 카드 →</a>
+          <a href="../../../gwas/index.html#article/twas">TWAS 용어 카드 →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41576-023-00598-6" target="_blank" rel="noopener noreferrer">Gaulton 2023, Nat Rev Genet — 단일세포 epigenomics로 비암호화 변이 해석 ↗</a>
+          <a href="https://doi.org/10.1038/s41576-022-00509-1" target="_blank" rel="noopener noreferrer">Preissl 2022, Nat Rev Genet — cis-regulatory element 종설 ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02776-8" target="_blank" rel="noopener noreferrer">Hamley 2026, Nat Genet — allele별 접촉 측정(MCCv) ↗</a>
+          <a href="https://doi.org/10.1038/s41588-019-0538-0" target="_blank" rel="noopener noreferrer">Fulco 2019, Nat Genet — ABC model ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener noreferrer">Zhu 2026, Nat Genet — MASLD 위험 변이의 기능 ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02688-7" target="_blank" rel="noopener noreferrer">Wang 2026, Nat Genet — 조직 특이 cohesin 진입 ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02629-4" target="_blank" rel="noopener noreferrer">Shen 2026, Nat Genet — splicing 예측 AI ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>

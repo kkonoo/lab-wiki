@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="변이를 직접 바꾸는 실험: MPRA와 STARR-seq, saturation genome editing, CRISPRi 요소 스크린, Perturb-seq가 각각 재는 것, 처리량과 맥락의 맞바꿈, 검증 사다리">
+  <title>변이를 직접 바꿔서 확인하려면? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">변이에서 기능으로</a><span>›</span>교란 실험</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">변이에서 기능으로 · Perturbation</p>
+        <h1>변이를 직접 바꿔서 확인하려면?</h1>
+        <p class="definition">교란 실험(perturbation experiment): 변이나 조절 요소를 일부러 바꾼 뒤 분자 측정값이 달라지는지 보는 실험. 사람 사이의 차이를 관찰해 얻은 연관을 개입으로 확인하는 자리 <a class="src" href="https://doi.org/10.1126/science.abi8207" target="_blank" rel="noopener">Lappalainen 2021</a></p>
+
+        <!-- ───────── 1. 왜 ───────── -->
+        <h2 id="why">왜 직접 바꿔 보나<small>From association to mechanism</small></h2>
+        <p class="lede">GWAS와 QTL은 사람 사이의 차이를 관찰한 결과. 변이와 측정값이 같이 움직인다는 것까지 말해 줌. LD로 묶인 이웃 변이 가운데 어느 것이 원인인지, 그 변이가 어느 유전자를 건드리는지는 남는 질문.</p>
+        <p>GWAS로 복합 형질에 확실히 연결된 변이가 20만 개를 넘지만 기전이 밝혀진 것은 일부. 대부분 비암호화 영역에 있어 어느 유전자에 작용하는지부터 불확실함. 환자에서 찾은 변이를 모은 ClinVar의 약 100만 항목 중 47%는 해석이 불확실하거나 자료 사이에서 엇갈림 <a class="src" href="https://doi.org/10.1126/science.abi8207" target="_blank" rel="noopener">Lappalainen 2021</a>.</p>
+        <p>남은 질문의 모양에 따라 실험이 갈림.</p>
+        <ul>
+          <li>이 서열 조각이 발현을 올리나 → reporter assay</li>
+          <li>이 염기를 바꾸면 단백질 기능이 죽나 → saturation genome editing</li>
+          <li>이 조절 요소를 끄면 어느 유전자가 내려가나 → CRISPRi 요소 스크린</li>
+          <li>이 유전자를 끄면 세포가 어떻게 바뀌나 → Perturb-seq</li>
+        </ul>
+
+        <!-- ───────── 2. 네 실험 ───────── -->
+        <h2 id="assays">네 실험이 각각 재는 것<small>What each assay measures</small></h2>
+        <p class="lede">바꾸는 단위, 그 서열이 놓이는 자리, 읽는 값이 실험마다 다름. 버튼으로 네 실험의 흐름을 비교할 수 있음.</p>
+        <figure class="fig" id="fig-assay" data-mode="mpra">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-assay" role="group" aria-label="교란 실험의 종류">
+              <button type="button" data-mode="mpra" aria-pressed="true">MPRA</button>
+              <button type="button" data-mode="sge" aria-pressed="false">SGE</button>
+              <button type="button" data-mode="crispri" aria-pressed="false">CRISPRi</button>
+              <button type="button" data-mode="perturb" aria-pressed="false">Perturb-seq</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:ASSAY-->
+<svg class="g-svg" viewBox="0 0 760 340" role="img" aria-labelledby="ptAssayT ptAssayD" xmlns="http://www.w3.org/2000/svg">
+<title id="ptAssayT">네 가지 교란 실험이 바꾸는 것, 놓이는 자리, 읽는 값</title>
+<desc id="ptAssayD">도식 네 장을 버튼으로 바꿔 보는 그림이다. MPRA는 변이를 품은 짧은 서열과 tag를 plasmid에 넣고 tag의 RNA 대 DNA 비를 읽는다. saturation genome editing은 exon 하나의 거의 모든 한 염기 치환을 원래 자리로 교환하고 세포 생존 점수의 분포를 읽는다. CRISPRi 요소 스크린은 dCas9-KRAB로 enhancer를 끈 뒤 표적 유전자 발현이 내려가는지를 읽는다. Perturb-seq는 세포마다 유전자 하나를 끄고 그 세포의 전사체 전체를 읽는다.</desc>
+<defs><marker id="ptArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#3B4A5A"/></marker></defs>
+<text x="140" y="36" class="g-lab" text-anchor="middle">① 바꾸는 것</text>
+<text x="404" y="36" class="g-lab" text-anchor="middle">② 놓이는 자리</text>
+<text x="644" y="36" class="g-lab" text-anchor="middle">③ 읽는 값</text>
+<path d="M254 150 H288" class="g-arrow" marker-end="url(#ptArr)"/>
+<path d="M518 150 H552" class="g-arrow" marker-end="url(#ptArr)"/>
+<g class="g-ov" data-ov="mpra"><text x="140" y="74" class="g-lab" text-anchor="middle">변이 하나를 품은 짧은 서열</text><rect x="40" y="92" width="150" height="22" rx="4" fill="#C9D2DA"/><circle cx="115" cy="103" r="5" fill="#B8C0C7"/><rect x="196" y="92" width="50" height="22" rx="4" fill="#6B5B95"/><text x="221" y="107.5" class="g-box-t" text-anchor="middle">tag</text><text x="40" y="130" class="g-small" text-anchor="start">ref allele</text><rect x="40" y="140" width="150" height="22" rx="4" fill="#C9D2DA"/><circle cx="115" cy="151" r="5" class="g-var"/><rect x="196" y="140" width="50" height="22" rx="4" fill="#6B5B95"/><text x="221" y="155.5" class="g-box-t" text-anchor="middle">tag</text><text x="40" y="178" class="g-small" text-anchor="start">alt allele</text><circle cx="404" cy="140" r="52" class="g-loop"/><rect x="362" y="84" width="84" height="18" rx="4" fill="#C9D2DA"/><text x="404" y="97.5" class="g-box-t" text-anchor="middle" style="fill:#3B4A5A">서열 + tag</text><text x="404" y="146" class="g-lab" text-anchor="middle">plasmid</text><text x="404" y="216" class="g-small" text-anchor="middle">염색체 밖에서 세포 안으로</text><line x1="558" y1="200" x2="730" y2="200" class="g-axis"/><text x="558" y="72" class="g-lab" text-anchor="start">tag RNA / DNA 비</text><rect x="586" y="144" width="44" height="56" class="g-bar2"/><text x="608" y="218" class="g-small" text-anchor="middle">ref</text><rect x="660" y="92" width="44" height="108" class="g-bar1"/><text x="682" y="218" class="g-small" text-anchor="middle">alt</text><rect x="30" y="256" width="700" height="71" rx="6" class="g-band"/><text x="44" y="278" class="g-band-t hd" text-anchor="start">MPRA · STARR-seq — 서열 조각의 활성</text><text x="44" y="297" class="g-band-t" text-anchor="start">두 allele을 같은 조건에 나란히 놓고 비교하므로 한 번에 수천에서 수만 변이를 잰다.</text><text x="44" y="316" class="g-band-t" text-anchor="start">다만 plasmid에는 내인성 chromatin도, 멀리 있는 조절 요소도 없다.</text></g>
+<g class="g-ov" data-ov="sge"><text x="140" y="96" class="g-lab" text-anchor="middle">exon 하나의 거의 모든 한 염기 치환</text><rect x="40" y="120" width="200" height="26" rx="4" fill="#3B4A5A"/><circle cx="51" cy="133" r="3.6" class="g-var"/><circle cx="62.4" cy="133" r="3.6" class="g-var"/><circle cx="73.8" cy="133" r="3.6" class="g-var"/><circle cx="85.2" cy="133" r="3.6" class="g-var"/><circle cx="96.6" cy="133" r="3.6" class="g-var"/><circle cx="108" cy="133" r="3.6" class="g-var"/><circle cx="119.4" cy="133" r="3.6" class="g-var"/><circle cx="130.8" cy="133" r="3.6" class="g-var"/><circle cx="142.2" cy="133" r="3.6" class="g-var"/><circle cx="153.6" cy="133" r="3.6" class="g-var"/><circle cx="165" cy="133" r="3.6" class="g-var"/><circle cx="176.4" cy="133" r="3.6" class="g-var"/><circle cx="187.8" cy="133" r="3.6" class="g-var"/><circle cx="199.2" cy="133" r="3.6" class="g-var"/><circle cx="210.6" cy="133" r="3.6" class="g-var"/><circle cx="222" cy="133" r="3.6" class="g-var"/><circle cx="233.4" cy="133" r="3.6" class="g-var"/><text x="140" y="172" class="g-small" text-anchor="middle">변이를 한꺼번에 합성해 넣음</text><line x1="294" y1="140" x2="514" y2="140" class="g-dna"/><rect x="376" y="128" width="56" height="24" rx="4" fill="#3B4A5A"/><text x="404" y="144.5" class="g-box-t" text-anchor="middle">exon</text><path d="M404 96 V122" class="g-arrow" marker-end="url(#ptArr)"/><text x="404" y="88" class="g-lab" text-anchor="middle">원래 자리로 교환(HDR)</text><text x="404" y="180" class="g-small" text-anchor="middle">내인성 유전체</text><text x="558" y="72" class="g-lab" text-anchor="start">생존 점수 분포</text><rect x="562" y="174" width="11" height="26" class="g-bar2"/><rect x="575" y="156" width="11" height="44" class="g-bar2"/><rect x="588" y="130" width="11" height="70" class="g-bar2"/><rect x="601" y="148" width="11" height="52" class="g-bar2"/><rect x="614" y="172" width="11" height="28" class="g-bar2"/><rect x="627" y="186" width="11" height="14" class="g-bar2"/><rect x="640" y="190" width="11" height="10" class="g-bar1"/><rect x="653" y="188" width="11" height="12" class="g-bar1"/><rect x="666" y="176" width="11" height="24" class="g-bar1"/><rect x="679" y="148" width="11" height="52" class="g-bar1"/><rect x="692" y="114" width="11" height="86" class="g-bar1"/><rect x="705" y="96" width="11" height="104" class="g-bar1"/><rect x="718" y="130" width="11" height="70" class="g-bar1"/><line x1="558" y1="200" x2="730" y2="200" class="g-axis"/><line x1="643" y1="92" x2="643" y2="200" class="g-mid"/><text x="596" y="218" class="g-small" text-anchor="middle">기능 없음</text><text x="688" y="218" class="g-small" text-anchor="middle">기능 있음</text><rect x="30" y="256" width="700" height="71" rx="6" class="g-band"/><text x="44" y="278" class="g-band-t hd" text-anchor="start">Saturation genome editing — 변이 하나하나의 효과</text><text x="44" y="297" class="g-band-t" text-anchor="start">변이를 원래 자리에 넣어 재므로 splicing과 transcript 안정성 변화까지 함께 잡힌다.</text><text x="44" y="316" class="g-band-t" text-anchor="start">대신 생존이 걸린 유전자와 알맞은 세포주가 있어야 하고, 한 번에 exon 하나씩만 가능하다.</text></g>
+<g class="g-ov" data-ov="crispri"><text x="140" y="76" class="g-lab" text-anchor="middle">조절 요소를 통째로 끔</text><rect x="50" y="92" width="140" height="30" rx="14" class="g-tf"/><text x="120" y="111" class="g-lab" text-anchor="middle">dCas9–KRAB</text><path d="M120 122 V152" class="g-arrow"/><text x="130" y="142" class="g-small" text-anchor="start">sgRNA</text><rect x="50" y="156" width="140" height="26" rx="4" fill="#D9822B"/><text x="120" y="173.5" class="g-box-t" text-anchor="middle">enhancer</text><text x="140" y="206" class="g-small" text-anchor="middle">변이 하나가 아니라 요소 단위</text><text x="294" y="88" class="g-small" text-anchor="start">끄기 전</text><line x1="294" y1="124" x2="514" y2="124" class="g-dna"/><rect x="300" y="112" width="62" height="24" rx="4" fill="#D9822B"/><path d="M368 106 H420" class="g-arrow" marker-end="url(#ptArr)"/><rect x="428" y="114" width="22" height="20" rx="2" fill="#3B4A5A"/><rect x="456" y="114" width="22" height="20" rx="2" fill="#3B4A5A"/><rect x="484" y="114" width="22" height="20" rx="2" fill="#3B4A5A"/><text x="456" y="150" class="g-small" text-anchor="middle">표적 유전자</text><text x="294" y="160" class="g-small" text-anchor="start">끈 뒤</text><line x1="294" y1="196" x2="514" y2="196" class="g-dna"/><rect x="300" y="184" width="62" height="24" rx="4" fill="#B8C0C7"/><path d="M368 178 H420" class="g-arrow" marker-end="url(#ptArr)" style="stroke:#B8C0C7;stroke-dasharray:5 4"/><rect x="428" y="186" width="22" height="20" rx="2" fill="#3B4A5A"/><rect x="456" y="186" width="22" height="20" rx="2" fill="#3B4A5A"/><rect x="484" y="186" width="22" height="20" rx="2" fill="#3B4A5A"/><text x="456" y="222" class="g-small" text-anchor="middle">표적 유전자</text><line x1="558" y1="200" x2="730" y2="200" class="g-axis"/><text x="558" y="72" class="g-lab" text-anchor="start">표적 유전자 발현</text><rect x="586" y="96" width="44" height="104" class="g-bar2"/><text x="608" y="218" class="g-small" text-anchor="middle">대조 sgRNA</text><rect x="660" y="148" width="44" height="52" class="g-bar1"/><text x="682" y="218" class="g-small" text-anchor="middle">요소 표적</text><rect x="30" y="256" width="700" height="71" rx="6" class="g-band"/><text x="44" y="278" class="g-band-t hd" text-anchor="start">CRISPRi 요소 스크린 — 요소와 유전자 잇기</text><text x="44" y="297" class="g-band-t" text-anchor="start">요소를 끄고 어느 유전자가 내려가는지 보므로 '변이에서 유전자까지'의 앞 구간을 실험으로 정한다.</text><text x="44" y="316" class="g-band-t" text-anchor="start">억제는 자연 변이와 같은 조작이 아니고, 효과가 작으면 검정력에 막힌다.</text></g>
+<g class="g-ov" data-ov="perturb"><text x="140" y="80" class="g-lab" text-anchor="middle">유전자마다 sgRNA 두세 개</text><rect x="54" y="100" width="132" height="16" rx="3" fill="#6B5B95"/><rect x="54" y="124" width="132" height="16" rx="3" fill="#9AA5AF"/><rect x="54" y="148" width="132" height="16" rx="3" fill="#6B5B95"/><rect x="54" y="172" width="132" height="16" rx="3" fill="#9AA5AF"/><text x="140" y="212" class="g-small" text-anchor="middle">한 번에 유전자 수천 개</text><text x="404" y="86" class="g-lab" text-anchor="middle">세포마다 유전자 하나가 꺼짐</text><circle cx="322" cy="124" r="17" class="g-nuc"/><circle cx="322" cy="124" r="5" fill="#D9822B"/><circle cx="364" cy="124" r="17" class="g-nuc"/><circle cx="364" cy="124" r="5" fill="#6B5B95"/><circle cx="406" cy="124" r="17" class="g-nuc"/><circle cx="406" cy="124" r="5" fill="#2563C9"/><circle cx="448" cy="124" r="17" class="g-nuc"/><circle cx="448" cy="124" r="5" fill="#D9822B"/><circle cx="490" cy="124" r="17" class="g-nuc"/><circle cx="490" cy="124" r="5" fill="#6B5B95"/><circle cx="322" cy="174" r="17" class="g-nuc"/><circle cx="322" cy="174" r="5" fill="#2563C9"/><circle cx="364" cy="174" r="17" class="g-nuc"/><circle cx="364" cy="174" r="5" fill="#D9822B"/><circle cx="406" cy="174" r="17" class="g-nuc"/><circle cx="406" cy="174" r="5" fill="#6B5B95"/><circle cx="448" cy="174" r="17" class="g-nuc"/><circle cx="448" cy="174" r="5" fill="#2563C9"/><circle cx="490" cy="174" r="17" class="g-nuc"/><circle cx="490" cy="174" r="5" fill="#D9822B"/><text x="404" y="212" class="g-small" text-anchor="middle">세포 하나 = 교란 하나</text><text x="558" y="72" class="g-lab" text-anchor="start">유전자 수천 개의 발현</text><rect x="564" y="88" width="26" height="14" class="g-pt" style="fill-opacity:0.15"/><rect x="592" y="88" width="26" height="14" class="g-pt" style="fill-opacity:0.75"/><rect x="620" y="88" width="26" height="14" class="g-pt" style="fill-opacity:0.3"/><rect x="648" y="88" width="26" height="14" class="g-pt" style="fill-opacity:0.9"/><rect x="676" y="88" width="26" height="14" class="g-pt" style="fill-opacity:0.2"/><rect x="704" y="88" width="26" height="14" class="g-pt" style="fill-opacity:0.55"/><rect x="564" y="104" width="26" height="14" class="g-pt" style="fill-opacity:0.6"/><rect x="592" y="104" width="26" height="14" class="g-pt" style="fill-opacity:0.2"/><rect x="620" y="104" width="26" height="14" class="g-pt" style="fill-opacity:0.85"/><rect x="648" y="104" width="26" height="14" class="g-pt" style="fill-opacity:0.3"/><rect x="676" y="104" width="26" height="14" class="g-pt" style="fill-opacity:0.1"/><rect x="704" y="104" width="26" height="14" class="g-pt" style="fill-opacity:0.4"/><rect x="564" y="120" width="26" height="14" class="g-pt" style="fill-opacity:0.25"/><rect x="592" y="120" width="26" height="14" class="g-pt" style="fill-opacity:0.9"/><rect x="620" y="120" width="26" height="14" class="g-pt" style="fill-opacity:0.15"/><rect x="648" y="120" width="26" height="14" class="g-pt" style="fill-opacity:0.5"/><rect x="676" y="120" width="26" height="14" class="g-pt" style="fill-opacity:0.7"/><rect x="704" y="120" width="26" height="14" class="g-pt" style="fill-opacity:0.2"/><rect x="564" y="136" width="26" height="14" class="g-pt" style="fill-opacity:0.8"/><rect x="592" y="136" width="26" height="14" class="g-pt" style="fill-opacity:0.35"/><rect x="620" y="136" width="26" height="14" class="g-pt" style="fill-opacity:0.25"/><rect x="648" y="136" width="26" height="14" class="g-pt" style="fill-opacity:0.6"/><rect x="676" y="136" width="26" height="14" class="g-pt" style="fill-opacity:0.15"/><rect x="704" y="136" width="26" height="14" class="g-pt" style="fill-opacity:0.45"/><rect x="564" y="152" width="26" height="14" class="g-pt" style="fill-opacity:0.3"/><rect x="592" y="152" width="26" height="14" class="g-pt" style="fill-opacity:0.2"/><rect x="620" y="152" width="26" height="14" class="g-pt" style="fill-opacity:0.75"/><rect x="648" y="152" width="26" height="14" class="g-pt" style="fill-opacity:0.25"/><rect x="676" y="152" width="26" height="14" class="g-pt" style="fill-opacity:0.55"/><rect x="704" y="152" width="26" height="14" class="g-pt" style="fill-opacity:0.9"/><rect x="564" y="168" width="26" height="14" class="g-pt" style="fill-opacity:0.2"/><rect x="592" y="168" width="26" height="14" class="g-pt" style="fill-opacity:0.65"/><rect x="620" y="168" width="26" height="14" class="g-pt" style="fill-opacity:0.4"/><rect x="648" y="168" width="26" height="14" class="g-pt" style="fill-opacity:0.8"/><rect x="676" y="168" width="26" height="14" class="g-pt" style="fill-opacity:0.3"/><rect x="704" y="168" width="26" height="14" class="g-pt" style="fill-opacity:0.15"/><rect x="564" y="184" width="26" height="14" class="g-pt" style="fill-opacity:0.9"/><rect x="592" y="184" width="26" height="14" class="g-pt" style="fill-opacity:0.35"/><rect x="620" y="184" width="26" height="14" class="g-pt" style="fill-opacity:0.2"/><rect x="648" y="184" width="26" height="14" class="g-pt" style="fill-opacity:0.7"/><rect x="676" y="184" width="26" height="14" class="g-pt" style="fill-opacity:0.45"/><rect x="704" y="184" width="26" height="14" class="g-pt" style="fill-opacity:0.25"/><rect x="564" y="200" width="26" height="14" class="g-pt" style="fill-opacity:0.6"/><rect x="592" y="200" width="26" height="14" class="g-pt" style="fill-opacity:0.15"/><rect x="620" y="200" width="26" height="14" class="g-pt" style="fill-opacity:0.5"/><rect x="648" y="200" width="26" height="14" class="g-pt" style="fill-opacity:0.85"/><rect x="676" y="200" width="26" height="14" class="g-pt" style="fill-opacity:0.3"/><rect x="704" y="200" width="26" height="14" class="g-pt" style="fill-opacity:0.2"/><text x="564" y="232" class="g-small" text-anchor="start">가로 = 유전자 · 세로 = 교란</text><rect x="30" y="256" width="700" height="71" rx="6" class="g-band"/><text x="44" y="278" class="g-band-t hd" text-anchor="start">Perturb-seq — 유전자를 끈 뒤의 전사체</text><text x="44" y="297" class="g-band-t" text-anchor="start">표현형이 숫자 하나가 아니라 수천 유전자의 패턴이라, 끈 유전자끼리 묶어 기능을 비교할 수 있다.</text><text x="44" y="316" class="g-band-t" text-anchor="start">다만 끄는 단위가 유전자여서 발현을 조금 바꾸는 변이의 효과와 같지 않다.</text></g>
+</svg>
+<!--/GEN:ASSAY-->
+          </div>
+          <figcaption>도식. 수치는 넣지 않았고, 실제 규모는 아래 표에 둠.</figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>실험</th><th>바꾸는 단위</th><th>놓이는 자리</th><th>읽는 값</th><th>대표 규모</th></tr></thead>
+            <tbody>
+              <tr><th>MPRA · STARR-seq</th><td>변이 하나를 품은 짧은 서열</td><td>plasmid</td><td>barcode의 RNA / DNA 비</td><td>합성 enhancer 변이 27,000개 <a class="src" href="https://doi.org/10.1038/nbt.2137" target="_blank" rel="noopener">Melnikov 2012</a> · 유전체 조각 1,130만 개 <a class="src" href="https://doi.org/10.1126/science.1232518" target="_blank" rel="noopener">Arnold 2013</a></td></tr>
+              <tr><th>Saturation genome editing</th><td>내인성 염기</td><td>원래 자리</td><td>세포 생존으로 매긴 기능 점수</td><td>BRCA1 exon 13개의 한 염기 치환 3,893개 <a class="src" href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener">Findlay 2018</a></td></tr>
+              <tr><th>CRISPRi 요소 스크린</th><td>조절 요소</td><td>원래 자리</td><td>표적 유전자 발현</td><td>후보 enhancer 5,920개 <a class="src" href="https://doi.org/10.1016/j.cell.2018.11.029" target="_blank" rel="noopener">Gasperini 2019</a> · 요소–유전자 쌍 4,662개 <a class="src" href="https://doi.org/10.1038/s41588-019-0538-0" target="_blank" rel="noopener">Fulco 2019</a></td></tr>
+              <tr><th>Perturb-seq</th><td>유전자</td><td>원래 자리</td><td>세포 하나의 전사체 전체</td><td>유전자 9,866개 · 세포 250만 개 이상 <a class="src" href="https://doi.org/10.1016/j.cell.2022.05.013" target="_blank" rel="noopener">Replogle 2022</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>네 실험은 같은 질문에 대한 경쟁 답이 아니라 서로 다른 축의 측정. 하나가 다른 하나를 대신하지 못함 <a class="src" href="https://doi.org/10.1126/science.abi8207" target="_blank" rel="noopener">Lappalainen 2021</a>.</p>
+
+        <!-- ───────── 3. reporter ───────── -->
+        <h2 id="reporter">서열 조각을 잘라 붙여 재기<small>MPRA · STARR-seq</small></h2>
+        <p class="lede">변이 자리를 가운데 둔 짧은 서열과 식별용 barcode를 reporter 앞에 붙여 plasmid로 만들고 세포에 넣음. RNA 쪽 barcode 수를 DNA 쪽 barcode 수로 나눈 값이 활성. 두 allele을 같은 라이브러리에 넣어 나란히 비교함.</p>
+        <p>초기 MPRA는 합성한 enhancer 변이 27,000개를 87-nt 서열과 10-nt tag로 만들어 한 번에 측정했음 <a class="src" href="https://doi.org/10.1038/nbt.2137" target="_blank" rel="noopener">Melnikov 2012</a>. STARR-seq는 후보 조각 자체가 전사되도록 설계를 바꿔 유전체 조각 수백만 개를 다룸. 값은 개별 luciferase 측정과 선형으로 맞지만(r = 0.83), 그 세포에서 닫혀 있는 chromatin 구간의 조각도 활성으로 나옴 <a class="src" href="https://doi.org/10.1126/science.1232518" target="_blank" rel="noopener">Arnold 2013</a>.</p>
+        <p>최근 설계는 세포 계열과 자극을 격자로 돌림. MASLD 위험 변이 5,369개를 126 bp 서열로 합성해 간세포 계열 HepG2와 stellate 계열 LX-2에서, 각각 지방산(PAOA)과 TGFβ 유무로 측정했음. allele 사이 활성 차이가 유의한 변이(DAV)는 HepG2 기저 365개, LX-2 기저 464개, TGFβ를 준 LX-2 614개 <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a>.</p>
+        <div class="callout blue">
+          <h4>같은 라이브러리, 세포 계열마다 다른 목록</h4>
+          <p>HepG2와 LX-2의 기저 상태를 비교하면 공유 124개, HepG2 전용 241개, LX-2 전용 340개. 세포 계열 하나와 기저 상태 하나로 돌린 결과를 변이의 성질로 옮겨 적으면 과반을 놓침 <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a>.</p>
+        </div>
+        <p>결과를 믿을 만한지 보는 안쪽 지표가 따로 있음. 양성 대조 40개와 음성 대조 40개가 기대대로 갈렸고, 무작위로 고른 DAV 10개 중 8개가 개별 luciferase에서 같은 allele 방향을 재현했으며, TF 결합 교란 점수와 효과 크기가 상관함(Spearman ρ = 0.45, P = 1.3×10⁻¹¹). 바깥 기준과의 불일치도 같이 기록됨 — 간 eQTL과 겹친 DAV 338개 중 reporter 방향과 eQTL 방향이 맞은 것은 64% <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a>.</p>
+        <div class="callout">
+          <h4>plasmid에 없는 것</h4>
+          <p>내인성 chromatin, nucleosome 배치, 멀리 있는 조절 요소, 3차원 접촉이 모두 빠짐. 그래서 reporter 음성은 "효과 없음"의 증거가 되지 못함. 변이가 chromatin과 발현을 바꾸는 기전 자체는 앞 질문 <a href="./regulation.html">비암호화 변이는 유전자 발현을 어떻게 바꾸나?</a>에서 다룸.</p>
+        </div>
+        <p>라이브러리에 무엇을 넣었는지도 결과의 범위를 정함. 위 연구는 변이를 유럽계 LD(r² &gt; 0.8)와 MAF 5% 이상 기준으로 골랐으므로, 다른 집단에서 causal인 변이는 애초에 측정 대상이 아님 <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a>.</p>
+
+        <!-- ───────── 4. 내인성 ───────── -->
+        <h2 id="endogenous">원래 자리에서 바꿔 재기<small>Saturation genome editing · CRISPRi</small></h2>
+        <p class="lede">같은 변이를 유전체 제자리에 넣으면 chromatin과 splicing이 함께 걸림. 대신 한 번에 다룰 수 있는 수가 줄어듦.</p>
+        <p>BRCA1은 기능을 잃으면 HAP1 세포가 죽음. 이 성질을 selection으로 써서, 기능이 중요한 13개 exon의 한 염기 치환 3,893개(가능한 치환의 96.5%)를 원래 자리에 넣고 점수를 매겼음. 점수 분포가 두 봉우리로 갈리고, ClinVar 해석을 기준으로 한 AUC는 0.983(민감도 96.7%, 특이도 98.2%) <a class="src" href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener">Findlay 2018</a>.</p>
+        <p>임상 쪽 쓸모가 바로 나옴. VUS 256개 중 25.0%(64개)와 해석이 엇갈린 변이 122개 중 49.2%(60개)를 기능 없음으로 분류했음 <a class="src" href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener">Findlay 2018</a>. 쓸 수 있는 자리는 제한됨 — 선별 가능한 표현형(여기서는 생존)과 알맞은 반수체 세포주가 필요하고, 한 번에 exon 하나.</p>
+        <p>비암호화 요소는 염기 하나를 바꾸기보다 요소를 통째로 끄는 쪽이 먼저. dCas9–KRAB를 요소로 보내고 표적 유전자 발현을 봄. K562에서 후보 enhancer 5,920개를 교란해 세포 254,974개를 읽고 요소–유전자 쌍 664개(고신뢰 470개)를 찾았음 <a class="src" href="https://doi.org/10.1016/j.cell.2018.11.029" target="_blank" rel="noopener">Gasperini 2019</a>. 같은 해 CRISPRi-FlowFISH로 요소–유전자 쌍 4,662개를 재고, 요소의 활성과 접촉 빈도를 곱한 ABC model을 세웠음. 연결 예측의 AUPRC가 0.65로 거리 기준 0.39보다 높음 <a class="src" href="https://doi.org/10.1038/s41588-019-0538-0" target="_blank" rel="noopener">Fulco 2019</a>.</p>
+        <p>스크린 결과는 다시 예측 모델의 학습셋이 됨. K562 스크린 3종을 모아 요소–유전자 쌍 10,356개(양성 471개 · 음성 9,885개)를 만들고, 이 데이터로 학습한 ENCODE-rE2G가 같은 입력을 쓴 ABC보다 높음(AUPRC 0.66 대 0.56) <a class="src" href="https://doi.org/10.1038/s41586-026-10781-4" target="_blank" rel="noopener">Gschwind 2026</a>. 실험 → 학습 → 예측으로 비어 있는 세포형을 메우는 흐름.</p>
+        <div class="callout">
+          <h4>요소의 효과는 단순히 더해지지 않음</h4>
+          <p>MYC 주변 enhancer 7개의 모든 쌍 21개를 함께 끈 결과 19개가 super-additive. 가까운 쌍(3–89 kb)은 각각의 효과를 더한 값에서 16–37% 벗어나고, 먼 쌍(107 kb–1.79 Mb)은 2–10% <a class="src" href="https://doi.org/10.1038/s41586-026-10781-4" target="_blank" rel="noopener">Gschwind 2026</a>. 가까이 몰린 enhancer 묶음에서는 개별 효과의 합이 전체를 과소평가함.</p>
+        </div>
+        <p>음성 결과를 쓰는 법도 설계 사항. 위 학습셋은 "15–25% 감소를 80% 이상 검정력으로 잡을 수 있는 쌍"만 음성으로 셈 <a class="src" href="https://doi.org/10.1038/s41586-026-10781-4" target="_blank" rel="noopener">Gschwind 2026</a>. 검정력을 따지지 않은 "변화 없음"은 음성 근거가 아님.</p>
+
+        <!-- ───────── 5. Perturb-seq ───────── -->
+        <h2 id="program">끄고 세포 전체를 읽기<small>Perturb-seq</small></h2>
+        <p class="lede">읽는 값을 측정값 하나에서 전사체 전체로 넓힌 교란. 세포마다 어떤 교란이 들어갔는지를 sgRNA 쪽 서열로 알아내고, 그 세포의 발현과 함께 봄 <a class="src" href="https://doi.org/10.1016/j.cell.2016.11.038" target="_blank" rel="noopener">Dixit 2016</a>.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>대상</th><th>규모</th><th>같이 적힌 수치</th></tr></thead>
+            <tbody>
+              <tr><th>K562 세포주</th><td>유전자 9,866개 · 세포 250만 개 이상</td><td>표적 knockdown 중앙값 85.5% <a class="src" href="https://doi.org/10.1016/j.cell.2022.05.013" target="_blank" rel="noopener">Replogle 2022</a></td></tr>
+              <tr><th>iPSC(KOLF2.1J)</th><td>유전자 11,692개 · 세포 250만 개 이상</td><td>유전자당 sgRNA 3개 <a class="src" href="https://doi.org/10.1038/s41587-026-03199-w" target="_blank" rel="noopener">Nourreddine 2026</a></td></tr>
+              <tr><th>1차 CD4 T 세포</th><td>유전자 12,779개 · 세포 2,199만 개</td><td>조절 관계 2,035,311개 <a class="src" href="https://doi.org/10.1016/j.cell.2026.08.002" target="_blank" rel="noopener">Zhu 2026</a></td></tr>
+              <tr><th>마우스 뇌(in vivo)</th><td>유전자 79개 · 핵 169,186개</td><td>교란 하나로 확정된 핵은 36,037개 <a class="src" href="https://doi.org/10.1038/s41588-026-02638-3" target="_blank" rel="noopener">Zhang 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout blue">
+          <h4>설계를 정하는 수치</h4>
+          <p>1차 CD4 T 세포 연구가 데이터를 줄여 보며 정리한 결과. 교란당 세포 수는 약 200개에서 포화. read 깊이를 10% 수준으로 낮추면 세포가 500개를 넘어도 trans 효과 재현 상관이 약 30% 떨어짐. 같은 세포 수라면 공여자를 늘리는 쪽이 더 견고함 <a class="src" href="https://doi.org/10.1016/j.cell.2026.08.002" target="_blank" rel="noopener">Zhu 2026</a>.</p>
+        </div>
+        <p>직교 확인은 따로 붙음. 같은 연구에서 독립 arrayed knockout RNA-seq과 맞춰 32개 표적 중 27개에서 유의한 상관이 나왔음 <a class="src" href="https://doi.org/10.1016/j.cell.2026.08.002" target="_blank" rel="noopener">Zhu 2026</a>.</p>
+        <div class="callout">
+          <h4>아틀라스는 세포형을 넘지 못함</h4>
+          <p>iPSC 아틀라스에서 표현형이 뚜렷한 교란 가운데 K562 전유전체 Perturb-seq와 겹친 것은 430개, iPSC에만 있는 것이 1,225개 <a class="src" href="https://doi.org/10.1038/s41587-026-03199-w" target="_blank" rel="noopener">Nourreddine 2026</a>. 한 세포형의 교란 아틀라스를 다른 세포형의 유전자 기능 사전으로 그대로 쓰지 못함.</p>
+        </div>
+        <p>끄는 단위가 유전자라는 점은 그대로 남음. 비암호화 변이 하나는 발현을 조금 바꿀 뿐이라, 변이와 유전자 사이를 잇는 일은 요소 스크린이나 변이 편집이 맡음. 관찰 쪽 측정은 앞 질문 <a href="./qtl.html">QTL은 무엇이고, 왜 세포와 조직마다 다른가?</a>에서 다룸.</p>
+
+        <!-- ───────── 6. 사다리 ───────── -->
+        <h2 id="ladder">층을 쌓아 확인하기<small>Validation ladder</small></h2>
+        <p class="lede">한 실험은 한 축만 봄. 처리량이 큰 쪽에서 후보를 추리고, 몸에 가까운 쪽에서 몇 개만 확인하는 순서로 쌓음. 버튼으로 변이를 바꾸는 실험과 유전자를 끄는 실험을 나눠 볼 수 있음.</p>
+        <figure class="fig" id="fig-scale" data-mode="variant">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-scale" role="group" aria-label="교란 단위">
+              <button type="button" data-mode="variant" aria-pressed="true">변이를 바꾸는 실험</button>
+              <button type="button" data-mode="gene" aria-pressed="false">요소 · 유전자를 끄는 실험</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:SCALE-->
+<svg class="g-svg" viewBox="0 0 760 372" role="img" aria-labelledby="ptScaleT ptScaleD" xmlns="http://www.w3.org/2000/svg">
+<title id="ptScaleT">교란 실험의 처리량과 맥락 단계</title>
+<desc id="ptScaleD">가로축은 한 실험에서 다룬 변이, 요소, 유전자의 수를 로그로 놓은 것이고, 세로축은 아래에서 위로 plasmid, 세포주 유전체, 1차 세포와 organoid, 살아 있는 개체 순서다. 버튼으로 변이를 바꾸는 실험과 유전자를 끄는 실험을 나눠 본다. 처리량이 큰 실험은 아래쪽 plasmid와 세포주에 모여 있고, 개체 수준 실험은 한 번에 한두 곳만 다룬다.</desc>
+<rect x="175" y="58" width="550" height="44" rx="5" class="g-panel"/>
+<text x="163" y="84" class="g-lab" text-anchor="end">살아 있는 개체</text>
+<rect x="175" y="108" width="550" height="44" rx="5" class="g-panel"/>
+<text x="163" y="134" class="g-lab" text-anchor="end">1차 세포 · organoid</text>
+<rect x="175" y="158" width="550" height="44" rx="5" class="g-panel"/>
+<text x="163" y="184" class="g-lab" text-anchor="end">세포주 유전체</text>
+<rect x="175" y="208" width="550" height="44" rx="5" class="g-panel"/>
+<text x="163" y="234" class="g-lab" text-anchor="end">plasmid(에피솜)</text>
+<line x1="175" y1="262" x2="725" y2="262" class="g-axis"/>
+<line x1="190.0" y1="262" x2="190.0" y2="267" class="g-axis"/>
+<text x="190" y="281" class="g-small" text-anchor="middle">1</text>
+<line x1="263.2" y1="262" x2="263.2" y2="267" class="g-axis"/>
+<text x="263.239" y="281" class="g-small" text-anchor="middle">10</text>
+<line x1="336.5" y1="262" x2="336.5" y2="267" class="g-axis"/>
+<text x="336.479" y="281" class="g-small" text-anchor="middle">100</text>
+<line x1="409.7" y1="262" x2="409.7" y2="267" class="g-axis"/>
+<text x="409.718" y="281" class="g-small" text-anchor="middle">1,000</text>
+<line x1="483.0" y1="262" x2="483.0" y2="267" class="g-axis"/>
+<text x="482.958" y="281" class="g-small" text-anchor="middle">1만</text>
+<line x1="556.2" y1="262" x2="556.2" y2="267" class="g-axis"/>
+<text x="556.197" y="281" class="g-small" text-anchor="middle">10만</text>
+<line x1="629.4" y1="262" x2="629.4" y2="267" class="g-axis"/>
+<text x="629.437" y="281" class="g-small" text-anchor="middle">100만</text>
+<line x1="702.7" y1="262" x2="702.7" y2="267" class="g-axis"/>
+<text x="702.676" y="281" class="g-small" text-anchor="middle">1,000만</text>
+<text x="450" y="302" class="g-lab" text-anchor="middle">한 실험에서 다룬 단위 수 — 변이 · 요소 · 유전자 (로그)</text>
+<g class="g-ov" data-ov="variant"><circle cx="190.0" cy="80" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="199" y="84" class="g-small" text-anchor="start">SS rat에서 약 800 bp 구간 결실 1곳</text><circle cx="190.0" cy="130" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="199" y="134" class="g-small" text-anchor="start">hiPSC 간 organoid에서 변이 구간 1곳 결실</text><circle cx="263.2" cy="174" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="272.239" y="178" class="g-small" text-anchor="start">luciferase 10개</text><circle cx="285.3" cy="194" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="294.287" y="198" class="g-small" text-anchor="start">CROP-seq 변이 20개</text><circle cx="453.0" cy="180" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="461.95" y="184" class="g-small" text-anchor="start">BRCA1 exon 13개의 SNV 3,893개</text><circle cx="463.2" cy="224" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="454.175" y="228" class="g-small" text-anchor="end">MPRA 변이 5,369개</text><circle cx="514.6" cy="224" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="523.551" y="228" class="g-small" text-anchor="start">MPRA 변이 27,000개</text><circle cx="706.6" cy="242" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="697.563" y="246" class="g-small" text-anchor="end">STARR-seq 조각 1,130만 개</text><rect x="30" y="310" width="700" height="52" rx="6" class="g-band"/><text x="44" y="332" class="g-band-t hd" text-anchor="start">변이를 바꾸는 실험</text><text x="44" y="351" class="g-band-t" text-anchor="start">처리량이 큰 아래쪽에서 후보를 추리고, 몸에 가까운 위쪽에서 몇 개만 확인하는 순서로 쌓는다.</text></g>
+<g class="g-ov" data-ov="gene"><circle cx="329.0" cy="80" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="337.981" y="84" class="g-small" text-anchor="start">마우스 뇌 in vivo Perturb-seq 유전자 79개</text><circle cx="487.9" cy="124" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="478.93" y="128" class="g-small" text-anchor="end">iPSC 유전자 11,692개</text><circle cx="490.8" cy="142" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="499.758" y="146" class="g-small" text-anchor="start">1차 CD4 T 세포 유전자 12,779개</text><circle cx="458.7" cy="174" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="449.684" y="178" class="g-small" text-anchor="end">CRISPRi-FlowFISH 요소–유전자 쌍 4,662개</text><circle cx="466.3" cy="194" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="475.283" y="198" class="g-small" text-anchor="start">CRISPRi 후보 enhancer 5,920개</text><circle cx="482.5" cy="174" r="5.5" class="g-pt" style="fill-opacity:.8"/><text x="491.529" y="178" class="g-small" text-anchor="start">K562 Perturb-seq 유전자 9,866개</text><text x="450" y="234" class="g-note" text-anchor="middle">요소와 유전자를 끄는 실험은 plasmid 밖에서 함</text><rect x="30" y="310" width="700" height="52" rx="6" class="g-band"/><text x="44" y="332" class="g-band-t hd" text-anchor="start">요소와 유전자를 끄는 실험</text><text x="44" y="351" class="g-band-t" text-anchor="start">유전자 단위 교란은 처리량이 전유전체까지 올라왔지만, 아직 대부분 세포 안에서 이뤄진다.</text></g>
+</svg>
+<!--/GEN:SCALE-->
+          </div>
+          <figcaption>점의 수치는 실제 논문 값. 출처는 Melnikov 2012 · Arnold 2013 · Findlay 2018 · Gasperini 2019 · Fulco 2019 · Replogle 2022 · Nourreddine 2026 · Zhu 2026(MPRA · CD4) · Zhang 2026 · Qiu 2026.</figcaption>
+        </figure>
+        <p>한 locus를 여섯 층까지 쌓은 사례 <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a>:</p>
+        <ol>
+          <li>MPRA로 변이 5,369개를 재고 조건별 DAV를 추림</li>
+          <li>무작위로 고른 DAV 10개를 개별 luciferase로 확인 — 8개가 같은 방향</li>
+          <li>DAV 8개의 영역을 CRISPRi로 끄고 CRISPRa로 켬 — 지목한 표적 유전자의 90% 이상이 예측대로 바뀜</li>
+          <li>CROP-seq로 변이 20개를 한꺼번에 — 세포 67,700개에서 유전자–sgRNA 쌍 25개</li>
+          <li>변이 구간을 지운 HepG2에서 지질 축적 증가</li>
+          <li>같은 구간을 지운 hiPSC를 간 organoid로 분화 — 지질과 PLIN2 증가, ALBUMIN 감소</li>
+        </ol>
+        <p>개체까지 올라간 사례도 있음. 고혈압 GWAS 변이 rs28451064는 설치류에서 염기 하나만 바꾸기 어려워, 그 자리에 해당하는 약 800 bp 비암호화 구간을 Dahl salt-sensitive rat에서 지웠음. 4% NaCl 먹이를 준 동안 pulse pressure가 최대 6 mmHg 낮아짐(야생형 11마리 대 결실 14마리). 평균 혈압 · 수축기 혈압 · 이완기 혈압 · 심박은 차이가 없었음 <a class="src" href="https://doi.org/10.1126/science.aea6187" target="_blank" rel="noopener">Qiu 2026</a>. 개체 수준 확인이 아직 한 번에 한두 곳이고, 바꾸는 대상도 염기 하나가 아니라 구간이라는 점을 같이 읽어야 함.</p>
+        <div class="callout">
+          <h4>층마다 묻는 것이 다름</h4>
+          <p>위 층의 음성이 아래 층을 뒤집지 않음. reporter에서 음성이고 CRISPRi에서 양성인 결과는 둘 중 하나가 틀렸다는 뜻이 아니라 측정 축이 다르다는 뜻 <a class="src" href="https://doi.org/10.1126/science.abi8207" target="_blank" rel="noopener">Lappalainen 2021</a>.</p>
+        </div>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>reporter에서 활성이 올라감 = 몸에서도 그 방향 ✗</code><p class="why">간 eQTL과 겹친 DAV 338개 중 reporter 방향과 eQTL 방향이 맞은 것은 64% <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a></p></div>
+          <div class="fix"><code>한 세포주에서 나온 기능 변이 목록 = 변이의 성질 ✗</code><p class="why">같은 라이브러리에서 HepG2 전용 241개 · LX-2 전용 340개 · 공유 124개로 갈림. 자극 조건도 목록을 바꿈 <a class="src" href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener">Zhu 2026</a></p></div>
+          <div class="fix"><code>CRISPRi로 안 바뀜 = 조절 기능 없음 ✗</code><p class="why">검정력이 있는 쌍에서만 음성이 음성. 25%보다 작은 효과는 가려짐 <a class="src" href="https://doi.org/10.1038/s41586-026-10781-4" target="_blank" rel="noopener">Gschwind 2026</a></p></div>
+          <div class="fix"><code>요소 하나하나의 효과를 더하면 묶음의 효과 ✗</code><p class="why">MYC 주변 enhancer 쌍 21개 중 19개가 super-additive <a class="src" href="https://doi.org/10.1038/s41586-026-10781-4" target="_blank" rel="noopener">Gschwind 2026</a></p></div>
+          <div class="fix"><code>유전자 knockdown 결과 = 변이의 효과 ✗</code><p class="why">CRISPRi는 완전히 끄는 것이 아니라 부분 억제(표적 knockdown 중앙값 85.5%) <a class="src" href="https://doi.org/10.1016/j.cell.2022.05.013" target="_blank" rel="noopener">Replogle 2022</a>. 비암호화 변이는 발현을 조금 바꾸는 쪽</p></div>
+          <div class="fix"><code>교란 아틀라스 하나로 다른 세포형도 해석 ✗</code><p class="why">iPSC의 뚜렷한 교란 중 K562와 겹친 것은 430개, iPSC 전용이 1,225개 <a class="src" href="https://doi.org/10.1038/s41587-026-03199-w" target="_blank" rel="noopener">Nourreddine 2026</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">perturbation · 교란 실험 · functional validation · 기능 검증 · reporter assay · MPRA · massively parallel reporter assay · STARR-seq · CRS · DAV · emVar · luciferase · barcode · tag · saturation genome editing · SGE · MAVE · multiplexed assay of variant effect · deep mutational scanning · DMS · VUS · variant of uncertain significance · HDR · homology-directed repair · CRISPRi · CRISPRa · dCas9 · KRAB · sgRNA · guide RNA · CRISPRi-FlowFISH · ABC model · activity-by-contact · ENCODE-rE2G · super-additive · Perturb-seq · CROP-seq · ECCITE-seq · pooled screen · knockdown · knockout · MOI · iPSC · hiPSC · organoid · in vivo screen</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>교과서</h3>
+          <p class="text-ref"><b>Strachan &amp; Read HMG 5판</b><br>8장 포유류 세포의 유전 조작 원리(8.3 · 8.4 genome editing · 8.5 gene silencing) · 21.2 세포 질환 모델. 대규모 교란 실험의 설계와 수치는 교과서에 없어 논문으로 채움</p>
+        </div>
+        <div class="aside-box"><h3>이 절의 다른 질문</h3><div class="related-list">
+          <a href="./regulation.html">비암호화 변이는 유전자 발현을 어떻게 바꾸나? →</a>
+          <a href="./qtl.html">QTL은 무엇이고, 왜 세포와 조직마다 다른가? →</a>
+          <a href="./genetics-to-drugs.html">유전학 근거는 약 개발에 어떻게 쓰이나? →</a>
+          <a href="./forward-reverse.html">표현형에서 유전자로, 유전자에서 표현형으로 어떻게 가나? →</a>
+          <a href="./index.html">변이에서 기능으로 목록 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../../../gwas/03-postgwas/fine-mapping.html">Fine-mapping (그림) →</a>
+          <a href="../../../gwas/03-postgwas/coloc.html">Colocalization (그림) →</a>
+          <a href="../../../gwas/index.html#article/variant-to-gene">Variant-to-gene 용어 카드 →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1126/science.abi8207" target="_blank" rel="noopener noreferrer">Lappalainen &amp; MacArthur 2021, Science — 변이에서 기능까지의 지도 ↗</a>
+          <a href="https://doi.org/10.1038/nbt.2137" target="_blank" rel="noopener noreferrer">Melnikov 2012, Nat Biotechnol — MPRA ↗</a>
+          <a href="https://doi.org/10.1126/science.1232518" target="_blank" rel="noopener noreferrer">Arnold 2013, Science — STARR-seq ↗</a>
+          <a href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener noreferrer">Findlay 2018, Nature — BRCA1 saturation genome editing ↗</a>
+          <a href="https://doi.org/10.1016/j.cell.2018.11.029" target="_blank" rel="noopener noreferrer">Gasperini 2019, Cell — 단일세포 CRISPRi enhancer 스크린 ↗</a>
+          <a href="https://doi.org/10.1038/s41588-019-0538-0" target="_blank" rel="noopener noreferrer">Fulco 2019, Nat Genet — CRISPRi-FlowFISH와 ABC model ↗</a>
+          <a href="https://doi.org/10.1038/s41586-026-10781-4" target="_blank" rel="noopener noreferrer">Gschwind 2026, Nature — 요소–유전자 백과사전 ↗</a>
+          <a href="https://doi.org/10.1016/j.cell.2016.11.038" target="_blank" rel="noopener noreferrer">Dixit 2016, Cell — Perturb-seq ↗</a>
+          <a href="https://doi.org/10.1016/j.cell.2022.05.013" target="_blank" rel="noopener noreferrer">Replogle 2022, Cell — 전유전체 Perturb-seq ↗</a>
+          <a href="https://doi.org/10.1038/s41587-026-03199-w" target="_blank" rel="noopener noreferrer">Nourreddine 2026, Nat Biotechnol — iPSC CRISPRi 아틀라스 ↗</a>
+          <a href="https://doi.org/10.1016/j.cell.2026.08.002" target="_blank" rel="noopener noreferrer">Zhu 2026, Cell — 1차 CD4 T 세포 전유전체 Perturb-seq ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02617-8" target="_blank" rel="noopener noreferrer">Zhu 2026, Nat Genet — MASLD 위험 변이 MPRA와 검증 사다리 ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02638-3" target="_blank" rel="noopener noreferrer">Zhang 2026, Nat Genet — 마우스 뇌 in vivo Perturb-seq ↗</a>
+          <a href="https://doi.org/10.1126/science.aea6187" target="_blank" rel="noopener noreferrer">Qiu 2026, Science — 비암호화 변이 구간의 개체 수준 확인 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>

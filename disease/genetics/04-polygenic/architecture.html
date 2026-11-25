@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="유전 구조를 재는 네 축: 변이의 수와 빈도 분포와 효과 크기와 상호작용. 흔하면서 효과가 큰 변이가 드문 이유, 관여하는 변이의 수가 표본에 딸려 있는 것, 류마티스 관절염·조현병·자폐·혈구 형질의 구조 차이">
+  <title>질환마다 유전 구조는 어떻게 다른가? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">다유전자 형질</a><span>›</span>유전 구조</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">다유전자 형질 · Genetic architecture</p>
+        <h1>질환마다 유전 구조는 어떻게 다른가?</h1>
+        <p class="definition">Genetic architecture(유전 구조): 한 형질에 기여하는 변이의 수, 그 변이들의 빈도 분포, 변이마다의 효과 크기, 그리고 변이 사이 상호작용을 한데 묶어 부르는 말 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></p>
+
+        <!-- ───────── 1. 왜 따로 묻나 ───────── -->
+        <h2 id="why">유전율이 비슷해도 구조는 다름<small>Same h², different shape</small></h2>
+        <p class="lede">유전율은 분산의 몫 하나로 끝나는 값. 그 몫이 변이 몇 개에서, 어떤 빈도에서, 얼마만 한 효과로 만들어졌는지는 따로 물어야 함.</p>
+        <p>생화학 형질 두 개가 그 차이를 바로 보여 줌. 25-hydroxyvitamin D는 33,000명이 넘는 GWAS에서 locus가 네 곳만 나왔고, 표본을 다섯 배로 키워 79,366명에서 다시 찾아도 두 곳이 더 붙었을 뿐 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a>. 지금 표본에서 보이는 모양은 oligogenic이고 잡힌 변이들의 효과가 비교적 큼.</p>
+        <p>LDL 콜레스테롤은 188,577명 분석에서 52곳이 나왔고, 19,000명 규모의 더 작은 GWAS도 이미 11곳을 잡았음 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a>. 효과 크기 분포가 비타민 D 쪽보다 넓음. Timpson 2017은 유전율이 비슷한 이 두 형질의 유전 구조가 근본적으로 다르다고 적음.</p>
+        <div class="callout blue">
+          <h4>유전율 쪽과 갈리는 지점</h4>
+          <p>유전율은 "이 집단에서 사람마다 값이 다른 정도 가운데 유전 차이가 설명하는 몫"이고, 값 하나로는 변이가 몇 개이고 효과가 얼마나 큰지 답하지 못함 — <a href="./heritability.html">유전율은 무엇을 재나?</a>. 이 쪽은 그 답하지 못하는 부분을 다룸.</p>
+        </div>
+
+        <!-- ───────── 2. 네 축 ───────── -->
+        <h2 id="axes">구조를 재는 네 축<small>Four dimensions</small></h2>
+        <p class="lede">"구조"라는 말이 가리키는 것은 네 가지. 하나씩 따로 재고, 서로 묶여 있음.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>축</th><th>무엇을 세나</th><th>이 쪽에서 보는 곳</th></tr></thead>
+            <tbody>
+              <tr><th>변이의 수</th><td>형질에 기여하는 변이가 몇 개인가 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></td><td><a href="#count">3절</a></td></tr>
+              <tr><th>빈도 분포</th><td>그 변이들이 흔한가 드문가. common은 MAF 5% 이상, low-frequency는 1–5%, rare는 1% 미만 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></td><td><a href="#map">2절</a></td></tr>
+              <tr><th>효과 크기</th><td>변이 하나가 형질을 얼마나 움직이는가 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></td><td><a href="#map">2절</a></td></tr>
+              <tr><th>상호작용</th><td>변이끼리, 또는 변이와 환경 사이에서 효과가 더해지는 것 이상으로 바뀌는가 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></td><td><a href="./index.html">같은 절의 다음 질문</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>네 축이 독립이 아님. 빈도가 낮을수록 큰 효과가 허용되고, 효과가 클수록 흔해지기 어려움. 그래서 빈도와 효과 크기를 한 평면에 놓고 보는 것이 구조를 읽는 기본 틀.</p>
+
+        <!-- ───────── 3. 지도 ───────── -->
+        <h2 id="map">빈도와 효과 크기의 지도<small>The frequency–effect map</small></h2>
+        <p class="lede">가로축에 변이를 가진 사람의 비율, 세로축에 위험 비를 놓으면 어느 칸이 차고 어느 칸이 비는지가 보임.</p>
+        <figure class="fig" id="fig-map" data-mode="zones">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-map" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="zones" aria-pressed="true">네 칸</button>
+              <button type="button" data-mode="real" aria-pressed="false">실제 변이</button>
+              <button type="button" data-mode="selection" aria-pressed="false">왜 비나</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:MAP-->
+<svg class="g-svg" viewBox="0 0 760 388" role="img" aria-labelledby="arMapT arMapD" xmlns="http://www.w3.org/2000/svg">
+<title id="arMapT">변이의 집단 내 비율과 위험 비로 만든 지도, 그리고 흔하면서 효과가 큰 변이가 드문 이유</title>
+<desc id="arMapD">같은 축을 쓰는 그림 세 장을 버튼으로 바꿔 본다. 가로축은 그 변이를 가진 사람의 비율, 세로축은 위험 비이고 둘 다 로그 눈금이다. 첫 화면은 네 칸으로 나눈 도식으로, 드물고 효과 큰 칸에 멘델 질환과 de novo 변이, 흔하고 효과 작은 칸에 GWAS가 찾아 온 변이가 들어가고 흔하고 효과 큰 칸은 거의 비어 있다. 두 번째는 위험 비 1.5를 넘는 흔한 변이 일곱 개를 실제 값으로 찍은 산점도다. 세 번째는 그 빈 칸을 붉은 점선으로 두르고, 효과가 큰 변이가 집단에서 줄어드는 방향을 가로 화살표로 보여 준다.</desc>
+<g class="g-ov" data-ov="zones"><rect x="120" y="74" width="580" height="182" class="g-panel"/><line x1="120" y1="256" x2="700" y2="256" class="g-axis"/><line x1="120" y1="74" x2="120" y2="256" class="g-axis"/><line x1="120.0" y1="256" x2="120.0" y2="261" class="g-axis"/><text x="120" y="275" class="g-small" text-anchor="middle">0.01%</text><line x1="276.8" y1="256" x2="276.8" y2="261" class="g-axis"/><text x="276.8" y="275" class="g-small" text-anchor="middle">0.1%</text><line x1="433.6" y1="256" x2="433.6" y2="261" class="g-axis"/><text x="433.601" y="275" class="g-small" text-anchor="middle">1%</text><line x1="543.2" y1="256" x2="543.2" y2="261" class="g-axis"/><text x="543.2" y="275" class="g-small" text-anchor="middle">5%</text><line x1="700.0" y1="256" x2="700.0" y2="261" class="g-axis"/><text x="700" y="275" class="g-small" text-anchor="middle">50%</text><line x1="115" y1="245.2" x2="120" y2="245.2" class="g-axis"/><text x="110" y="249.222" class="g-small" text-anchor="end">1.1</text><line x1="115" y1="210.1" x2="120" y2="210.1" class="g-axis"/><text x="110" y="214.149" class="g-small" text-anchor="end">1.5</text><line x1="115" y1="177.6" x2="120" y2="177.6" class="g-axis"/><text x="110" y="181.617" class="g-small" text-anchor="end">2</text><line x1="115" y1="131.8" x2="120" y2="131.8" class="g-axis"/><text x="110" y="135.766" class="g-small" text-anchor="end">3</text><line x1="115" y1="74.0" x2="120" y2="74.0" class="g-axis"/><text x="110" y="78" class="g-small" text-anchor="end">5</text><text x="410" y="294" class="g-small" text-anchor="middle">그 변이를 가진 사람의 비율</text><text x="110" y="64" class="g-small" text-anchor="end">위험 비</text><text x="110" y="49" class="g-small" text-anchor="end">큼</text><rect x="120" y="74" width="313.6" height="136.1" fill="#D9822B" style="fill-opacity:.11"/><rect x="433.6" y="74" width="266.4" height="136.1" fill="#B3261E" style="fill-opacity:.07"/><rect x="433.6" y="210.1" width="266.4" height="45.9" fill="#2563C9" style="fill-opacity:.12"/><rect x="120" y="210.1" width="313.6" height="45.9" fill="#5B6B7A" style="fill-opacity:.08"/><line x1="433.6" y1="74" x2="433.6" y2="256" class="g-mid"/><line x1="120" y1="210.1" x2="700" y2="210.1" class="g-mid"/><text x="380" y="40" class="g-lab em" text-anchor="middle">빈도와 효과 크기로 네 칸을 만들면</text><text x="275" y="104" class="g-lab em" text-anchor="middle">드물고 효과 큼</text><text x="275" y="121" class="g-small" text-anchor="middle">멘델 질환 · de novo · 희귀 CNV</text><text x="275" y="138" class="g-small" text-anchor="middle">위험 비가 이 축 위로 벗어나는 일이 많음</text><text x="567" y="104" class="g-lab em" text-anchor="middle">흔하고 효과 큼</text><text x="567" y="121" class="g-small" text-anchor="middle">거의 비어 있는 칸</text><text x="567" y="222" class="g-lab em" text-anchor="middle">흔하고 효과 작음</text><text x="567" y="239" class="g-small" text-anchor="middle">GWAS가 찾아 온 대부분</text><text x="275" y="222" class="g-lab em" text-anchor="middle">드물고 효과 작음</text><text x="275" y="239" class="g-small" text-anchor="middle">지금 표본으로는 보이지 않음</text><rect x="30" y="296" width="700" height="90" rx="6" class="g-band"/><text x="44" y="318" class="g-band-t hd" text-anchor="start">축 읽는 법</text><text x="44" y="337" class="g-band-t" text-anchor="start">가로축은 그 변이를 가진 사람의 비율, 세로축은 위험이 몇 배가 되는지다. 둘 다 로그 눈금이다.</text><text x="44" y="356" class="g-band-t" text-anchor="start">칸을 가르는 선(비율 1% · 위험 비 1.5)은 설명을 위해 그은 것이고 정해진 경계가 아니다.</text><text x="44" y="375" class="g-band-t" text-anchor="start">왼쪽 아래 칸이 비어 보이는 것은 변이가 없다는 뜻이 아니라 지금 표본으로 검출하지 못한다는 뜻이다.</text></g>
+<g class="g-ov" data-ov="real"><rect x="120" y="74" width="580" height="182" class="g-panel"/><line x1="120" y1="256" x2="700" y2="256" class="g-axis"/><line x1="120" y1="74" x2="120" y2="256" class="g-axis"/><line x1="120.0" y1="256" x2="120.0" y2="261" class="g-axis"/><text x="120" y="275" class="g-small" text-anchor="middle">0.01%</text><line x1="276.8" y1="256" x2="276.8" y2="261" class="g-axis"/><text x="276.8" y="275" class="g-small" text-anchor="middle">0.1%</text><line x1="433.6" y1="256" x2="433.6" y2="261" class="g-axis"/><text x="433.601" y="275" class="g-small" text-anchor="middle">1%</text><line x1="543.2" y1="256" x2="543.2" y2="261" class="g-axis"/><text x="543.2" y="275" class="g-small" text-anchor="middle">5%</text><line x1="700.0" y1="256" x2="700.0" y2="261" class="g-axis"/><text x="700" y="275" class="g-small" text-anchor="middle">50%</text><line x1="115" y1="245.2" x2="120" y2="245.2" class="g-axis"/><text x="110" y="249.222" class="g-small" text-anchor="end">1.1</text><line x1="115" y1="210.1" x2="120" y2="210.1" class="g-axis"/><text x="110" y="214.149" class="g-small" text-anchor="end">1.5</text><line x1="115" y1="177.6" x2="120" y2="177.6" class="g-axis"/><text x="110" y="181.617" class="g-small" text-anchor="end">2</text><line x1="115" y1="131.8" x2="120" y2="131.8" class="g-axis"/><text x="110" y="135.766" class="g-small" text-anchor="end">3</text><line x1="115" y1="74.0" x2="120" y2="74.0" class="g-axis"/><text x="110" y="78" class="g-small" text-anchor="end">5</text><text x="410" y="294" class="g-small" text-anchor="middle">그 변이를 가진 사람의 비율</text><text x="110" y="64" class="g-small" text-anchor="end">위험 비</text><text x="110" y="49" class="g-small" text-anchor="end">큼</text><text x="380" y="40" class="g-lab em" text-anchor="middle">위험 비 1.5를 넘는 흔한 변이는 이만큼</text><rect x="132" y="86" width="296" height="152" rx="6" class="g-band"/><line x1="637.6" y1="99.2" x2="637.6" y2="131.8" stroke="#B3261E" stroke-width="2"/><line x1="632.6" y1="131.8" x2="642.6" y2="131.8" stroke="#B3261E" stroke-width="2"/><line x1="632.6" y1="99.2" x2="642.6" y2="99.2" stroke="#B3261E" stroke-width="2"/><text x="650.603" y="119.5" class="g-note em" text-anchor="start">1</text><text x="146" y="108" class="g-note em" text-anchor="start">1  APOE4</text><text x="300" y="108" class="g-small" text-anchor="start">알츠하이머 3–4배</text><circle cx="575.2" cy="117.6" r="5" class="g-var"/><text x="588.206" y="121.612" class="g-note em" text-anchor="start">2</text><text x="146" y="127" class="g-note em" text-anchor="start">2  HFE rs1800562</text><text x="300" y="127" class="g-small" text-anchor="start">혈색소증 3.4배</text><circle cx="681.3" cy="152.4" r="5" class="g-var"/><text x="681.312" y="140.383" class="g-note em" text-anchor="middle">3</text><text x="146" y="146" class="g-note em" text-anchor="start">3  CFH rs1061170</text><text x="300" y="146" class="g-small" text-anchor="start">황반변성 2.5배</text><circle cx="647.1" cy="157.0" r="5" class="g-var"/><text x="647.12" y="176.999" class="g-note em" text-anchor="middle">4</text><text x="146" y="165" class="g-note em" text-anchor="start">4  ARMS2 rs10490924</text><text x="300" y="165" class="g-small" text-anchor="start">황반변성 2.4배</text><circle cx="508.4" cy="161.8" r="5" class="g-var"/><text x="521.414" y="165.812" class="g-note em" text-anchor="start">5</text><text x="146" y="184" class="g-note em" text-anchor="start">5  Factor V Leiden</text><text x="300" y="184" class="g-small" text-anchor="start">정맥 혈전증 2.3배</text><circle cx="656.8" cy="210.1" r="5" class="g-var"/><text x="669.766" y="214.149" class="g-note em" text-anchor="start">6</text><text x="146" y="203" class="g-note em" text-anchor="start">6  NOD2 두 변이</text><text x="300" y="203" class="g-small" text-anchor="start">크론병 각 1.5배</text><circle cx="433.6" cy="210.1" r="5" class="g-var"/><text x="446.601" y="214.149" class="g-note em" text-anchor="start">7</text><text x="146" y="222" class="g-note em" text-anchor="start">7  Prothrombin</text><text x="300" y="222" class="g-small" text-anchor="start">정맥 혈전증 1.5배</text><rect x="30" y="296" width="700" height="90" rx="6" class="g-band"/><text x="44" y="318" class="g-band-t hd" text-anchor="start">이 점들의 출처</text><text x="44" y="337" class="g-band-t" text-anchor="start">Hunter 2026이 모은 목록이다. 이형접합 기준 위험 비가 1.5 이상(또는 0.67 이하)인 흔한 변이만 넣었다.</text><text x="44" y="356" class="g-band-t" text-anchor="start">유럽계에서 이 기준을 넘는 변이가 이만큼이고, 다른 계통에서는 더 적다.</text><text x="44" y="375" class="g-band-t" text-anchor="start">가로축은 그 표의 prevalence 칸이고 MAF와 정의가 다르다. 보호 방향(APOE2)은 담지 않았다.</text></g>
+<g class="g-ov" data-ov="selection"><rect x="120" y="74" width="580" height="182" class="g-panel"/><line x1="120" y1="256" x2="700" y2="256" class="g-axis"/><line x1="120" y1="74" x2="120" y2="256" class="g-axis"/><line x1="120.0" y1="256" x2="120.0" y2="261" class="g-axis"/><text x="120" y="275" class="g-small" text-anchor="middle">0.01%</text><line x1="276.8" y1="256" x2="276.8" y2="261" class="g-axis"/><text x="276.8" y="275" class="g-small" text-anchor="middle">0.1%</text><line x1="433.6" y1="256" x2="433.6" y2="261" class="g-axis"/><text x="433.601" y="275" class="g-small" text-anchor="middle">1%</text><line x1="543.2" y1="256" x2="543.2" y2="261" class="g-axis"/><text x="543.2" y="275" class="g-small" text-anchor="middle">5%</text><line x1="700.0" y1="256" x2="700.0" y2="261" class="g-axis"/><text x="700" y="275" class="g-small" text-anchor="middle">50%</text><line x1="115" y1="245.2" x2="120" y2="245.2" class="g-axis"/><text x="110" y="249.222" class="g-small" text-anchor="end">1.1</text><line x1="115" y1="210.1" x2="120" y2="210.1" class="g-axis"/><text x="110" y="214.149" class="g-small" text-anchor="end">1.5</text><line x1="115" y1="177.6" x2="120" y2="177.6" class="g-axis"/><text x="110" y="181.617" class="g-small" text-anchor="end">2</text><line x1="115" y1="131.8" x2="120" y2="131.8" class="g-axis"/><text x="110" y="135.766" class="g-small" text-anchor="end">3</text><line x1="115" y1="74.0" x2="120" y2="74.0" class="g-axis"/><text x="110" y="78" class="g-small" text-anchor="end">5</text><text x="410" y="294" class="g-small" text-anchor="middle">그 변이를 가진 사람의 비율</text><text x="110" y="64" class="g-small" text-anchor="end">위험 비</text><text x="110" y="49" class="g-small" text-anchor="end">큼</text><rect x="433.6" y="74" width="266.4" height="136.1" fill="none" stroke="#B3261E" stroke-width="2" stroke-dasharray="6 4"/><rect x="433.6" y="210.1" width="266.4" height="45.9" fill="#2563C9" style="fill-opacity:.14"/><line x1="351.6" y1="147.9" x2="665.2" y2="147.9" class="g-arrow"/><path d="M351.6 147.9 l9 -4.5 l0 9 z" fill="#3B4A5A"/><text x="380" y="40" class="g-lab em" text-anchor="middle">오른쪽 위 칸이 비어 있는 이유</text><text x="665.214" y="137.948" class="g-note em" text-anchor="end">효과가 큰 변이는 집단에서 먼저 줄어듦</text><text x="665.214" y="167.948" class="g-small" text-anchor="end">negative selection</text><text x="567" y="94" class="g-note warn" text-anchor="middle">거의 비어 있음</text><text x="567" y="228" class="g-lab em" text-anchor="middle">남는 것은 이 칸</text><text x="567" y="245" class="g-small" text-anchor="middle">흔하면서 효과가 작은 변이 다수</text><rect x="30" y="296" width="700" height="90" rx="6" class="g-band"/><text x="44" y="318" class="g-band-t hd" text-anchor="start">Hunter 2026의 설명</text><text x="44" y="337" class="g-band-t" text-anchor="start">흔한 질환의 유전 구조가 효과 작은 변이 다수로 이루어진 데에는 진화적인 이유가 있다.</text><text x="44" y="356" class="g-band-t" text-anchor="start">penetrance가 높은 변이는 negative selection으로 집단에서 먼저 제거되므로 흔해질 틈이 없다.</text><text x="44" y="375" class="g-band-t" text-anchor="start">그래서 변이 하나를 보는 검사로는 위험을 가늠하지 못하고, 수백에서 수천 개를 함께 더한다.</text></g>
+</svg>
+<!--/GEN:MAP-->
+          </div>
+          <figcaption>"실제 변이" 화면의 점만 실제 값(Hunter 2026 Table 1)이고, 나머지 두 화면은 눈금을 붙인 도식.</figcaption>
+        </figure>
+        <p><b>흔하고 효과 큰 칸이 거의 비어 있음.</b> Hunter 2026은 이형접합 기준 위험 비가 1.5 이상이거나 0.67 이하인 흔한 변이만 골라 흔한 질환과의 연관 목록을 만들었음. 그 목록이 2002년에 나온 "재현성 높은 연관" 목록보다 거의 길어지지 않았고, 기준을 넘는 변이가 유럽계에서 많지 않으며 비유럽계, 특히 아프리카계에서는 더 적음 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a>. 흔한 질환이 몇 개의 흔한 큰 효과 변이로 설명된다는 가설의 강한 형태가 그 목록으로 사실상 접힘.</p>
+        <p><b>이유는 선택.</b> penetrance가 높은 변이는 negative selection으로 집단에서 먼저 제거되므로, 흔해질 시간을 갖지 못함 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a>. 남는 것은 효과가 작은 변이 다수이고, 그래서 위험을 가늠하려면 변이 하나가 아니라 수백에서 수천 개를 함께 더함 — <a href="../../../gwas/03-postgwas/prs.html#what">PRS 쪽 1절</a>.</p>
+        <div class="callout">
+          <h4>HLA 영역은 그 목록 밖</h4>
+          <p>Hunter 2026은 HLA 영역을 자세히 다루지 않았음. 유전자가 많고 multiallelic haplotype과 구조 변이가 섞여 있어 "흔한 변이 하나"라는 정의에 들어맞지 않기 때문이고, 표에는 여러 autoimmune 질환에 걸리는 "여러 allele" 한 줄로만 적었음 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a>. 그 한 줄이 자가면역 쪽에서는 구조의 중심이라는 것이 <a href="#by-disease">4절</a>의 첫 줄.</p>
+        </div>
+
+        <!-- ───────── 4. 수 ───────── -->
+        <h2 id="count">몇 개가 관여하나<small>Polygenicity</small></h2>
+        <p class="lede">왼쪽 아래 칸으로 갈수록 세기가 어려워짐. 그래서 "몇 개"는 관찰값이면서 동시에 표본 크기의 함수.</p>
+        <figure class="fig" id="fig-count" data-mode="count">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-count" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="count" aria-pressed="true">형질마다</button>
+              <button type="button" data-mode="sample" aria-pressed="false">표본을 늘리면</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:COUNT-->
+<svg class="g-svg" viewBox="0 0 760 368" role="img" aria-labelledby="arCountT arCountD" xmlns="http://www.w3.org/2000/svg">
+<title id="arCountT">형질마다 연관이 잡힌 변이의 수와, 그 수가 표본 크기에 딸려 있는 것</title>
+<desc id="arCountD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 1에서 10만까지 로그 눈금인 가로축 위에 비타민 D의 locus 4개, LDL 콜레스테롤 52개, 조현병 113개, 키의 SNP 9만에서 10만 개를 점으로 찍어, 같은 틀로 세어도 형질마다 수가 크게 다른 것을 보여 준다. 두 번째는 세 형질에 대해 작은 표본에서 얻은 locus 수와 큰 표본에서 얻은 수를 가로 화살표로 이어, 관찰되는 수가 표본 크기에 딸려 있음을 보여 준다.</desc>
+<g class="g-ov" data-ov="count"><text x="380" y="40" class="g-lab em" text-anchor="middle">같은 틀로 세면 형질마다 수가 이렇게 다르다</text><line x1="190.0" y1="70" x2="190.0" y2="232" class="g-grid"/><line x1="190.0" y1="232" x2="190.0" y2="237" class="g-axis"/><text x="190" y="251" class="g-small" text-anchor="middle">1</text><line x1="289.2" y1="70" x2="289.2" y2="232" class="g-grid"/><line x1="289.2" y1="232" x2="289.2" y2="237" class="g-axis"/><text x="289.226" y="251" class="g-small" text-anchor="middle">10</text><line x1="388.5" y1="70" x2="388.5" y2="232" class="g-grid"/><line x1="388.5" y1="232" x2="388.5" y2="237" class="g-axis"/><text x="388.452" y="251" class="g-small" text-anchor="middle">100</text><line x1="487.7" y1="70" x2="487.7" y2="232" class="g-grid"/><line x1="487.7" y1="232" x2="487.7" y2="237" class="g-axis"/><text x="487.678" y="251" class="g-small" text-anchor="middle">1,000</text><line x1="586.9" y1="70" x2="586.9" y2="232" class="g-grid"/><line x1="586.9" y1="232" x2="586.9" y2="237" class="g-axis"/><text x="586.904" y="251" class="g-small" text-anchor="middle">1만</text><line x1="686.1" y1="70" x2="686.1" y2="232" class="g-grid"/><line x1="686.1" y1="232" x2="686.1" y2="237" class="g-axis"/><text x="686.13" y="251" class="g-small" text-anchor="middle">10만</text><line x1="190" y1="232" x2="716" y2="232" class="g-axis"/><text x="453" y="271" class="g-small" text-anchor="middle">연관이 잡힌 locus 또는 변이의 수</text><line x1="190" y1="86" x2="249.7" y2="86" class="g-mid"/><circle cx="249.7" cy="86" r="6" fill="#D9822B"/><text x="44" y="90" class="g-note em" text-anchor="start">비타민 D</text><text x="249.74" y="72" class="g-note em" text-anchor="middle">locus 4</text><line x1="190" y1="124" x2="360.3" y2="124" class="g-mid"/><circle cx="360.3" cy="124" r="6" fill="#2563C9"/><text x="44" y="128" class="g-note em" text-anchor="start">LDL 콜레스테롤</text><text x="360.272" y="110" class="g-note em" text-anchor="middle">locus 52</text><line x1="190" y1="162" x2="393.7" y2="162" class="g-mid"/><circle cx="393.7" cy="162" r="6" fill="#5B6B7A"/><text x="44" y="166" class="g-note em" text-anchor="start">조현병</text><text x="393.719" y="148" class="g-note em" text-anchor="middle">locus 113</text><line x1="190" y1="200" x2="683.9" y2="200" class="g-mid"/><circle cx="683.9" cy="200" r="6" fill="#2563C9"/><text x="44" y="204" class="g-note em" text-anchor="start">키</text><text x="683.92" y="186" class="g-note em" text-anchor="middle">SNP 9만–10만 개</text><rect x="30" y="290" width="700" height="71" rx="6" class="g-band"/><text x="44" y="312" class="g-band-t hd" text-anchor="start">수를 견줄 때</text><text x="44" y="331" class="g-band-t" text-anchor="start">네 값의 단위가 같지 않다. 앞의 셋은 유의 기준을 넘은 locus 수이고, 키는 시뮬레이션이 요구한 SNP 수다.</text><text x="44" y="350" class="g-band-t" text-anchor="start">표본도 다르다. 비타민 D는 33,000명 넘는 GWAS, LDL은 188,577명, 조현병은 수만 명 규모다.</text></g>
+<g class="g-ov" data-ov="sample"><text x="380" y="40" class="g-lab em" text-anchor="middle">표본을 늘리면 무엇이 달라지나</text><text x="44" y="102" class="g-note em" text-anchor="start">비타민 D</text><rect x="196" y="74" width="196" height="48" rx="6" fill="#5B6B7A" style="fill-opacity:.9"/><text x="210" y="94" class="g-box-t" text-anchor="start">33,000명 넘는 GWAS</text><text x="210" y="112" class="g-box-t" text-anchor="start" style="fill-opacity:.82">locus 4개</text><rect x="468" y="74" width="196" height="48" rx="6" fill="#2563C9" style="fill-opacity:.9"/><text x="482" y="94" class="g-box-t" text-anchor="start">79,366명</text><text x="482" y="112" class="g-box-t" text-anchor="start" style="fill-opacity:.82">locus 2개 더</text><line x1="392" y1="98.0" x2="459" y2="98.0" class="g-arrow"/><path d="M468 98.0 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><text x="430" y="88" class="g-small" text-anchor="middle">5배</text><text x="44" y="174" class="g-note em" text-anchor="start">전완 골밀도</text><rect x="196" y="146" width="196" height="48" rx="6" fill="#5B6B7A" style="fill-opacity:.9"/><text x="210" y="166" class="g-box-t" text-anchor="start">5,672명</text><text x="210" y="184" class="g-box-t" text-anchor="start" style="fill-opacity:.82">locus 1개</text><rect x="468" y="146" width="196" height="48" rx="6" fill="#2563C9" style="fill-opacity:.9"/><text x="482" y="166" class="g-box-t" text-anchor="start">새 locus 0개</text><text x="482" y="184" class="g-box-t" text-anchor="start" style="fill-opacity:.82">low-frequency 변이 1개</text><line x1="392" y1="170.0" x2="459" y2="170.0" class="g-arrow"/><path d="M468 170.0 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><text x="430" y="160" class="g-small" text-anchor="middle">표본 2배</text><text x="44" y="246" class="g-note em" text-anchor="start">조현병</text><rect x="196" y="218" width="196" height="48" rx="6" fill="#5B6B7A" style="fill-opacity:.9"/><text x="210" y="238" class="g-box-t" text-anchor="start">case 수백 명</text><text x="210" y="256" class="g-box-t" text-anchor="start" style="fill-opacity:.82">거의 없음</text><rect x="468" y="218" width="196" height="48" rx="6" fill="#2563C9" style="fill-opacity:.9"/><text x="482" y="238" class="g-box-t" text-anchor="start">표본 수만 명</text><text x="482" y="256" class="g-box-t" text-anchor="start" style="fill-opacity:.82">locus 113개</text><line x1="392" y1="242.0" x2="459" y2="242.0" class="g-arrow"/><path d="M468 242.0 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><text x="430" y="232" class="g-small" text-anchor="middle">수십 배</text><rect x="30" y="290" width="700" height="71" rx="6" class="g-band"/><text x="44" y="312" class="g-band-t hd" text-anchor="start">같은 형질, 다른 표본</text><text x="44" y="331" class="g-band-t" text-anchor="start">비타민 D는 표본을 다섯 배로 늘려도 locus가 두 개만 늘었다. 효과가 큰 소수가 이미 잡혀 있었다는 뜻이다.</text><text x="44" y="350" class="g-band-t" text-anchor="start">전완 골밀도는 새 locus 대신 같은 locus에서 효과 큰 low-frequency 변이 하나가 나왔다.</text></g>
+</svg>
+<!--/GEN:COUNT-->
+          </div>
+          <figcaption>수치는 Timpson 2017 본문(비타민 D · LDL 콜레스테롤 · 조현병 · 전완 골밀도)과 Tam 2019(키). 네 값의 단위가 같지 않음.</figcaption>
+        </figure>
+        <p><b>끝까지 가면 거의 모든 유전자.</b> 키의 유전율 80%를 설명하려면 SNP 9만–10만 개가 필요하다는 시뮬레이션 결과가 나왔고, 이는 전체 유전자의 상당 부분이 복합 형질의 변이에 기여한다는 뜻 <a class="src" href="https://doi.org/10.1038/s41576-019-0127-1" target="_blank" rel="noopener">Tam 2019</a>. Tam 2019은 모든 것을 가리키면 아무것도 가리키지 못할 위험이 따라온다고 적음.</p>
+        <p><b>omnigenic 모형.</b> 유전자 조절망이 충분히 얽혀 있어서 질환 관련 세포에서 발현되는 모든 유전자가 core 질환 유전자의 기능에 영향을 줄 수 있고, 유전율 대부분이 core 경로 밖 유전자의 효과로 설명된다는 모형 <a class="src" href="https://doi.org/10.1038/s41576-019-0127-1" target="_blank" rel="noopener">Tam 2019</a>. 발현 쪽 관찰이 이 그림과 맞물림 — 사람의 흔한 유전 변이 가운데 최대 85%가 적어도 nominal 수준에서 단백질 코딩 유전자 전사체의 발현과 연관됨 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a>.</p>
+        <p><b>locus 안에서도 갈림.</b> 구조는 locus 사이에만 있는 것이 아님. 키 요약통계 133,653명분에 조건부·결합 분석을 돌리면 36개 locus에서 독립 신호가 여럿 나와 모두 87개 SNP가 되는데, 같은 틀을 BMI 123,865명분에 적용하면 P&lt;5×10⁻⁸ 기준에서 복수 신호 locus가 하나도 나오지 않음 <a class="src" href="https://doi.org/10.1038/ng.2213" target="_blank" rel="noopener">Yang 2012</a>.</p>
+        <div class="callout">
+          <h4>예측 쪽 결과는 GWAS 쪽에</h4>
+          <p>인과 변이가 몇 개인지가 PRS의 예측 정확도에 어떻게 들어오는지는 <a href="../../../gwas/03-postgwas/prs.html#accuracy">PRS · 정확도 절</a>에 시뮬레이션으로 나와 있음. 유전율 값 자체와 추정량별 비교는 <a href="../../../gwas/03-postgwas/genetic-correlation.html#heritability">heritability 절</a>.</p>
+        </div>
+
+        <!-- ───────── 5. 질환마다 ───────── -->
+        <h2 id="by-disease">질환마다 다른 모양<small>Architecture by disease</small></h2>
+        <p class="lede">위의 네 축을 실제 질환에 대 보면 모양이 서로 많이 다름. 어느 쪽이 더 "유전적"인가의 문제가 아니라, 위험이 어디에 얹혀 있는가의 문제.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>형질</th><th>위험이 어디에 있나</th></tr></thead>
+            <tbody>
+              <tr><th>류마티스 관절염</th><td>한 영역이 지배. HLA 항원 결합 주머니를 만드는 MHC 안 아미노산 다형성 다섯 개가 표현형 분산의 12.7%를 설명하고, 확립된 non-MHC 위험 allele을 모두 합치면 4% <a class="src" href="https://doi.org/10.1038/s41588-022-01032-z" target="_blank" rel="noopener">Ishigaki 2022</a></td></tr>
+              <tr><th>조현병</th><td>두 층이 같이 있음. 흔한 위험 변이 수백 개 위에 희귀 CNV가 얹힘. 동아시아계 44,161명에서 22q11.21 deletion의 OR이 103.75(환자 41명 · 대조 0명)였고, 알려진 locus를 전부 빼도 genome 전체 희귀 CNV burden이 남음 <a class="src" href="https://doi.org/10.1038/s41588-026-02732-6" target="_blank" rel="noopener">Chen 2026</a></td></tr>
+              <tr><th>자폐</th><td>임상 쪽과 집단 쪽이 갈림. de novo protein-truncating variant의 상대위험이 3.5이고 그 신호로 위험 유전자 102개가 잡혔음 <a class="src" href="https://doi.org/10.1016/j.cell.2019.12.036" target="_blank" rel="noopener">Satterstrom 2020</a>. 임상 자폐 인구의 10–20%가 de novo 희귀 점 돌연변이나 CNV를 갖지만, 집단 전체에서 de novo가 자폐 위험에 기여하는 몫은 약 3% <a class="src" href="https://doi.org/10.1038/s41572-019-0138-4" target="_blank" rel="noopener">Lord 2020</a></td></tr>
+              <tr><th>혈구 형질</th><td>흔한 쪽이 크지만 드문 쪽도 뚜렷함. platelet count는 흔한 변이가 설명하는 유전율이 드문 변이 쪽의 약 4배, red blood cell count는 약 5.5배. 드문 coding 변이는 드문 변이 전체 유전율의 1/5–1/4쯤 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a></td></tr>
+              <tr><th>생화학 형질</th><td>유전율이 비슷해도 갈림. 25-hydroxyvitamin D는 소수의 큰 효과 쪽, LDL 콜레스테롤은 넓은 효과 분포 쪽 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><b>같은 경로, 다른 분포.</b> 혈구 형질에서 흔한 신호와 드문 신호는 대체로 같은 경로와 같은 세포형을 지목하지만 퍼진 모양이 다름. 흔한 신호는 훨씬 많은 유전자에 흩어져 있고, 드문 coding 신호는 적은 수의 유전자에 몰려 있음 — platelet count의 드문 변이 burden 가운데 상당한 몫이 JAK2 한 유전자 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a>. Poeschla 2026은 이 갈림이 purifying selection(core 유전자의 큰 효과 변이가 드물게 유지됨)과 omnigenic 모형 양쪽과 다 맞물린다고 봄.</p>
+        <p><b>두 층이 서로를 일부 대신함.</b> 동아시아계 분석에서 500 kb를 넘는 큰 deletion을 가진 환자의 PRS 평균이 비보유 환자보다 낮았고(0.39 대 0.49, P=0.01) 대조군에서는 그런 차이가 없었음 <a class="src" href="https://doi.org/10.1038/s41588-026-02732-6" target="_blank" rel="noopener">Chen 2026</a>. 희귀 CNV burden은 PRS를 보정한 뒤에도 위험과 연관됐지만(P=2.09×10⁻⁴) liability 척도에서 설명하는 몫은 PRS보다 훨씬 작았음 — 보유자 자체가 드물기 때문.</p>
+
+        <!-- ───────── 6. 조심할 것 ───────── -->
+        <h2 id="limits">구조를 말할 때 조심할 것<small>What the map hides</small></h2>
+        <p class="lede">"이 질환의 유전 구조는 이렇다"는 문장은 측정 조건을 지운 문장일 때가 많음.</p>
+        <p><b>표본 크기의 그림자.</b> 형질 사이 구조 비교는 표본 크기 차이에 묶여 있음. 조현병은 case가 수백 명이던 시절에 연관된 흔한 변이가 거의 없었고, 표본이 수만 명이 되자 genome-wide 유의 locus 113곳이 보였음 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a>. 지금 보이는 모양이 그 형질의 모양이라고 단정하지 못함.</p>
+        <p><b>같은 형질도 재는 부위에 따라 달라짐.</b> 골밀도는 측정 부위가 여럿. 전완에서 5,672명을 보면 WNT16–CPED1 한 곳만 나오고, 표본을 두 배로 늘려도 새 locus가 생기지 않는 대신 같은 locus에서 effect allele당 0.46 표준편차짜리 low-frequency 변이가 나옴 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a>.</p>
+        <p><b>집단을 바꾸면 목록이 바뀜.</b> 효과 자체는 집단 사이에 잘 옮겨 가도 보유자 빈도는 크게 다를 수 있음. 동아시아계에서 새로 유의해진 네 locus 안 유전자 12개의 평균 보유자 빈도가 동아시아계 0.38%, 유럽계 0.0017%였음(P=2.6×10⁻⁵) <a class="src" href="https://doi.org/10.1038/s41588-026-02732-6" target="_blank" rel="noopener">Chen 2026</a>. locus 목록을 유럽계 표본에서만 만들면 그 목록이 표본 구성의 함수가 됨 — <a href="../05-function/qtl.html">세포·조직마다 달라지는 QTL</a>과 같은 종류의 조건 의존성.</p>
+        <p><b>환경이 바뀌면 구조도 흔들림.</b> Inuit 집단에서 지난 60년 동안 탄수화물 섭취가 크게 바뀐 것이, 2형 당뇨병 위험과 혈당 조절에 큰 효과를 내는 흔한 allele이 드러나게 한 계기로 해석됨 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a>. 같은 변이가 다른 환경에서 다른 크기로 보임.</p>
+        <p><b>가장 유의한 locus가 핵심 유전자는 아님.</b> platelet crit에서 조건부 독립 GWAS locus 742곳을 trans 조절 네트워크에 대 보면, 질환에 가까운 유전자로 가는 비율이 어느 p값 구간에서나 17.1–33.3%로 GWAS 유의도와 무관했음. 유의도와 함께 올라간 것은 그런 유전자를 다섯 개 이상 trans 조절하는 허브 쪽 비율(상관 0.80, P=0.017) <a class="src" href="https://doi.org/10.1016/j.cell.2026.07.034" target="_blank" rel="noopener">Salamone 2026</a>.</p>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>유전율이 높으면 큰 효과 유전자가 있음 ✗</code><p class="why">유전율이 비슷한 25-hydroxyvitamin D와 LDL 콜레스테롤의 구조가 근본적으로 다름 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></p></div>
+          <div class="fix"><code>효과 큰 흔한 변이가 안 보이는 건 방법의 한계 ✗</code><p class="why">일부는 검출 한계지만, 오른쪽 위 칸이 빈 데에는 진화적인 이유가 있음. penetrance 높은 변이가 negative selection으로 먼저 제거됨 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a></p></div>
+          <div class="fix"><code>드문 큰 효과 변이가 질환 위험의 대부분 ✗</code><p class="why">임상 자폐 인구의 10–20%가 de novo 변이를 갖지만 집단 전체 위험에 대한 기여는 약 3% <a class="src" href="https://doi.org/10.1038/s41572-019-0138-4" target="_blank" rel="noopener">Lord 2020</a></p></div>
+          <div class="fix"><code>유전 구조는 형질의 고정된 속성 ✗</code><p class="why">표본 크기·측정 부위·집단·환경이 바뀌면 관찰되는 구조가 바뀜. 조현병 locus 수와 전완 골밀도가 그 예 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></p></div>
+          <div class="fix"><code>같은 질환이면 집단이 달라도 같은 locus가 나옴 ✗</code><p class="why">효과는 옮겨 가도 보유자 빈도가 달라 발견 자체가 달라짐(동아시아계 0.38% 대 유럽계 0.0017%) <a class="src" href="https://doi.org/10.1038/s41588-026-02732-6" target="_blank" rel="noopener">Chen 2026</a></p></div>
+          <div class="fix"><code>가장 유의한 locus를 따라가면 핵심 유전자 ✗</code><p class="why">질환에 가까운 유전자로 가는 비율이 p값 구간과 무관했고, 유의도가 올라갈 때 늘어난 것은 네트워크 허브 쪽 <a class="src" href="https://doi.org/10.1016/j.cell.2026.07.034" target="_blank" rel="noopener">Salamone 2026</a></p></div>
+          <div class="fix"><code>흔한 신호와 드문 신호는 다른 생물학 ✗</code><p class="why">혈구 형질에서 둘은 대체로 같은 경로와 세포형을 지목하고, 퍼진 범위만 다름 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">genetic architecture · 유전 구조 · 유전적 구조 · allelic spectrum · 대립유전자 스펙트럼 · polygenicity · 다유전자성 · omnigenic · omnigenic model · core gene · peripheral gene · common disease–common variant · CDCV · negative selection · purifying selection · penetrance · minor allele frequency · MAF · low-frequency variant · rare variant · de novo variant · protein-truncating variant · PTV · copy number variant · CNV · decanalization · oligogenic · allelic heterogeneity · conditional and joint analysis · COJO</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>교과서</h3>
+          <p class="text-ref"><b>Strachan &amp; Read HMG 5판</b><br>18.4 GWAS의 한계 · 18.5 복합 형질의 유전학에서 무엇을 배웠나(591쪽). 네 축의 틀과 common disease–common variant 가설의 역사는 교과서에 있고, 지도의 빈 칸과 질환별 비교는 논문으로 채움</p>
+        </div>
+        <div class="aside-box"><h3>이 절의 다른 질문</h3><div class="related-list">
+          <a href="./additive-model.html">질환 유무를 어떻게 연속된 위험으로 보나? →</a>
+          <a href="./heritability.html">유전율은 무엇을 재나? →</a>
+          <a href="./index.html">다유전자 형질 목록 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../../../gwas/03-postgwas/prs.html#what">PRS는 왜 수천 개를 더하나 (그림) →</a>
+          <a href="../../../gwas/03-postgwas/genetic-correlation.html#heritability">GWAS · heritability 수치와 분할 (그림) →</a>
+          <a href="../../../gwas/02-association/manhattan.html">Manhattan plot과 QQ plot (그림) →</a>
+          <a href="../05-function/qtl.html">QTL이 세포·조직마다 달라지는 이유 →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener noreferrer">Timpson 2017, Nat Rev Genet — 유전 구조의 네 축과 형질별 비교 ↗</a>
+          <a href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener noreferrer">Hunter 2026, NEJM — 효과 큰 흔한 변이 목록과 negative selection ↗</a>
+          <a href="https://doi.org/10.1038/s41576-019-0127-1" target="_blank" rel="noopener noreferrer">Tam 2019, Nat Rev Genet — polygenicity와 omnigenic 모형 ↗</a>
+          <a href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener noreferrer">Poeschla 2026, Nat Rev Genet — 혈구 형질의 흔한·드문 기여 비교 ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02732-6" target="_blank" rel="noopener noreferrer">Chen 2026, Nat Genet — 희귀 CNV와 PRS가 서로를 일부 대신함 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>

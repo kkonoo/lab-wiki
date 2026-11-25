@@ -41,7 +41,7 @@
     "heritability": { key: "heritability", definition: "형질 분산 가운데 유전 요인이 설명하는 비율." },
     "coheritability": { key: "coheritability", definition: "두 형질이 공유하는 유전 분산의 크기. 형질을 표준화했을 때의 genetic covariance." },
     "pleiotropy": { key: "pleiotropy", definition: "변이 하나가 여러 형질에 영향을 주는 것." },
-    "liability": { key: "liability", definition: "질병으로 이어지는 연속적인 소인. 문턱을 넘으면 발병한다고 보는 liability threshold 모형의 척도." },
+    "liability": { key: "liability", definition: "질병으로 이어지는 연속적인 소인. threshold를 넘으면 발병한다고 보는 liability threshold 모형의 척도." },
     "assortative mating": { key: "assortative-mating", definition: "비슷한 형질을 가진 사람끼리 짝을 짓는 것. 유전 분산과 genetic correlation 추정치를 키움." },
     "collider bias": { key: "collider-bias", definition: "두 변수가 함께 영향을 주는 제3의 변수(예: 연구 참여)로 표본을 고를 때 생기는 가짜 상관." },
     "polygenic risk score": { key: "prs", definition: "개인의 genotype에 GWAS에서 추정한 효과를 곱해 모두 더한 점수. 유전 소인을 값 하나로 요약함." },
@@ -54,7 +54,28 @@
     "scoring file": { key: "scoring-file", definition: "점수를 다시 계산하는 데 필요한 최소 정보를 담은 파일. genome build · 위치 · 효과 allele · 가중치." },
     "auc": { key: "auc", definition: "환자와 대조군을 가려내는 능력. 0.5가 무작위, 1이 완전 분류." },
     "calibration": { key: "calibration", definition: "예측한 확률이 실제 발생 빈도와 맞는 정도." },
-    "transferability": { key: "transferability", definition: "한 집단에서 만든 점수가 다른 집단에서도 예측력을 유지하는 정도." }
+    "transferability": { key: "transferability", definition: "한 집단에서 만든 점수가 다른 집단에서도 예측력을 유지하는 정도." },
+    "mendelian randomization": { key: "mr", definition: "노출과 연관된 genetic variant를 instrumental variable로 써서 노출이 결과에 미치는 인과 효과를 추정하는 설계." },
+    "instrumental variable": { key: "instrument", definition: "노출과는 연관되고 교란요인·결과와는 노출을 통해서만 이어지는 변수. MR에서는 genetic variant가 그 역할을 맡음." },
+    "instrument": { key: "instrument", definition: "MR에서 노출의 대리로 쓰는 genetic variant. 세 가정(relevance·independence·exclusion restriction)을 만족해야 함." },
+    "exclusion restriction": { key: "exclusion-restriction", definition: "노출과 교란요인을 고정하면 instrument가 결과와 조건부 독립이라는 가정. 모형에서는 instrument의 직접효과가 0." },
+    "wald ratio": { key: "wald-ratio", definition: "변이 하나로 구한 인과 추정치. 변이–결과 효과를 변이–노출 효과로 나눈 값." },
+    "ratio estimate": { key: "wald-ratio", definition: "변이 하나로 구한 인과 추정치. 변이–결과 효과를 변이–노출 효과로 나눈 값." },
+    "ivw": { key: "ivw", definition: "변이별 Wald ratio를 결과 쪽 분산의 역수로 가중해 합친 추정량. 원점을 지나는 가중 회귀의 기울기와 같음." },
+    "inverse-variance weighted": { key: "ivw", definition: "변이별 Wald ratio를 결과 쪽 분산의 역수로 가중해 합친 추정량. 원점을 지나는 가중 회귀의 기울기와 같음." },
+    "mr-egger": { key: "mr-egger", definition: "IVW와 같은 가중 회귀에서 절편 제약을 푼 추정량. 절편이 평균 pleiotropic 효과, 기울기가 보정된 인과효과." },
+    "weighted median": { key: "weighted-median", definition: "변이별 Wald ratio를 IVW와 같은 가중치로 정렬해 취한 중앙값. 가중치의 50% 이상이 valid instrument면 일관 추정." },
+    "inside": { key: "inside", definition: "InSIDE(Instrument Strength Independent of Direct Effect). 변이의 직접효과 분포가 노출 효과와 독립이라는 가정. MR-Egger가 일관되기 위한 조건." },
+    "horizontal pleiotropy": { key: "horizontal-pleiotropy", definition: "변이가 노출을 거치지 않는 경로로 결과에 영향을 주는 것. MR의 exclusion restriction 위반." },
+    "vertical pleiotropy": { key: "vertical-pleiotropy", definition: "변이가 노출을 거쳐 결과에 영향을 주는 것. MR이 설계의 재료로 쓰는 쪽." },
+    "mr-presso": { key: "mr-presso", definition: "IVW 회귀 잔차로 pleiotropic outlier 변이를 찾아 빼고 다시 추정하는 방법. global·outlier·distortion 세 검정으로 이루어짐." },
+    "weak instrument": { key: "weak-instrument", definition: "노출과의 연관이 약한 instrument. F가 작을수록 인과 추정치가 교란된 관찰 연관 쪽으로 끌림." },
+    "f statistic": { key: "f-statistic", definition: "instrument 강도의 지표. 변이–노출 회귀의 F이며 10을 넘는 것을 기준으로 삼음." },
+    "winner's curse": { key: "winners-curse", definition: "같은 자료에서 가장 강한 변이를 고르면 그 변이의 효과가 과대 추정되는 선택 편향." },
+    "harmonisation": { key: "harmonisation", definition: "두 GWAS의 effect allele을 같은 쪽으로 맞추는 절차. strand와 palindromic SNP 처리를 포함함." },
+    "funnel plot": { key: "funnel-plot", definition: "instrument 강도를 세로축에, 변이별 추정치를 가로축에 그린 진단 그림. 비대칭이면 directional pleiotropy를 의심함." },
+    "cochran's q": { key: "cochran-q", definition: "변이별 추정치가 서로 양립하는지 보는 이질성 검정통계량." },
+    "smr": { key: "smr", definition: "GWAS와 eQTL summary statistics를 MR 틀에서 결합해 형질과 연관된 유전자를 우선순위화하는 방법." }
   };
 
   /* (앞 경계)(용어)(뒤 경계) — 영문·숫자에 붙은 부분 일치는 잡지 않는다. 긴 용어가 먼저 맞도록 길이순 */

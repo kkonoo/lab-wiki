@@ -1,0 +1,59 @@
+/* ===========================================================
+   Human genetics 시각 페이지 공용 그림 스타일. 로드 순서: … → article.css → genetics-fig.css
+   그림은 site-meta/genetics-figures/make-*-figures.py가 GEN 구간에 주입한다 — 훅 목록은 맨 아래.
+   요소 색(enhancer · promoter · CTCF · 변이)은 데이터 색이라 생성기에 둔다(design.md §2).
+   =========================================================== */
+
+.g-svg { display: block; width: 100%; height: auto; min-width: 620px; }
+.g-svg text { font-family: var(--sans); }
+
+/* 모드 토글: .seg[data-fig] 버튼 → figure[data-mode] · 해당 .g-ov에 .on (genetics-fig.js) */
+.g-ov { display: none; }
+.g-ov.on { display: inline; }
+
+.g-dna { stroke: #8A949C; stroke-width: 2; }
+.g-box-t { font-size: 12.5px; font-weight: 700; fill: #fff; }
+.g-lab { font-size: 12px; font-weight: 600; fill: var(--body); }
+.g-note { font-size: 12px; fill: var(--body); }
+.g-note.warn { fill: #B3261E; font-weight: 700; }
+.g-note.em { font-weight: 700; fill: var(--text); }
+.g-small { font-size: 11px; fill: var(--muted); }
+.g-band { fill: var(--surface-2); stroke: var(--line); stroke-width: 1; }
+.g-band-t { font-size: 12.5px; fill: var(--text); }
+.g-band-t.hd { font-weight: 700; }
+
+.g-loop { fill: none; stroke: var(--theme); stroke-width: 2.4; }
+.g-loop.off { stroke: #B8C0C7; stroke-width: 1.6; stroke-dasharray: 5 4; }
+.g-arrow { fill: none; stroke: #3B4A5A; stroke-width: 1.6; }
+.g-splice { fill: none; stroke: #3B4A5A; stroke-width: 1.6; }
+.g-splice.skip { stroke: #B3261E; stroke-dasharray: 5 4; }
+.g-tf { fill: #E6F2EA; stroke: #2E7D4F; stroke-width: 1.6; }
+.g-tf.weak { stroke-dasharray: 4 3; fill: #F4F7F5; }
+.g-nuc { fill: #9AA5AF; stroke: #fff; stroke-width: 1.2; }
+.g-var { fill: #B3261E; stroke: #fff; stroke-width: 1.5; }
+.g-contact { fill: none; stroke: var(--theme); stroke-linecap: round; }
+
+.g-bar1 { fill: var(--theme); }
+.g-bar2 { fill: #C9D2DA; }
+.g-bar-t { font-size: 12.5px; font-weight: 700; }
+
+/* 점 그림(qtl): 사람 1명 = 점 1개, 가로선 = 중앙값 */
+.g-lab.em { font-weight: 700; fill: var(--text); }
+.g-axis { stroke: #8A949C; stroke-width: 1.2; }
+.g-grid { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 3; }
+.g-panel { fill: none; stroke: var(--line); stroke-width: 1; }
+.g-panel.bulk { stroke: #8A949C; stroke-width: 1.4; }
+.g-pt { fill: var(--theme); fill-opacity: .45; }
+.g-med { stroke: #1F2937; stroke-width: 2.4; stroke-linecap: round; }
+.g-mid { stroke: #8A949C; stroke-width: 1.2; stroke-dasharray: 4 3; }
+
+/* 분포 곡선과 막대(04절): 유전 점수 분포 · liability와 threshold */
+.g-dist { fill: var(--theme); fill-opacity: .13; stroke: var(--theme); stroke-width: 2; }
+.g-dist.alt { fill: #D9822B; fill-opacity: .11; stroke: #D9822B; }
+.g-tail { fill: #B3261E; fill-opacity: .28; }
+.g-thr { stroke: #B3261E; stroke-width: 2; stroke-dasharray: 5 4; }
+
+/* ── 훅 목록(g- 접두사, visual-page.md §4) ──
+   g-svg · g-ov · g-dna · g-box-t · g-lab(.em) · g-note(.warn .em) · g-small · g-band · g-band-t(.hd)
+   g-loop(.off) · g-arrow · g-splice(.skip) · g-tf(.weak) · g-nuc · g-var · g-contact · g-bar1 · g-bar2 · g-bar-t
+   g-axis · g-grid · g-panel(.bulk) · g-pt · g-med · g-mid · g-dist(.alt) · g-tail · g-thr */

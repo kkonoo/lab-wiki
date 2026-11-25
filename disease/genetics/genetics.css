@@ -1,0 +1,49 @@
+/* ===========================================================
+   Human genetics 전용 규칙 — 로드 순서: base.css → spa.css → genetics.css (→ article.css · genetics-fig.css)
+   허브(index.html)와 절 목록(<NN-절>/index.html)은 SPA가 아니라 정적 HTML이다(site-meta/genetics.md).
+   그래서 spa.css의 카드 · 질문 블록 틀을 <a>로 쓰고, 버튼 전제 규칙만 여기서 맞춘다.
+   =========================================================== */
+
+/* 옛 색 이름 → base.css 토큰. article.css가 아직 이 이름을 쓴다(immunology.css · gwas.css와 같은 별칭).
+   body에 둔다 — :root에 두면 body[data-domain]의 --theme(blue)이 아니라 사이트 초록으로 굳는다. */
+body {
+  --ink: var(--text);
+  --paper: var(--bg);
+  --ink-soft: var(--body);
+  --bg-soft: var(--surface-2);
+  --green: var(--theme);
+  --green-soft: var(--theme-soft);
+  --blue: var(--theme);
+  --rust: #C2531F;
+  --slate: #4F5D75;
+  --gold: #936F21;
+}
+
+/* 허브 카드: spa.css의 .category-card는 button 전제 */
+a.category-card { text-decoration: none; }
+.category-card.is-pending { cursor: default; background: var(--surface-2); }
+.category-card.is-pending:hover { border-color: var(--line); box-shadow: none; transform: none; }
+.category-card.is-pending .card-route { color: var(--faint); }
+.category-card p.text-map { margin: -14px 0 22px; color: var(--theme); font-size: 13px; font-weight: 700; }
+
+/* 절 목록 줄: spa.css의 .concept-row button 자리를 a로 */
+.concept-row a.row-link {
+  padding: 6px 2px; color: var(--theme); font-size: 14.5px; font-weight: 600;
+  white-space: nowrap; text-decoration: none;
+}
+.concept-row a.row-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+/* 아직 안 만든 줄: 링크가 아니라 글자만 */
+.concept-row span.row-link {
+  padding: 6px 2px; color: var(--faint); font-size: 14.5px; font-weight: 600; white-space: nowrap;
+}
+.concept-row .map-label.borrowed { color: var(--theme); }
+
+/* 진한 띠 위 breadcrumb: spa.css는 button만 색을 맞춘다 */
+.breadcrumb a { color: var(--muted); text-decoration: none; }
+.breadcrumb a:hover { color: var(--theme); }
+.breadcrumb:has(+ .page-header) a { color: rgba(255, 255, 255, .72); }
+.breadcrumb:has(+ .page-header) a:hover { color: #fff; }
+
+/* 시각 페이지 aside의 교과서 장 표시 */
+.text-ref { margin: 0; color: var(--body); font-size: 13.5px; line-height: 1.6; }
+.text-ref b { color: var(--text); }

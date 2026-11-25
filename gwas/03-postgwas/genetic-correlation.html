@@ -44,7 +44,7 @@
 
         <!-- ───────── 1. heritability ───────── -->
         <h2 id="heritability">어느 heritability를 말하는가<small>Heritability</small></h2>
-        <p class="lede">heritability는 형질 분산 가운데 유전 요인이 설명하는 비율. broad-sense는 dominance와 epistasis까지 포함하고, narrow-sense는 additive 효과만 셈 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a>. GWAS에서 말하는 h²는 어떤 변이까지 세느냐에 따라 값이 달라짐</p>
+        <p class="lede">heritability는 형질 분산 가운데 유전 요인이 설명하는 비율. broad-sense는 dominance와 epistasis까지 포함하고, narrow-sense는 additive 효과만 셈 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a>. GWAS에서 말하는 h²는 어떤 변이까지 세느냐에 따라 값이 달라짐. 추정량마다 값이 갈리는 까닭과 설계(쌍둥이 · GRM)는 <a href="../../disease/genetics/04-polygenic/heritability.html">Human genetics 교재의 유전율 쪽</a></p>
         <div class="cases">
           <div style="--c:#6B736E"><span class="lv">가계</span><h4>pedigree · twin h²</h4><p>친족 사이 표현형 공분산에서 추정. 쌍둥이 h²는 GWAS · WES · WGS로 추정한 narrow-sense h²보다 대체로 높음 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></p></div>
           <div style="--c:var(--theme)"><span class="lv">SNP</span><h4>SNP h²</h4><p>측정한 SNP과 LD에 있는 causal 변이만 포착해서 가계 h²보다 낮음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a>. 형질의 heritability 자체가 아니라 SNP 전체가 설명하는 분산 <a class="src" href="https://doi.org/10.1016/j.ajhg.2010.11.011" target="_blank" rel="noopener">Yang 2011</a></p></div>
@@ -149,7 +149,7 @@
         </div>
         <div class="callout">
           <h4>질병 형질은 척도부터 맞춤</h4>
-          <p>liability threshold 모형은 질병을 연속적인 liability(소인)가 문턱을 넘은 상태로 봄. 이 척도에서 잰 것이 liability h² <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · 0과 1로 잰 관측 척도 h²는 유병률 K와 표본의 case 비율 P에 따라 달라짐. 형질끼리 비교하려면 liability scale로 바꿈 <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · 고전 변환식: h²<sub>liab</sub> = h²<sub>obs</sub> × K(1−K)/φ(Φ⁻¹(K))² × K(1−K)/P(1−P) <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · 예: UK Biobank에서 관측 h²가 0.026인 oesophagitis(표본 유병률 2.5%)와 0.027인 hypertensive renal disease(0.4%)의 liability h²는 0.180과 0.679 <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · biobank는 참여자가 더 건강해서 대개 P &lt; K이고, 고전식은 이 범위에서 검증되지 않았음. 유병률이 아주 낮으면 추정치가 1을 넘기도 해서 분모를 유전 분산과 오차 분산의 합으로 바꾼 식이 제안됨 <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · 그림 1 오른쪽: 유병률 1%에서 liability h² 0.4는 코호트 표본의 관측 h² <!--GEN:HOBS_PK-->0.029<!--/GEN:HOBS_PK-->, case와 control이 반씩인 표본의 관측 h² <!--GEN:HOBS_CC-->0.72<!--/GEN:HOBS_CC--> · binary 형질에서 LDSC 기울기로 얻은 h²도 관측 척도 값 <a class="src" href="https://doi.org/10.1038/ng.3211" target="_blank" rel="noopener">Bulik-Sullivan 2015</a></p>
+          <p>liability threshold 모형은 질병을 연속적인 liability(소인)가 threshold를 넘은 상태로 봄. 이 척도에서 잰 것이 liability h² <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · 0과 1로 잰 관측 척도 h²는 유병률 K와 표본의 case 비율 P에 따라 달라짐. 형질끼리 비교하려면 liability scale로 바꿈 <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · 고전 변환식: h²<sub>liab</sub> = h²<sub>obs</sub> × K(1−K)/φ(Φ⁻¹(K))² × K(1−K)/P(1−P) <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · 예: UK Biobank에서 관측 h²가 0.026인 oesophagitis(표본 유병률 2.5%)와 0.027인 hypertensive renal disease(0.4%)의 liability h²는 0.180과 0.679 <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · biobank는 참여자가 더 건강해서 대개 P &lt; K이고, 고전식은 이 범위에서 검증되지 않았음. 유병률이 아주 낮으면 추정치가 1을 넘기도 해서 분모를 유전 분산과 오차 분산의 합으로 바꾼 식이 제안됨 <a class="src" href="https://doi.org/10.1016/j.ajhg.2022.09.011" target="_blank" rel="noopener">Ojavee 2022</a> · 그림 1 오른쪽: 유병률 1%에서 liability h² 0.4는 코호트 표본의 관측 h² <!--GEN:HOBS_PK-->0.029<!--/GEN:HOBS_PK-->, case와 control이 반씩인 표본의 관측 h² <!--GEN:HOBS_CC-->0.72<!--/GEN:HOBS_CC--> · binary 형질에서 LDSC 기울기로 얻은 h²도 관측 척도 값 <a class="src" href="https://doi.org/10.1038/ng.3211" target="_blank" rel="noopener">Bulik-Sullivan 2015</a></p>
         </div>
         <div class="callout">
           <h4>h²는 유전체 어디에 몰려 있나</h4>
@@ -622,7 +622,7 @@
           <table class="vtable">
             <thead><tr><th>rg 다음에 묻는 질문</th><th>방법</th></tr></thead>
             <tbody>
-              <tr><th>한 형질이 다른 형질의 원인인가</th><td>Mendelian randomization. 유전 변이를 도구변수로 써서 인과 방향을 따짐 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · <a href="../index.html#article/mr">MR 카드</a></td></tr>
+              <tr><th>한 형질이 다른 형질의 원인인가</th><td>Mendelian randomization. 유전 변이를 도구변수로 써서 인과 방향을 따짐 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · <a href="mr.html">MR 페이지</a></td></tr>
               <tr><th>같은 locus의 같은 causal 변이인가</th><td>colocalization · <a href="coloc.html">coloc 페이지</a></td></tr>
               <tr><th>어느 구간에서 공유하나</th><td>local rg(ρHESS) · <a href="#local">위 그림 3</a></td></tr>
               <tr><th>여러 형질이 함께 공유하는 성분은</th><td>pairwise rg는 형질 쌍 단위의 요약. 여러 형질의 공유 성분은 genomic SEM이나 genetic factor analysis로 나눔 <a class="src" href="https://doi.org/10.1038/s41588-026-02753-1" target="_blank" rel="noopener">Morrison 2026</a></td></tr>
@@ -651,7 +651,7 @@
         <!-- ───────── 7. 흔한 오해 ───────── -->
         <h2 id="read">유전 상관 읽기의 흔한 오해<small>Common misreadings</small></h2>
         <div class="fixlist">
-          <div class="fix"><code>rg가 높으면 한 형질이 다른 형질의 원인 ✗</code><p class="why">rg는 horizontal pleiotropy와 vertical pleiotropy를 구분하지 않음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · <a href="#pleiotropy">그림 4</a> · 인과 방향은 <a href="../index.html#article/mr">MR</a></p></div>
+          <div class="fix"><code>rg가 높으면 한 형질이 다른 형질의 원인 ✗</code><p class="why">rg는 horizontal pleiotropy와 vertical pleiotropy를 구분하지 않음 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · <a href="#pleiotropy">그림 4</a> · 인과 방향은 <a href="mr.html">MR</a></p></div>
           <div class="fix"><code>genome-wide rg가 0이면 공유 locus도 없음 ✗</code><p class="why">LDL과 HDL cholesterol은 genome-wide rg 없이 local rg 유의 구간이 11곳 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · <a href="#local">그림 3</a></p></div>
           <div class="fix"><code>rg가 높으면 공유하는 유전 기여도 큼 ✗</code><p class="why">h²가 작으면 rg가 높아도 coheritability는 작음. rg와 h²를 함께 봄 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a></p></div>
           <div class="fix"><code>두 GWAS 표본이 겹치면 rg가 부풀려짐 ✗</code><p class="why">겹침은 절편으로 가고 기울기는 그대로 <a class="src" href="https://doi.org/10.1038/s41576-019-0137-z" target="_blank" rel="noopener">van Rheenen 2019</a> · <a href="#cross-trait">그림 2</a></p></div>
@@ -675,9 +675,10 @@
           <a href="coloc.html">Colocalization (그림) →</a>
           <a href="fine-mapping.html">Fine-mapping (그림) →</a>
           <a href="../01-genetics/ld.html">Linkage disequilibrium (그림) →</a>
-          <a href="../index.html#article/mr">Mendelian randomization →</a>
+          <a href="mr.html">Mendelian randomization (그림) →</a>
           <a href="prs.html">Polygenic risk score (그림) →</a>
           <a href="../index.html#article/sumstats">GWAS summary statistics →</a>
+          <a href="../../disease/genetics/04-polygenic/heritability.html">유전율은 무엇을 재나 (Human genetics) →</a>
         </div></div>
         <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
           <a href="https://github.com/bulik/ldsc" target="_blank" rel="noopener noreferrer">ldsc (GitHub) ↗</a>
