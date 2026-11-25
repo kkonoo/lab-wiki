@@ -1,0 +1,1238 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="TWAS: eQTL 참조 코호트에서 배운 weight로 유전자 발현을 예측해 형질과의 연관을 gene 단위로 검정하는 방법. 예측 모형이 cis 유전율에 막히는 이유, 개인 genotype 경로(PrediXcan)와 요약 통계 경로(FUSION)가 같은 값에 이르는 식, 검정력이 예측 정확도를 따라가는 모습, 같은 locus의 이웃 유전자가 덩달아 유의해지는 공동 조절 문제와 조건부 검정, 참조 집단이 쏠렸을 때의 전이성">
+  <title>유전자 발현을 예측해 연관을 보면 무엇이 달라지나? · GWAS</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/spa.css">
+  <link rel="stylesheet" href="../gwas.css">
+  <link rel="stylesheet" href="../../assets/css/article.css">
+  <link rel="stylesheet" href="../gwas-fig.css">
+</head>
+<body class="vpage" data-domain="gwas">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html"><img class="mark" src="../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../index.html"><span>/ GWAS</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../gwas/index.html" aria-current="page">GWAS</a>
+        <a href="../../omics/index.html">Omics</a>
+        <a href="../../single-cell/index.html">Single-cell</a>
+        <a href="../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../disease/index.html">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../index.html">HaLab Wiki</a><span>›</span><a href="../index.html">GWAS</a><span>›</span><a href="../index.html#section/postgwas">Post-GWAS</a><span>›</span>TWAS</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">Post-GWAS — Interpretation</p>
+        <h1>유전자 발현을 예측해 연관을 보면 무엇이 달라지나?</h1>
+        <p class="definition">TWAS(transcriptome-wide association study): eQTL 참조 자료로 학습한 예측 모형으로 각 개인의 <b>유전적으로 조절되는 발현</b>(genetically regulated expression · GReX)을 채운 뒤, 그 예측 발현과 형질의 연관을 <b>유전자 단위</b>로 검정하는 방법 <a class="src" href="https://doi.org/10.1038/ng.3367" target="_blank" rel="noopener">Gamazon 2015</a>. 검정 대상이 변이 하나에서 유전자 하나로 바뀌므로, 신호를 생물학적 단위에 바로 붙일 수 있음 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a></p>
+
+        <!-- ───────── 1. 왜 유전자인가 ───────── -->
+        <h2 id="why">왜 변이가 아니라 유전자를 검정하나<small>From variants to genes</small></h2>
+        <p class="lede">GWAS 신호 대부분이 단백질을 바꾸지 않는 구역에 떨어짐. 그 변이가 어느 유전자를 건드리는지는 위치만 보고는 정해지지 않음 <a class="src" href="https://doi.org/10.1038/ng.3367" target="_blank" rel="noopener">Gamazon 2015</a></p>
+        <div class="cases">
+          <div class="case">
+            <h4>가장 가까운 유전자라는 가정</h4>
+            <p>lead 변이에서 가장 가까운 유전자를 표적으로 적는 관행이 오래 쓰였지만, 실제로는 자주 틀림. <b>FTO</b> 안에 있는 비만 연관 변이가 FTO가 아니라 멀리 떨어진 <b>IRX3</b>의 발현을 바꾸는 것이 대표적인 반례 <a class="src" href="https://doi.org/10.1038/ng.3367" target="_blank" rel="noopener">Gamazon 2015</a></p>
+          </div>
+          <div class="case">
+            <h4>검정 단위를 바꾸면</h4>
+            <p>변이 수백만 개 대신 유전자 2만 개를 검정하므로 다중검정 부담이 줄고, 결과가 처음부터 유전자 이름으로 나옴. 후속 실험을 설계할 대상이 바로 정해짐 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a></p>
+          </div>
+        </div>
+        <p>변이를 기능 축에 붙이는 방법이 TWAS만 있는 것은 아님. 같은 자료로 묻는 질문이 서로 다름.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>방법</th><th>무엇을 묻나</th><th>쓰는 것</th></tr></thead>
+            <tbody>
+              <tr><th><a href="coloc.html">colocalization</a></th><td>GWAS 신호와 eQTL 신호가 <b>같은 인과 변이</b>를 공유하는가</td><td>두 신호의 변이별 통계량 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></td></tr>
+              <tr><th>SMR</th><td>발현이 형질에 미치는 효과를 top cis-eQTL 하나를 instrument로 추정하면 얼마인가</td><td>변이 하나 <a class="src" href="https://doi.org/10.1038/ng.3538" target="_blank" rel="noopener">Zhu 2016</a></td></tr>
+              <tr><th>TWAS</th><td>cis 변이들로 <b>예측한 발현</b>이 형질과 연관되는가</td><td>cis 구역 변이 다수의 가중합 <a class="src" href="https://doi.org/10.1038/ng.3367" target="_blank" rel="noopener">Gamazon 2015</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>셋은 경쟁이 아니라 순서로 쓰임. TWAS가 유전자 목록을 좁히고, coloc과 conditional 분석이 그 목록에서 LD로 끌려온 것을 걷어냄 <a class="src" href="https://doi.org/10.1038/s41431-018-0176-5" target="_blank" rel="noopener">Fryett 2018</a>. eQTL 자체가 무엇이고 어떻게 잡는지는 <a href="../../disease/genetics/05-function/qtl.html">교재 쪽 QTL</a>에 있음. 거리 · 조절 요소 · 코딩 변이까지 증거를 여러 줄로 모아 유전자를 지목하는 쪽은 <a href="variant-to-gene.html#combine">변이에서 유전자로 쪽</a>에 있고, TWAS는 그 증거 줄 가운데 발현을 맡음.</p>
+
+        <!-- ───────── 2. 예측 모형 ───────── -->
+        <h2 id="predict">발현을 예측하는 모형은 어떻게 만드나<small>Training the weights</small></h2>
+        <p class="lede">유전자마다 전사 시작점 ±500 kb 안의 변이를 설명변수로 두고, 발현을 반응변수로 회귀함. 변이 수가 표본 수보다 훨씬 많으므로 벌점 회귀를 씀 <a class="src" href="https://doi.org/10.1038/ng.3367" target="_blank" rel="noopener">Gamazon 2015</a></p>
+        <figure class="fig" id="fig-predict" data-mode="n100">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-predict" role="group" aria-label="참조 코호트 크기">
+              <button type="button" data-mode="n100" aria-pressed="true">참조 100명</button>
+              <button type="button" data-mode="n300" aria-pressed="false">참조 300명</button>
+              <button type="button" data-mode="n1000" aria-pressed="false">참조 1,000명</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:FIG_PREDICT-->
+<svg class="g-svg " viewBox="0 0 900 396" role="img" aria-labelledby="pdT pdD" xmlns="http://www.w3.org/2000/svg">
+<title id="pdT">cis window 안의 변이로 유전자 발현을 예측하는 모형을 만든다</title>
+<desc id="pdD">왼쪽은 유전자 하나의 cis window다. 가운데 가로선 위로 뻗은 붉은 줄기가 시뮬레이션이 심어 둔 진짜 eQTL이고, 아래로 뻗은 초록 줄기가 참조 코호트에서 배운 weight다. 배운 weight는 진짜 eQTL 자체가 아니라 그 주변 LD에 걸린 변이들에 퍼져 있다. 오른쪽은 유전자 50개의 교차검증 R²를 참조 코호트 크기별로 흩뿌린 것이다. 가로 점선이 cis 유전율이고, 참조가 커질수록 중앙값이 그 선에 다가가지만 넘지는 못한다.</desc>
+<text class="g-ttl" x="34" y="26">cis window 안의 변이로 발현을 예측한다<tspan class="g-sub" dx="8">위 = 진짜 eQTL · 아래 = 배운 weight</tspan></text>
+<text class="g-ttl" x="528" y="26">배운 모형이 얼마나 맞나<tspan class="g-sub" dx="8">유전자 50개</tspan></text>
+<line class="g-ax" x1="92" x2="452" y1="168" y2="168"/>
+<line class="g-grid" x1="92.0" x2="92.0" y1="92.0" y2="244.0"/>
+<text class="g-tick" x="92.0" y="252.0" text-anchor="middle">−0.5 Mb</text>
+<line class="g-grid" x1="182.0" x2="182.0" y1="92.0" y2="244.0"/>
+<text class="g-tick" x="182.0" y="252.0" text-anchor="middle">−0.2 Mb</text>
+<line class="g-grid" x1="272.0" x2="272.0" y1="92.0" y2="244.0"/>
+<text class="g-tick" x="272.0" y="252.0" text-anchor="middle">유전자</text>
+<line class="g-grid" x1="362.0" x2="362.0" y1="92.0" y2="244.0"/>
+<text class="g-tick" x="362.0" y="252.0" text-anchor="middle">+0.2 Mb</text>
+<line class="g-grid" x1="452.0" x2="452.0" y1="92.0" y2="244.0"/>
+<text class="g-tick" x="452.0" y="252.0" text-anchor="middle">+0.5 Mb</text>
+<line x1="92.2" x2="92.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="92.9" x2="92.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="94.0" x2="94.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="95.3" x2="95.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="95.6" x2="95.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="95.9" x2="95.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="96.1" x2="96.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="96.9" x2="96.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="100.6" x2="100.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="101.3" x2="101.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="106.8" x2="106.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="108.7" x2="108.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="110.6" x2="110.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="115.6" x2="115.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="116.1" x2="116.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="118.7" x2="118.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="121.6" x2="121.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="121.8" x2="121.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="122.8" x2="122.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="123.3" x2="123.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="125.6" x2="125.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="128.0" x2="128.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="128.3" x2="128.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="128.6" x2="128.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="128.7" x2="128.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="130.5" x2="130.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="135.8" x2="135.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="136.5" x2="136.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="141.9" x2="141.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="143.5" x2="143.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="144.2" x2="144.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="144.7" x2="144.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="146.8" x2="146.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="148.0" x2="148.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="149.0" x2="149.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="150.8" x2="150.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="150.8" x2="150.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="155.0" x2="155.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="155.6" x2="155.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="156.9" x2="156.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="158.6" x2="158.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="159.8" x2="159.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="159.9" x2="159.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="161.6" x2="161.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="162.4" x2="162.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="162.5" x2="162.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="166.3" x2="166.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="169.0" x2="169.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="169.7" x2="169.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="170.4" x2="170.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="170.7" x2="170.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="172.9" x2="172.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="173.6" x2="173.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="175.9" x2="175.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="176.4" x2="176.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="176.8" x2="176.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="178.5" x2="178.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="178.9" x2="178.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="180.9" x2="180.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="181.2" x2="181.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="181.7" x2="181.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="184.2" x2="184.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="185.1" x2="185.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="188.5" x2="188.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="189.5" x2="189.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="191.5" x2="191.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="192.2" x2="192.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="196.2" x2="196.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="197.0" x2="197.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="198.6" x2="198.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="198.9" x2="198.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="201.0" x2="201.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="203.6" x2="203.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="203.7" x2="203.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="204.5" x2="204.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="208.4" x2="208.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="209.6" x2="209.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="212.2" x2="212.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="213.6" x2="213.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="214.4" x2="214.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="216.0" x2="216.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="218.9" x2="218.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="219.3" x2="219.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="221.1" x2="221.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="223.9" x2="223.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="224.8" x2="224.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="225.8" x2="225.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="227.5" x2="227.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="232.5" x2="232.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="235.1" x2="235.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="236.4" x2="236.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="239.0" x2="239.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="239.8" x2="239.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="241.8" x2="241.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="242.6" x2="242.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="244.3" x2="244.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="244.8" x2="244.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="244.8" x2="244.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="246.1" x2="246.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="248.1" x2="248.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="248.9" x2="248.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="250.4" x2="250.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="258.5" x2="258.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="259.5" x2="259.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="260.7" x2="260.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="261.9" x2="261.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="269.8" x2="269.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="270.4" x2="270.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="273.4" x2="273.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="276.0" x2="276.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="276.2" x2="276.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="276.5" x2="276.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="276.5" x2="276.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="276.8" x2="276.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="279.2" x2="279.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="280.3" x2="280.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="282.5" x2="282.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="282.6" x2="282.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="282.9" x2="282.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="284.9" x2="284.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="287.4" x2="287.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="287.6" x2="287.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="289.2" x2="289.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="289.5" x2="289.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="290.6" x2="290.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="292.3" x2="292.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="292.7" x2="292.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="300.6" x2="300.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="303.6" x2="303.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="303.7" x2="303.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="304.8" x2="304.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="306.3" x2="306.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="307.1" x2="307.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="307.5" x2="307.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="308.1" x2="308.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="308.8" x2="308.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="311.0" x2="311.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="312.1" x2="312.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="312.2" x2="312.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="315.9" x2="315.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="316.6" x2="316.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="320.8" x2="320.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="324.1" x2="324.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="325.0" x2="325.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="326.4" x2="326.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="327.1" x2="327.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="327.3" x2="327.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="328.7" x2="328.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="329.3" x2="329.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="330.3" x2="330.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="332.2" x2="332.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="335.1" x2="335.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="336.4" x2="336.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="340.3" x2="340.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="340.7" x2="340.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="342.1" x2="342.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="343.0" x2="343.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="345.3" x2="345.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="348.2" x2="348.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="348.5" x2="348.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="349.9" x2="349.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="350.5" x2="350.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="350.5" x2="350.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="350.5" x2="350.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="353.0" x2="353.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="354.7" x2="354.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="355.9" x2="355.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="356.8" x2="356.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="357.3" x2="357.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="357.5" x2="357.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="359.1" x2="359.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="360.1" x2="360.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="361.2" x2="361.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="361.3" x2="361.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="362.8" x2="362.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="364.7" x2="364.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="365.3" x2="365.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="367.9" x2="367.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="368.1" x2="368.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="368.1" x2="368.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="370.4" x2="370.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="371.8" x2="371.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="371.8" x2="371.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="373.9" x2="373.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="374.4" x2="374.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="374.8" x2="374.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="375.1" x2="375.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="375.5" x2="375.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="376.5" x2="376.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="378.8" x2="378.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="380.1" x2="380.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="380.1" x2="380.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="382.3" x2="382.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="384.7" x2="384.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="386.1" x2="386.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="387.2" x2="387.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="388.3" x2="388.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="392.8" x2="392.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="395.0" x2="395.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="395.7" x2="395.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="396.4" x2="396.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="396.5" x2="396.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="398.2" x2="398.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="398.5" x2="398.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="398.8" x2="398.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="399.3" x2="399.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="399.6" x2="399.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="402.2" x2="402.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="404.5" x2="404.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="404.6" x2="404.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="404.8" x2="404.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="404.9" x2="404.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="405.4" x2="405.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="406.0" x2="406.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="406.2" x2="406.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="407.4" x2="407.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="409.5" x2="409.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="413.0" x2="413.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="413.0" x2="413.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="413.7" x2="413.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="415.3" x2="415.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="419.5" x2="419.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="420.8" x2="420.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="421.0" x2="421.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="421.5" x2="421.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="421.9" x2="421.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="422.4" x2="422.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="422.9" x2="422.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="423.8" x2="423.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="424.8" x2="424.8" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="429.3" x2="429.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="434.4" x2="434.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="435.2" x2="435.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="435.3" x2="435.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="436.2" x2="436.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="438.1" x2="438.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="439.3" x2="439.3" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="439.7" x2="439.7" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="441.1" x2="441.1" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="442.6" x2="442.6" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="445.0" x2="445.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="445.2" x2="445.2" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="445.4" x2="445.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="450.0" x2="450.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="450.0" x2="450.0" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="450.4" x2="450.4" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="450.5" x2="450.5" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="450.9" x2="450.9" y1="165" y2="171" stroke="#E3E8E5" stroke-width="1"/>
+<line x1="223.9" x2="223.9" y1="166" y2="100.0" stroke="#B5525C" stroke-width="2.6"/>
+<circle cx="223.9" cy="100.0" r="3.4" fill="#B5525C"/>
+<line x1="244.8" x2="244.8" y1="166" y2="156.5" stroke="#B5525C" stroke-width="2.6"/>
+<circle cx="244.8" cy="156.5" r="3.4" fill="#B5525C"/>
+<line x1="335.1" x2="335.1" y1="166" y2="136.9" stroke="#B5525C" stroke-width="2.6"/>
+<circle cx="335.1" cy="136.9" r="3.4" fill="#B5525C"/>
+<line x1="419.5" x2="419.5" y1="166" y2="145.6" stroke="#B5525C" stroke-width="2.6"/>
+<circle cx="419.5" cy="145.6" r="3.4" fill="#B5525C"/>
+<text class="g-hd" x="92" y="82" fill="#B5525C">진짜 eQTL 4개 (시뮬레이션만 아는 값)</text>
+<text class="g-hd" x="92" y="276" fill="var(--theme)">참조 코호트에서 배운 weight</text>
+<text class="g-note dim" x="452" y="82" text-anchor="end">window 안 변이 248개</text>
+<g class="g-ov on" data-ov="n100"><line x1="92.2" x2="92.2" y1="170" y2="191.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="92.9" x2="92.9" y1="170" y2="175.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="94.0" x2="94.0" y1="170" y2="175.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="95.3" x2="95.3" y1="170" y2="175.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="95.6" x2="95.6" y1="170" y2="185.2" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="110.6" x2="110.6" y1="170" y2="183.3" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="156.9" x2="156.9" y1="170" y2="176.2" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="162.5" x2="162.5" y1="170" y2="174.5" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="175.9" x2="175.9" y1="170" y2="175.4" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="192.2" x2="192.2" y1="170" y2="175.4" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="198.9" x2="198.9" y1="170" y2="175.4" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="201.0" x2="201.0" y1="170" y2="175.4" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="203.6" x2="203.6" y1="170" y2="170.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="209.6" x2="209.6" y1="170" y2="170.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="216.0" x2="216.0" y1="170" y2="180.1" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="223.9" x2="223.9" y1="170" y2="217.5" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="224.8" x2="224.8" y1="170" y2="170.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="307.5" x2="307.5" y1="170" y2="201.7" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="316.6" x2="316.6" y1="170" y2="175.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="320.8" x2="320.8" y1="170" y2="175.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="325.0" x2="325.0" y1="170" y2="175.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="330.3" x2="330.3" y1="170" y2="175.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="335.1" x2="335.1" y1="170" y2="175.5" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="336.4" x2="336.4" y1="170" y2="203.0" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="340.3" x2="340.3" y1="170" y2="196.2" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="340.7" x2="340.7" y1="170" y2="236.0" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="343.0" x2="343.0" y1="170" y2="175.5" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="345.3" x2="345.3" y1="170" y2="175.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="365.3" x2="365.3" y1="170" y2="170.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="422.4" x2="422.4" y1="170" y2="181.1" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><text class="g-note" x="452" y="276" text-anchor="end">0이 아닌 weight <tspan class="g-em">30개</tspan></text></g>
+<g class="g-ov" data-ov="n300"><line x1="141.9" x2="141.9" y1="170" y2="200.1" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="148.0" x2="148.0" y1="170" y2="170.8" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="175.9" x2="175.9" y1="170" y2="178.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="185.1" x2="185.1" y1="170" y2="236.0" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="191.5" x2="191.5" y1="170" y2="172.0" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="192.2" x2="192.2" y1="170" y2="212.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="198.9" x2="198.9" y1="170" y2="187.1" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="201.0" x2="201.0" y1="170" y2="184.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="208.4" x2="208.4" y1="170" y2="172.0" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="223.9" x2="223.9" y1="170" y2="198.3" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="235.1" x2="235.1" y1="170" y2="204.5" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="242.6" x2="242.6" y1="170" y2="178.7" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="244.8" x2="244.8" y1="170" y2="204.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="276.0" x2="276.0" y1="170" y2="188.1" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="292.7" x2="292.7" y1="170" y2="188.1" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="320.8" x2="320.8" y1="170" y2="170.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="325.0" x2="325.0" y1="170" y2="186.5" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="330.3" x2="330.3" y1="170" y2="171.2" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="336.4" x2="336.4" y1="170" y2="198.5" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="343.0" x2="343.0" y1="170" y2="171.2" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="345.3" x2="345.3" y1="170" y2="195.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="348.5" x2="348.5" y1="170" y2="179.8" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="361.3" x2="361.3" y1="170" y2="184.1" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="362.8" x2="362.8" y1="170" y2="194.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="371.8" x2="371.8" y1="170" y2="176.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="375.5" x2="375.5" y1="170" y2="173.8" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="413.0" x2="413.0" y1="170" y2="188.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="413.7" x2="413.7" y1="170" y2="183.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="439.7" x2="439.7" y1="170" y2="171.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="450.0" x2="450.0" y1="170" y2="178.0" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><text class="g-note" x="452" y="276" text-anchor="end">0이 아닌 weight <tspan class="g-em">30개</tspan></text></g>
+<g class="g-ov" data-ov="n1000"><line x1="96.1" x2="96.1" y1="170" y2="175.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="136.5" x2="136.5" y1="170" y2="185.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="170.7" x2="170.7" y1="170" y2="174.0" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="175.9" x2="175.9" y1="170" y2="198.6" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="192.2" x2="192.2" y1="170" y2="194.5" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="198.9" x2="198.9" y1="170" y2="210.3" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="201.0" x2="201.0" y1="170" y2="190.2" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="208.4" x2="208.4" y1="170" y2="216.3" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="221.1" x2="221.1" y1="170" y2="189.2" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="223.9" x2="223.9" y1="170" y2="236.0" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="248.9" x2="248.9" y1="170" y2="171.3" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="276.0" x2="276.0" y1="170" y2="181.4" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="306.3" x2="306.3" y1="170" y2="179.5" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="325.0" x2="325.0" y1="170" y2="184.5" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="329.3" x2="329.3" y1="170" y2="189.4" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="335.1" x2="335.1" y1="170" y2="225.8" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="340.3" x2="340.3" y1="170" y2="177.2" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="350.5" x2="350.5" y1="170" y2="183.7" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="380.1" x2="380.1" y1="170" y2="172.9" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="392.8" x2="392.8" y1="170" y2="173.3" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="395.0" x2="395.0" y1="170" y2="174.0" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="419.5" x2="419.5" y1="170" y2="223.1" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="424.8" x2="424.8" y1="170" y2="180.5" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="436.2" x2="436.2" y1="170" y2="180.5" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><line x1="450.0" x2="450.0" y1="170" y2="180.2" stroke="var(--theme)" stroke-width="2.2" opacity=".85"/><text class="g-note" x="452" y="276" text-anchor="end">0이 아닌 weight <tspan class="g-em">25개</tspan></text></g>
+<line class="g-grid" x1="568" x2="858" y1="288.0" y2="288.0"/>
+<text class="g-tick" x="561" y="291.5" text-anchor="end">0</text>
+<line class="g-grid" x1="568" x2="858" y1="242.1" y2="242.1"/>
+<text class="g-tick" x="561" y="245.6" text-anchor="end">0.05</text>
+<line class="g-grid" x1="568" x2="858" y1="196.2" y2="196.2"/>
+<text class="g-tick" x="561" y="199.7" text-anchor="end">0.1</text>
+<line class="g-grid" x1="568" x2="858" y1="150.3" y2="150.3"/>
+<text class="g-tick" x="561" y="153.8" text-anchor="end">0.15</text>
+<line class="g-grid" x1="568" x2="858" y1="104.4" y2="104.4"/>
+<text class="g-tick" x="561" y="107.9" text-anchor="end">0.2</text>
+<line class="g-ax" x1="568" x2="858" y1="288" y2="288"/>
+<line x1="568" x2="858" y1="150.3" y2="150.3" stroke="#B5525C" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text class="g-note" x="858" y="74" text-anchor="end" fill="#B5525C">가로 점선 = cis 유전율 0.15 · 예측이 넘을 수 없는 선</text>
+<circle cx="642.9" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="583.1" cy="235.7" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="621.8" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="609.0" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="610.4" cy="237.4" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="613.5" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="590.1" cy="244.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="613.3" cy="223.5" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="605.1" cy="159.6" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="659.5" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="619.3" cy="242.8" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="611.7" cy="217.7" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="612.7" cy="246.4" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="607.6" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="602.6" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="611.3" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="622.6" cy="209.2" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="613.2" cy="274.8" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="628.8" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="613.7" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="616.6" cy="255.7" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="636.4" cy="252.6" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="623.4" cy="284.4" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="609.8" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="614.0" cy="263.5" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="623.4" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="641.5" cy="215.9" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="612.8" cy="281.9" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="613.2" cy="282.5" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="629.4" cy="209.9" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="604.8" cy="256.8" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="612.5" cy="238.2" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="627.8" cy="285.8" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="623.9" cy="269.4" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="617.5" cy="187.2" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="625.0" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="579.6" cy="279.6" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="629.6" cy="229.5" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="603.9" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="594.6" cy="276.2" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="619.9" cy="257.4" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="625.4" cy="261.9" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="610.6" cy="183.7" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="602.3" cy="198.1" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="616.7" cy="288.0" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="615.6" cy="113.9" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="634.6" cy="268.8" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="626.0" cy="258.1" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="618.9" cy="103.9" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<circle cx="630.8" cy="258.1" r="2.8" fill="#D9CFC3" opacity=".75"/>
+<line x1="584.3" x2="648.3" y1="262.7" y2="262.7" stroke="#6B736E" stroke-width="2.4"/>
+<text class="g-note" x="580.3" y="266.7" text-anchor="end" stroke="#fff" stroke-width="3.2" paint-order="stroke"><tspan class="g-em">0.028</tspan></text>
+<text class="g-tick" x="616.3" y="304" text-anchor="middle">100명</text>
+<text class="g-note dim" x="616.3" y="320" text-anchor="middle">모형 60%</text>
+<circle cx="710.3" cy="175.3" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="701.0" cy="225.5" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="720.6" cy="219.2" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="720.6" cy="216.2" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="710.2" cy="181.2" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="702.8" cy="195.7" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="716.0" cy="217.3" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="680.6" cy="161.9" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="722.0" cy="177.0" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="719.4" cy="275.3" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="691.7" cy="231.5" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="713.8" cy="242.9" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="700.5" cy="187.0" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="722.8" cy="181.7" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="686.6" cy="147.1" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="701.1" cy="124.3" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="722.2" cy="159.8" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="728.0" cy="165.7" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="684.9" cy="222.1" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="706.5" cy="203.4" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="717.3" cy="222.6" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="705.1" cy="195.9" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="733.7" cy="249.7" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="697.5" cy="141.0" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="717.6" cy="192.2" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="699.4" cy="202.5" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="731.3" cy="225.2" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="712.7" cy="200.9" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="708.2" cy="226.0" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="690.7" cy="218.3" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="734.9" cy="151.1" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="722.8" cy="231.7" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="722.8" cy="167.9" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="727.8" cy="185.0" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="717.5" cy="222.1" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="704.7" cy="212.6" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="702.6" cy="158.5" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="702.6" cy="163.0" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="730.8" cy="104.2" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="694.0" cy="210.6" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="705.2" cy="175.3" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="708.8" cy="190.2" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="715.9" cy="200.6" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="720.5" cy="192.3" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="696.8" cy="186.0" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="690.5" cy="162.6" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="712.9" cy="235.9" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="728.8" cy="244.9" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="722.8" cy="211.2" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<circle cx="715.8" cy="258.1" r="2.8" fill="#8E6F4E" opacity=".75"/>
+<line x1="681.0" x2="745.0" y1="198.2" y2="198.2" stroke="#6B736E" stroke-width="2.4"/>
+<text class="g-note" x="677.0" y="202.2" text-anchor="end" stroke="#fff" stroke-width="3.2" paint-order="stroke"><tspan class="g-em">0.098</tspan></text>
+<text class="g-tick" x="713.0" y="304" text-anchor="middle">300명</text>
+<text class="g-note dim" x="713.0" y="320" text-anchor="middle">모형 100%</text>
+<circle cx="805.5" cy="176.9" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="813.5" cy="170.7" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="806.5" cy="164.4" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="820.3" cy="124.3" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="799.3" cy="172.8" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="811.4" cy="181.0" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="808.2" cy="188.8" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="816.7" cy="189.1" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="812.6" cy="167.5" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="842.8" cy="148.8" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="829.1" cy="209.3" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="829.1" cy="191.0" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="783.2" cy="190.7" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="805.2" cy="152.7" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="801.8" cy="168.3" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="816.6" cy="160.9" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="780.0" cy="139.8" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="824.9" cy="179.6" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="823.5" cy="183.9" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="792.7" cy="177.9" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="796.9" cy="135.8" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="799.3" cy="188.3" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="810.2" cy="170.2" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="818.0" cy="120.6" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="836.3" cy="185.8" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="807.1" cy="162.2" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="819.6" cy="163.5" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="811.7" cy="203.3" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="832.5" cy="166.3" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="819.3" cy="152.1" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="827.5" cy="183.5" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="795.7" cy="174.6" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="807.2" cy="173.1" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="799.1" cy="170.8" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="829.2" cy="180.5" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="818.2" cy="192.2" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="805.7" cy="184.2" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="803.8" cy="195.1" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="816.0" cy="168.8" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="800.5" cy="172.1" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="797.6" cy="179.6" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="815.9" cy="188.1" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="841.7" cy="188.0" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="806.5" cy="205.4" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="802.4" cy="192.6" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="794.4" cy="178.3" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="792.3" cy="145.5" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="816.5" cy="168.8" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="820.7" cy="184.0" r="2.8" fill="var(--theme)" opacity=".75"/>
+<circle cx="809.8" cy="174.3" r="2.8" fill="var(--theme)" opacity=".75"/>
+<line x1="777.7" x2="841.7" y1="175.7" y2="175.7" stroke="#6B736E" stroke-width="2.4"/>
+<text class="g-note" x="773.7" y="179.7" text-anchor="end" stroke="#fff" stroke-width="3.2" paint-order="stroke"><tspan class="g-em">0.122</tspan></text>
+<text class="g-tick" x="809.7" y="304" text-anchor="middle">1,000명</text>
+<text class="g-note dim" x="809.7" y="320" text-anchor="middle">모형 100%</text>
+<text class="g-lab" x="713.0" y="340" text-anchor="middle">eQTL 참조 코호트 크기</text>
+<text class="g-lab" x="524" y="187.0" text-anchor="middle" transform="rotate(-90 524 187.0)">교차검증 R²</text>
+<text class="g-note dim" x="34" y="366">참조 코호트가 커질수록 weight가 진짜 eQTL 쪽으로 모이고, 교차검증 R²는 cis 유전율에 다가가다 멈춤. 참조</text>
+<text class="g-note dim" x="34" y="382">100명에서는 유전자의 60%만 쓸 만한 모형을 얻음</text>
+</svg>
+<!--/GEN:FIG_PREDICT-->
+          </div>
+          <figcaption>그림 1 · 시뮬레이션한 <!--GEN:REGION-->40<!--/GEN:REGION--> Mb 구간 · 변이 <!--GEN:M_ALL-->9,629<!--/GEN:M_ALL-->개가 LD 블록 <!--GEN:NB-->424<!--/GEN:NB-->개에 들어 있음 · cis window 하나에 변이 <!--GEN:NWIN-->245<!--/GEN:NWIN-->개 · 유전자마다 진짜 eQTL <!--GEN:NEQTL-->4<!--/GEN:NEQTL-->개 · cis 유전율 <!--GEN:H2CIS-->0.15<!--/GEN:H2CIS--> · 유전자 <!--GEN:NGENE-->50<!--/GEN:NGENE-->개의 교차검증 R² 중앙값은 참조 100명에서 <!--GEN:CV100-->0.028<!--/GEN:CV100-->, 300명에서 <!--GEN:CV300-->0.098<!--/GEN:CV300-->, 1,000명에서 <!--GEN:CV1000-->0.122<!--/GEN:CV1000--></figcaption>
+        </figure>
+        <p>그림에서 아래로 뻗은 weight가 진짜 eQTL 하나에 모이지 않고 그 주변에 퍼짐. 모형은 인과 변이를 집어내는 것이 아니라 <b>발현을 잘 맞히는 조합</b>을 찾는 것이고, LD로 묶인 이웃 변이가 그 역할을 나눠 가짐. 이 성질이 뒤에서 이웃 유전자 문제로 되돌아옴.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>모형</th><th>가정</th><th>쓰는 곳</th></tr></thead>
+            <tbody>
+              <tr><th>elastic net</th><td>eQTL이 몇 개뿐이고 그중 일부가 LD로 묶여 있음</td><td>PrediXcan의 기본 <a class="src" href="https://doi.org/10.1038/ng.3367" target="_blank" rel="noopener">Gamazon 2015</a></td></tr>
+              <tr><th>LASSO</th><td>eQTL이 아주 드묾</td><td>FUSION의 후보 중 하나 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a></td></tr>
+              <tr><th>BSLMM</th><td>큰 효과 몇 개와 작은 효과 다수가 섞여 있음</td><td>FUSION의 후보 중 하나 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a></td></tr>
+              <tr><th>top SNP</th><td>cis-eQTL 하나가 거의 전부를 설명함</td><td>FUSION의 후보 중 하나이고, SMR이 instrument를 고르는 방식과 같음 <a class="src" href="https://doi.org/10.1038/ng.3538" target="_blank" rel="noopener">Zhu 2016</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>FUSION은 유전자마다 이 후보들을 모두 적합한 뒤 교차검증 성적이 가장 좋은 것을 고름 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a>. 어느 모형을 쓰든 넘을 수 없는 선이 하나 있음.</p>
+        <div class="callout">
+          <h4>예측 R²의 상한은 cis 유전율</h4>
+          <p>예측에 쓰는 것은 cis 변이뿐이므로, 아무리 표본을 늘려도 cis 변이가 설명하는 몫(cis 유전율) 이상은 맞힐 수 없음. 시뮬레이션에서 cis 유전율을 <!--GEN:H2CIS-->0.15<!--/GEN:H2CIS-->로 두었더니 교차검증 R² 중앙값이 참조 1,000명에서 <!--GEN:CV1000-->0.122<!--/GEN:CV1000-->에 멈춤. 실제 유전자의 cis 유전율도 대개 이 범위라, 발현의 대부분은 예측 대상이 아니라 환경과 trans 조절의 몫임 <a class="src" href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener">Rossi 2026</a></p>
+        </div>
+        <p>R²가 두 종류라는 점도 헷갈리기 쉬움. 교차검증 R²는 <b>관측된 발현</b>을 얼마나 맞히는가이고(그래서 cis 유전율이 상한), 예측값이 <b>유전 성분 자체</b>를 얼마나 맞히는가는 따로 셈함. 시뮬레이션에서 뒤의 값은 참조 300명에서 <!--GEN:R2_300-->0.78<!--/GEN:R2_300-->, 1,000명에서 <!--GEN:R2_1000-->0.94<!--/GEN:R2_1000-->로 훨씬 높음 — 검정력을 정하는 것은 이쪽이지만, 참값을 모르는 실제 자료에서 잴 수 있는 것은 앞의 값뿐임.</p>
+        <p>참조가 작으면 모형이 아예 서지 않음. 참조 100명에서는 유전자의 <!--GEN:MODEL100-->60%<!--/GEN:MODEL100-->만 교차검증 R²가 기준(0.01)을 넘었고, 나머지는 weight가 전부 0으로 떨어져 검정 대상에서 빠짐. 실제 파이프라인도 같은 방식으로 거름 — <b>검정되지 않은 유전자</b>는 결과 표에 없을 뿐 음성이 아님.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>참조 코호트</th><th>조직</th><th>표본</th></tr></thead>
+            <tbody>
+              <tr><th>GTEx</th><td>49개 조직</td><td>조직마다 수십∼수백 명 <a class="src" href="https://doi.org/10.1038/ng.3367" target="_blank" rel="noopener">Gamazon 2015</a></td></tr>
+              <tr><th>DGN</th><td>whole blood</td><td>922명 <a class="src" href="https://doi.org/10.1038/ng.3367" target="_blank" rel="noopener">Gamazon 2015</a></td></tr>
+              <tr><th>GEUVADIS</th><td>LCL</td><td>460명 <a class="src" href="https://doi.org/10.1038/ng.3367" target="_blank" rel="noopener">Gamazon 2015</a></td></tr>
+              <tr><th>LIBD</th><td>뇌 6개 부위</td><td>DLPFC 584 · sACC 508 · amygdala 461 · HP 236 · CN 211 · dACC 176, 전원 European ancestry <a class="src" href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener">Rossi 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 3. 검정 ───────── -->
+        <h2 id="test">예측한 발현으로 어떻게 검정하나<small>Two routes to the same z</small></h2>
+        <p class="lede">배운 weight를 GWAS 코호트에 붙여 예측 발현을 만들고 형질에 회귀함. 개인 genotype이 없어도 같은 값을 얻는 길이 있음 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a></p>
+        <figure class="fig" id="fig-two">
+          <div class="fig-scroll">
+<!--GEN:FIG_TWO-->
+<svg class="g-svg " viewBox="0 0 900 376" role="img" aria-labelledby="twT twD" xmlns="http://www.w3.org/2000/svg">
+<title id="twT">개인 genotype이 있을 때와 요약 통계만 있을 때가 같은 값에 이른다</title>
+<desc id="twD">왼쪽은 두 경로를 나란히 적은 것이다. 위는 개인 genotype에 weight를 곱해 예측 발현을 만들고 형질에 회귀하는 길이고, 아래는 SNP별 z와 참조 LD 행렬만으로 같은 선형 결합을 계산하는 길이다. 오른쪽은 유전자 50개를 두 가지 효과 크기에서 계산해 두 값을 맞대 본 산점도다. 점이 대각선에 붙어 있고 상관이 0.99를 넘는다.</desc>
+<text class="g-ttl" x="34" y="26">같은 값에 이르는 두 갈래<tspan class="g-sub" dx="8">개인 genotype · GWAS 요약 통계</tspan></text>
+<text class="g-ttl" x="522" y="26">둘이 실제로 같은가<tspan class="g-sub" dx="8">유전자 50개 × 효과 2가지</tspan></text>
+<rect x="56" y="78" width="380" height="96" rx="8" fill="var(--theme)" opacity=".07"/>
+<text class="g-hd" x="70" y="100" fill="var(--theme)">개인 genotype이 있을 때<tspan class="g-sub" dx="8">PrediXcan</tspan></text>
+<text class="g-note" x="70" y="122">GWAS 코호트의 genotype X</text>
+<text class="g-note" x="70" y="140">예측 발현 Xw 를 만든다</text>
+<text class="g-note" x="70" y="158">형질 y 에 회귀 → z</text>
+<rect x="56" y="196" width="380" height="96" rx="8" fill="#2F6DB5" opacity=".07"/>
+<text class="g-hd" x="70" y="218" fill="#2F6DB5">요약 통계만 있을 때<tspan class="g-sub" dx="8">FUSION</tspan></text>
+<text class="g-note" x="70" y="240">SNP별 z 와 참조 LD 행렬 R</text>
+<text class="g-note" x="70" y="258">wᵀz 와 wᵀRw 를 계산</text>
+<text class="g-note" x="70" y="276">z = wᵀz ⁄ √(wᵀRw)</text>
+<text class="g-note dim" x="56" y="306">이 유전자에서 wᵀz = <tspan class="g-em">2.6</tspan> · wᵀRw = <tspan class="g-em">0.08</tspan> · 요약식 z = <tspan class="g-em">9.00</tspan></text>
+<text class="g-note dim" x="56" y="326">같은 자료로 개인 genotype을 써서 계산하면 z = <tspan class="g-em">9.07</tspan>. 같은 선형 결합이라 표본이 크면 둘이 만남</text>
+<line class="g-grid" x1="598.2" x2="598.2" y1="78" y2="300"/>
+<line class="g-grid" x1="556" x2="862" y1="269.4" y2="269.4"/>
+<text class="g-tick" x="598.2" y="315" text-anchor="middle">-10</text>
+<text class="g-tick" x="549" y="272.9" text-anchor="end">-10</text>
+<line class="g-grid" x1="653.6" x2="653.6" y1="78" y2="300"/>
+<line class="g-grid" x1="556" x2="862" y1="229.2" y2="229.2"/>
+<text class="g-tick" x="653.6" y="315" text-anchor="middle">-5</text>
+<text class="g-tick" x="549" y="232.7" text-anchor="end">-5</text>
+<line class="g-grid" x1="709.0" x2="709.0" y1="78" y2="300"/>
+<line class="g-grid" x1="556" x2="862" y1="189.0" y2="189.0"/>
+<text class="g-tick" x="709.0" y="315" text-anchor="middle">0</text>
+<text class="g-tick" x="549" y="192.5" text-anchor="end">0</text>
+<line class="g-grid" x1="764.4" x2="764.4" y1="78" y2="300"/>
+<line class="g-grid" x1="556" x2="862" y1="148.8" y2="148.8"/>
+<text class="g-tick" x="764.4" y="315" text-anchor="middle">5</text>
+<text class="g-tick" x="549" y="152.3" text-anchor="end">5</text>
+<line class="g-grid" x1="819.8" x2="819.8" y1="78" y2="300"/>
+<line class="g-grid" x1="556" x2="862" y1="108.6" y2="108.6"/>
+<text class="g-tick" x="819.8" y="315" text-anchor="middle">10</text>
+<text class="g-tick" x="549" y="112.1" text-anchor="end">10</text>
+<line x1="556" x2="862" y1="300.0" y2="78.0" stroke="#A3ABA6" stroke-width="1.4" stroke-dasharray="5 4"/>
+<line class="g-ax" x1="556" x2="862" y1="300" y2="300"/>
+<line class="g-ax" x1="556" x2="556" y1="78" y2="300"/>
+<circle cx="754.9" cy="155.7" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="783.9" cy="134.7" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="750.4" cy="158.8" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="756.9" cy="154.4" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="759.6" cy="152.2" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="755.7" cy="155.1" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="759.9" cy="151.7" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="770.7" cy="144.2" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="732.1" cy="172.3" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="759.7" cy="152.3" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="781.5" cy="136.8" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="763.9" cy="149.1" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="774.5" cy="140.8" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="764.4" cy="149.3" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="773.8" cy="141.8" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="762.3" cy="150.1" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="770.9" cy="144.6" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="748.4" cy="160.3" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="725.9" cy="176.8" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="765.0" cy="148.9" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="786.3" cy="132.7" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="748.5" cy="160.6" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="765.5" cy="147.8" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="732.2" cy="172.1" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="753.3" cy="157.1" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="789.4" cy="130.4" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="767.0" cy="146.8" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="747.5" cy="161.3" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="755.9" cy="155.2" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="768.6" cy="145.8" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="752.9" cy="157.2" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="747.8" cy="160.8" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="767.9" cy="146.8" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="759.6" cy="152.3" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="772.1" cy="143.5" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="756.7" cy="154.3" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="775.0" cy="141.4" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="760.5" cy="151.7" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="772.4" cy="143.1" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="760.4" cy="151.7" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="754.6" cy="156.3" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="763.9" cy="149.1" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="766.2" cy="148.0" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="779.0" cy="139.0" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="749.2" cy="159.5" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="758.9" cy="152.8" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="759.0" cy="152.9" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="774.2" cy="142.0" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="779.7" cy="137.5" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="766.5" cy="147.7" r="3.2" fill="var(--theme)" opacity=".7"/>
+<circle cx="572" cy="62" r="3.4" fill="var(--theme)"/>
+<text class="g-note" x="582" y="66">효과 z ≈ 5</text>
+<circle cx="812.5" cy="113.8" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="841.2" cy="93.3" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="799.0" cy="123.6" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="811.2" cy="115.2" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="820.3" cy="108.1" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="813.7" cy="113.2" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="814.8" cy="111.9" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="832.0" cy="100.4" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="784.1" cy="134.7" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="811.0" cy="115.1" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="840.1" cy="94.9" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="817.1" cy="110.8" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="833.2" cy="98.0" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="826.1" cy="105.5" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="830.3" cy="101.0" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="816.9" cy="110.3" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="830.2" cy="102.5" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="804.8" cy="119.4" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="765.3" cy="148.4" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="820.6" cy="109.0" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="836.1" cy="96.7" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="795.5" cy="127.0" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="821.0" cy="107.6" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="781.1" cy="136.8" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="809.5" cy="116.7" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="850.3" cy="86.2" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="823.5" cy="106.2" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="797.8" cy="125.5" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="802.0" cy="122.0" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="821.8" cy="107.4" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="811.3" cy="115.0" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="804.3" cy="120.1" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="821.5" cy="108.8" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="814.2" cy="112.8" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="827.9" cy="103.5" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="812.5" cy="114.0" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="829.4" cy="102.4" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="819.2" cy="109.3" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="827.9" cy="103.0" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="814.8" cy="112.2" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="806.1" cy="119.6" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="821.0" cy="107.6" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="819.6" cy="110.0" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="834.7" cy="99.8" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="803.1" cy="120.2" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="820.3" cy="108.3" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="799.4" cy="123.8" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="828.7" cy="103.0" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="841.5" cy="92.6" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="817.4" cy="111.4" r="3.2" fill="#2F6DB5" opacity=".7"/>
+<circle cx="722" cy="62" r="3.4" fill="#2F6DB5"/>
+<text class="g-note" x="732" y="66">효과 z ≈ 10</text>
+<text class="g-lab" x="709.0" y="336" text-anchor="middle">개인 genotype으로 계산한 z</text>
+<text class="g-lab" x="516" y="189.0" text-anchor="middle" transform="rotate(-90 516 189.0)">요약 통계로 계산한 z</text>
+<text class="g-note" x="862" y="290" text-anchor="end">상관 <tspan class="g-em">0.9998</tspan> · 가장 큰 차이 <tspan class="g-em">0.24</tspan></text>
+<text class="g-note dim" x="34" y="346">요약 통계 경로는 개인 genotype을 전혀 보지 않음. 공개된 GWAS 요약 통계와 참조 LD만으로 같은 검정을 할 수</text>
+<text class="g-note dim" x="34" y="362">있다는 것이 TWAS가 널리 쓰이는 이유</text>
+</svg>
+<!--/GEN:FIG_TWO-->
+          </div>
+          <figcaption>그림 2 · GWAS 코호트 <!--GEN:NGWAS-->4,000<!--/GEN:NGWAS-->명 · eQTL 참조 <!--GEN:NREF0-->300<!--/GEN:NREF0-->명 · 유전자 <!--GEN:NGENE-->50<!--/GEN:NGENE-->개를 효과 두 가지에서 계산해 두 경로를 맞댐 · 상관 <!--GEN:CORR_Z-->0.9998<!--/GEN:CORR_Z-->, 가장 큰 차이 <!--GEN:DIFF_Z-->0.24<!--/GEN:DIFF_Z--></figcaption>
+        </figure>
+        <p>요약 통계 경로의 식은 한 줄임. weight 벡터 w, SNP별 z 벡터, 참조 LD 행렬 R에 대해 <b>z<sub>TWAS</sub> = wᵀz ⁄ √(wᵀRw)</b> <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a>. 분자는 weight로 가중한 신호의 합이고, 분모는 LD로 생기는 그 합의 분산임. 개인 수준 회귀가 하는 계산을 공분산만으로 다시 쓴 것이라, 표본이 크면 두 값이 만남.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>도구</th><th>입력</th><th>특징</th></tr></thead>
+            <tbody>
+              <tr><th>PrediXcan</th><td>개인 genotype + 형질</td><td>예측 발현을 변수로 직접 만들어 쓰므로 covariate 조정과 비선형 모형이 자유로움 <a class="src" href="https://doi.org/10.1038/ng.3367" target="_blank" rel="noopener">Gamazon 2015</a></td></tr>
+              <tr><th>S-PrediXcan · MetaXcan</th><td>GWAS 요약 통계 + LD</td><td>PrediXcan을 요약 통계로 확장한 것 <a class="src" href="https://doi.org/10.1038/s41431-018-0176-5" target="_blank" rel="noopener">Fryett 2018</a></td></tr>
+              <tr><th>FUSION</th><td>GWAS 요약 통계 + LD</td><td>유전자마다 여러 예측 모형을 적합해 가장 좋은 것을 고르고, conditional 분석을 같이 제공 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>요약 통계만으로 된다는 점이 TWAS가 퍼진 실질적 이유임. 개인 자료 접근 없이 공개된 GWAS 결과에 참조 LD만 붙이면 되므로, 한 번 만든 weight를 수백 개 형질에 돌릴 수 있음 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a>.</p>
+        <div class="callout">
+          <h4>LD 행렬은 어디서 오나</h4>
+          <p>요약 통계 경로의 R은 GWAS 코호트가 아니라 참조 패널에서 계산한 값임. 참조 패널의 집단 구성이 GWAS 코호트와 다르면 분모가 틀어지고, 그 오차가 z에 그대로 들어감. 이 쪽 시뮬레이션은 같은 집단에서 LD를 정확히 계산해 쓰므로 그 오차가 없음 — 실제 자료에서는 참조 패널을 코호트 집단에 맞추는 것이 기본임 <a class="src" href="https://doi.org/10.1038/s41588-020-00756-0" target="_blank" rel="noopener">Rubinacci 2021</a></p>
+        </div>
+
+        <!-- ───────── 4. 검정력 ───────── -->
+        <h2 id="power">검정력은 무엇이 정하나<small>Power follows prediction</small></h2>
+        <p class="lede">TWAS 통계량의 크기는 효과의 크기와 예측 정확도의 곱으로 정해짐. 예측이 반만 맞으면 신호도 그만큼 줄어듦</p>
+        <figure class="fig" id="fig-power">
+          <div class="fig-scroll">
+<!--GEN:FIG_POWER-->
+<svg class="g-svg " viewBox="0 0 900 392" role="img" aria-labelledby="pwT pwD" xmlns="http://www.w3.org/2000/svg">
+<title id="pwT">TWAS의 검정력은 발현 예측이 얼마나 맞는가를 그대로 따라간다</title>
+<desc id="pwD">왼쪽은 유전자마다 예측 정확도를 가로축에, TWAS 통계량의 크기를 세로축에 찍은 것이다. 참조 코호트가 클수록 점이 오른쪽 위로 올라가고, 가로 점선인 유전자 기준을 넘는 유전자가 늘어난다. 오른쪽은 같은 자료를 유전자 기준과 SNP 기준으로 각각 검정했을 때 잡히는 비율이다. 이 시뮬레이션에서는 형질이 발현만 거쳐 작동하므로 TWAS가 더 잡지만, 실제 자료에서는 반대가 흔하다.</desc>
+<text class="g-ttl" x="34" y="26">검정력은 예측 정확도를 따라간다<tspan class="g-sub" dx="8">점 하나 = 유전자 하나</tspan></text>
+<text class="g-ttl" x="522" y="26">같은 자료에서 무엇이 더 잡히나<tspan class="g-sub" dx="8">유전자 기준 · SNP 기준</tspan></text>
+<line class="g-grid" x1="88.0" x2="88.0" y1="82" y2="292"/>
+<text class="g-tick" x="88.0" y="308" text-anchor="middle">0</text>
+<line class="g-grid" x1="177.5" x2="177.5" y1="82" y2="292"/>
+<text class="g-tick" x="177.5" y="308" text-anchor="middle">0.25</text>
+<line class="g-grid" x1="267.0" x2="267.0" y1="82" y2="292"/>
+<text class="g-tick" x="267.0" y="308" text-anchor="middle">0.5</text>
+<line class="g-grid" x1="356.5" x2="356.5" y1="82" y2="292"/>
+<text class="g-tick" x="356.5" y="308" text-anchor="middle">0.75</text>
+<line class="g-grid" x1="446.0" x2="446.0" y1="82" y2="292"/>
+<text class="g-tick" x="446.0" y="308" text-anchor="middle">1</text>
+<line class="g-grid" x1="88" x2="446" y1="292.0" y2="292.0"/>
+<text class="g-tick" x="81" y="295.5" text-anchor="end">0</text>
+<line class="g-grid" x1="88" x2="446" y1="217.8" y2="217.8"/>
+<text class="g-tick" x="81" y="221.3" text-anchor="end">5</text>
+<line class="g-grid" x1="88" x2="446" y1="143.6" y2="143.6"/>
+<text class="g-tick" x="81" y="147.1" text-anchor="end">10</text>
+<line class="g-ax" x1="88" x2="446" y1="292" y2="292"/>
+<line class="g-ax" x1="88" x2="88" y1="82" y2="292"/>
+<line x1="88" x2="446" y1="222.1" y2="222.1" stroke="#B5525C" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text class="g-note" x="446" y="215.1" text-anchor="end" fill="#B5525C">유전자 기준 |z| 4.71</text>
+<circle cx="88.0" cy="292.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="317.7" cy="150.5" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="88.0" cy="292.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="88.0" cy="292.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="361.5" cy="157.1" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="88.0" cy="292.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="372.4" cy="141.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="208.5" cy="178.9" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="347.1" cy="181.7" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="88.0" cy="292.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="377.4" cy="120.4" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="202.5" cy="195.5" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="138.4" cy="247.4" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="88.0" cy="292.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="88.0" cy="292.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="88.0" cy="292.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="237.5" cy="169.4" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="209.3" cy="224.6" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="93.0" cy="288.7" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="338.2" cy="132.7" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="244.9" cy="161.2" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="234.4" cy="186.1" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="344.5" cy="145.9" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="351.8" cy="168.6" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="271.6" cy="182.2" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="88.0" cy="292.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="324.3" cy="159.5" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="241.5" cy="175.5" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="88.0" cy="276.2" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="250.0" cy="192.6" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="107.1" cy="247.7" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="257.9" cy="184.7" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="210.7" cy="187.1" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="334.6" cy="153.5" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="181.9" cy="181.9" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="88.0" cy="292.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="229.1" cy="179.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="364.0" cy="154.8" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="88.0" cy="292.0" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="319.2" cy="176.7" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="294.2" cy="190.3" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="272.9" cy="167.8" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="224.6" cy="193.9" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="239.1" cy="189.5" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="239.5" cy="181.9" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="372.0" cy="155.8" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="290.9" cy="160.1" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="142.1" cy="228.9" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="182.5" cy="196.5" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="194.7" cy="203.1" r="3.0" fill="#D9CFC3" opacity=".8"/>
+<circle cx="394.4" cy="153.3" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="380.1" cy="114.9" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="302.7" cy="171.4" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="365.1" cy="155.1" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="423.3" cy="143.0" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="390.7" cy="151.8" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="360.4" cy="150.4" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="431.4" cy="127.3" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="335.9" cy="191.4" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="328.2" cy="155.4" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="393.4" cy="116.4" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="337.5" cy="147.2" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="396.4" cy="125.6" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="421.8" cy="135.2" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="381.5" cy="129.5" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="358.0" cy="147.4" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="407.6" cy="129.6" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="375.9" cy="163.7" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="226.5" cy="216.6" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="361.3" cy="142.5" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="317.2" cy="121.8" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="291.4" cy="176.1" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="368.6" cy="142.0" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="302.6" cy="195.5" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="367.0" cy="157.4" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="418.8" cy="102.7" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="369.9" cy="138.7" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="315.1" cy="173.1" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="283.3" cy="167.4" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="350.9" cy="140.9" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="393.9" cy="155.0" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="383.0" cy="164.4" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="356.0" cy="141.3" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="354.3" cy="151.1" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="383.9" cy="132.7" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="371.8" cy="153.3" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="354.4" cy="130.8" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="403.1" cy="144.4" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="367.0" cy="132.8" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="368.5" cy="150.2" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="330.6" cy="161.9" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="392.4" cy="141.9" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="352.6" cy="143.9" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="367.6" cy="123.7" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="365.5" cy="166.0" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="423.6" cy="143.0" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="239.0" cy="170.9" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="368.0" cy="131.7" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="427.1" cy="114.5" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="339.0" cy="146.8" r="3.0" fill="#8E6F4E" opacity=".8"/>
+<circle cx="431.9" cy="153.7" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="422.0" cy="109.1" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="436.3" cy="117.7" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="416.4" cy="135.0" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="434.3" cy="140.3" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="433.7" cy="143.0" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="409.4" cy="143.0" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="420.6" cy="135.4" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="415.3" cy="172.7" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="439.3" cy="124.9" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="406.5" cy="112.8" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="407.7" cy="115.9" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="422.4" cy="112.4" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="426.5" cy="128.8" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="423.2" cy="109.4" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="418.5" cy="131.1" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="405.0" cy="139.3" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="433.5" cy="147.5" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="431.4" cy="156.6" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="426.0" cy="127.2" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="430.8" cy="97.6" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="437.2" cy="136.7" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="434.9" cy="124.7" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="416.4" cy="156.0" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="427.6" cy="151.7" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="428.3" cy="101.6" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="384.4" cy="146.0" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="406.3" cy="146.7" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="421.3" cy="129.9" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="437.9" cy="121.0" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="441.9" cy="133.3" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="412.5" cy="156.1" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="424.7" cy="126.3" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="432.7" cy="128.3" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="426.1" cy="114.2" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="435.6" cy="143.7" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="410.0" cy="112.2" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="405.1" cy="146.7" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="437.0" cy="111.5" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="419.5" cy="141.1" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="423.7" cy="126.6" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="429.2" cy="134.6" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="427.2" cy="125.5" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="411.2" cy="105.1" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="392.0" cy="155.1" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="422.7" cy="151.1" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="416.2" cy="132.6" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="409.6" cy="125.8" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="432.7" cy="112.0" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="436.4" cy="131.9" r="3.0" fill="var(--theme)" opacity=".8"/>
+<circle cx="102" cy="66" r="3.4" fill="#D9CFC3"/>
+<text class="g-note" x="112" y="70">참조 100명</text>
+<circle cx="220" cy="66" r="3.4" fill="#8E6F4E"/>
+<text class="g-note" x="230" y="70">참조 300명</text>
+<circle cx="338" cy="66" r="3.4" fill="var(--theme)"/>
+<text class="g-note" x="348" y="70">참조 1,000명</text>
+<text class="g-lab" x="267.0" y="328" text-anchor="middle">예측 정확도 (참 GReX 대비 R²)</text>
+<text class="g-lab" x="46" y="187.0" text-anchor="middle" transform="rotate(-90 46 187.0)">TWAS |z|</text>
+<line class="g-grid" x1="556" x2="862" y1="292.0" y2="292.0"/>
+<text class="g-tick" x="549" y="295.5" text-anchor="end">0</text>
+<line class="g-grid" x1="556" x2="862" y1="239.5" y2="239.5"/>
+<text class="g-tick" x="549" y="243.0" text-anchor="end">0.25</text>
+<line class="g-grid" x1="556" x2="862" y1="187.0" y2="187.0"/>
+<text class="g-tick" x="549" y="190.5" text-anchor="end">0.5</text>
+<line class="g-grid" x1="556" x2="862" y1="134.5" y2="134.5"/>
+<text class="g-tick" x="549" y="138.0" text-anchor="end">0.75</text>
+<line class="g-grid" x1="556" x2="862" y1="82.0" y2="82.0"/>
+<text class="g-tick" x="549" y="85.5" text-anchor="end">1</text>
+<line class="g-ax" x1="556" x2="862" y1="292" y2="292"/>
+<rect class="g-bar" x="582.0" y="187.0" width="66.5" height="105.0" rx="2" fill="var(--theme)"/>
+<text class="g-note" x="615.3" y="180.0" text-anchor="middle"><tspan class="g-em">50%</tspan></text>
+<text class="g-tick" x="615.3" y="308" text-anchor="middle">TWAS</text>
+<rect class="g-bar" x="656.5" y="233.2" width="66.5" height="58.8" rx="2" fill="#2F6DB5"/>
+<text class="g-note" x="689.8" y="226.2" text-anchor="middle"><tspan class="g-em">28%</tspan></text>
+<text class="g-tick" x="689.8" y="308" text-anchor="middle">GWAS</text>
+<text class="g-note" x="652.5" y="326" text-anchor="middle">효과 z ≈ 5</text>
+<rect class="g-bar" x="735.0" y="82.0" width="66.5" height="210.0" rx="2" fill="var(--theme)"/>
+<text class="g-note" x="768.3" y="75.0" text-anchor="middle"><tspan class="g-em">100%</tspan></text>
+<text class="g-tick" x="768.3" y="308" text-anchor="middle">TWAS</text>
+<rect class="g-bar" x="809.5" y="82.0" width="66.5" height="210.0" rx="2" fill="#2F6DB5"/>
+<text class="g-note" x="842.8" y="75.0" text-anchor="middle"><tspan class="g-em">100%</tspan></text>
+<text class="g-tick" x="842.8" y="308" text-anchor="middle">GWAS</text>
+<text class="g-note" x="805.5" y="326" text-anchor="middle">효과 z ≈ 10</text>
+<text class="g-lab" x="514" y="187.0" text-anchor="middle" transform="rotate(-90 514 187.0)">검출된 유전자 비율</text>
+<text class="g-note dim" x="34" y="346">이 모형에서는 형질이 오직 그 유전자 발현을 거쳐 작동하므로 TWAS가 더 잡음. 실제로는 반대가 흔함 — 모형이</text>
+<text class="g-note dim" x="34" y="362">없는 유전자가 많고, 신호가 그 조직의 발현을 거치지 않을 수 있기 때문. 참조 100명에서는 유전자의 60%만</text>
+<text class="g-note dim" x="34" y="378">모형을 얻어, 나머지는 검정 자체가 시작되지 않음</text>
+</svg>
+<!--/GEN:FIG_POWER-->
+          </div>
+          <figcaption>그림 3 · 왼쪽은 효과가 센 쪽(z ≈ 10)에서 유전자마다 예측 정확도와 TWAS |z|를 찍은 것 · 오른쪽은 같은 자료를 유전자 기준(0.05/20,000 → |z| 4.71)과 SNP 기준(5×10⁻⁸ → |z| 5.45)으로 각각 검정했을 때 잡히는 비율 · 효과가 약한 쪽에서 TWAS <!--GEN:DET_TWAS-->50%<!--/GEN:DET_TWAS--> · GWAS <!--GEN:DET_GWAS-->28%<!--/GEN:DET_GWAS--></figcaption>
+        </figure>
+        <div class="callout">
+          <h4>이 그림이 실제와 반대로 보이는 이유</h4>
+          <p>시뮬레이션에서는 형질이 오직 그 유전자 발현을 거쳐 만들어지므로, 발현을 잘 맞히는 가중합이 변이 하나보다 당연히 셈. 실제 자료에서는 TWAS가 GWAS보다 <b>적게</b> 잡는 쪽이 흔함 <a class="src" href="https://doi.org/10.1038/s41431-018-0176-5" target="_blank" rel="noopener">Fryett 2018</a>. 이유는 셋임 — 쓸 만한 예측 모형이 없는 유전자가 많고, 신호가 그 조직의 발현을 거치지 않을 수 있고, 예측 R²가 낮아 신호가 희석됨. 그래서 TWAS는 발견 도구라기보다 <b>해석과 우선순위 도구</b>로 씀</p>
+        </div>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>적용</th><th>규모</th><th>결과</th></tr></thead>
+            <tbody>
+              <tr><th>FUSION 최초 적용</th><td>형질 측정 90만 건 이상(BMI · 지질 · 키), 참조 약 3,000명(blood · adipose)</td><td>신규 유전자 69개 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a></td></tr>
+              <tr><th>세 방법 비교</th><td>WTCCC Crohn's disease · type 1 diabetes</td><td>메타분석에서 발현–형질 연관 CD 53개 · T1D 154개. 세 방법의 결과는 대체로 일치하나 <b>MHC 구역에서 크게 갈림</b> <a class="src" href="https://doi.org/10.1038/s41431-018-0176-5" target="_blank" rel="noopener">Fryett 2018</a></td></tr>
+              <tr><th>coTWAS</th><td>PGC3 schizophrenia 62개 코호트 102,613명(케이스 42%)</td><td>conditional FDR 0.01에서 독립 유전자 766개, 그중 641개(83.7%)가 신규 <a class="src" href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener">Rossi 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 5. 유의 ≠ 인과 ───────── -->
+        <h2 id="causal">유의한 유전자가 원인인가<small>Significance is not causality</small></h2>
+        <p class="lede">아님. 같은 locus에서 예측값이 서로 상관하면, 원인이 아닌 유전자도 같이 유의해짐 <a class="src" href="https://doi.org/10.1038/s41431-018-0176-5" target="_blank" rel="noopener">Fryett 2018</a></p>
+        <figure class="fig" id="fig-coreg" data-mode="big">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-coreg" role="group" aria-label="신호 세기">
+              <button type="button" data-mode="big" aria-pressed="true">센 신호 (z ≈ 10)</button>
+              <button type="button" data-mode="mid" aria-pressed="false">약한 신호 (z ≈ 5)</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:FIG_COREG-->
+<svg class="g-svg " viewBox="0 0 900 400" role="img" aria-labelledby="cgT cgD" xmlns="http://www.w3.org/2000/svg">
+<title id="cgT">같은 locus의 이웃 유전자가 덩달아 유의해진다</title>
+<desc id="cgD">왼쪽 위는 상황이다. 유전자 A의 발현만 형질의 원인이고, 200 kb 옆의 유전자 B는 A의 eQTL과 같은 LD 블록에 있는 변이에 조절을 받을 뿐이다. 왼쪽 아래는 두 유전자를 따로 검정했을 때 각각 유의해지는 비율이고, 원인이 아닌 B도 상당한 비율로 유의해진다. 오른쪽은 둘을 같이 넣은 조건부 검정에서 어느 쪽이 남는지다. 신호가 셀 때는 A만 남고 B는 대부분 사라지지만, 신호가 약하면 둘 다 사라진다.</desc>
+<text class="g-ttl" x="34" y="26">이웃 유전자가 같이 유의해진다<tspan class="g-sub" dx="8">인과는 A 하나뿐</tspan></text>
+<text class="g-ttl" x="506" y="26">조건부로 가르면<tspan class="g-sub" dx="8">이웃 쌍 24개</tspan></text>
+<rect x="66" y="88" width="150" height="26" rx="5" fill="var(--theme)" opacity=".16"/>
+<text class="g-hd" x="76" y="106" fill="var(--theme)">유전자 A</text>
+<text class="g-note dim" x="226" y="106">형질의 진짜 원인</text>
+<rect x="186" y="158" width="150" height="26" rx="5" fill="#D9822B" opacity=".16"/>
+<text class="g-hd" x="196" y="176" fill="#D9822B">유전자 B</text>
+<text class="g-note dim" x="346" y="176">원인 아님 · 200 kb 옆</text>
+<line class="g-ax" x1="66" x2="414" y1="142" y2="142"/>
+<text class="g-note" x="66" y="136">두 유전자의 eQTL이 같은 LD 블록에 있음 — 예측값끼리 |r| 중앙값 <tspan class="g-em">0.32</tspan></text>
+<text class="g-note dim" x="66" y="216">형질은 A의 발현만 거쳐 만들어짐. B는 A와 LD로 묶였을 뿐</text>
+<line class="g-ax" x1="76" x2="386" y1="336" y2="336"/>
+<text class="g-hd" x="76" y="236">단독으로 검정하면</text>
+<line class="g-grid" x1="540" x2="862" y1="300.0" y2="300.0"/>
+<text class="g-tick" x="533" y="303.5" text-anchor="end">0</text>
+<line class="g-grid" x1="540" x2="862" y1="249.0" y2="249.0"/>
+<text class="g-tick" x="533" y="252.5" text-anchor="end">0.25</text>
+<line class="g-grid" x1="540" x2="862" y1="198.0" y2="198.0"/>
+<text class="g-tick" x="533" y="201.5" text-anchor="end">0.5</text>
+<line class="g-grid" x1="540" x2="862" y1="147.0" y2="147.0"/>
+<text class="g-tick" x="533" y="150.5" text-anchor="end">0.75</text>
+<line class="g-grid" x1="540" x2="862" y1="96.0" y2="96.0"/>
+<text class="g-tick" x="533" y="99.5" text-anchor="end">1</text>
+<line class="g-ax" x1="540" x2="862" y1="300" y2="300"/>
+<g class="g-ov on" data-ov="big"><rect class="g-bar" x="86" y="262.0" width="86" height="74.0" rx="2" fill="var(--theme)"/><text class="g-note" x="129" y="255.0" text-anchor="middle"><tspan class="g-em">100%</tspan></text><text class="g-tick" x="129" y="352" text-anchor="middle">A 유의</text><rect class="g-bar" x="276" y="286.7" width="86" height="49.3" rx="2" fill="#D9822B"/><text class="g-note" x="319" y="279.7" text-anchor="middle"><tspan class="g-em">67%</tspan></text><text class="g-tick" x="319" y="352" text-anchor="middle">B 유의</text><rect class="g-bar" x="558.0" y="96.0" width="59.6" height="204.0" rx="2" fill="var(--theme)" opacity=".55"/><text class="g-note" x="587.8" y="89.0" text-anchor="middle"><tspan class="g-em">100%</tspan></text><rect class="g-bar" x="629.6" y="164.0" width="59.6" height="136.0" rx="2" fill="#D9822B" opacity=".55"/><text class="g-note" x="659.4" y="157.0" text-anchor="middle"><tspan class="g-em">67%</tspan></text><rect class="g-bar" x="701.3" y="121.5" width="59.6" height="178.5" rx="2" fill="var(--theme)" opacity="1"/><text class="g-note" x="731.1" y="114.5" text-anchor="middle"><tspan class="g-em">88%</tspan></text><rect class="g-bar" x="772.9" y="261.8" width="59.6" height="38.2" rx="2" fill="#D9822B" opacity="1"/><text class="g-note" x="802.7" y="254.8" text-anchor="middle"><tspan class="g-em">19%</tspan></text><text class="g-note dim" x="540" y="336">둘 다 유의했던 쌍 <tspan class="g-em">16개</tspan> 가운데 조건부 검정에서 남는 비율</text></g>
+<g class="g-ov" data-ov="mid"><rect class="g-bar" x="86" y="274.3" width="86" height="61.7" rx="2" fill="var(--theme)"/><text class="g-note" x="129" y="267.3" text-anchor="middle"><tspan class="g-em">83%</tspan></text><text class="g-tick" x="129" y="352" text-anchor="middle">A 유의</text><rect class="g-bar" x="276" y="326.8" width="86" height="9.2" rx="2" fill="#D9822B"/><text class="g-note" x="319" y="319.8" text-anchor="middle"><tspan class="g-em">12%</tspan></text><text class="g-tick" x="319" y="352" text-anchor="middle">B 유의</text><rect class="g-bar" x="558.0" y="130.0" width="59.6" height="170.0" rx="2" fill="var(--theme)" opacity=".55"/><text class="g-note" x="587.8" y="123.0" text-anchor="middle"><tspan class="g-em">83%</tspan></text><rect class="g-bar" x="629.6" y="274.5" width="59.6" height="25.5" rx="2" fill="#D9822B" opacity=".55"/><text class="g-note" x="659.4" y="267.5" text-anchor="middle"><tspan class="g-em">12%</tspan></text><rect class="g-bar" x="701.3" y="300.0" width="59.6" height="0.0" rx="2" fill="var(--theme)" opacity="1"/><text class="g-note" x="731.1" y="293.0" text-anchor="middle"><tspan class="g-em">0%</tspan></text><rect class="g-bar" x="772.9" y="300.0" width="59.6" height="0.0" rx="2" fill="#D9822B" opacity="1"/><text class="g-note" x="802.7" y="293.0" text-anchor="middle"><tspan class="g-em">0%</tspan></text><text class="g-note dim" x="540" y="336">둘 다 유의했던 쌍 <tspan class="g-em">2개</tspan> 가운데 조건부 검정에서 남는 비율</text></g>
+<text class="g-tick" x="587.8" y="316" text-anchor="middle">A 단독</text>
+<text class="g-tick" x="659.4" y="316" text-anchor="middle">B 단독</text>
+<text class="g-tick" x="731.1" y="316" text-anchor="middle">A 조건부</text>
+<text class="g-tick" x="802.7" y="316" text-anchor="middle">B 조건부</text>
+<text class="g-lab" x="500" y="198.0" text-anchor="middle" transform="rotate(-90 500 198.0)">유의한 쌍의 비율</text>
+<text class="g-note dim" x="34" y="370">조건부 검정은 둘을 같이 넣고 다시 봄. 신호가 세면 A만 남지만, 신호가 약하면 나눠 가지면서 둘 다 사라짐 —</text>
+<text class="g-note dim" x="34" y="386">그래서 조건부 결과만으로 인과를 정하지 않음</text>
+</svg>
+<!--/GEN:FIG_COREG-->
+          </div>
+          <figcaption>그림 4 · 이웃 유전자 쌍 <!--GEN:NPAIR-->24<!--/GEN:NPAIR-->개 · 200 kb 떨어진 두 유전자이고 B의 eQTL은 A의 eQTL과 같은 LD 블록에서 고름 · 예측값끼리 |r| 중앙값 <!--GEN:RHO_MED-->0.32<!--/GEN:RHO_MED--> · 형질은 A의 발현만 거쳐 만들어짐 · 센 신호에서 원인이 아닌 B가 <!--GEN:FP_B-->67%<!--/GEN:FP_B-->에서 유의했고, 조건부 검정에서 A는 <!--GEN:COND_A-->88%<!--/GEN:COND_A--> 남고 B는 <!--GEN:COND_B-->19%<!--/GEN:COND_B-->만 남음</figcaption>
+        </figure>
+        <p>원인은 두 가지가 겹쳐 생김. 하나는 <b>LD</b> — 두 유전자의 eQTL이 같은 블록에 있으면 예측값이 상관함. 다른 하나는 <b>공동 조절</b> — 한 조절 구역이 여러 유전자의 발현을 같이 움직이면 그 자체로 예측값이 상관함 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a>. 둘 다 "이 유전자의 발현이 형질을 바꾼다"는 해석을 지탱하지 못함.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>후속 확인</th><th>무엇을 가르나</th><th>한계</th></tr></thead>
+            <tbody>
+              <tr><th>conditional 분석</th><td>둘을 같이 넣고 다시 봄. 한쪽이 설명하고 남는 몫이 있는지 확인 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a></td><td>신호가 약하면 둘이 나눠 가지면서 둘 다 사라짐 — 그림 4의 약한 신호 모드</td></tr>
+              <tr><th><a href="coloc.html">colocalization</a></th><td>GWAS 신호와 eQTL 신호가 같은 인과 변이를 공유하는지 확인 <a class="src" href="https://doi.org/10.1371/journal.pgen.1004383" target="_blank" rel="noopener">Giambartolomei 2014</a></td><td>단일 인과 변이를 가정하므로 신호가 둘 이상이면 어긋남</td></tr>
+              <tr><th><a href="fine-mapping.html">fine-mapping</a></th><td>credible set으로 후보 변이를 좁힘</td><td>LD가 센 구역에서는 집합이 넓게 남음</td></tr>
+              <tr><th>기능 검증</th><td>편집·섭동으로 발현을 직접 바꿔 봄</td><td>비용과 시간 — <a href="../../disease/genetics/05-function/perturbation.html">교재 쪽 섭동 실험</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Fryett 2018이 PrediXcan · MetaXcan · FUSION을 같은 자료에 돌려 본 결과도 같은 방향임. 결과는 대체로 일치하지만 LD가 복잡한 MHC 구역에서 크게 갈렸고, 대부분의 연관이 이미 알려진 GWAS risk locus 근처에 떨어졌음 <a class="src" href="https://doi.org/10.1038/s41431-018-0176-5" target="_blank" rel="noopener">Fryett 2018</a>. 방법 하나와 유전자 하나만 보고 결론을 내지 않는 것이 이 자료가 주는 교훈임.</p>
+
+        <!-- ───────── 6. 집단 ───────── -->
+        <h2 id="ancestry">참조가 한 집단에 쏠려 있으면<small>Ancestry transferability</small></h2>
+        <p class="lede">eQTL 참조 코호트 대부분이 European ancestry임. 다른 집단에 그대로 붙이면 예측이 먼저 무너지고, 검정력은 그 뒤를 따라 떨어짐 <a class="src" href="https://doi.org/10.1093/bib/bbae549" target="_blank" rel="noopener">Chan 2024</a></p>
+        <figure class="fig" id="fig-ancestry">
+          <div class="fig-scroll">
+<!--GEN:FIG_ANCESTRY-->
+<svg class="g-svg " viewBox="0 0 900 326" role="img" aria-labelledby="anT anD" xmlns="http://www.w3.org/2000/svg">
+<title id="anT">학습한 집단에서 멀어질수록 발현 예측이 무너진다</title>
+<desc id="anD">왼쪽은 집단 A에서 배운 예측 모형을 점점 먼 집단에 적용했을 때 남는 정확도다. 가로축은 집단 사이 거리이고, 거리가 멀수록 남는 비율이 떨어진다. 오른쪽은 그 이유다. 모형이 weight를 실어 둔 변이들의 빈도 분포를 두 집단에서 겹쳐 그렸고, 먼 집단에서는 상당수가 1% 아래로 내려가 예측에 기여하지 못한다.</desc>
+<text class="g-ttl" x="34" y="26">배운 집단에서 멀어질수록 예측이 무너진다<tspan class="g-sub" dx="8">weight는 집단 A에서 배운 그대로</tspan></text>
+<text class="g-ttl" x="512" y="26">이유는 빈도<tspan class="g-sub" dx="8">weight가 실린 변이의 MAF</tspan></text>
+<line class="g-grid" x1="108" x2="420" y1="244.0" y2="244.0"/>
+<text class="g-tick" x="101" y="247.5" text-anchor="end">0</text>
+<line class="g-grid" x1="108" x2="420" y1="205.0" y2="205.0"/>
+<text class="g-tick" x="101" y="208.5" text-anchor="end">0.25</text>
+<line class="g-grid" x1="108" x2="420" y1="165.9" y2="165.9"/>
+<text class="g-tick" x="101" y="169.4" text-anchor="end">0.5</text>
+<line class="g-grid" x1="108" x2="420" y1="126.9" y2="126.9"/>
+<text class="g-tick" x="101" y="130.4" text-anchor="end">0.75</text>
+<line class="g-grid" x1="108" x2="420" y1="87.8" y2="87.8"/>
+<text class="g-tick" x="101" y="91.3" text-anchor="end">1</text>
+<text class="g-tick" x="108.0" y="260" text-anchor="middle">0.00</text>
+<text class="g-tick" x="212.8" y="260" text-anchor="middle">0.05</text>
+<text class="g-tick" x="317.6" y="260" text-anchor="middle">0.10</text>
+<line class="g-ax" x1="108" x2="420" y1="244" y2="244"/>
+<polyline class="g-line g-l1" points="108.0,87.8 210.1,111.6 280.5,127.6 379.3,161.2"/>
+<circle class="g-dot" cx="108.0" cy="87.8" r="5" fill="var(--theme)"/>
+<text class="g-note" x="108.0" y="75.8" text-anchor="middle"><tspan class="g-em">100%</tspan></text>
+<circle class="g-dot" cx="210.1" cy="111.6" r="5" fill="var(--theme)"/>
+<text class="g-note" x="210.1" y="99.6" text-anchor="middle"><tspan class="g-em">85%</tspan></text>
+<circle class="g-dot" cx="280.5" cy="127.6" r="5" fill="var(--theme)"/>
+<text class="g-note" x="280.5" y="115.6" text-anchor="middle"><tspan class="g-em">75%</tspan></text>
+<circle class="g-dot" cx="379.3" cy="161.2" r="5" fill="var(--theme)"/>
+<text class="g-note" x="379.3" y="149.2" text-anchor="middle"><tspan class="g-em">53%</tspan></text>
+<text class="g-lab" x="264.0" y="280" text-anchor="middle">집단 A와의 거리 (F_ST)</text>
+<text class="g-lab" x="52" y="162.0" text-anchor="middle" transform="rotate(-90 52 162.0)">남는 예측 정확도</text>
+<line class="g-ax" x1="546" x2="858" y1="244" y2="244"/>
+<rect class="g-bar" x="552.2" y="244.0" width="19.8" height="0.0" rx="2" fill="var(--theme)" opacity="0.9"/>
+<rect class="g-bar" x="574.0" y="107.3" width="19.8" height="136.7" rx="2" fill="#B5525C" opacity="0.75"/>
+<text class="g-tick" x="572.0" y="260" text-anchor="middle"><1%</text>
+<rect class="g-bar" x="604.2" y="216.0" width="19.8" height="28.0" rx="2" fill="var(--theme)" opacity="0.9"/>
+<rect class="g-bar" x="626.0" y="212.1" width="19.8" height="31.9" rx="2" fill="#B5525C" opacity="0.75"/>
+<text class="g-tick" x="624.0" y="260" text-anchor="middle">1–5%</text>
+<rect class="g-bar" x="656.2" y="204.2" width="19.8" height="39.8" rx="2" fill="var(--theme)" opacity="0.9"/>
+<rect class="g-bar" x="678.0" y="229.2" width="19.8" height="14.8" rx="2" fill="#B5525C" opacity="0.75"/>
+<text class="g-tick" x="676.0" y="260" text-anchor="middle">5–10%</text>
+<rect class="g-bar" x="708.2" y="195.6" width="19.8" height="48.4" rx="2" fill="var(--theme)" opacity="0.9"/>
+<rect class="g-bar" x="730.0" y="232.0" width="19.8" height="12.0" rx="2" fill="#B5525C" opacity="0.75"/>
+<text class="g-tick" x="728.0" y="260" text-anchor="middle">10–20%</text>
+<rect class="g-bar" x="760.2" y="198.9" width="19.8" height="45.1" rx="2" fill="var(--theme)" opacity="0.9"/>
+<rect class="g-bar" x="782.0" y="237.6" width="19.8" height="6.4" rx="2" fill="#B5525C" opacity="0.75"/>
+<text class="g-tick" x="780.0" y="260" text-anchor="middle">20–30%</text>
+<rect class="g-bar" x="812.2" y="190.8" width="19.8" height="53.2" rx="2" fill="var(--theme)" opacity="0.9"/>
+<rect class="g-bar" x="834.0" y="231.4" width="19.8" height="12.6" rx="2" fill="#B5525C" opacity="0.75"/>
+<text class="g-tick" x="832.0" y="260" text-anchor="middle">>30%</text>
+<rect x="546" y="56" width="12" height="10" rx="2" fill="var(--theme)"/>
+<text class="g-note" x="562" y="65">집단 A</text>
+<rect x="696" y="56" width="12" height="10" rx="2" fill="#B5525C"/>
+<text class="g-note" x="712" y="65">집단 F (F_ST 0.13)</text>
+<text class="g-lab" x="702.0" y="280" text-anchor="middle">weight가 실린 변이의 minor allele frequency</text>
+<text class="g-note dim" x="34" y="296">먼 집단에서 1% 아래로 내려간 변이가 64%. weight를 받은 변이가 대상 집단에서 드물어지면 그 항은 예측에</text>
+<text class="g-note dim" x="34" y="312">기여하지 못함 — 효과 자체가 달라서가 아니라 빈도와 LD가 달라서 생기는 손실</text>
+</svg>
+<!--/GEN:FIG_ANCESTRY-->
+          </div>
+          <figcaption>그림 5 · 집단 A에서 배운 weight를 drift로 갈라진 집단에 그대로 적용 · F_ST <!--GEN:FST_MID-->0.08<!--/GEN:FST_MID-->에서 예측 정확도의 <!--GEN:TRANS_MID-->75%<!--/GEN:TRANS_MID-->, F_ST <!--GEN:FST_FAR-->0.13<!--/GEN:FST_FAR-->에서 <!--GEN:TRANS_FAR-->53%<!--/GEN:TRANS_FAR-->가 남음 · 먼 집단에서 weight가 실린 변이의 <!--GEN:LOST_FAR-->64%<!--/GEN:LOST_FAR-->가 MAF 1% 아래로 내려감</figcaption>
+        </figure>
+        <p>손실의 기전은 효과의 차이가 아님. 이 시뮬레이션은 변이마다 발현에 미치는 효과를 집단 사이에 <b>똑같이</b> 두었는데도 정확도가 떨어짐. 떨어뜨리는 것은 두 가지임 — weight를 받은 변이가 대상 집단에서 드물어져 기여하지 못하는 것, 그리고 LD가 달라져 tag 변이가 원래 대신하던 변이를 더는 대신하지 못하는 것. Chan 2024가 gnomAD allele frequency로 집단 간 빈도가 갈리는 변이를 추정해 보정하려는 것도 같은 진단에서 나옴 — 그 연구에서 변이의 70%가 집단 사이에서 빈도가 갈리는 것으로 분류됐음 <a class="src" href="https://doi.org/10.1093/bib/bbae549" target="_blank" rel="noopener">Chan 2024</a>.</p>
+        <div class="callout">
+          <h4>이 모형이 담지 못하는 것</h4>
+          <p>실제 전이성 손실에는 집단마다 eQTL 효과 자체가 다른 몫도 섞여 있음(세포 구성·환경·상호작용). 이 시뮬레이션은 효과를 같게 두었으므로 <b>빈도와 LD만으로 생기는 손실</b>의 하한을 보는 셈임. 또 F_ST <!--GEN:FST_FAR-->0.13<!--/GEN:FST_FAR-->은 사람 집단 사이에서 가장 먼 축에 해당하므로, 그 점은 경향을 읽는 용도임. 집단별 참조 코호트를 따로 만드는 것이 근본 해결이고, 보정은 그 전까지의 임시방편임 <a class="src" href="https://doi.org/10.1093/bib/bbae549" target="_blank" rel="noopener">Chan 2024</a></p>
+        </div>
+        <p>집단 구조가 연관 자체를 어떻게 왜곡하는지는 <a href="../01-genetics/ancestry.html">집단 구조 쪽</a>에, 예측 모형의 전이성 문제가 PRS에서 어떻게 나타나는지는 <a href="prs.html#ancestry">PRS 쪽</a>에 있음.</p>
+
+        <!-- ───────── 7. cis 너머 ───────── -->
+        <h2 id="beyond">cis 바깥은 어떻게 하나<small>Beyond the cis window</small></h2>
+        <p class="lede">표준 TWAS는 표적 유전자 ±1 Mb 안의 변이만 씀. 발현을 움직이는 trans 조절은 그 바깥에 있고, 이를 모으려는 시도가 최근 방향임 <a class="src" href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener">Rossi 2026</a></p>
+        <div class="cases">
+          <div class="case">
+            <h4>INGENE — 공발현 상대를 거쳐</h4>
+            <p>표적과 함께 움직이는 유전자(co-expression partner)의 발현을 cis 모형으로 먼저 예측하고, 그 값을 표적의 설명변수로 씀. cis 효과가 상대를 거쳐 표적에 닿는 경로를 담음 <a class="src" href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener">Rossi 2026</a></p>
+          </div>
+          <div class="case">
+            <h4>MODULE — 모듈 전체의 축</h4>
+            <p>공발현 모듈의 첫 주성분(eigengene)에 연관된 변이를 모으되, 표적 ±1 Mb 안의 cis 변이는 빼고 씀 <a class="src" href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener">Rossi 2026</a></p>
+          </div>
+        </div>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>견주는 축</th><th>cis 모형</th><th>trans 모형</th></tr></thead>
+            <tbody>
+              <tr><th>유전자당 설명 분산</th><td>CIS 7.1–7.8% · EpiXcan 7.2–9.4%</td><td>INGENE 2–3.3% · MODULE 2.7–4.9% (GTEx 외부 검증, Wilcoxon P &lt; 2.2×10⁻¹⁶) <a class="src" href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener">Rossi 2026</a></td></tr>
+              <tr><th>예측 가능한 유전자 수</th><td>4,732–7,777</td><td>INGENE 5,429–10,749 — cis의 최대 1.8배 <a class="src" href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener">Rossi 2026</a></td></tr>
+              <tr><th>코호트 사이 안정성</th><td>공유 유전자 32–47%, 예측값 상관 r 0.43–0.68</td><td>공유 유전자는 많으나(MODULE 약 88%) 예측값 상관이 r 0.14–0.17로 낮음 <a class="src" href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener">Rossi 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>정리하면 trans 모형은 <b>많은 유전자를 불안정하게</b> 예측하고, cis 모형은 <b>적은 유전자를 안정적으로</b> 예측함. 둘을 합치면 뇌 6개 부위에서 유전자 18,744개가 유의하게 예측됐고, cis와 trans의 조합이 가장 좋았던 유전자들에서 R² 증가분의 중앙값이 0.024–0.042였음 <a class="src" href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener">Rossi 2026</a>.</p>
+        <div class="callout">
+          <h4>trans라고 적힌 신호가 정말 trans인가</h4>
+          <p>Rossi 2026 스스로 적어 둔 유보임. MODULE이 쓰는 trans 변이의 25–44%는 GTEx에서 cis-eQTL이기도 했고, MODULE이 예측한 유전자의 15–29%는 INGENE이 쓰는 상대 유전자의 cis 변이와 겹쳤음. 공발현을 타고 번진 cis 효과가 trans로 보이는 몫이 상당하다는 뜻임 <a class="src" href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener">Rossi 2026</a></p>
+        </div>
+        <p>예측 모형 쪽에도 남은 자리가 있음. 1단계가 아직 벌점 선형회귀에 머물러 있어, 독립적인 인과 molQTL 여러 개를 함께 담거나 관련 세포형 사이에서 정보를 나누는 방향이 공백으로 지목됨 <a class="src" href="https://doi.org/10.1038/s41576-026-00990-y" target="_blank" rel="noopener">Engelhardt 2026</a>. 한 가지 더 — discovery 코호트에서 과대추정된 eQTL 효과를 그대로 예측 모형에 넣으면 그 편향이 TWAS 결과까지 따라 내려옴(winner's curse) <a class="src" href="https://doi.org/10.1038/s41576-026-00990-y" target="_blank" rel="noopener">Engelhardt 2026</a>.</p>
+
+        <!-- ───────── 8. 읽는 법 ───────── -->
+        <h2 id="read">TWAS 결과를 어떻게 읽나<small>Reading a TWAS table</small></h2>
+        <p class="lede">유전자 이름이 나왔다는 것은 후보가 좁혀졌다는 뜻이지, 그 유전자가 원인으로 확인됐다는 뜻이 아님</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>볼 것</th><th>왜</th></tr></thead>
+            <tbody>
+              <tr><th>어느 조직의 모형인가</th><td>조직이 다르면 weight가 다르고 결과도 달라짐. 형질과 관련된 조직인지 먼저 봄 <a class="src" href="https://doi.org/10.1038/ng.3367" target="_blank" rel="noopener">Gamazon 2015</a></td></tr>
+              <tr><th>예측 R²와 그 P값</th><td>예측이 나쁜 모형의 유의성은 해석할 수 없음. 보고된 R²가 0.01 언저리면 신호 대부분이 잡음에 묻혀 있음</td></tr>
+              <tr><th>같은 locus에 다른 유전자가 같이 떴는가</th><td>떴다면 LD나 공동 조절일 가능성이 높음. conditional 결과를 같이 봄 <a class="src" href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener">Gusev 2016</a></td></tr>
+              <tr><th>coloc이 같은 방향을 가리키나</th><td>TWAS 유의 + coloc 높은 PP4가 겹칠 때 후보가 단단해짐 <a class="src" href="coloc.html">coloc 쪽</a></td></tr>
+              <tr><th>참조와 GWAS의 집단이 맞나</th><td>참조가 European인데 코호트가 다른 집단이면 예측과 LD 둘 다 틀어짐 <a class="src" href="https://doi.org/10.1093/bib/bbae549" target="_blank" rel="noopener">Chan 2024</a></td></tr>
+              <tr><th>MHC 구역인가</th><td>LD가 특수해 방법 사이 불일치가 큼. 별도로 다룸 <a class="src" href="https://doi.org/10.1038/s41431-018-0176-5" target="_blank" rel="noopener">Fryett 2018</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>흔한 오해</h3>
+        <div class="fixlist">
+          <div class="fix"><p><b>TWAS가 유의하면 그 유전자의 발현이 형질을 바꾼다</b></p><p class="why">아님. 같은 locus의 이웃 유전자가 LD와 공동 조절로 함께 유의해짐. 시뮬레이션에서 원인이 아닌 이웃이 <!--GEN:FP_B-->67%<!--/GEN:FP_B-->에서 유의했음</p></div>
+          <div class="fix"><p><b>TWAS는 GWAS보다 민감하므로 더 많이 발견한다</b></p><p class="why">실제로는 적게 잡는 쪽이 흔함. 모형이 없는 유전자가 많고, 형질 신호가 그 조직의 발현을 거치지 않을 수 있음 <a class="src" href="https://doi.org/10.1038/s41431-018-0176-5" target="_blank" rel="noopener">Fryett 2018</a></p></div>
+          <div class="fix"><p><b>예측 R²는 표본을 늘리면 1에 가까워진다</b></p><p class="why">cis 유전율이 상한임. 발현 변동의 대부분은 cis 변이 바깥에 있음</p></div>
+          <div class="fix"><p><b>결과 표에 없는 유전자는 음성이다</b></p><p class="why">쓸 만한 예측 모형이 서지 않아 검정 자체를 못 한 유전자가 많음. 참조 100명에서는 <!--GEN:MODEL100-->60%<!--/GEN:MODEL100-->만 모형을 얻었음</p></div>
+          <div class="fix"><p><b>요약 통계로 하는 TWAS는 개인 자료로 하는 것의 근사다</b></p><p class="why">같은 선형 결합을 다르게 계산한 것임. 시뮬레이션에서 두 값의 상관이 <!--GEN:CORR_Z-->0.9998<!--/GEN:CORR_Z-->, 가장 큰 차이가 <!--GEN:DIFF_Z-->0.24<!--/GEN:DIFF_Z-->였음</p></div>
+          <div class="fix"><p><b>conditional 분석을 통과하면 인과가 확인된 것이다</b></p><p class="why">LD로 끌려온 후보를 걷어낼 뿐임. 신호가 약하면 진짜 원인까지 같이 사라지기도 함(그림 4의 약한 신호 모드)</p></div>
+          <div class="fix"><p><b>효과 방향(발현이 높을수록 위험)은 그대로 믿어도 된다</b></p><p class="why">weight의 부호와 참조 패널의 allele 표기가 어긋나면 방향이 뒤집힘. 예측 모형과 GWAS의 effect allele을 맞춰야 함</p></div>
+          <div class="fix"><p><b>TWAS와 coloc은 같은 것을 다르게 부르는 이름이다</b></p><p class="why">coloc은 같은 인과 변이를 공유하는지 묻고, TWAS는 예측 발현과 형질의 연관을 검정함. 한쪽만 유의한 경우가 흔함</p></div>
+          <div class="fix"><p><b>SMR과 TWAS는 같은 방법이다</b></p><p class="why">SMR은 top cis-eQTL 하나를 instrument로 쓰고, TWAS는 cis 변이 다수의 가중합을 씀 <a class="src" href="https://doi.org/10.1038/ng.3538" target="_blank" rel="noopener">Zhu 2016</a></p></div>
+          <div class="fix"><p><b>모든 집단에 같은 weight를 써도 된다</b></p><p class="why">빈도와 LD가 달라지면 예측이 무너짐. F_ST <!--GEN:FST_FAR-->0.13<!--/GEN:FST_FAR-->인 집단에서 정확도의 <!--GEN:TRANS_FAR-->53%<!--/GEN:TRANS_FAR-->만 남았음</p></div>
+          <div class="fix"><p><b>trans 모형이 cis 모형보다 낫다</b></p><p class="why">축이 다름. trans는 더 많은 유전자를 덜 안정적으로, cis는 더 적은 유전자를 더 안정적으로 예측함 <a class="src" href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener">Rossi 2026</a></p></div>
+          <div class="fix"><p><b>예측 모형은 인과 변이를 찾아낸다</b></p><p class="why">발현을 잘 맞히는 조합을 찾을 뿐임. LD로 묶인 이웃 변이가 인과 변이의 역할을 나눠 가짐 — 그림 1에서 weight가 진짜 eQTL 주변에 퍼져 있는 모습</p></div>
+        </div>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="coloc.html">Colocalization (그림) →</a>
+          <a href="variant-to-gene.html#combine">Variant-to-gene · 증거 겹치기 (그림) →</a>
+          <a href="fine-mapping.html">Fine-mapping (그림) →</a>
+          <a href="mr.html">Mendelian randomization (그림) →</a>
+          <a href="prs.html#ancestry">PRS · ancestry 전이성 (그림) →</a>
+          <a href="../01-genetics/ancestry.html">Ancestry · population structure (그림) →</a>
+          <a href="../01-genetics/ld.html#haplotype">Linkage disequilibrium (그림) →</a>
+          <a href="../index.html#article/gtex">GTEx →</a>
+          <a href="../../disease/genetics/05-function/qtl.html">교재 — eQTL은 무엇을 재나 →</a>
+          <a href="../../disease/genetics/05-function/perturbation.html">교재 — 섭동으로 확인하기 →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="http://gusevlab.org/projects/fusion/" target="_blank" rel="noopener noreferrer">FUSION ↗</a>
+          <a href="https://predictdb.org/" target="_blank" rel="noopener noreferrer">PredictDB — 예측 모형 저장소 ↗</a>
+          <a href="https://github.com/hakyimlab/MetaXcan" target="_blank" rel="noopener noreferrer">MetaXcan · S-PrediXcan ↗</a>
+          <a href="https://gtexportal.org/" target="_blank" rel="noopener noreferrer">GTEx Portal ↗</a>
+          <a href="https://github.com/fabiana1rossi/coTWAS" target="_blank" rel="noopener noreferrer">coTWAS ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/ng.3367" target="_blank" rel="noopener noreferrer">Gamazon 2015, Nat Genet — PrediXcan ↗</a>
+          <a href="https://doi.org/10.1038/ng.3506" target="_blank" rel="noopener noreferrer">Gusev 2016, Nat Genet — FUSION ↗</a>
+          <a href="https://doi.org/10.1038/ng.3538" target="_blank" rel="noopener noreferrer">Zhu 2016, Nat Genet — SMR ↗</a>
+          <a href="https://doi.org/10.1038/s41431-018-0176-5" target="_blank" rel="noopener noreferrer">Fryett 2018, Eur J Hum Genet — 방법 비교 ↗</a>
+          <a href="https://doi.org/10.1093/bib/bbae549" target="_blank" rel="noopener noreferrer">Chan 2024, Brief Bioinform — PredictAP ↗</a>
+          <a href="https://doi.org/10.1038/s41588-026-02646-3" target="_blank" rel="noopener noreferrer">Rossi 2026, Nat Genet — coTWAS ↗</a>
+          <a href="https://doi.org/10.1038/s41576-026-00990-y" target="_blank" rel="noopener noreferrer">Engelhardt 2026, Nat Rev Genet — molQTL 리뷰 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../gwas-fig.js"></script>
+</body>
+</html>

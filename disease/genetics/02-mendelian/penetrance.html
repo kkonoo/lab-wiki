@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="같은 병원성 변이를 가진 두 사람이 왜 다른 길을 가나. 침투도와 발현도의 구분, 진단 코호트와 biobank에서 달라지는 침투도 숫자, 변이 자리와 유전자가 만드는 두 위계, 노출과 나이와 modifier가 바꾸는 것">
+  <title>같은 변이가 왜 다른 결과를 내나? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">멘델 유전</a><span>›</span>침투도와 발현도</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">멘델 유전 · Penetrance and expressivity</p>
+        <h1>같은 변이가 왜 다른 결과를 내나?</h1>
+        <p class="definition">사람은 평균 100개쯤의 단백질 유전자 loss-of-function 변이를 지니고 다니며 대부분은 heterozygous이고 아무 일도 일으키지 않음 <a class="src" href="https://doi.org/10.1146/annurev-immunol-082323-124920" target="_blank" rel="noopener">Bender 2025</a>. 질환을 만들 만큼 효과가 큰 변이에서도 결과가 갈림 — telomere biology disorder에서 똑같은 <em>TERT</em>·<em>PARN</em> 변이가 소아기 골수부전으로도, 성인기 특발성 폐섬유증으로도, 늦은 나이까지 아무 증상 없음으로도 나타남 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a></p>
+
+        <!-- ───────── 1. 질문이 서는 자리 ───────── -->
+        <h2 id="why">질문이 서는 자리<small>Why the question arises</small></h2>
+        <p class="lede">변이 목록을 받아 든 다음에 오는 질문. "이 변이가 무엇을 하나"가 아니라 "이 사람에게 무엇을 할 것인가".</p>
+        <p>변이가 단백질에 하는 일은 <a href="../01-genome/variant-effect.html">변이는 단백질을 어떻게 바꾸나?</a>에서 다룸. 그 쪽이 답하는 것은 분자 수준의 결과이고, 이 쪽이 묻는 것은 그 분자 수준의 결과가 한 사람의 임상 경과로 이어지는 과정에서 무엇이 끼어드느냐임.</p>
+        <p>끼어드는 것이 많다는 사실 자체가 기준선에 이미 들어 있음. 사람 한 명이 지닌 LoF 변이 100개 가운데 질환을 만드는 것은 드물게만 나옴 <a class="src" href="https://doi.org/10.1146/annurev-immunol-082323-124920" target="_blank" rel="noopener">Bender 2025</a>. 그러니 "망가진 유전자 = 질환"이라는 등식은 기본값이 아니라 예외에 가까움.</p>
+        <p>임상 쪽에서 이 질문이 급한 이유는 따로 있음. 보인자 한 사람 앞에서 답해야 하는 것은 집단 평균이 아니라 그 사람의 경과인데, 같은 병원성 변이를 가진 사람들 사이에서도 경과를 예측하기 어려움 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a>.</p>
+
+        <!-- ───────── 2. 두 축 ───────── -->
+        <h2 id="two">침투도와 발현도는 다른 축<small>Two different axes</small></h2>
+        <p class="lede">자주 섞여 쓰이지만 묻는 것이 다름. 하나는 생기느냐이고 하나는 생기면 어떠냐임.</p>
+        <p><strong>incomplete penetrance</strong>는 변이를 지녔는데도 질환이 생기지 않을 수 있다는 것, <strong>variable expressivity</strong>는 질환이 생기기는 하되 중증도와 양상이 크게 달라진다는 것 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a>.</p>
+        <p>앞의 <em>TERT</em>·<em>PARN</em> 사례가 두 축을 한꺼번에 보여 줌. 소아기 골수부전과 성인기 폐섬유증의 차이는 발현도이고, 늦은 나이까지 무증상인 사람이 있다는 것은 침투도임.</p>
+        <p>이 쪽에서 쓰는 침투도는 <strong>단일 숫자가 아니라 조건부 값</strong>임. 뒤의 두 절이 그 조건을 셋으로 나눠 봄 — 변이가 유전자 어디에 있느냐, 어느 유전자냐, 그리고 그 사람이 무엇에 노출되고 몇 살이냐.</p>
+
+        <!-- ───────── 3. 숫자의 출처 ───────── -->
+        <h2 id="number">그 숫자가 어디서 나왔나<small>Where the number comes from</small></h2>
+        <p class="lede">침투도 추정값은 관찰 대상을 어떻게 모았는지에 따라 달라짐. 환자에서 출발했는지, 유전형에서 출발했는지.</p>
+        <p>환자와 그 가계에서 출발한 코호트는 이미 발병한 사람을 통해 변이에 닿음. 같은 변이를 지닌 채 건강하게 지내는 사람은 그 설계에 들어올 길이 없음.</p>
+        <p>집단 biobank가 그 사람들을 보이게 만듦. 희귀질환 환자 코호트와 가계 연구를 근거로 완전 침투 또는 높은 침투로 여겨지던 변이들이 biobank의 겉보기 건강한 사람에게서 잇따라 발견됐고, thalassaemia·telomere biology disorder·유전성 출혈질환을 비롯한 여러 질환에서 침투도 추정값이 아래로 수정됨 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a>.</p>
+
+        <figure class="fig" id="fig-ascert" data-mode="cohort">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-ascert" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="cohort" aria-pressed="true">어디서 출발했나</button>
+              <button type="button" data-mode="first" aria-pressed="false">유전형에서 출발하면</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:ASCERT-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="penAscertT penAscertD" xmlns="http://www.w3.org/2000/svg">
+<title id="penAscertT">침투도 숫자가 설계에 달려 있다는 것을 보여 주는 그림</title>
+<desc id="penAscertD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 같은 집단을 두 설계로 본 도식으로, 환자에서 출발하는 진단 코호트에서는 발병한 사람만 보이고 같은 변이를 지닌 무증상 보인자는 점선으로 남아 보이지 않는 반면, 유전형에서 출발하는 집단 biobank에서는 보인자가 모두 보인다. 둘째 화면은 한 의료체계의 exome 163,096명에서 UBA1 변이 보유자 11명이 확인됐고 그 가운데 6명만 기존에 알려진 VEXAS 임상 특징을 지녔으며 나머지 5명은 표현형 범위를 넓혔다는 것을 상자로 보여 준다.</desc>
+<g class="g-ov" data-ov="cohort"><text x="380" y="40" class="g-lab em" text-anchor="middle">같은 집단을 두 설계로 보면</text><rect x="44" y="70" width="320" height="188" rx="8" fill="none" stroke="#8A949C" stroke-width="1.1"/><circle cx="90" cy="142" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="146" cy="142" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="202" cy="142" r="11" fill="#B3261E"/><circle cx="258" cy="142" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="314" cy="142" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="90" cy="174" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="146" cy="174" r="11" fill="#B3261E"/><circle cx="202" cy="174" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="258" cy="174" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="314" cy="174" r="11" fill="#B3261E"/><circle cx="90" cy="206" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="146" cy="206" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="202" cy="206" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="258" cy="206" r="11" fill="#B3261E"/><circle cx="314" cy="206" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="90" cy="238" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="146" cy="238" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="202" cy="238" r="11" fill="#B3261E"/><circle cx="258" cy="238" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><circle cx="314" cy="238" r="11" fill="none" stroke="#C7CED4" stroke-width="1.4" stroke-dasharray="3 3"/><rect x="396" y="70" width="320" height="188" rx="8" fill="none" stroke="#8A949C" stroke-width="1.1"/><circle cx="442" cy="142" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="498" cy="142" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="554" cy="142" r="11" fill="#B3261E"/><circle cx="610" cy="142" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="666" cy="142" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="442" cy="174" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="498" cy="174" r="11" fill="#B3261E"/><circle cx="554" cy="174" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="610" cy="174" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="666" cy="174" r="11" fill="#B3261E"/><circle cx="442" cy="206" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="498" cy="206" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="554" cy="206" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="610" cy="206" r="11" fill="#B3261E"/><circle cx="666" cy="206" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="442" cy="238" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="498" cy="238" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="554" cy="238" r="11" fill="#B3261E"/><circle cx="610" cy="238" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><circle cx="666" cy="238" r="11" fill="none" stroke="#5B6B7A" stroke-width="2"/><text x="204" y="96" class="g-note em" text-anchor="middle">환자에서 출발</text><text x="204" y="118" class="g-small" text-anchor="middle">진단 코호트 · 가계</text><text x="204" y="276" class="g-small" text-anchor="middle">점선은 이 설계가 닿지 못하는 사람</text><text x="556" y="96" class="g-note em" text-anchor="middle">유전형에서 출발</text><text x="556" y="118" class="g-small" text-anchor="middle">집단 biobank</text><text x="556" y="276" class="g-small" text-anchor="middle">보인자가 모두 보임</text><rect x="30" y="290" width="700" height="71" rx="6" class="g-band"/><text x="44" y="312" class="g-band-t hd" text-anchor="start">어디서 출발했나</text><text x="44" y="331" class="g-band-t" text-anchor="start">붉은 점은 발병한 사람, 테두리만 있는 점은 같은 변이를 지닌 무증상 보인자다.</text><text x="44" y="350" class="g-band-t" text-anchor="start">점의 수는 도식이고 실제 비율이 아니다 — 설계가 무엇을 보고 무엇을 못 보는지만 나타낸다.</text></g>
+<g class="g-ov" data-ov="first"><text x="380" y="40" class="g-lab em" text-anchor="middle">한 의료체계의 exome에서 UBA1 보유자를 찾으면</text><rect x="70" y="62" width="620" height="46" rx="6" fill="#2563C9"/><rect x="230" y="176" width="300" height="46" rx="6" fill="#D9822B"/><line x1="380" y1="134" x2="380" y2="163" class="g-arrow"/><path d="M380 172 l-4.5 -9 l9 0 z" fill="#3B4A5A"/><line x1="380" y1="248" x2="380" y2="271" class="g-arrow"/><path d="M380 280 l-4.5 -9 l9 0 z" fill="#3B4A5A"/><rect x="96" y="284" width="272" height="44" rx="6" fill="#B3261E"/><rect x="392" y="284" width="272" height="44" rx="6" fill="#5B6B7A"/><text x="380" y="91" class="g-box-t" text-anchor="middle">exome 163,096명</text><text x="380" y="128" class="g-small" text-anchor="middle">변이가 아니라 사람에서 시작</text><text x="380" y="205" class="g-box-t" text-anchor="middle">UBA1 변이 보유자 11명</text><text x="380" y="242" class="g-small" text-anchor="middle">유전형으로만 추린 결과</text><text x="232" y="312" class="g-box-t" text-anchor="middle">기존 VEXAS 임상 특징 6명</text><text x="528" y="312" class="g-box-t" text-anchor="middle">표현형 범위를 넓힌 5명</text><rect x="30" y="334" width="700" height="52" rx="6" class="g-band"/><text x="44" y="356" class="g-band-t hd" text-anchor="start">유전형에서 출발하면</text><text x="44" y="375" class="g-band-t" text-anchor="start">상자 크기는 비율이 아니다 — 11명은 163,096명의 0.007%다.</text></g>
+</svg>
+<!--/GEN:ASCERT-->
+          </div>
+          <figcaption>첫 화면은 두 설계를 견준 도식. 둘째 화면의 값은 관찰값 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>.</figcaption>
+        </figure>
+
+        <p>유전형에서 출발하는 설계를 genotype-first라 부름. 미국 한 지역 의료체계의 exome 163,096명에서 <em>UBA1</em> 변이 보유자 11명이 확인됐는데, 그 가운데 기존에 알려진 VEXAS 임상 특징이 보고돼 있던 사람은 6명뿐이었고 나머지는 이 질환의 표현형 범위를 넓히는 쪽에 기여함 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>. 두 방향의 설계 차이 자체는 <a href="../05-function/forward-reverse.html">표현형에서 유전자로, 유전자에서 표현형으로 어떻게 가나?</a>에서 다룸.</p>
+        <p>보호 쪽 변이도 같은 논리를 받음. 아프리카계에서 <em>PCSK9</em>의 nonsense 변이 C679X를 heterozygous로 지닌 사람은 관상동맥질환 위험이 88% 낮지만 위험이 사라지는 것은 아니고, 통상의 심혈관 위험인자에 노출되면 위험이 올라감 <a class="src" href="https://doi.org/10.1038/nrg4017" target="_blank" rel="noopener">Harper 2015</a>. 변이 하나가 결과를 결정하지 않는다는 점에서는 위험 쪽과 보호 쪽이 같음.</p>
+
+        <!-- ───────── 4. 두 위계 ───────── -->
+        <h2 id="hierarchy">같은 유전자 안에서, 그리고 유전자끼리<small>Two hierarchies</small></h2>
+        <p class="lede">침투도를 가르는 첫 두 조건. 변이가 유전자 어디에 앉았느냐와, 그 유전자가 경로에서 어떤 자리냐.</p>
+        <p><strong>변이 위계</strong>는 한 유전자 안에서 생김. <em>STAT1</em>에서 상염색체 열성 완전 결핍은 세포내 세균·바이러스 감염으로 가는 완전 침투형이고, 열성 부분 결핍은 interferon 신호가 줄지만 없어지지는 않아 덜 침투하고 가벼우며, 우성 결핍은 더 가벼운 mycobacteria 질환으로 불완전 침투함 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>.</p>
+        <p>변이가 앉은 <strong>구조적 위치</strong>만으로 갈리기도 함. autoimmune lymphoproliferative syndrome의 원인인 <em>FAS</em> missense 가운데 세포내 death domain을 건드리는 것은 침투가 높고 세포외 영역을 건드리는 것은 침투가 낮음. 선천 무비증의 <em>RPSA</em> missense에서는 불완전 침투형끼리 구조적으로 가까이 모여 있음 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>.</p>
+        <p><strong>유전자 위계</strong>는 같은 경로에 놓인 유전자들 사이에서 생김. 상염색체 열성 완전 <em>IFNGR1</em> 결핍은 5세까지 MSMD가 완전 침투하는 데 비해, 같은 축의 상염색체 열성 완전 <em>IL-12RB1</em> 결핍은 40세까지 50%에서만 MSMD가 나타남 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>.</p>
+        <p><em>TYK2</em>는 완전히 잃어도 불완전 침투함 — 노출 기록이 있는데도 10명 중 3명에서 바이러스 감염이 없었음 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>.</p>
+
+        <figure class="fig" id="fig-hier" data-mode="gene">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-hier" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="gene" aria-pressed="true">두 위계</button>
+              <button type="button" data-mode="age" aria-pressed="false">나이에 따라</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:HIER-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="penHierT penHierD" xmlns="http://www.w3.org/2000/svg">
+<title id="penHierT">침투도를 가르는 조건을 보여 주는 그림</title>
+<desc id="penHierD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 두 위계를 보여 준다 — 위쪽은 STAT1 한 유전자 안에서 상염색체 열성 완전 결핍이 완전 침투, 열성 부분 결핍이 덜 침투하고 가벼우며, 우성 결핍이 불완전 침투로 이어지는 세 단계이고, 아래쪽은 같은 축의 두 유전자로 완전 IFNGR1 결핍이 5세까지 완전 침투인 데 비해 완전 IL-12RB1 결핍은 40세까지 50%라는 것을 상자 두 개로 견준다. 둘째 화면은 나이를 가로축에 두고, IRAK4 결핍 48명과 MyD88 결핍 12명에서 침습 감염이 14세까지만 보고됐고 그 뒤로는 보고가 없었다는 것을 두 구간으로 나눠 보여 준다.</desc>
+<g class="g-ov" data-ov="gene"><text x="380" y="40" class="g-lab em" text-anchor="middle">같은 유전자 안에서, 그리고 유전자끼리</text><rect x="40" y="102" width="204" height="52" rx="6" fill="#B3261E"/><rect x="278" y="102" width="204" height="52" rx="6" fill="#D9822B"/><rect x="516" y="102" width="204" height="52" rx="6" fill="#5B6B7A"/><line x1="252" y1="128" x2="263" y2="128" class="g-arrow"/><path d="M272 128 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><line x1="490" y1="128" x2="501" y2="128" class="g-arrow"/><path d="M510 128 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><rect x="40" y="230" width="324" height="52" rx="6" fill="#B3261E"/><rect x="396" y="230" width="324" height="52" rx="6" fill="#5B6B7A"/><text x="40" y="86" class="g-note em" text-anchor="start">한 유전자 안에서 — STAT1</text><text x="142" y="124" class="g-box-t" text-anchor="middle">AR 완전 결핍</text><text x="142" y="144" class="g-box-t" text-anchor="middle">완전 침투</text><text x="380" y="124" class="g-box-t" text-anchor="middle">AR 부분 결핍</text><text x="380" y="144" class="g-box-t" text-anchor="middle">덜 침투 · 가벼움</text><text x="618" y="124" class="g-box-t" text-anchor="middle">AD 결핍</text><text x="618" y="144" class="g-box-t" text-anchor="middle">불완전 침투</text><text x="40" y="178" class="g-small" text-anchor="start">같은 유전자인데 결손의 정도가 침투도를 가른다.</text><text x="40" y="214" class="g-note em" text-anchor="start">유전자끼리 — 같은 축의 두 유전자</text><text x="202" y="252" class="g-box-t" text-anchor="middle">완전 IFNGR1 결핍</text><text x="202" y="272" class="g-box-t" text-anchor="middle">5세까지 MSMD 완전 침투</text><text x="558" y="252" class="g-box-t" text-anchor="middle">완전 IL-12RB1 결핍</text><text x="558" y="272" class="g-box-t" text-anchor="middle">40세까지 50%</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">두 위계</text><text x="44" y="341" class="g-band-t" text-anchor="start">변이가 유전자 어디에 앉았는지와 어느 유전자인지가 각각 침투도를 가른다.</text><text x="44" y="360" class="g-band-t" text-anchor="start">FAS에서는 세포내 death domain이 높은 침투, 세포외 영역이 낮은 침투였다.</text></g>
+<g class="g-ov" data-ov="age"><text x="380" y="40" class="g-lab em" text-anchor="middle">IRAK4 결핍 48명과 MyD88 결핍 12명을 따라가면</text><rect x="70" y="118" width="352.8" height="62" rx="4" fill="#B3261E" style="fill-opacity:.16"/><rect x="422.8" y="118" width="277.2" height="62" rx="4" fill="#5B6B7A" style="fill-opacity:.10"/><line x1="70" y1="180" x2="700" y2="180" class="g-axis"/><line x1="422.8" y1="104" x2="422.8" y2="188" stroke="#3B4A5A" stroke-width="1.6" stroke-dasharray="4 3"/><line x1="70.0" y1="180" x2="70.0" y2="186" class="g-axis"/><line x1="196.0" y1="180" x2="196.0" y2="186" class="g-axis"/><line x1="322.0" y1="180" x2="322.0" y2="186" class="g-axis"/><line x1="422.8" y1="180" x2="422.8" y2="186" class="g-axis"/><line x1="574.0" y1="180" x2="574.0" y2="186" class="g-axis"/><line x1="700.0" y1="180" x2="700.0" y2="186" class="g-axis"/><text x="70" y="204" class="g-small" text-anchor="middle">0세</text><text x="196" y="204" class="g-small" text-anchor="middle">5세</text><text x="322" y="204" class="g-small" text-anchor="middle">10세</text><text x="422.8" y="204" class="g-small" text-anchor="middle">14세</text><text x="574" y="204" class="g-small" text-anchor="middle">20세</text><text x="700" y="204" class="g-small" text-anchor="middle">25세</text><text x="246.4" y="150" class="g-note em" text-anchor="middle">침습 감염이 보고된 구간</text><text x="561.4" y="144" class="g-note em" text-anchor="middle">14세 이후 침습 감염 보고 없음</text><text x="561.4" y="164" class="g-small" text-anchor="middle">소아기 이후 예방 치료의 이득도 확인되지 않음</text><text x="70" y="232" class="g-small" text-anchor="start">가로축 — 나이</text><rect x="30" y="290" width="700" height="71" rx="6" class="g-band"/><text x="44" y="312" class="g-band-t hd" text-anchor="start">나이에 따라</text><text x="44" y="331" class="g-band-t" text-anchor="start">같은 변이가 어린 나이에는 높은 침투를, 나이가 들면 낮은 침투를 보인다.</text><text x="44" y="350" class="g-band-t" text-anchor="start">침투도를 하나의 백분율로 적으면 이 축이 통째로 사라진다.</text></g>
+</svg>
+<!--/GEN:HIER-->
+          </div>
+          <figcaption>값은 모두 관찰값 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a> · <a class="src" href="https://doi.org/10.1146/annurev-immunol-082323-124920" target="_blank" rel="noopener">Bender 2025</a>.</figcaption>
+        </figure>
+
+        <!-- ───────── 5. 바꾸는 것들 ───────── -->
+        <h2 id="modifiers">침투도를 움직이는 것들<small>What moves penetrance</small></h2>
+        <p class="lede">세 번째 조건. 유전자도 변이도 그대로인데 사람 쪽이 달라지는 경우.</p>
+        <p><strong>노출</strong>이 없으면 결함이 드러날 자리도 없음. 바로 앞의 <em>TYK2</em> 사례에서 노출 기록이 있는데도 감염이 없던 사람이 있었다는 것은 노출만으로 설명이 끝나지 않는다는 뜻이기도 함.</p>
+        <p><strong>나이</strong>는 침투도를 한 방향으로만 밀지 않음. <em>IRAK4</em> 결핍 48명과 <em>MyD88</em> 결핍 12명을 추적한 연구에서 14세 이후에 침습 감염을 보인 환자가 없었고 소아기 이후로는 예방 치료의 이득도 확인되지 않았음 <a class="src" href="https://doi.org/10.1146/annurev-immunol-082323-124920" target="_blank" rel="noopener">Bender 2025</a>. 같은 변이가 어린 나이에는 높은 침투를, 나이가 들면 낮은 침투를 보이는 셈.</p>
+        <p><strong>modifier 유전자</strong>는 그 자체로 질환을 만들지 않으면서 다른 변이의 결과를 바꿈. <em>TNFRSF13B</em> 변이가 그런 예로, CVID 환자의 10%에서 위험 인자로 확인되는 한편 일반 인구에서도 1–2%에 존재함 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>.</p>
+        <p>희귀 변이의 침투도를 <strong>다유전자 배경</strong>이 수정한다는 보고도 있고, 나이·성별·환경과 유전자 사이 상호작용이 함께 작용함 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a>. 효과가 작은 변이들이 모여 만드는 배경 자체는 <a href="../04-polygenic/architecture.html">질환마다 유전 구조는 어떻게 다른가?</a>에서 다룸.</p>
+        <p><strong>체세포 쪽에서 되돌아오는 경우</strong>도 있음. 몸의 일부 세포가 원래 기능을 되찾으면 보인자가 건강해 보일 수 있고, 그래서 가계 안의 건강한 보인자를 변이가 양성이라는 근거로 바로 쓰기 어려움. 일차 면역결핍 128 가계를 체계적으로 본 분석에서 모자이크 빈도는 23.4%였고, 그 가운데 10 가계가 부모의 생식선·체세포 모자이크였는데 그 중 8 가계는 임상적으로 무증상이었음 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>. 변이가 생긴 시점이 전달 범위를 정하는 구조 자체는 <a href="../01-genome/variant-origin.html">변이는 언제, 어디서 생기나?</a>에 있음.</p>
+
+        <!-- ───────── 6. 한계 ───────── -->
+        <h2 id="limits">남아 있는 것<small>What stays open</small></h2>
+        <p class="lede">하향 수정이 어디서 멈추는지, 그리고 아직 원인을 못 찾은 쪽.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>남는 문제</th><th>내용</th></tr></thead>
+            <tbody>
+              <tr><th>겉보기 무증상이 효과 없음은 아님</th><td>병원성 변이 보유자가 뚜렷한 질환으로 가지 않아도 증상 아래 수준의 생물학적 효과를 보일 수 있음. 열성 질환 원인 변이의 heterozygous 보인자에게서도 표현형 효과가 나타나며, 이는 purifying selection과 집단 빈도에 영향을 줌 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a></td></tr>
+              <tr><th>단일 숫자로 보고하는 관행</th><td>침투도가 변이 자리 · 유전자 · 노출 · 나이의 조건부 값인데 하나의 백분율로 적히는 일이 많음. 같은 <em>IL-12RB1</em> 결핍도 40세를 기준으로 하면 50%이고 더 어린 나이를 기준으로 하면 다른 값</td></tr>
+              <tr><th>원인을 못 찾은 가계가 남아 있음</th><td>가족성 AML/MDS 가계 코호트에서 43%는 exome 시퀀싱으로 알려진 원인 변이를 찾지 못했고, 상당수는 의미 불확실 변이만 지님 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a></td></tr>
+              <tr><th>구조 기반 예측은 아직 사례 수준</th><td><em>FAS</em>와 <em>RPSA</em>처럼 구조적 위치가 침투도를 가르는 예가 모였지만, 이를 일반적인 예측 규칙으로 쓸 만큼 검증된 상태는 아님 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>병원성 변이가 있으면 결국 발병함 ✗</code><p class="why">같은 <em>TERT</em>·<em>PARN</em> 변이가 소아기 골수부전 · 성인기 폐섬유증 · 늦은 나이까지 무증상으로 갈림 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a></p></div>
+          <div class="fix"><code>침투도는 변이의 고정된 성질 ✗</code><p class="why">변이가 앉은 자리 · 유전자 · 노출 · 나이에 따라 달라지는 조건부 값</p></div>
+          <div class="fix"><code>침투도와 발현도는 같은 말 ✗</code><p class="why">앞은 질환이 생기느냐이고 뒤는 생겼을 때 얼마나 심하고 어떤 모습이냐 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a></p></div>
+          <div class="fix"><code>한 유전자가 완전 침투면 그 유전자의 모든 변이가 완전 침투 ✗</code><p class="why"><em>STAT1</em> 안에서도 완전 침투 · 덜 침투 · 불완전 침투의 세 단계가 갈림 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a></p></div>
+          <div class="fix"><code>같은 경로의 유전자면 침투도도 비슷함 ✗</code><p class="why">완전 <em>IFNGR1</em> 결핍은 5세까지 MSMD 완전 침투인데 완전 <em>IL-12RB1</em> 결핍은 40세까지 50% <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a></p></div>
+          <div class="fix"><code>가계에 건강한 보인자가 있으면 그 변이는 양성 ✗</code><p class="why">체세포에서 기능이 되돌아오는 경우가 있고, 일차 면역결핍 128 가계에서 모자이크 빈도가 23.4%였으며 부모 생식선·체세포 모자이크 10 가계 중 8 가계가 무증상이었음 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a></p></div>
+          <div class="fix"><code>문헌의 침투도 숫자가 집단의 값 ✗</code><p class="why">환자 코호트와 가계에서 잰 값은 건강한 보인자를 보지 못함. biobank에서 다시 재며 여러 질환의 추정값이 아래로 수정됨 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a></p></div>
+          <div class="fix"><code>보호 변이를 지니면 그 질환에서 안전함 ✗</code><p class="why"><em>PCSK9</em> C679X heterozygous 보유자의 관상동맥질환 위험이 88% 낮지만 없어지지는 않고, 통상 위험인자 노출이 위험을 올림 <a class="src" href="https://doi.org/10.1038/nrg4017" target="_blank" rel="noopener">Harper 2015</a></p></div>
+          <div class="fix"><code>망가진 유전자는 곧 질환 ✗</code><p class="why">사람마다 LoF 변이를 평균 100개쯤 지니며 대부분 heterozygous이고 생리적으로 무해함 <a class="src" href="https://doi.org/10.1146/annurev-immunol-082323-124920" target="_blank" rel="noopener">Bender 2025</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">penetrance · 침투도 · incomplete penetrance · 불완전 침투 · complete penetrance · 완전 침투 · expressivity · 발현도 · variable expressivity · modifier · modifier variant · 변경유전자 · genotype-first · reverse genetics · ascertainment · ascertainment bias · 확인 편향 · variant hierarchy · gene hierarchy · mosaicism · 모자이크 · revertant mosaicism · somatic genetic rescue · protective allele · 보호 변이 · loss-of-function · LoF · VEXAS · MSMD · Mendelian susceptibility to mycobacterial disease · CVID · common variable immunodeficiency · ALPS · autoimmune lymphoproliferative syndrome · telomere biology disorder · IEI · inborn errors of immunity</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../01-genome/variant-effect.html">변이는 단백질을 어떻게 바꾸나? →</a>
+          <a href="../01-genome/variant-origin.html">변이는 언제, 어디서 생기나? →</a>
+          <a href="../05-function/forward-reverse.html">표현형에서 유전자로, 유전자에서 표현형으로 →</a>
+          <a href="../04-polygenic/architecture.html">질환마다 유전 구조는 어떻게 다른가? →</a>
+          <a href="../05-function/genetics-to-drugs.html">유전학 근거는 약 개발에 어떻게 쓰이나? →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener noreferrer">Akalu 2024, Nat Rev Genet — IEI의 유전 구조와 침투도를 가르는 두 위계 ↗</a>
+          <a href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener noreferrer">Poeschla 2026, Nat Rev Genet — biobank가 끌어내린 침투도 추정값 ↗</a>
+          <a href="https://doi.org/10.1146/annurev-immunol-082323-124920" target="_blank" rel="noopener noreferrer">Bender 2025, Annu Rev Immunol — 사람당 LoF 기준선과 나이에 따른 침투 변화 ↗</a>
+          <a href="https://doi.org/10.1038/nrg4017" target="_blank" rel="noopener noreferrer">Harper 2015, Nat Rev Genet — 보호 변이와 modifier ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>

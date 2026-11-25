@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="희귀한 단일유전자 질환이 흔한 질환의 기전과 약 표적을 지목하는 경로. 한 유전자 안에서 희귀 변이와 흔한 변이가 만나는 자리, 변이의 자리와 방향까지 가야 번역이 되는 이유, 원인 변이가 희귀하다는 전제가 깨지는 구간, 그리고 두 쪽이 갈라지는 지점">
+  <title>단일유전자 질환은 흔한 질환에 대해 무엇을 알려주나? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">멘델 유전</a><span>›</span>단일유전자와 다유전자</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">멘델 유전 · From monogenic to complex</p>
+        <h1>단일유전자 질환은 흔한 질환에 대해 무엇을 알려주나?</h1>
+        <p class="definition">희귀한 단일유전자 질환을 읽어 흔한 질환의 기전과 치료 표적을 찾는 경로. 가족성 지중해열 같은 단일유전자 자가염증질환 연구가 inflammasome과 pyroptosis, 그리고 IL-1 cytokine을 염증질환의 driver로 지목한 것이 그 출발 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a>. 다만 같은 유전자가 걸렸다는 사실만으로 번역이 끝나지 않음 — 변이가 앉은 자리와 효과의 방향이 결과를 뒤집음</p>
+
+        <!-- ───────── 1. 질문이 서는 자리 ───────── -->
+        <h2 id="why">왜 희귀한 쪽을 보나<small>Why look at the rare end</small></h2>
+        <p class="lede">희귀질환에서 얻는 것은 하나임 — 한 유전자가 거의 완전히 꺼진 사람에게서 그 유전자가 사람에게 무엇이었는지를 보는 것.</p>
+        <p>흔한 질환의 위험 변이는 하나하나의 효과가 작아 변이 하나만으로 경로를 드러내지 못함. 그 구조 자체는 <a href="../04-polygenic/architecture.html">질환마다 유전 구조는 어떻게 다른가?</a>에서 다룸. 희귀 고영향 변이는 그 반대쪽 끝에 있고, 그래서 단일유전자 질환의 원인 규명이 흔한 염증질환의 분자 목록을 만들어 줌 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a>.</p>
+        <p>발견이 실제로 그 경계에서 일어남. IUIS의 2024년 선천 면역 오류 분류 갱신에서 새로 기술된 유전자의 거의 절반(43%, 29/67)이 자가염증 또는 면역 조절 이상 표에 들어갔고, 이는 면역결핍과 류마티스 질환의 경계가 흐려지고 있다는 서술로 정리됨 <a class="src" href="https://doi.org/10.70962/jhi.20250003" target="_blank" rel="noopener">Poli 2025</a>.</p>
+        <p>출발 전에 걸러야 할 것이 둘 있음. 하나는 기준선 — 사람마다 단백질 유전자 loss-of-function 변이를 평균 100개쯤 지니므로, 희귀 LoF 변이를 하나 찾은 것 자체는 인과 근거가 되지 못함 <a class="src" href="https://doi.org/10.1146/annurev-immunol-082323-124920" target="_blank" rel="noopener">Bender 2025</a>. 그 변이가 보인자에게 실제로 무엇을 하는지는 <a href="./penetrance.html">같은 변이가 왜 다른 결과를 내나?</a>의 문제임.</p>
+        <p>다른 하나는 좁은 표현형을 읽는 방식. 면역 감지기(sensor) 결함으로 생기는 질환은 대개 좁은 병원체 집합이나 좁은 조직 범위에서만 나타나는데, 이것은 그 감지기가 사소하다는 뜻이 아니라 겹치는 감지 층이 여러 겹 있다는 뜻으로 해석됨 — 감지기 하나를 잃는 것은 특정 미생물을 만날 때만 드러나는 갑옷의 틈이 되고, 병원체 감지 전체가 무너지지는 않음 <a class="src" href="https://doi.org/10.1146/annurev-immunol-082323-124920" target="_blank" rel="noopener">Bender 2025</a>.</p>
+
+        <!-- ───────── 2. 같은 유전자에서 만난다 ───────── -->
+        <h2 id="series">같은 유전자에서 만나는 희귀와 흔한 변이<small>Allelic series in one gene</small></h2>
+        <p class="lede">번역이 가장 또렷하게 보이는 자리. 한 유전자 안에 흔한 저효과 변이와 희귀 고효과 변이가 같이 들어 있는 경우.</p>
+        <p><em>NOD2</em>가 그 표본임. Crohn 병의 가장 강한 감수성 유전자 가운데 하나이고, 가장 흔한 위험 allele 세 개(<em>p.Arg702Trp</em> · <em>p.Gly908Arg</em> · <em>p.Leu1007fs</em>)는 모두 LRR domain에 있으면서 기능적으로 hypomorphic — 점막 방어와 세균 제거를 떨어뜨림. 반대로 nucleotide-binding NACHT domain의 희귀 고영향 heterozygous missense 기능 획득 변이는 조기 발병 중증 육아종 자가염증질환인 Blau syndrome을 만듦 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a>.</p>
+        <p>같은 유전자에 세 번째 층도 있음. 한 가계에서 체세포 <em>p.Arg334Gln</em>을 지닌 아버지는 경증이었고, 생식세포를 통해 같은 변이를 받은 자녀 둘은 조기 발병 질환으로 감 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a>. 변이가 생긴 시점이 전달 범위를 정하는 구조는 <a href="../01-genome/variant-origin.html">변이는 언제, 어디서 생기나?</a>에 있음.</p>
+
+        <figure class="fig" id="fig-series" data-mode="nod2">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-series" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="nod2" aria-pressed="true">한 유전자, 세 질환</button>
+              <button type="button" data-mode="flip" aria-pressed="false">같은 유전자, 반대 방향</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:SERIES-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="mtcSeriesT mtcSeriesD" xmlns="http://www.w3.org/2000/svg">
+<title id="mtcSeriesT">한 유전자 안에서 희귀 변이와 흔한 변이가 만나는 자리를 보여 주는 그림</title>
+<desc id="mtcSeriesD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 NOD2 한 유전자를 세 줄로 나눠, LRR domain의 흔한 hypomorphic 변이가 Crohn 감수성으로, NACHT domain의 희귀 고영향 기능획득 변이가 Blau syndrome으로, 같은 NACHT의 체세포 모자이크 변이 p.Arg334Gln이 한 가계의 아버지에서 경증으로 간 것을 보여 준다. 둘째 화면은 OAS1과 TLR7 두 유전자에서 기능을 잃는 변이와 얻는 변이가 서로 다른 질환으로 갈라지는 것을 가운데 유전자에서 좌우로 뻗는 화살표로 보여 준다 — 양쪽 유전자 모두 기능 상실은 중증 COVID-19로, 기능 획득은 각각 영아기 폐 질환과 전신 루푸스로 간다.</desc>
+<g class="g-ov" data-ov="nod2"><text x="380" y="40" class="g-lab em" text-anchor="middle">NOD2 한 유전자가 세 질환으로 갈리면</text><rect x="40" y="84" width="150" height="50" rx="6" fill="none" stroke="#8A949C" stroke-width="1.4"/><rect x="224" y="84" width="256" height="50" rx="6" fill="#2563C9"/><rect x="514" y="84" width="206" height="50" rx="6" fill="#2563C9"/><line x1="194" y1="109" x2="211" y2="109" class="g-arrow"/><path d="M220 109 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><line x1="484" y1="109" x2="501" y2="109" class="g-arrow"/><path d="M510 109 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><rect x="40" y="158" width="150" height="50" rx="6" fill="none" stroke="#8A949C" stroke-width="1.4"/><rect x="224" y="158" width="256" height="50" rx="6" fill="#B3261E"/><rect x="514" y="158" width="206" height="50" rx="6" fill="#B3261E"/><line x1="194" y1="183" x2="211" y2="183" class="g-arrow"/><path d="M220 183 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><line x1="484" y1="183" x2="501" y2="183" class="g-arrow"/><path d="M510 183 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><rect x="40" y="232" width="150" height="50" rx="6" fill="none" stroke="#8A949C" stroke-width="1.4"/><rect x="224" y="232" width="256" height="50" rx="6" fill="#5B6B7A"/><rect x="514" y="232" width="206" height="50" rx="6" fill="#5B6B7A"/><line x1="194" y1="257" x2="211" y2="257" class="g-arrow"/><path d="M220 257 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><line x1="484" y1="257" x2="501" y2="257" class="g-arrow"/><path d="M510 257 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><text x="115" y="70" class="g-small" text-anchor="middle">변이가 앉은 자리</text><text x="352" y="70" class="g-small" text-anchor="middle">변이의 성격</text><text x="617" y="70" class="g-small" text-anchor="middle">결과</text><text x="115" y="113.5" class="g-note em" text-anchor="middle">LRR domain</text><text x="352" y="102" class="g-box-t" text-anchor="middle">흔한 hypomorphic 변이</text><text x="352" y="120" class="g-box-t" text-anchor="middle">가장 흔한 위험 allele 셋</text><text x="617" y="102" class="g-box-t" text-anchor="middle">Crohn 감수성</text><text x="617" y="120" class="g-box-t" text-anchor="middle">점막 방어 · 세균 제거 저하</text><text x="115" y="187.5" class="g-note em" text-anchor="middle">NACHT domain</text><text x="352" y="176" class="g-box-t" text-anchor="middle">희귀 고영향 GoF</text><text x="352" y="194" class="g-box-t" text-anchor="middle">헤테로 missense</text><text x="617" y="176" class="g-box-t" text-anchor="middle">Blau syndrome</text><text x="617" y="194" class="g-box-t" text-anchor="middle">조기 발병 중증 육아종</text><text x="115" y="261.5" class="g-note em" text-anchor="middle">NACHT · 체세포</text><text x="352" y="250" class="g-box-t" text-anchor="middle">체세포 모자이크</text><text x="352" y="268" class="g-box-t" text-anchor="middle">p.Arg334Gln</text><text x="617" y="250" class="g-box-t" text-anchor="middle">경증</text><text x="617" y="268" class="g-box-t" text-anchor="middle">한 가계의 아버지</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">한 유전자, 세 질환</text><text x="44" y="347" class="g-band-t" text-anchor="start">흔한 쪽 세 변이는 p.Arg702Trp · p.Gly908Arg · p.Leu1007fs로 모두 LRR domain에 있다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">희귀 쪽은 NACHT domain의 기능 획득이다 — 유전자 이름만으로는 어느 쪽인지 알 수 없다.</text></g>
+<g class="g-ov" data-ov="flip"><text x="380" y="40" class="g-lab em" text-anchor="middle">같은 유전자에서 방향이 뒤집히면</text><rect x="40" y="104" width="236" height="46" rx="6" fill="#5B6B7A"/><rect x="310" y="104" width="140" height="46" rx="6" fill="none" stroke="#8A949C" stroke-width="1.4"/><rect x="484" y="104" width="236" height="46" rx="6" fill="#B3261E"/><line x1="306" y1="127" x2="289" y2="127" class="g-arrow"/><path d="M280 127 l9 -4.5 l0 9 z" fill="#3B4A5A"/><line x1="454" y1="127" x2="471" y2="127" class="g-arrow"/><path d="M480 127 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><rect x="40" y="208" width="236" height="46" rx="6" fill="#5B6B7A"/><rect x="310" y="208" width="140" height="46" rx="6" fill="none" stroke="#8A949C" stroke-width="1.4"/><rect x="484" y="208" width="236" height="46" rx="6" fill="#B3261E"/><line x1="306" y1="231" x2="289" y2="231" class="g-arrow"/><path d="M280 231 l9 -4.5 l0 9 z" fill="#3B4A5A"/><line x1="454" y1="231" x2="471" y2="231" class="g-arrow"/><path d="M480 231 l-9 -4.5 l0 9 z" fill="#3B4A5A"/><text x="158" y="90" class="g-small" text-anchor="middle">기능을 잃는 쪽</text><text x="602" y="90" class="g-small" text-anchor="middle">기능을 얻는 쪽</text><text x="158" y="122" class="g-box-t" text-anchor="middle">biallelic LoF</text><text x="158" y="140" class="g-box-t" text-anchor="middle">중증 COVID-19</text><text x="380" y="131.5" class="g-note em" text-anchor="middle">OAS1</text><text x="602" y="122" class="g-box-t" text-anchor="middle">헤테로 GoF</text><text x="602" y="140" class="g-box-t" text-anchor="middle">영아기 폐 alveolar proteinosis</text><text x="158" y="226" class="g-box-t" text-anchor="middle">LoF</text><text x="158" y="244" class="g-box-t" text-anchor="middle">중증 COVID-19</text><text x="380" y="235.5" class="g-note em" text-anchor="middle">TLR7</text><text x="602" y="226" class="g-box-t" text-anchor="middle">헤테로 GoF</text><text x="602" y="244" class="g-box-t" text-anchor="middle">SLE — 세 가계의 여성 5명</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">같은 유전자, 반대 방향</text><text x="44" y="347" class="g-band-t" text-anchor="start">방향을 구분하지 않고 변이를 모아 검정하면 두 방향의 신호가 서로를 상쇄한다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">MEFV는 한 변이 안에서도 갈린다 — 분자 수준으로는 기능 상실인데 pyrin 활성을 쉽게 켠다.</text></g>
+</svg>
+<!--/GEN:SERIES-->
+          </div>
+          <figcaption>값은 모두 관찰값 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a>. 둘째 화면은 다음 절에서 다룸.</figcaption>
+        </figure>
+
+        <p>목록 단위로도 겹침. Behçet 병 GWAS가 터키·일본 집단에서 <em>IL-23R</em>/<em>IL-12RB2</em> · <em>IL-10</em> · <em>STAT4</em> · <em>CCR1</em>–<em>CCR3</em> · <em>KLRC4</em> · <em>ERAP1</em> · <em>TNFAIP3</em> · <em>FUT2</em>의 위험 allele을 주었고, 이어서 후보 유전자 14개를 표적 시퀀싱한 결과 <em>IL-23R</em> · <em>TLR4</em> · <em>NOD2</em> · <em>MEFV</em>의 희귀 missense 변이가 같은 질환에 기여함이 드러남 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a>. 그 목록의 두 유전자는 단일유전자 질환 이름을 따로 갖고 있음 — <em>TNFAIP3</em>의 heterozygous LoF는 A20 haploinsufficiency이고 처음 보고된 여섯 가계의 표현형이 다인자 Behçet 병을 닮았으며, <em>STAT4</em>의 SH2 domain 변이 세 개는 disabling pansclerotic morphea 환자 네 명에서 기능 획득으로 확인됨 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a>.</p>
+        <p><em>TNFAIP3</em>는 양쪽이 독립적으로 쌓인 사례임. 희귀 변이 쪽이 자가염증질환을 만드는 한편, 같은 locus의 흔한 변이는 SLE · 궤양성 대장염 · 류마티스 관절염 · 건선 위험과 연관되고, 흔한 다형성이 anti-TNF 치료 반응의 예후 표지 후보로 제시됨 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a>.</p>
+        <p>방향을 뒤집어 보는 설계도 있음. Aicardi–Goutières syndrome의 원인 nuclease 쪽 변이를 다인자 비증후군성 SLE 코호트에서 찾았더니 <em>TREX1</em>의 missense 변이 열한 개와 <em>RNASEH2A</em>·<em>RNASEH2B</em>·<em>RNASEH2C</em>의 heterozygous missense 변이들이 농축돼 있었고, heterozygous <em>TREX1</em> 변이를 지닌 SLE 환자의 상대위험은 25.3이었음 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a>.</p>
+
+        <!-- ───────── 3. 방향과 자리 ───────── -->
+        <h2 id="direction">유전자 이름만으로는 번역이 안 됨<small>Direction and position decide</small></h2>
+        <p class="lede">같은 유전자가 걸렸다는 것은 출발점이고, 어느 자리에서 어느 방향으로 틀어졌는지가 결과를 정함.</p>
+        <p>한 유전자 안에서 <strong>방향이 표현형을 뒤집는</strong> 사례가 둘 있음. <em>OAS1</em>의 heterozygous 기능 획득 변이는 영아기 폐 alveolar proteinosis와 호흡부전, 저감마글로불린혈증으로 가는데, 같은 유전자의 biallelic LoF 변이는 중증 COVID-19 환자에서 확인됨. <em>TLR7</em>도 heterozygous 기능 획득 변이가 세 가계의 여성 5명에서 SLE를 만든 한편, LoF 변이는 중증 COVID-19 환자에서 보고됨 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a>. 위 그림의 둘째 화면이 두 사례를 나란히 놓은 것임.</p>
+        <p>한 유전자의 희귀 변이를 방향 구분 없이 묶어 검정하면 두 방향의 신호가 서로를 지우게 됨. 그래서 이 쪽에서 유전자 목록을 받아 쓸 때 필요한 단위는 유전자가 아니라 유전자 × 방향 × domain임.</p>
+        <p><strong>분자 수준의 방향과 기능 수준의 방향이 다를 수도</strong> 있음. 가족성 지중해열을 만드는 <em>MEFV</em> 변이는 pyrin의 C말단 B30.2 domain을 건드려 분자 수준에서는 기능 상실인데, 그 domain이 맡고 있던 자가억제가 풀리면서 pyrin 활성화 threshold가 내려가고 결과적으로 IL-1β 분비와 pyroptosis가 늘어남 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a>. 분자 수준의 결과와 사람 수준의 결과가 같은 말이 아니라는 점에서 <a href="../01-genome/variant-effect.html">변이는 단백질을 어떻게 바꾸나?</a>와 이 쪽의 경계가 생김.</p>
+        <p><strong>변이가 앉은 domain이 중증도를 가르는</strong> 경우도 흔함. <em>NLRP3</em>의 cryopyrin 연관 주기 발열 증후군 변이는 대부분 NACHT domain에 있고 de novo 변이가 더 중증인 주산기 표현형으로 가는 한편, LRR domain 변이는 더 가벼운 염증과 고립 난청 같은 늦은 발병 표현형으로 감. N말단 PYD의 드문 <em>p.Asp21His</em>는 눈에 국한된 질환을 만듦 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a>. <em>COPA</em>에서도 WD40 domain 변이는 관절염과 폐출혈을 주 증상으로 하는 반면 C말단 domain 변이는 자가면역과 신경염증까지 넓은 스펙트럼을 보임 <a class="src" href="https://doi.org/10.70962/jhi.20250003" target="_blank" rel="noopener">Poli 2025</a>.</p>
+        <p>분류 체계가 이미 그 방향으로 움직임. IUIS 2024 갱신에서는 유전자 40개 넘게 같은 표 안이나 다른 표에 두 개 이상의 항목을 갖게 됐는데, 같은 유전자가 기능 획득이냐 상실이냐에 따라 전혀 다른 표현형으로 가기 때문이고, 그래서 새 변이는 병원성을 말하기 전에 in vitro 기능 검증을 거쳐야 한다는 결론이 따라붙음 <a class="src" href="https://doi.org/10.70962/jhi.20250003" target="_blank" rel="noopener">Poli 2025</a>.</p>
+
+        <!-- ───────── 4. 빈도 ───────── -->
+        <h2 id="frequency">원인 변이가 희귀하다는 전제<small>Where &ldquo;rare&rdquo; breaks</small></h2>
+        <p class="lede">단일유전자 질환의 원인 변이는 희귀하다는 전제. 집단을 바꿔 보면 성립하지 않는 경우가 꽤 있음.</p>
+        <p>선천 면역 오류의 원인 변이는 통상 그 환자에게만 있는 private 수준에서 ultra-rare(1만 명에 1명보다 드묾), rare(1천 명에 1명보다 드묾)까지의 범위에 놓임. 그런데 약 1/100 수준의 더 흔한 변이가 선천 면역 오류를 일으킨 사례가 보고되고 있음 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>.</p>
+        <p><em>TYK2</em>의 <em>P1104A</em>가 가장 뚜렷한 예임. homozygous 상태에서 결핵과 MSMD 위험을 주는 위험 allele인데, 유럽계 사람 약 20명에 1명이 heterozygous 보유자임. interferon 수용체 쪽에서는 <em>IFNAR1</em>의 <em>c.1156G&gt;T</em>가 서폴리네시아에서 약 1/80, <em>IFNAR2</em>의 <em>c.157T&gt;C</em>가 Inuit에서 약 1/30으로 추정됨 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>.</p>
+        <p>뒤의 두 변이는 왜 그 빈도가 유지됐는지까지 같이 설명됨. 두 변이가 주는 감수성은 바이러스에 노출된 사람에게서만 드러나므로, 해당 바이러스가 유행하지 않은 고립 집단에서는 음성선택이 걸리지 않았다는 해석임 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>. 선택과 빈도의 관계 자체는 <a href="../01-genome/allele-frequency.html">왜 어떤 변이는 흔하고 어떤 변이는 드문가?</a>에 있음.</p>
+        <p>자가염증질환 쪽에서도 같은 일이 생김. 가족성 지중해열의 원인인 <em>MEFV</em> 보인자 빈도는 여러 지중해 집단에서 1/10으로 추정되고, <em>ADA2</em> 변이는 약 1/240으로 전 세계 잠재 환자가 3만 명을 넘을 것으로 추정됨 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a>. 집단을 구분하지 않고 하나의 빈도 상한으로 희귀 변이를 걸러내면 이 변이들이 함께 걸러짐.</p>
+
+        <figure class="fig" id="fig-band" data-mode="band">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-band" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="band" aria-pressed="true">빈도 축에서</button>
+              <button type="button" data-mode="chain" aria-pressed="false">희귀에서 표적까지</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:BAND-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="mtcBandT mtcBandD" xmlns="http://www.w3.org/2000/svg">
+<title id="mtcBandT">변이 빈도의 띠와 희귀 변이에서 약 표적까지 가는 사슬을 보여 주는 그림</title>
+<desc id="mtcBandD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 변이 빈도를 가로축에 놓고 private · ultra-rare · rare · less rare · common 다섯 칸으로 나눈 뒤 각 칸에 STAT2 R148Q, USP18 I60N 약 1/250,000, IRF7 변이 약 1/5,000, TYK2 P1104A 유럽계 약 1/20을 놓고, 약 1/100인 네 번째 칸을 체계적 탐색이 거의 없는 칸으로 표시한다. 둘째 화면은 네 단계 사슬이다 — 희귀한 NLRC4 기능 획득 변이에서 IL-18 수치 상승과 IL-18 차단의 효과로, 다시 같은 locus의 흔한 변이가 IL-18 수치와 연관된다는 관찰로, 마지막으로 Mendelian randomization이 IL-18 상승과 염증성 장질환 위험을 잇는 단계로 내려간다.</desc>
+<g class="g-ov" data-ov="band"><text x="380" y="40" class="g-lab em" text-anchor="middle">빈도 축에 변이를 놓아 보면</text><rect x="453.6" y="58" width="123.2" height="156" rx="4" fill="#D9822B" style="fill-opacity:.13"/><rect x="87.6" y="110" width="116" height="46" rx="6" fill="#B3261E"/><rect x="210.8" y="110" width="116" height="46" rx="6" fill="#B3261E"/><rect x="334" y="110" width="116" height="46" rx="6" fill="#D9822B"/><rect x="580.4" y="110" width="116" height="46" rx="6" fill="#2563C9"/><line x1="84" y1="200" x2="700" y2="200" class="g-axis"/><line x1="84.0" y1="200" x2="84.0" y2="206" class="g-axis"/><line x1="207.2" y1="200" x2="207.2" y2="206" class="g-axis"/><line x1="330.4" y1="200" x2="330.4" y2="206" class="g-axis"/><line x1="453.6" y1="200" x2="453.6" y2="206" class="g-axis"/><line x1="576.8" y1="200" x2="576.8" y2="206" class="g-axis"/><line x1="700.0" y1="200" x2="700.0" y2="206" class="g-axis"/><text x="145.6" y="74" class="g-note em" text-anchor="middle">private</text><text x="268.8" y="74" class="g-note em" text-anchor="middle">ultra-rare</text><text x="268.8" y="92" class="g-small" text-anchor="middle">1/10,000보다 드묾</text><text x="392" y="74" class="g-note em" text-anchor="middle">rare</text><text x="392" y="92" class="g-small" text-anchor="middle">1/1,000보다 드묾</text><text x="515.2" y="74" class="g-note em" text-anchor="middle">less rare</text><text x="515.2" y="92" class="g-small" text-anchor="middle">약 1/100</text><text x="638.4" y="74" class="g-note em" text-anchor="middle">common</text><text x="638.4" y="92" class="g-small" text-anchor="middle">1/100보다 흔함</text><text x="145.6" y="128" class="g-box-t" text-anchor="middle">STAT2 R148Q</text><text x="145.6" y="146" class="g-box-t" text-anchor="middle">그 환자에게만</text><text x="268.8" y="128" class="g-box-t" text-anchor="middle">USP18 I60N</text><text x="268.8" y="146" class="g-box-t" text-anchor="middle">약 1/250,000</text><text x="392" y="128" class="g-box-t" text-anchor="middle">IRF7 변이</text><text x="392" y="146" class="g-box-t" text-anchor="middle">약 1/5,000</text><text x="638.4" y="128" class="g-box-t" text-anchor="middle">TYK2 P1104A</text><text x="638.4" y="146" class="g-box-t" text-anchor="middle">유럽계 약 1/20</text><text x="515.2" y="128" class="g-small" text-anchor="middle">체계적 탐색이</text><text x="515.2" y="146" class="g-small" text-anchor="middle">거의 없는 칸</text><text x="84" y="224" class="g-small" text-anchor="start">가로축 — 집단에서의 변이 빈도</text><text x="84" y="250" class="g-small" text-anchor="start">이 칸에 사례가 없는 것은 아니다 — IFNAR1 약 1/80(서폴리네시아) · IFNAR2 약 1/30(Inuit)</text><text x="84" y="268" class="g-small" text-anchor="start">IRF7 변이는 스웨덴계 약 1/5,000 · 핀란드계 약 1/1,400, MEFV 보인자는 지중해 집단에서 1/10이다.</text><rect x="30" y="300" width="700" height="71" rx="6" class="g-band"/><text x="44" y="322" class="g-band-t hd" text-anchor="start">빈도 축에서</text><text x="44" y="341" class="g-band-t" text-anchor="start">고전적으로는 변이가 희귀할수록 중증, 흔할수록 경증으로 보았다.</text><text x="44" y="360" class="g-band-t" text-anchor="start">약 1/100 구간이 선천 면역 오류를 일으킨다는 생각은 아직 거의 탐색되지 않았다.</text></g>
+<g class="g-ov" data-ov="chain"><text x="380" y="38" class="g-lab em" text-anchor="middle">NLRC4에서 IL-18 표적까지 가는 길</text><rect x="100" y="58" width="560" height="46" rx="6" fill="#B3261E"/><rect x="100" y="122" width="560" height="46" rx="6" fill="#D9822B"/><rect x="100" y="186" width="560" height="46" rx="6" fill="#2563C9"/><rect x="100" y="250" width="560" height="46" rx="6" fill="#5B6B7A"/><line x1="380" y1="104" x2="380" y2="113" class="g-arrow"/><path d="M380 122 l-4.5 -9 l9 0 z" fill="#3B4A5A"/><line x1="380" y1="168" x2="380" y2="177" class="g-arrow"/><path d="M380 186 l-4.5 -9 l9 0 z" fill="#3B4A5A"/><line x1="380" y1="232" x2="380" y2="241" class="g-arrow"/><path d="M380 250 l-4.5 -9 l9 0 z" fill="#3B4A5A"/><text x="380" y="76" class="g-box-t" text-anchor="middle">희귀 — NLRC4 기능 획득 변이</text><text x="380" y="94" class="g-box-t" text-anchor="middle">소아 enterocolitis · macrophage activation syndrome</text><text x="380" y="140" class="g-box-t" text-anchor="middle">IL-18 수치가 크게 올라감</text><text x="380" y="158" class="g-box-t" text-anchor="middle">IL-18 차단만 유효 · IL-1β 차단은 효과 없음</text><text x="380" y="204" class="g-box-t" text-anchor="middle">흔한 — 같은 locus의 변이가 IL-18 수치와 연관</text><text x="380" y="222" class="g-box-t" text-anchor="middle">집단 규모에서 같은 분자를 가리킴</text><text x="380" y="268" class="g-box-t" text-anchor="middle">Mendelian randomization</text><text x="380" y="286" class="g-box-t" text-anchor="middle">유전적으로 예측된 IL-18 상승이 IBD 위험과 연관</text><rect x="30" y="312" width="700" height="71" rx="6" class="g-band"/><text x="44" y="334" class="g-band-t hd" text-anchor="start">희귀에서 표적까지</text><text x="44" y="353" class="g-band-t" text-anchor="start">희귀 변이가 분자를 지목하고, 흔한 변이가 집단 규모를 재고, MR이 방향을 댔다.</text><text x="44" y="372" class="g-band-t" text-anchor="start">세 근거가 같은 분자를 가리켜 IBD 환자 일부에서 IL-18 조절이 치료 후보가 되었다.</text></g>
+</svg>
+<!--/GEN:BAND-->
+          </div>
+          <figcaption>첫 화면의 값은 관찰값 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a> · <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a>. 둘째 화면은 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a>.</figcaption>
+        </figure>
+
+        <p>그림 첫 화면의 네 번째 칸이 이 절의 요점임. 고전적으로는 변이가 희귀할수록 중증, 흔할수록 경증으로 보았고, 그 사이 약 1/100 구간이 선천 면역 오류를 일으킨다는 생각은 아직 거의 탐색되지 않은 상태로 남아 있음. 시퀀싱이 넓어지면서 이 칸에 속하는 변이가 새로 나올 것으로 전망됨 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>.</p>
+
+        <!-- ───────── 5. 표적 ───────── -->
+        <h2 id="drug">표적과 용량까지 정해지는 경로<small>From gene to target and dose</small></h2>
+        <p class="lede">번역이 가장 멀리 간 자리. 무엇을 막을지에서 멈추지 않고 얼마나 막을지까지 유전학이 댄 경우.</p>
+        <p><em>TYK2</em>가 그 사례임. homozygous 변이로 인한 TYK2 결핍은 사람에게 면역결핍을 만드는데, 흔한 coding allele <em>P1104A</em>는 TYK2 기능을 낮추면서 건선 · SLE · 염증성 장질환에서 보호 효과를 줌. 이 LoF allele은 바이러스 감염과 활성 결핵 감수성(뒤의 것은 homozygous 보유자에 한정)과 연관될 수 있지만, 광범위한 감염 위험이나 다른 부정적 건강 결과와는 연관되지 않음 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a>.</p>
+        <p>이 인간 자료가 두 가지를 함께 정했음 — 전신 면역억제를 피하면서 효능을 낼 억제 정도, 그리고 반응 가능성이 높은 적응증. TYK2 억제제 deucravacitinib이 중등도–중증 판상 건선에서 효능을 보여 FDA 승인을 받았고, 이후 건선성 관절염과 SLE phase II에서도 기회감염 증가 없이 효능을 보임 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a>.</p>
+        <p>희귀에서 흔한 쪽으로 넘어간 다른 사례는 <em>NLRC4</em>임. 그림 둘째 화면의 네 단계가 그 경로 — 소아 enterocolitis와 macrophage activation syndrome을 보인 아이들의 <em>NLRC4</em> 기능 획득 변이에 IL-18 수치의 큰 증가가 따랐고, 한 증례 보고에서 IL-18 차단만 enterocolitis와 다른 염증 증상을 완화시켰으며 IL-1β 차단이나 다른 항염증 약물은 듣지 않았음. 이어서 같은 locus의 흔한 변이가 IL-18 수치 변동과 연관되는 것이 확인됐고, Mendelian randomization에서 유전적으로 예측된 IL-18 상승이 염증성 장질환 위험 증가와 연관됨 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a>. 마지막 단계의 설계는 GWAS 쪽 <a href="../../../gwas/03-postgwas/mr.html">노출이 결과의 원인인지 가릴 수 있는가?</a>에 있음.</p>
+        <p>이 논리를 일반화한 것이 <strong>genetic dose–response curve</strong>임. 표적의 효능과 안전역을 무작위 임상시험 이전에 정량적으로 추정하려는 것인데, 큰 기능 상실·획득 효과를 지닌 변이는 일반 인구에서 아주 낮은 빈도로만 존재하므로 매우 큰 표본이나 표적 모집이 필요하고, 전 세계 다양성을 반영한 biobank가 결정적이라는 조건이 붙음 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a>. 약 개발 쪽에서 이 근거를 어떻게 쓰는지는 <a href="../05-function/genetics-to-drugs.html">유전학 근거는 약 개발에 어떻게 쓰이나?</a>에서 다룸.</p>
+
+        <!-- ───────── 6. 갈라지는 자리 ───────── -->
+        <h2 id="limits">두 쪽이 갈라지는 자리<small>Where the continuity stops</small></h2>
+        <p class="lede">연속으로 읽히는 구간이 어디서 끊기는지. 번역의 성공 사례와 같은 비중으로 적어야 하는 쪽.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>갈라지는 자리</th><th>내용</th></tr></thead>
+            <tbody>
+              <tr><th>heterozygous 보유자는 대개 발병하지 않음</th><td>heterozygous <em>TREX1</em> 변이를 지닌 SLE 환자의 상대위험이 25.3이지만, Aicardi–Goutières syndrome 환자의 heterozygous 부모는 대개 SLE로 가지 않음 — 다른 유전·환경 요인을 전제해야 함 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a>. 침투도 쪽은 <a href="./penetrance.html">같은 변이가 왜 다른 결과를 내나?</a></td></tr>
+              <tr><th>같은 경로를 끄는 길이 유전 변이뿐은 아님</th><td>IL-10 중화 자가항체가 염증성 장질환 환자 4,909명 중 173명(3.5%, 95% CI 3.0–4.1)에서 검출됐고 대조 1,006명에서는 한 명도 없었음. 지난 15년간 전 세계에서 보고된 biallelic LoF 결손은 <em>IL10</em> 5명 · <em>IL10RB</em> 27명 · <em>IL10RA</em> 175명으로 규모가 훨씬 작아, 후천적 phenocopy가 germline 결손보다 흔한 구도가 됨 <a class="src" href="https://doi.org/10.1056/nejmoa2513654" target="_blank" rel="noopener">Gharahdaghi 2026</a></td></tr>
+              <tr><th>단일유전자 하위집단이 전부는 아님</th><td>소아 발병 SLE의 약 7%가 단일유전자로 설명되는 것으로 추정되고 시퀀싱 확대에 따라 늘 것으로 예상됨 <a class="src" href="https://doi.org/10.1038/s41584-024-01184-8" target="_blank" rel="noopener">Goldbach-Mansky 2025</a>. 단일유전자 자가염증질환 쪽에서도 확정 분자진단은 환자의 약 30%에 머물러 있음 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a></td></tr>
+              <tr><th>LoF allele이 아예 없는 유전자</th><td>음성선택 때문에 LoF allele이 관찰되지 않는 유전자가 상당수이고, 그 가운데에는 안전하고 효과적인 치료의 표적으로 이미 쓰이는 것들이 있음 — 유전학으로 표적을 고르는 방식이 비워 두는 칸임 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a></td></tr>
+              <tr><th>집계 숫자를 판 사이에 비교하지 않음</th><td>IUIS 2024 갱신은 유전자 508개 · 질환 559개 · 신규 67개 · phenocopy 17개를 집계하는데, 유전자 수와 질환 수를 따로 세는 방식이 이 판에서 바뀌었고 기준이 계속 바뀌는 중이라 이전 판 숫자와 직접 비교하는 것은 정확하지 않음 <a class="src" href="https://doi.org/10.70962/jhi.20250003" target="_blank" rel="noopener">Poli 2025</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>같은 유전자가 걸렸으면 같은 기전 ✗</code><p class="why"><em>NOD2</em>에서 LRR domain의 흔한 hypomorphic 변이는 Crohn 감수성, NACHT domain의 희귀 기능 획득 변이는 Blau syndrome <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a></p></div>
+          <div class="fix"><code>변이 효과의 방향은 유전자 단위로 정해짐 ✗</code><p class="why"><em>OAS1</em>과 <em>TLR7</em> 모두 기능 획득 변이와 기능 상실 변이가 서로 다른 질환으로 감 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a></p></div>
+          <div class="fix"><code>분자 수준의 기능 상실은 염증을 줄임 ✗</code><p class="why"><em>MEFV</em>의 가족성 지중해열 변이는 분자 수준에서는 기능 상실인데 pyrin의 자가억제를 풀어 활성화 threshold를 낮춤 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a></p></div>
+          <div class="fix"><code>희귀질환 유전자는 흔한 질환과 별개의 목록 ✗</code><p class="why">Behçet 병 GWAS 목록 안의 <em>TNFAIP3</em>와 <em>STAT4</em>는 각각 A20 haploinsufficiency와 disabling pansclerotic morphea의 원인 유전자 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a></p></div>
+          <div class="fix"><code>단일유전자 질환의 원인 변이는 반드시 희귀함 ✗</code><p class="why"><em>TYK2 P1104A</em>는 유럽계에서 약 20명에 1명이 heterozygous 보유자 <a class="src" href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener">Akalu 2024</a>, 가족성 지중해열 원인 <em>MEFV</em>의 보인자 빈도는 여러 지중해 집단에서 1/10 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a></p></div>
+          <div class="fix"><code>희귀 LoF 변이를 찾으면 인과 근거 ✗</code><p class="why">사람마다 단백질 유전자 LoF 변이를 평균 100개쯤 지니므로 변이의 존재 자체는 근거가 되지 못함 <a class="src" href="https://doi.org/10.1146/annurev-immunol-082323-124920" target="_blank" rel="noopener">Bender 2025</a></p></div>
+          <div class="fix"><code>표현형이 좁으면 그 유전자의 역할도 좁음 ✗</code><p class="why">면역 감지기 결함이 좁은 병원체·조직 범위에만 나타나는 것은 겹치는 감지 층이 여러 겹이라는 뜻으로 해석됨 <a class="src" href="https://doi.org/10.1146/annurev-immunol-082323-124920" target="_blank" rel="noopener">Bender 2025</a></p></div>
+          <div class="fix"><code>단일유전자 경로가 밝혀지면 흔한 질환도 같은 약으로 ✗</code><p class="why"><em>NLRC4</em> 증례에서는 IL-18 차단만 들었고 IL-1β 차단은 듣지 않았음. 흔한 질환 쪽 적용도 염증성 장질환 환자 일부를 겨냥하는 전략으로 제시됨 <a class="src" href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener">Ramírez-Valle 2024</a></p></div>
+          <div class="fix"><code>같은 경로를 끄는 길은 유전 변이뿐 ✗</code><p class="why">IL-10 중화 자가항체가 염증성 장질환 환자의 3.5%에서 검출돼, 보고된 germline 결손보다 큰 규모의 후천적 phenocopy를 이룸 <a class="src" href="https://doi.org/10.1056/nejmoa2513654" target="_blank" rel="noopener">Gharahdaghi 2026</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">allelic series · hypomorphic · 기능 저하형 · gain-of-function · GoF · 기능 획득 · loss-of-function · LoF · 기능 상실 · phenocopy · 표현형 모방 · genetic dose–response curve · monogenic · 단일유전자 · polygenic · 다유전자 · SAID · systemic autoinflammatory disease · 전신 자가염증질환 · inflammasome · pyroptosis · FMF · familial Mediterranean fever · 가족성 지중해열 · Blau syndrome · CAPS · cryopyrin-associated periodic syndrome · DADA2 · ADA2 deficiency · HA20 · haploinsufficiency of A20 · Behçet · AGS · Aicardi–Goutières syndrome · monogenic lupus · 단일유전자 루푸스 · IUIS · IEI · inborn errors of immunity · MSMD · deucravacitinib · anti-cytokine autoantibody · 중화 자가항체</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./penetrance.html">같은 변이가 왜 다른 결과를 내나? →</a>
+          <a href="../04-polygenic/architecture.html">질환마다 유전 구조는 어떻게 다른가? →</a>
+          <a href="../01-genome/allele-frequency.html">왜 어떤 변이는 흔하고 어떤 변이는 드문가? →</a>
+          <a href="../05-function/genetics-to-drugs.html">유전학 근거는 약 개발에 어떻게 쓰이나? →</a>
+          <a href="../../../gwas/03-postgwas/mr.html">노출이 결과의 원인인지 가릴 수 있는가? →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener noreferrer">Zhang 2023, Annu Rev Genet — 자가염증질환 유전학과 한 유전자 안의 allelic series ↗</a>
+          <a href="https://doi.org/10.1038/s41573-024-00959-8" target="_blank" rel="noopener noreferrer">Ramírez-Valle 2024, Nat Rev Drug Discov — 희귀 변이에서 표적과 용량까지 ↗</a>
+          <a href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener noreferrer">Akalu 2024, Nat Rev Genet — 원인 변이가 희귀하지 않은 구간 ↗</a>
+          <a href="https://doi.org/10.70962/jhi.20250003" target="_blank" rel="noopener noreferrer">Poli 2025, J Hum Immun — 유전자가 아니라 변이 기전 단위로 옮겨간 분류 ↗</a>
+          <a href="https://doi.org/10.1056/nejmoa2513654" target="_blank" rel="noopener noreferrer">Gharahdaghi 2026, N Engl J Med — 자가항체가 만드는 후천적 phenocopy ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>
