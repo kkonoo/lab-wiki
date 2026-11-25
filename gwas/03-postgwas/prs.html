@@ -1,0 +1,1151 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Polygenic risk score: 가중 합의 정의와 척도, C+T와 Bayesian shrinkage가 가중치를 정하는 방식, 표본 크기·유전 구조·heritability가 정하는 정확도 상한, R²·AUC·분위 odds ratio와 학습/검증/시험 분리, ancestry 전이성, 임상으로 옮길 때의 전달 방식과 근거 수준">
+  <title>한 사람의 유전 위험을 숫자 하나로 말할 수 있나? · GWAS</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/spa.css">
+  <link rel="stylesheet" href="../gwas.css">
+  <link rel="stylesheet" href="../../assets/css/article.css">
+  <link rel="stylesheet" href="../gwas-fig.css">
+</head>
+<body class="vpage" data-domain="gwas">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html"><img class="mark" src="../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../index.html"><span>/ GWAS</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../gwas/index.html" aria-current="page">GWAS</a>
+        <a href="../../omics/index.html">Omics</a>
+        <a href="../../single-cell/index.html">Single-cell</a>
+        <a href="../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../disease/index.html">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../index.html">HaLab Wiki</a><span>›</span><a href="../index.html">GWAS</a><span>›</span><a href="../index.html#section/postgwas">Post-GWAS</a><span>›</span>Polygenic risk score</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">GWAS — Post-GWAS</p>
+        <h1>한 사람의 유전 위험을 숫자 하나로 말할 수 있나?</h1>
+        <p class="definition">Polygenic risk score(PRS): 개인의 genotype에 GWAS에서 추정한 효과를 곱해 전부 더한 값. genome 전체에 흩어진 유전 소인을 하나의 숫자로 요약함 <a class="src" href="https://doi.org/10.1038/s41588-022-01054-7" target="_blank" rel="noopener">Ruan 2022</a>. 질병처럼 binary 형질에 쓸 때는 polygenic risk score, 일반 형질에 쓸 때는 polygenic score로 부르고, genetic risk score도 같은 대상을 가리킴 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a> <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a></p>
+
+        <!-- ───────── 1. 가중 합 ───────── -->
+        <h2 id="what">PRS는 무엇을 더하나<small>Weighted sum</small></h2>
+        <p class="lede">PRS<sub>i</sub> = Σ<sub>j</sub> X<sub>ij</sub> · b̂<sub>j</sub>. X는 개인 i가 가진 효과 allele 개수, b̂는 GWAS에서 추정한 allele 하나당 효과 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a> <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a>. 최근 점수는 수백에서 수백만 개 변이를 담음 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a></p>
+        <div class="cases">
+          <div style="--c:var(--theme)"><span class="lv">X</span><h4>dosage 0 · 1 · 2</h4><p>효과 allele 개수. imputed genotype은 확률의 기대값인 dosage(0–2 실수)나 가장 확률 높은 best-guess genotype으로 넣음. best-guess 방식은 imputation 불확실성을 버림 <a class="src" href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener">Choi 2019</a></p></div>
+          <div style="--c:var(--theme)"><span class="lv">b̂</span><h4>가중치</h4><p>binary 형질이면 log odds ratio, 연속 형질이면 allele 개수에 대한 회귀 기울기 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></p></div>
+          <div style="--c:#6B736E"><span class="lv">표준화</span><h4>평균 0 · 표준편차 1</h4><p>원점수의 범위가 점수마다 달라서, 형질 · 코호트를 넘어 비교하려면 표준화가 필요함 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></p></div>
+        </div>
+        <figure class="fig" id="fig-score">
+          <div class="fig-scroll">
+<!--GEN:SCORE-->
+<svg class="g-svg " viewBox="0 0 900 306" role="img" aria-labelledby="scT scD" xmlns="http://www.w3.org/2000/svg">
+<title id="scT">가중 합으로 만든 점수와 그 분포</title>
+<desc id="scD">왼쪽은 PRS 가중치 파일의 모양이다. SNP 위치, 효과 allele, allele 하나당 가중치가 적혀 있고, 개인마다 그 allele을 몇 개 가졌는지(0 · 1 · 2)를 곱해 더한다. 가중치가 큰 SNP 5개와 두 사람의 dosage를 보여 준다. 다섯 개만 더한 값은 두 사람이 비슷하지만, 전체를 더한 백분위는 크게 갈린다. 오른쪽은 시뮬레이션한 target 표본 30,000명의 PRS 분포다. 평균 0 · 표준편차 1로 맞춘 뒤 그렸고, 분포는 종 모양에 가깝다. 오른쪽 꼬리의 음영이 상위 5% 구간이고, 왼쪽 표의 두 사람이 분포에서 어디에 있는지 점으로 찍었다.</desc>
+<text class="g-ttl" x="24" y="24">가중치 파일과 두 사람의 dosage<tspan class="g-sub" dx="8">가중치가 큰 SNP 5개</tspan></text>
+<text class="g-hd" x="24" y="50" text-anchor="start">SNP</text>
+<text class="g-hd" x="142" y="50" text-anchor="middle">효과 allele</text>
+<text class="g-hd" x="220" y="50" text-anchor="end">가중치</text>
+<text class="g-hd" x="292" y="50" text-anchor="middle">개인 A</text>
+<text class="g-hd" x="364" y="50" text-anchor="middle">개인 B</text>
+<line class="g-ax" x1="24" x2="396" y1="58" y2="58"/>
+<text class="g-cnt" x="24" y="78">2:29.60Mb</text>
+<text class="g-cnt" x="142" y="78" text-anchor="middle">G</text>
+<text class="g-cnt" x="220" y="78" text-anchor="end">+0.0340</text>
+<text class="g-cnt" x="292" y="78" text-anchor="middle">0</text>
+<text class="g-cnt" x="364" y="78" text-anchor="middle">0</text>
+<text class="g-cnt" x="24" y="103">7:51.52Mb</text>
+<text class="g-cnt" x="142" y="103" text-anchor="middle">A</text>
+<text class="g-cnt" x="220" y="103" text-anchor="end">-0.0394</text>
+<text class="g-cnt" x="292" y="103" text-anchor="middle">1</text>
+<text class="g-cnt" x="364" y="103" text-anchor="middle">2</text>
+<text class="g-cnt" x="24" y="128">8:93.12Mb</text>
+<text class="g-cnt" x="142" y="128" text-anchor="middle">T</text>
+<text class="g-cnt" x="220" y="128" text-anchor="end">+0.0467</text>
+<text class="g-cnt" x="292" y="128" text-anchor="middle">2</text>
+<text class="g-cnt" x="364" y="128" text-anchor="middle">1</text>
+<text class="g-cnt" x="24" y="153">12:98.32Mb</text>
+<text class="g-cnt" x="142" y="153" text-anchor="middle">C</text>
+<text class="g-cnt" x="220" y="153" text-anchor="end">-0.0373</text>
+<text class="g-cnt" x="292" y="153" text-anchor="middle">0</text>
+<text class="g-cnt" x="364" y="153" text-anchor="middle">0</text>
+<text class="g-cnt" x="24" y="178">18:62.14Mb</text>
+<text class="g-cnt" x="142" y="178" text-anchor="middle">G</text>
+<text class="g-cnt" x="220" y="178" text-anchor="end">+0.0350</text>
+<text class="g-cnt" x="292" y="178" text-anchor="middle">0</text>
+<text class="g-cnt" x="364" y="178" text-anchor="middle">2</text>
+<text class="g-note dim" x="24" y="203">⋮ 나머지 425,899개 SNP도 같은 방식으로 더함</text>
+<line class="g-ax" x1="24" x2="396" y1="213" y2="213"/>
+<text class="g-lab" x="24" y="227">위 다섯 개의 합</text>
+<text class="g-cnt" x="292" y="227" text-anchor="middle">+0.054</text>
+<text class="g-cnt" x="364" y="227" text-anchor="middle">+0.038</text>
+<text class="g-lab" x="24" y="252">425,904개를 다 더한 PRS 백분위</text>
+<text class="g-sig" x="292" y="252" text-anchor="middle" fill="var(--theme)">98%</text>
+<text class="g-sig" x="364" y="252" text-anchor="middle" fill="var(--theme)">8%</text>
+<text class="g-ttl" x="500" y="24">target 표본 30,000명의 PRS<tspan class="g-sub" dx="8">평균 0 · 표준편차 1로 맞춤</tspan></text>
+<path fill="#E3E8E5" d="M765.3,236.0L767.8,198.0L770.5,201.3L773.2,204.6L775.9,207.9L778.6,211.1L781.3,214.1L784.0,216.8L786.7,219.1L789.4,221.1L792.1,222.8L794.8,224.4L797.6,225.7L800.3,226.9L803.0,227.9L805.7,228.8L808.4,229.5L811.1,230.2L813.8,230.9L816.5,231.5L819.2,232.1L821.9,232.6L824.6,233.0L827.3,233.4L830.0,233.7L832.7,234.0L835.4,234.3L838.1,234.6L840.8,234.8L843.5,235.0L846.2,235.1L848.9,235.3L851.7,235.5L854.4,235.6L857.1,235.7L859.8,235.8L862.5,235.8L865.2,235.9L867.9,235.9L870.6,235.9L873.3,235.9L876.0,235.9L876.0,236.0Z"/>
+<polyline class="g-line" points="500.0,236.0 502.7,236.0 505.4,236.0 508.1,236.0 510.8,235.9 513.5,235.9 516.2,235.8 518.9,235.8 521.6,235.7 524.3,235.5 527.1,235.4 529.8,235.3 532.5,235.2 535.2,235.1 537.9,235.0 540.6,234.8 543.3,234.6 546.0,234.3 548.7,233.9 551.4,233.5 554.1,232.9 556.8,232.3 559.5,231.7 562.2,231.0 564.9,230.3 567.6,229.5 570.3,228.6 573.0,227.5 575.7,226.3 578.4,225.0 581.2,223.7 583.9,222.2 586.6,220.5 589.3,218.5 592.0,216.2 594.7,213.5 597.4,210.7 600.1,208.0 602.8,205.3 605.5,202.5 608.2,199.3 610.9,195.7 613.6,191.5 616.3,186.9 619.0,181.8 621.7,176.7 624.4,171.7 627.1,166.9 629.8,162.5 632.5,158.1 635.3,153.3 638.0,148.0 640.7,141.9 643.4,135.4 646.1,128.7 648.8,122.5 651.5,117.0 654.2,112.1 656.9,107.5 659.6,103.2 662.3,99.2 665.0,95.8 667.7,93.0 670.4,90.5 673.1,88.1 675.8,85.7 678.5,83.4 681.2,81.5 683.9,80.0 686.6,79.1 689.4,78.9 692.1,79.1 694.8,79.7 697.5,80.7 700.2,82.2 702.9,84.3 705.6,87.2 708.3,91.0 711.0,95.6 713.7,100.7 716.4,106.0 719.1,111.3 721.8,116.4 724.5,121.4 727.2,126.4 729.9,131.6 732.6,136.8 735.3,142.2 738.0,147.6 740.7,152.8 743.5,157.9 746.2,162.8 748.9,167.6 751.6,172.4 754.3,177.1 757.0,181.7 759.7,186.3 762.4,190.5 765.1,194.4 767.8,198.0 770.5,201.3 773.2,204.6 775.9,207.9 778.6,211.1 781.3,214.1 784.0,216.8 786.7,219.1 789.4,221.1 792.1,222.8 794.8,224.4 797.6,225.7 800.3,226.9 803.0,227.9 805.7,228.8 808.4,229.5 811.1,230.2 813.8,230.9 816.5,231.5 819.2,232.1 821.9,232.6 824.6,233.0 827.3,233.4 830.0,233.7 832.7,234.0 835.4,234.3 838.1,234.6 840.8,234.8 843.5,235.0 846.2,235.1 848.9,235.3 851.7,235.5 854.4,235.6 857.1,235.7 859.8,235.8 862.5,235.8 865.2,235.9 867.9,235.9 870.6,235.9 873.3,235.9 876.0,235.9" stroke="var(--theme)"/>
+<line class="g-ax" x1="500" x2="876" y1="236" y2="236"/>
+<line class="g-ax" x1="500.0" x2="500.0" y1="236" y2="240"/><text class="g-tick" x="500.0" y="252" text-anchor="middle">-4</text>
+<line class="g-ax" x1="547.0" x2="547.0" y1="236" y2="240"/><text class="g-tick" x="547.0" y="252" text-anchor="middle">-3</text>
+<line class="g-ax" x1="594.0" x2="594.0" y1="236" y2="240"/><text class="g-tick" x="594.0" y="252" text-anchor="middle">-2</text>
+<line class="g-ax" x1="641.0" x2="641.0" y1="236" y2="240"/><text class="g-tick" x="641.0" y="252" text-anchor="middle">-1</text>
+<line class="g-ax" x1="688.0" x2="688.0" y1="236" y2="240"/><text class="g-tick" x="688.0" y="252" text-anchor="middle">0</text>
+<line class="g-ax" x1="735.0" x2="735.0" y1="236" y2="240"/><text class="g-tick" x="735.0" y="252" text-anchor="middle">1</text>
+<line class="g-ax" x1="782.0" x2="782.0" y1="236" y2="240"/><text class="g-tick" x="782.0" y="252" text-anchor="middle">2</text>
+<line class="g-ax" x1="829.0" x2="829.0" y1="236" y2="240"/><text class="g-tick" x="829.0" y="252" text-anchor="middle">3</text>
+<line class="g-ax" x1="876.0" x2="876.0" y1="236" y2="240"/><text class="g-tick" x="876.0" y="252" text-anchor="middle">4</text>
+<text class="g-lab" x="688.0" y="270" text-anchor="middle">표준화 PRS (표준편차 단위)</text>
+<line class="g-vline thin" x1="765.3" x2="765.3" y1="56" y2="236" stroke="var(--text)"/>
+<text class="g-note" x="760.3" y="66" text-anchor="end" fill="var(--text)">상위 5% = 1.64</text>
+<circle class="g-dot" cx="784.7" cy="229.0" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="793.7" y="219.0" text-anchor="start">개인 A</text>
+<circle class="g-dot" cx="622.4" cy="229.0" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="622.4" y="219.0" text-anchor="middle">개인 B</text>
+</svg>
+<!--/GEN:SCORE-->
+          </div>
+          <figcaption>
+            시뮬레이션한 유전체(SNP <!--GEN:M-->425,904<!--/GEN:M-->개 · 인과 변이 <!--GEN:CAUSAL-->4,234<!--/GEN:CAUSAL-->개 · SNP h² <!--GEN:H2-->0.4<!--/GEN:H2-->)와 <!--GEN:N0-->100,000<!--/GEN:N0-->명 GWAS로 만든 가중치. 왼쪽 표의 효과 allele 글자는 설명용이고, 가중치는 Bayesian shrinkage(<a href="#weights">아래 2절</a>)로 추정한 값 가운데 절댓값이 가장 큰 <!--GEN:TOPK-->5<!--/GEN:TOPK-->개(<!--GEN:WMIN-->0.0340<!--/GEN:WMIN-->–<!--GEN:WMAX-->0.0467<!--/GEN:WMAX-->) · 오른쪽은 같은 가중치를 target 표본 <!--GEN:NTGT-->30,000<!--/GEN:NTGT-->명에게 적용한 PRS. 개인 A의 PRS가 <!--GEN:PRS_HI-->2.06<!--/GEN:PRS_HI--> SD, 개인 B가 <!--GEN:PRS_LO-->−1.40<!--/GEN:PRS_LO--> SD. 표에 올린 다섯 개만 더하면 <!--GEN:SUM_A-->+0.054<!--/GEN:SUM_A-->과 <!--GEN:SUM_B-->+0.038<!--/GEN:SUM_B-->으로 거의 같아서, 변이 몇 개로는 순위가 갈리지 않음 · 시뮬레이션 방법은 <a href="#sim">아래 상자</a>
+          </figcaption>
+        </figure>
+        <div class="callout">
+          <h4>왜 수천 개를 더하나</h4>
+          <p>흔한 질환의 유전 구조가 효과 작은 변이 다수로 이루어져서, 변이 하나를 보는 검사로는 위험을 가늠하지 못함 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a> · penetrance가 높은 변이는 negative selection으로 집단에서 먼저 제거되기 때문에, 흔하면서 효과가 큰 변이 자체가 드묾 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a> · GWAS에서 유의한 변이도 대부분 효과가 작아 단독으로는 예측에 거의 쓸모가 없음 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a> · 초기 PRS는 genome-wide 유의 locus만 썼으나, polygenicity가 높은 형질에서는 역치 아래 변이를 훨씬 많이 넣을 때 성능이 좋아짐 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></p>
+        </div>
+        <div class="callout">
+          <h4>점수를 계산하는 데 필요한 것</h4>
+          <p>가중치 파일(scoring file)에는 genome build, rsID 또는 염색체 위치, 효과 allele, 가중치가 들어감. 이 네 가지가 있으면 다른 표본에서 점수를 다시 계산함 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a> · <a href="https://www.pgscatalog.org/" target="_blank" rel="noopener">PGS Catalog</a>의 파일은 <a href="../index.html#article/plink">PLINK</a> 같은 일반 도구로 바로 점수를 냄 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a> · 학습 GWAS와 target 표본의 genotyping platform이 다르면 겹치는 SNP이 크게 줄어듦. UK Biobank QC 후 725,459개 SNP 가운데 GIANT 키 · BMI GWAS와 겹치는 것이 31%(222,956개)였고, <a href="../index.html#article/imputation">imputation</a>을 쓰면 2,121,036개로 늘어남 <a class="src" href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener">Choi 2019</a></p>
+        </div>
+
+        <!-- ───────── 2. 가중치 ───────── -->
+        <h2 id="weights">가중치는 어디서 오나<small>Constructing weights</small></h2>
+        <p class="lede">GWAS가 주는 효과는 SNP마다 따로 돌린 marginal 추정치. <a href="../01-genetics/ld.html">LD</a>에 있는 SNP들이 같은 신호를 중복해서 들고 있어, 그대로 더하면 그 locus의 기여가 부풀려짐 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a></p>
+        <p class="lede">갈라지는 지점은 둘. 어떤 SNP를 넣을지, 그리고 LD를 어떻게 반영할지 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a></p>
+        <figure class="fig" id="fig-weights" data-mode="marg">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-weights" role="group" aria-label="가중치 추정 방식">
+              <button type="button" data-mode="marg" aria-pressed="true">marginal 추정</button>
+              <button type="button" data-mode="ct" aria-pressed="false">C+T</button>
+              <button type="button" data-mode="shrink" aria-pressed="false">Bayesian shrinkage</button>
+            </div>
+          </div>
+          <div class="fig-scroll" data-scroll="center">
+<!--GEN:WEIGHTS-->
+<svg class="g-svg " viewBox="0 0 900 400" role="img" aria-labelledby="wtT wtD" xmlns="http://www.w3.org/2000/svg">
+<title id="wtT">같은 GWAS에서 방법마다 다른 가중치가 나온다</title>
+<desc id="wtD">위 칸은 가장 신호가 강한 locus의 ±250 kb를 확대한 것이다. 점은 SNP이고 높이는 −log10 p, 색은 lead SNP과의 r²다. 아래 칸은 같은 자료에서 세 방법이 이 locus의 SNP에 주는 가중치다. 보정 없는 marginal 추정은 LD에 있는 SNP 모두에 비슷한 값을 주고, C+T는 lead 하나만 남기고 나머지를 0으로 두며, Bayesian shrinkage는 모든 SNP에 작은 값을 나눠 준다. 오른쪽에는 유전체 전체에서 가중치가 0이 아닌 SNP 수와 기대 R²를 적었다.</desc>
+<line class="g-grid" x1="72" x2="700" y1="168.0" y2="168.0"/><text class="g-tick" x="66" y="171.5" text-anchor="end">0</text>
+<line class="g-grid" x1="72" x2="700" y1="110.0" y2="110.0"/><text class="g-tick" x="66" y="113.5" text-anchor="end">20</text>
+<line class="g-grid" x1="72" x2="700" y1="52.0" y2="52.0"/><text class="g-tick" x="66" y="55.5" text-anchor="end">40</text>
+<line class="g-grid" x1="72" x2="700" y1="324.0" y2="324.0"/>
+<line class="g-grid" x1="72" x2="700" y1="276.0" y2="276.0"/>
+<line class="g-ax" x1="72" x2="700" y1="168" y2="168"/>
+<text class="g-ttl" x="72" y="30">lead SNP 주변 ±250 kb<tspan class="g-sub" dx="8">표본 100,000명 GWAS · 색 = lead와의 r²</tspan></text>
+<text class="g-lab" transform="translate(36,110.0) rotate(-90)" text-anchor="middle">−log₁₀ p</text>
+<circle class="g-pt" cx="603.6" cy="168.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="622.1" cy="168.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="362.4" cy="168.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="648.5" cy="168.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="216.5" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="604.1" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="108.8" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="126.4" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="650.1" cy="167.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="311.9" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="576.6" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="605.5" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="211.7" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="262.3" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="228.0" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="333.1" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="316.1" cy="167.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="575.1" cy="167.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="207.1" cy="167.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="292.7" cy="167.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="234.0" cy="167.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="572.8" cy="167.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="523.5" cy="167.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="193.0" cy="167.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="592.8" cy="167.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="191.2" cy="167.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="146.3" cy="167.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="574.2" cy="167.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="592.2" cy="167.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="153.1" cy="167.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="609.7" cy="167.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="670.1" cy="167.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="273.8" cy="167.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="84.1" cy="167.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="173.5" cy="167.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="314.3" cy="167.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="509.6" cy="167.3" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="668.5" cy="167.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="153.6" cy="167.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="355.6" cy="167.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="554.0" cy="167.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="383.1" cy="167.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="247.9" cy="167.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="550.1" cy="167.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="299.1" cy="167.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="251.4" cy="167.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="269.5" cy="166.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="118.9" cy="166.9" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="549.6" cy="166.8" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="188.5" cy="166.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="610.5" cy="166.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="511.8" cy="166.7" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="129.5" cy="166.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="391.8" cy="166.6" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="167.8" cy="166.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="570.9" cy="166.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="545.5" cy="166.4" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="567.2" cy="166.2" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="525.8" cy="166.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="526.8" cy="166.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="637.9" cy="166.0" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="388.4" cy="165.5" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="577.2" cy="165.1" r="3.1" fill="#C5CCD3"/>
+<circle class="g-pt" cx="461.0" cy="108.4" r="3.1" fill="#7DAE58"/>
+<circle class="g-pt" cx="413.6" cy="97.5" r="3.1" fill="#E8913A"/>
+<circle class="g-pt" cx="384.5" cy="77.8" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="431.4" cy="76.7" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="366.8" cy="75.5" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="372.8" cy="73.6" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="502.6" cy="71.4" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="400.8" cy="70.8" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="475.6" cy="70.5" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="480.7" cy="69.4" r="3.1" fill="#D2453B"/>
+<circle class="g-pt" cx="442.6" cy="67.6" r="3.1" fill="#D2453B"/>
+<path class="g-lead" d="M386.0,55.0L391.5,60.5L386.0,66.0L380.5,60.5Z"/>
+<line class="g-thr" x1="72" x2="700" y1="146.8" y2="146.8"/>
+<text class="g-note dim" x="698" y="141.8" text-anchor="end">5×10⁻⁸</text>
+<text class="g-note" x="72" y="196">색 = lead SNP(◆)와의 r²</text>
+<circle cx="77" cy="207" r="4" fill="#C5CCD3"/>
+<text class="g-note" x="85" y="211">< 0.2</text>
+<circle cx="143" cy="207" r="4" fill="#7FB2DD"/>
+<text class="g-note" x="151" y="211">0.2–0.4</text>
+<circle cx="209" cy="207" r="4" fill="#7DAE58"/>
+<text class="g-note" x="217" y="211">0.4–0.6</text>
+<circle cx="275" cy="207" r="4" fill="#E8913A"/>
+<text class="g-note" x="283" y="211">0.6–0.8</text>
+<circle cx="341" cy="207" r="4" fill="#D2453B"/>
+<text class="g-note" x="349" y="211">0.8–1</text>
+<line class="g-ax" x1="72" x2="700" y1="300.0" y2="300.0"/>
+<text class="g-lab" transform="translate(36,300.0) rotate(-90)" text-anchor="middle">가중치</text>
+<line class="g-ax" x1="134.8" x2="134.8" y1="348" y2="352"/><text class="g-tick" x="134.8" y="364" text-anchor="middle">-200</text>
+<line class="g-ax" x1="260.4" x2="260.4" y1="348" y2="352"/><text class="g-tick" x="260.4" y="364" text-anchor="middle">-100</text>
+<line class="g-ax" x1="386.0" x2="386.0" y1="348" y2="352"/><text class="g-tick" x="386.0" y="364" text-anchor="middle">+0</text>
+<line class="g-ax" x1="511.6" x2="511.6" y1="348" y2="352"/><text class="g-tick" x="511.6" y="364" text-anchor="middle">+100</text>
+<line class="g-ax" x1="637.2" x2="637.2" y1="348" y2="352"/><text class="g-tick" x="637.2" y="364" text-anchor="middle">+200</text>
+<line class="g-ax" x1="72" x2="700" y1="348" y2="348"/>
+<text class="g-lab" x="386.0" y="382" text-anchor="middle">lead SNP에서의 거리 (kb)</text>
+<g class="g-ov on" data-ov="marg">
+<text class="g-ttl" x="72" y="234">보정 없는 marginal 추정가 이 locus에 주는 가중치<tspan class="g-sub" dx="8">allele 1개당 · 효과 allele 기준</tspan></text>
+<line class="g-stem" x1="84.1" x2="84.1" y1="300.0" y2="300.9" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="84.1" cy="300.9" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="108.8" x2="108.8" y1="300.0" y2="300.1" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="108.8" cy="300.1" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="118.9" x2="118.9" y1="300.0" y2="297.3" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="118.9" cy="297.3" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="126.4" x2="126.4" y1="300.0" y2="300.4" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="126.4" cy="300.4" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="129.5" x2="129.5" y1="300.0" y2="303.6" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="129.5" cy="303.6" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="146.3" x2="146.3" y1="300.0" y2="298.9" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="146.3" cy="298.9" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="153.1" x2="153.1" y1="300.0" y2="299.3" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="153.1" cy="299.3" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="153.6" x2="153.6" y1="300.0" y2="302.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="153.6" cy="302.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="167.8" x2="167.8" y1="300.0" y2="303.3" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="167.8" cy="303.3" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="173.5" x2="173.5" y1="300.0" y2="298.3" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="173.5" cy="298.3" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="188.5" x2="188.5" y1="300.0" y2="302.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="188.5" cy="302.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="191.2" x2="191.2" y1="300.0" y2="298.4" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="191.2" cy="298.4" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="193.0" x2="193.0" y1="300.0" y2="299.2" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="193.0" cy="299.2" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="207.1" x2="207.1" y1="300.0" y2="299.1" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="207.1" cy="299.1" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="211.7" x2="211.7" y1="300.0" y2="301.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="211.7" cy="301.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="216.5" x2="216.5" y1="300.0" y2="300.3" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="216.5" cy="300.3" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="228.0" x2="228.0" y1="300.0" y2="299.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="228.0" cy="299.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="234.0" x2="234.0" y1="300.0" y2="298.7" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="234.0" cy="298.7" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="247.9" x2="247.9" y1="300.0" y2="303.4" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="247.9" cy="303.4" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="251.4" x2="251.4" y1="300.0" y2="297.5" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="251.4" cy="297.5" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="262.3" x2="262.3" y1="300.0" y2="301.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="262.3" cy="301.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="269.5" x2="269.5" y1="300.0" y2="301.7" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="269.5" cy="301.7" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="273.8" x2="273.8" y1="300.0" y2="302.3" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="273.8" cy="302.3" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="292.7" x2="292.7" y1="300.0" y2="300.3" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="292.7" cy="300.3" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="299.1" x2="299.1" y1="300.0" y2="302.3" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="299.1" cy="302.3" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="311.9" x2="311.9" y1="300.0" y2="299.2" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="311.9" cy="299.2" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="314.3" x2="314.3" y1="300.0" y2="303.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="314.3" cy="303.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="316.1" x2="316.1" y1="300.0" y2="298.9" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="316.1" cy="298.9" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="333.1" x2="333.1" y1="300.0" y2="301.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="333.1" cy="301.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="355.6" x2="355.6" y1="300.0" y2="297.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="355.6" cy="297.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="362.4" x2="362.4" y1="300.0" y2="299.9" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="362.4" cy="299.9" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="366.8" x2="366.8" y1="300.0" y2="340.4" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="366.8" cy="340.4" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="372.8" x2="372.8" y1="300.0" y2="340.8" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="372.8" cy="340.8" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="383.1" x2="383.1" y1="300.0" y2="298.8" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="383.1" cy="298.8" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="384.5" x2="384.5" y1="300.0" y2="339.9" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="384.5" cy="339.9" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="386.0" x2="386.0" y1="300.0" y2="343.6" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="386.0" cy="343.6" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="388.4" x2="388.4" y1="300.0" y2="297.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="388.4" cy="297.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="391.8" x2="391.8" y1="300.0" y2="298.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="391.8" cy="298.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="400.8" x2="400.8" y1="300.0" y2="341.4" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="400.8" cy="341.4" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="413.6" x2="413.6" y1="300.0" y2="261.2" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="413.6" cy="261.2" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="431.4" x2="431.4" y1="300.0" y2="259.9" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="431.4" cy="259.9" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="442.6" x2="442.6" y1="300.0" y2="342.1" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="442.6" cy="342.1" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="461.0" x2="461.0" y1="300.0" y2="261.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="461.0" cy="261.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="475.6" x2="475.6" y1="300.0" y2="341.5" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="475.6" cy="341.5" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="480.7" x2="480.7" y1="300.0" y2="341.7" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="480.7" cy="341.7" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="502.6" x2="502.6" y1="300.0" y2="258.7" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="502.6" cy="258.7" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="509.6" x2="509.6" y1="300.0" y2="298.7" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="509.6" cy="298.7" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="511.8" x2="511.8" y1="300.0" y2="303.6" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="511.8" cy="303.6" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="523.5" x2="523.5" y1="300.0" y2="300.7" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="523.5" cy="300.7" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="525.8" x2="525.8" y1="300.0" y2="305.2" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="525.8" cy="305.2" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="526.8" x2="526.8" y1="300.0" y2="294.8" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="526.8" cy="294.8" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="545.5" x2="545.5" y1="300.0" y2="295.4" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="545.5" cy="295.4" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="549.6" x2="549.6" y1="300.0" y2="304.4" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="549.6" cy="304.4" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="550.1" x2="550.1" y1="300.0" y2="298.4" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="550.1" cy="298.4" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="554.0" x2="554.0" y1="300.0" y2="297.7" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="554.0" cy="297.7" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="567.2" x2="567.2" y1="300.0" y2="305.2" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="567.2" cy="305.2" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="570.9" x2="570.9" y1="300.0" y2="304.4" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="570.9" cy="304.4" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="572.8" x2="572.8" y1="300.0" y2="301.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="572.8" cy="301.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="574.2" x2="574.2" y1="300.0" y2="298.4" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="574.2" cy="298.4" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="575.1" x2="575.1" y1="300.0" y2="300.9" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="575.1" cy="300.9" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="576.6" x2="576.6" y1="300.0" y2="299.3" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="576.6" cy="299.3" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="577.2" x2="577.2" y1="300.0" y2="305.5" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="577.2" cy="305.5" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="592.2" x2="592.2" y1="300.0" y2="301.4" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="592.2" cy="301.4" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="592.8" x2="592.8" y1="300.0" y2="301.1" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="592.8" cy="301.1" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="603.6" x2="603.6" y1="300.0" y2="300.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="603.6" cy="300.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="604.1" x2="604.1" y1="300.0" y2="299.9" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="604.1" cy="299.9" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="605.5" x2="605.5" y1="300.0" y2="299.3" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="605.5" cy="299.3" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="609.7" x2="609.7" y1="300.0" y2="298.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="609.7" cy="298.0" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="610.5" x2="610.5" y1="300.0" y2="298.7" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="610.5" cy="298.7" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="622.1" x2="622.1" y1="300.0" y2="300.1" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="622.1" cy="300.1" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="637.9" x2="637.9" y1="300.0" y2="304.3" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="637.9" cy="304.3" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="648.5" x2="648.5" y1="300.0" y2="299.8" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="648.5" cy="299.8" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="650.1" x2="650.1" y1="300.0" y2="300.4" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="650.1" cy="300.4" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="668.5" x2="668.5" y1="300.0" y2="303.1" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="668.5" cy="303.1" r="3.2" fill="#A3ABA6"/>
+<line class="g-stem" x1="670.1" x2="670.1" y1="300.0" y2="302.0" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="670.1" cy="302.0" r="3.2" fill="#A3ABA6"/>
+<text class="g-note" x="724" y="56">유전체 전체</text>
+<text class="g-note" x="724" y="76">가중치 ≠ 0 SNP</text>
+<text class="g-sig" x="724" y="96" fill="#A3ABA6">425,904개</text>
+<text class="g-note" x="724" y="122">이 locus 안</text>
+<text class="g-sig sm" x="724" y="140" fill="#A3ABA6">75개 / 75개</text>
+<text class="g-note" x="724" y="166">기대 R²</text>
+<text class="g-sig" x="724" y="186" fill="#A3ABA6">0.119</text>
+<text class="g-note dim" x="724" y="212">LD 보정 없음</text>
+</g>
+<g class="g-ov" data-ov="ct">
+<text class="g-ttl" x="72" y="234">C+T가 이 locus에 주는 가중치<tspan class="g-sub" dx="8">allele 1개당 · 효과 allele 기준</tspan></text>
+<circle class="g-pt off" cx="84.1" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="108.8" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="118.9" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="126.4" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="129.5" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="146.3" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="153.1" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="153.6" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="167.8" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="173.5" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="188.5" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="191.2" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="193.0" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="207.1" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="211.7" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="216.5" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="228.0" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="234.0" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="247.9" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="251.4" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="262.3" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="269.5" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="273.8" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="292.7" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="299.1" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="311.9" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="314.3" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="316.1" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="333.1" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="355.6" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="362.4" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="366.8" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="372.8" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="383.1" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="384.5" cy="300.0" r="2.6"/>
+<line class="g-stem" x1="386.0" x2="386.0" y1="300.0" y2="343.6" stroke="#D9822B"/>
+<circle class="g-dot" cx="386.0" cy="343.6" r="3.2" fill="#D9822B"/>
+<circle class="g-pt off" cx="388.4" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="391.8" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="400.8" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="413.6" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="431.4" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="442.6" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="461.0" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="475.6" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="480.7" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="502.6" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="509.6" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="511.8" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="523.5" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="525.8" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="526.8" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="545.5" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="549.6" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="550.1" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="554.0" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="567.2" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="570.9" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="572.8" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="574.2" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="575.1" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="576.6" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="577.2" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="592.2" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="592.8" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="603.6" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="604.1" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="605.5" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="609.7" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="610.5" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="622.1" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="637.9" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="648.5" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="650.1" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="668.5" cy="300.0" r="2.6"/>
+<circle class="g-pt off" cx="670.1" cy="300.0" r="2.6"/>
+<text class="g-note" x="724" y="56">유전체 전체</text>
+<text class="g-note" x="724" y="76">가중치 ≠ 0 SNP</text>
+<text class="g-sig" x="724" y="96" fill="#D9822B">1,695개</text>
+<text class="g-note" x="724" y="122">이 locus 안</text>
+<text class="g-sig sm" x="724" y="140" fill="#D9822B">1개 / 75개</text>
+<text class="g-note" x="724" y="166">기대 R²</text>
+<text class="g-sig" x="724" y="186" fill="#D9822B">0.259</text>
+<text class="g-note dim" x="724" y="212">p &lt; 10⁻³ · r² &gt; 0.1 제거</text>
+</g>
+<g class="g-ov" data-ov="shrink">
+<text class="g-ttl" x="72" y="234">Bayesian shrinkage가 이 locus에 주는 가중치<tspan class="g-sub" dx="8">allele 1개당 · 효과 allele 기준</tspan></text>
+<line class="g-stem" x1="84.1" x2="84.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="84.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="108.8" x2="108.8" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="108.8" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="118.9" x2="118.9" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="118.9" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="126.4" x2="126.4" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="126.4" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="129.5" x2="129.5" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="129.5" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="146.3" x2="146.3" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="146.3" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="153.1" x2="153.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="153.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="153.6" x2="153.6" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="153.6" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="167.8" x2="167.8" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="167.8" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="173.5" x2="173.5" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="173.5" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="188.5" x2="188.5" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="188.5" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="191.2" x2="191.2" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="191.2" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="193.0" x2="193.0" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="193.0" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="207.1" x2="207.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="207.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="211.7" x2="211.7" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="211.7" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="216.5" x2="216.5" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="216.5" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="228.0" x2="228.0" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="228.0" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="234.0" x2="234.0" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="234.0" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="247.9" x2="247.9" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="247.9" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="251.4" x2="251.4" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="251.4" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="262.3" x2="262.3" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="262.3" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="269.5" x2="269.5" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="269.5" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="273.8" x2="273.8" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="273.8" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="292.7" x2="292.7" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="292.7" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="299.1" x2="299.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="299.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="311.9" x2="311.9" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="311.9" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="314.3" x2="314.3" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="314.3" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="316.1" x2="316.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="316.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="333.1" x2="333.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="333.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="355.6" x2="355.6" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="355.6" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="362.4" x2="362.4" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="362.4" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="366.8" x2="366.8" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="366.8" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="372.8" x2="372.8" y1="300.0" y2="300.4" stroke="var(--theme)"/>
+<circle class="g-dot" cx="372.8" cy="300.4" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="383.1" x2="383.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="383.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="384.5" x2="384.5" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="384.5" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="386.0" x2="386.0" y1="300.0" y2="335.6" stroke="var(--theme)"/>
+<circle class="g-dot" cx="386.0" cy="335.6" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="388.4" x2="388.4" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="388.4" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="391.8" x2="391.8" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="391.8" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="400.8" x2="400.8" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="400.8" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="413.6" x2="413.6" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="413.6" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="431.4" x2="431.4" y1="300.0" y2="298.8" stroke="var(--theme)"/>
+<circle class="g-dot" cx="431.4" cy="298.8" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="442.6" x2="442.6" y1="300.0" y2="301.6" stroke="var(--theme)"/>
+<circle class="g-dot" cx="442.6" cy="301.6" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="461.0" x2="461.0" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="461.0" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="475.6" x2="475.6" y1="300.0" y2="300.1" stroke="var(--theme)"/>
+<circle class="g-dot" cx="475.6" cy="300.1" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="480.7" x2="480.7" y1="300.0" y2="300.1" stroke="var(--theme)"/>
+<circle class="g-dot" cx="480.7" cy="300.1" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="502.6" x2="502.6" y1="300.0" y2="299.6" stroke="var(--theme)"/>
+<circle class="g-dot" cx="502.6" cy="299.6" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="509.6" x2="509.6" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="509.6" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="511.8" x2="511.8" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="511.8" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="523.5" x2="523.5" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="523.5" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="525.8" x2="525.8" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="525.8" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="526.8" x2="526.8" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="526.8" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="545.5" x2="545.5" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="545.5" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="549.6" x2="549.6" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="549.6" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="550.1" x2="550.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="550.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="554.0" x2="554.0" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="554.0" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="567.2" x2="567.2" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="567.2" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="570.9" x2="570.9" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="570.9" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="572.8" x2="572.8" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="572.8" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="574.2" x2="574.2" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="574.2" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="575.1" x2="575.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="575.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="576.6" x2="576.6" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="576.6" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="577.2" x2="577.2" y1="300.0" y2="300.1" stroke="var(--theme)"/>
+<circle class="g-dot" cx="577.2" cy="300.1" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="592.2" x2="592.2" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="592.2" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="592.8" x2="592.8" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="592.8" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="603.6" x2="603.6" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="603.6" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="604.1" x2="604.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="604.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="605.5" x2="605.5" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="605.5" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="609.7" x2="609.7" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="609.7" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="610.5" x2="610.5" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="610.5" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="622.1" x2="622.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="622.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="637.9" x2="637.9" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="637.9" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="648.5" x2="648.5" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="648.5" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="650.1" x2="650.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="650.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="668.5" x2="668.5" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="668.5" cy="300.0" r="3.2" fill="var(--theme)"/>
+<line class="g-stem" x1="670.1" x2="670.1" y1="300.0" y2="300.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="670.1" cy="300.0" r="3.2" fill="var(--theme)"/>
+<text class="g-note" x="724" y="56">유전체 전체</text>
+<text class="g-note" x="724" y="76">가중치 ≠ 0 SNP</text>
+<text class="g-sig" x="724" y="96" fill="var(--theme)">425,904개</text>
+<text class="g-note" x="724" y="122">이 locus 안</text>
+<text class="g-sig sm" x="724" y="140" fill="var(--theme)">75개 / 75개</text>
+<text class="g-note" x="724" y="166">기대 R²</text>
+<text class="g-sig" x="724" y="186" fill="var(--theme)">0.284</text>
+<text class="g-note dim" x="724" y="212">causal 비율 p = 0.01</text>
+</g>
+</svg>
+<!--/GEN:WEIGHTS-->
+          </div>
+          <figcaption>
+            <!--GEN:LOCUS-->14번 염색체 66.6 Mb<!--/GEN:LOCUS--> 부근, 같은 <!--GEN:N0-->100,000<!--/GEN:N0-->명 GWAS 하나에서 나온 세 가지 가중치. 확대 창 안 SNP <!--GEN:LOCUS_N-->75<!--/GEN:LOCUS_N-->개 가운데 C+T가 남기는 것은 <!--GEN:CT_LOCUS-->1<!--/GEN:CT_LOCUS-->개 · C+T는 r² &gt; 0.1인 이웃을 지운 뒤 p &lt; <!--GEN:CT_THR-->10⁻³<!--/GEN:CT_THR-->만 남긴 설정, shrinkage는 causal 비율 p = <!--GEN:LD_P-->0.01<!--/GEN:LD_P--> · 두 모수는 기대 R²가 가장 큰 값으로 골랐음 · 아래 칸의 속이 빈 점 = 가중치 0 · 세로 눈금은 세 모드가 같음 · 가중치 추정에 쓴 LD는 시뮬레이션 유전체의 참값이고, 실제 분석에서는 참조 패널로 추정함
+          </figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>방법</th><th>LD를 다루는 방식</th><th>고를 모수</th><th>메모</th></tr></thead>
+            <tbody>
+              <tr><th>C+T<br><span class="dim">clumping + thresholding</span></th><td>창 안에서 p가 가장 작은 SNP를 고르고, 그와 r² 임계값 이상으로 상관된 이웃을 지움 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></td><td>r² 임계값 · 창 크기 · p 임계값</td><td>남는 SNP이 적어 결과를 읽기 쉬움 <a class="src" href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener">Choi 2019</a>. 대신 LD 정보 일부를 버려 정확도가 제한됨 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a>. PRSice-2는 target 100,000명을 4분 미만 · 메모리 500MB 미만으로 끝냄 <a class="src" href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener">Choi 2019</a></td></tr>
+              <tr><th>infinitesimal</th><td>모든 SNP를 같은 비율로 축소. 닫힌 형태 해 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></td><td>h²만</td><td>확장성이 좋지만 유전 구조에 맞추지 못함 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a>. LDpred2에서는 grid 모드가 p = 1에서 이 모형을 품기 때문에 단독으로 더 나은 경우가 없음 <a class="src" href="https://doi.org/10.1093/bioinformatics/btaa1029" target="_blank" rel="noopener">Privé 2020</a></td></tr>
+              <tr><th>LDpred2</th><td>변이 비율 p만 causal이고 그 효과가 N(0, h²/(Mp))를 따른다는 spike-and-slab prior 아래 joint 효과를 Gibbs로 추정 <a class="src" href="https://doi.org/10.1093/bioinformatics/btaa1029" target="_blank" rel="noopener">Privé 2020</a></td><td>p · h² 배수 · sparse 여부</td><td>물리적 거리 대신 3 cM 창으로 상관을 계산해 HLA 같은 long-range LD를 포괄함 <a class="src" href="https://doi.org/10.1093/bioinformatics/btaa1029" target="_blank" rel="noopener">Privé 2020</a>. auto 모드는 p와 h²를 자료에서 추정해 validation 표본이 필요 없음 <a class="src" href="https://doi.org/10.1093/bioinformatics/btaa1029" target="_blank" rel="noopener">Privé 2020</a></td></tr>
+              <tr><th>PRS-CS</th><td>효과에 continuous shrinkage prior를 두고, LD block 단위로 여러 SNP를 한꺼번에 갱신 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a></td><td>전역 수축 모수 φ</td><td>0 근처에 질량이 크고 꼬리가 두꺼운 prior라, 잡음 수준의 효과는 강하게 0으로 당기고 큰 효과는 거의 그대로 둠 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a>. auto 모드가 φ를 자료에서 학습함 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a></td></tr>
+              <tr><th>PRS-CSx</th><td>집단마다 LD 패널을 따로 쓰면서 SNP별 · 전역 수축 모수를 집단 사이에 공유 <a class="src" href="https://doi.org/10.1038/s41588-022-01054-7" target="_blank" rel="noopener">Ruan 2022</a></td><td>φ · 집단별 결합 가중치</td><td>집단마다 PRS를 하나씩 만든 뒤 validation에서 선형 결합 <a class="src" href="https://doi.org/10.1038/s41588-022-01054-7" target="_blank" rel="noopener">Ruan 2022</a> · <a href="#ancestry">아래 5절</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h4>그림 2가 보여 주는 것</h4>
+          <p>보정 없는 marginal 추정은 유전체 전체 SNP <!--GEN:N_MARG-->425,904<!--/GEN:N_MARG-->개에 모두 값을 주고, 확대 창 안에서 LD에 있는 SNP들이 비슷한 높이로 함께 올라감. 기대 R² <!--GEN:R2_MARG-->0.119<!--/GEN:R2_MARG--> · C+T는 <!--GEN:N_CT-->1,695<!--/GEN:N_CT-->개만 남기고 기대 R² <!--GEN:R2_CT-->0.259<!--/GEN:R2_CT--> · shrinkage는 <!--GEN:N_SHR-->425,904<!--/GEN:N_SHR-->개 전부에 값을 두되 크기를 줄여 기대 R² <!--GEN:R2_SHR-->0.284<!--/GEN:R2_SHR--> · 같은 자료, 같은 유전체인데 세 값이 이렇게 갈림. 계산상의 선택에 따라 같은 질환에 서로 다른 여러 PRS가 만들어지는 이유 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a></p>
+        </div>
+        <div class="callout">
+          <h4>shrinkage의 직관</h4>
+          <p>LD가 없는 이상적인 경우 사후평균은 marginal 추정치에 수축 계수를 곱한 값. 계수 1/(1 + Mp/(N h²))는 표본이 커질수록 1에 가까워짐 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a> <a class="src" href="https://doi.org/10.1093/bioinformatics/btaa1029" target="_blank" rel="noopener">Privé 2020</a> · prior 모양이 세 갈래. 모든 변이를 같은 비율로 줄이는 infinitesimal, 정확히 0과 정규분포를 섞는 point-normal, 연속 밀도로 적응적으로 줄이는 continuous shrinkage <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a> · 표본이 커지면 Gibbs sampler가 LD 행렬의 정확성에 더 의존함. LD를 제대로 다루지 못한 LDpred1은 표본이 12만에서 30만으로 늘어도 AUC가 70.7%에서 70.4%로 오히려 떨어졌고, 같은 조건에서 LDpred2는 74.6%에서 79.1%로 올랐음 <a class="src" href="https://doi.org/10.1093/bioinformatics/btaa1029" target="_blank" rel="noopener">Privé 2020</a></p>
+        </div>
+        <div class="callout blue">
+          <h4>어느 방법이 가장 낫나</h4>
+          <p>형질과 유전 구조에 따라 순서가 바뀜. 8개 case-control 형질 평균 AUC는 LDpred2 65.1% · lassosum 63.8% · PRS-CS 62.9% · SBayesR 61.5%였으나, SBayesR은 자가면역질환에서 크게 떨어져 T1D에서 58.1%(LDpred2-grid 78.4%)였음 <a class="src" href="https://doi.org/10.1093/bioinformatics/btaa1029" target="_blank" rel="noopener">Privé 2020</a> · PRS-CS는 Partners Biobank 정량형질 6개에서 LDpred보다 평균 18.17% 높았고 질환에서도 유방암 41.85% · 류마티스 관절염 28.62%가 올랐지만, IBD에서는 10.24% 낮았음. 저자들은 IBD의 학습 GWAS 표본이 가장 작다는 점으로 설명함 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a> · 큰 효과 변이가 소수인 형질에는 clumping 계열이 맞고, 고도로 polygenic한 형질에는 genome-wide 방법이 유리함 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a> · <a href="#accuracy">아래 그림 3</a>에서 토글로 확인</p>
+        </div>
+
+        <!-- ───────── 3. 정확도 ───────── -->
+        <h2 id="accuracy">무엇이 정확도를 정하나<small>What limits accuracy</small></h2>
+        <p class="lede">PRS가 설명할 수 있는 몫의 천장은 형질의 SNP heritability. 임상 활용 가능성도 이 상한 안에서 평가해야 함 <a class="src" href="https://doi.org/10.1093/bioinformatics/btaa1029" target="_blank" rel="noopener">Privé 2020</a>. 그 안에서 실제 도달하는 값은 학습 GWAS의 표본 크기와 형질의 유전 구조가 정함 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a> <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a></p>
+        <figure class="fig" id="fig-curve" data-mode="mid">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-curve" role="group" aria-label="유전 구조">
+              <button type="button" data-mode="mid" aria-pressed="true">인과 변이 1%</button>
+              <button type="button" data-mode="sparse" aria-pressed="false">0.05%(드묾)</button>
+              <button type="button" data-mode="dense" aria-pressed="false">20%(아주 많음)</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:CURVE-->
+<svg class="g-svg " viewBox="0 0 900 300" role="img" aria-labelledby="cvT cvD" xmlns="http://www.w3.org/2000/svg">
+<title id="cvT">학습 표본 크기와 유전 구조에 따른 PRS 정확도</title>
+<desc id="cvD">x축은 가중치를 추정한 GWAS의 표본 크기(로그 눈금), y축은 그 가중치로 만든 PRS가 형질 분산 가운데 설명하는 비율이다. 세 방법 모두 표본이 커질수록 정확해지고 SNP heritability 선을 넘지 못한다. 회색 점선은 인과 변이 수와 표본 크기로 계산한 이론 상한이다. 토글로 인과 변이가 드문 구조와 아주 많은 구조를 비교하면, 어느 방법이 앞서는지가 유전 구조에 따라 바뀐다.</desc>
+<line class="g-grid" x1="78" x2="700" y1="250.0" y2="250.0"/><text class="g-tick" x="72" y="253.5" text-anchor="end">0</text>
+<line class="g-grid" x1="78" x2="700" y1="206.0" y2="206.0"/><text class="g-tick" x="72" y="209.5" text-anchor="end">0.1</text>
+<line class="g-grid" x1="78" x2="700" y1="162.0" y2="162.0"/><text class="g-tick" x="72" y="165.5" text-anchor="end">0.2</text>
+<line class="g-grid" x1="78" x2="700" y1="118.0" y2="118.0"/><text class="g-tick" x="72" y="121.5" text-anchor="end">0.3</text>
+<line class="g-grid" x1="78" x2="700" y1="74.0" y2="74.0"/><text class="g-tick" x="72" y="77.5" text-anchor="end">0.4</text>
+<line class="g-ax" x1="78" x2="700" y1="250" y2="250"/><line class="g-ax" x1="78" x2="78" y1="52" y2="250"/>
+<line class="g-ax" x1="78.0" x2="78.0" y1="250" y2="254"/><text class="g-tick" x="78.0" y="266" text-anchor="middle">1만</text>
+<line class="g-ax" x1="226.4" x2="226.4" y1="250" y2="254"/><text class="g-tick" x="226.4" y="266" text-anchor="middle">3만</text>
+<line class="g-ax" x1="389.0" x2="389.0" y1="250" y2="254"/><text class="g-tick" x="389.0" y="266" text-anchor="middle">10만</text>
+<line class="g-ax" x1="537.4" x2="537.4" y1="250" y2="254"/><text class="g-tick" x="537.4" y="266" text-anchor="middle">30만</text>
+<line class="g-ax" x1="700.0" x2="700.0" y1="250" y2="254"/><text class="g-tick" x="700.0" y="266" text-anchor="middle">100만</text>
+<text class="g-lab" x="389.0" y="284" text-anchor="middle">학습 GWAS 표본 크기 (로그 눈금)</text>
+<text class="g-lab" transform="translate(38,151.0) rotate(-90)" text-anchor="middle">PRS의 R²</text>
+<line class="g-eq" x1="78" x2="700" y1="74.0" y2="74.0"/>
+<text class="g-note dim" x="698" y="68.0" text-anchor="end">SNP h² 0.4</text>
+<g class="g-ov on" data-ov="mid">
+<text class="g-ttl" x="78" y="30">학습 표본이 커질 때 PRS의 R²<tspan class="g-sub" dx="8">causal 1% · 인과 변이 4,234개 · SNP h² 0.4</tspan></text>
+<polyline class="g-pp" stroke="#A3ABA6" stroke-dasharray="4 3" points="78.0,164.5 226.4,119.9 389.0,90.8 537.4,80.0 700.0,75.8"/>
+<polyline class="g-line" stroke="#D9822B" points="78.0,243.1 226.4,207.7 389.0,136.1 537.4,100.9 700.0,88.5"/>
+<circle class="g-dot" cx="78.0" cy="243.1" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="226.4" cy="207.7" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="389.0" cy="136.1" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="537.4" cy="100.9" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="700.0" cy="88.5" r="3.4" fill="#D9822B"/>
+<polyline class="g-line" stroke="#2F6DB5" points="78.0,237.6 226.4,220.5 389.0,187.7 537.4,150.9 700.0,115.9"/>
+<circle class="g-dot" cx="78.0" cy="237.6" r="3.4" fill="#2F6DB5"/>
+<circle class="g-dot" cx="226.4" cy="220.5" r="3.4" fill="#2F6DB5"/>
+<circle class="g-dot" cx="389.0" cy="187.7" r="3.4" fill="#2F6DB5"/>
+<circle class="g-dot" cx="537.4" cy="150.9" r="3.4" fill="#2F6DB5"/>
+<circle class="g-dot" cx="700.0" cy="115.9" r="3.4" fill="#2F6DB5"/>
+<polyline class="g-line" stroke="var(--theme)" points="78.0,230.9 226.4,188.1 389.0,125.2 537.4,94.1 700.0,82.3"/>
+<circle class="g-dot" cx="78.0" cy="230.9" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="226.4" cy="188.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="389.0" cy="125.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="537.4" cy="94.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="700.0" cy="82.3" r="3.4" fill="var(--theme)"/>
+<line class="g-line" x1="722" x2="744" y1="62" y2="62" stroke="var(--theme)"/>
+<text class="g-note" x="750" y="66">Bayesian shrinkage</text>
+<text class="g-note" x="750" y="82"><tspan class="g-em">0.284</tspan> <tspan class="g-note dim">10만 명</tspan></text>
+<line class="g-line" x1="722" x2="744" y1="106" y2="106" stroke="#D9822B"/>
+<text class="g-note" x="750" y="110">C+T</text>
+<text class="g-note" x="750" y="126"><tspan class="g-em">0.259</tspan> <tspan class="g-note dim">10만 명</tspan></text>
+<line class="g-line" x1="722" x2="744" y1="150" y2="150" stroke="#2F6DB5"/>
+<text class="g-note" x="750" y="154">infinitesimal</text>
+<text class="g-note" x="750" y="170"><tspan class="g-em">0.142</tspan> <tspan class="g-note dim">10만 명</tspan></text>
+<line class="g-pp" x1="722" x2="744" y1="194" y2="194" stroke="#A3ABA6" stroke-dasharray="4 3"/>
+<text class="g-note" x="750" y="198">완벽한 가중치</text>
+<text class="g-note dim" x="750" y="214">h²/(1 + M<tspan baseline-shift="sub" font-size="8">c</tspan>/(N h²))</text>
+</g>
+<g class="g-ov" data-ov="sparse">
+<text class="g-ttl" x="78" y="30">학습 표본이 커질 때 PRS의 R²<tspan class="g-sub" dx="8">causal 0.05% · 인과 변이 227개 · SNP h² 0.4</tspan></text>
+<polyline class="g-pp" stroke="#A3ABA6" stroke-dasharray="4 3" points="78.0,83.5 226.4,77.3 389.0,75.0 537.4,74.3 700.0,74.1"/>
+<polyline class="g-line" stroke="#D9822B" points="78.0,120.3 226.4,95.1 389.0,86.8 537.4,84.8 700.0,84.3"/>
+<circle class="g-dot" cx="78.0" cy="120.3" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="226.4" cy="95.1" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="389.0" cy="86.8" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="537.4" cy="84.8" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="700.0" cy="84.3" r="3.4" fill="#D9822B"/>
+<polyline class="g-line" stroke="#2F6DB5" points="78.0,239.2 226.4,223.1 389.0,191.5 537.4,154.7 700.0,117.5"/>
+<circle class="g-dot" cx="78.0" cy="239.2" r="3.4" fill="#2F6DB5"/>
+<circle class="g-dot" cx="226.4" cy="223.1" r="3.4" fill="#2F6DB5"/>
+<circle class="g-dot" cx="389.0" cy="191.5" r="3.4" fill="#2F6DB5"/>
+<circle class="g-dot" cx="537.4" cy="154.7" r="3.4" fill="#2F6DB5"/>
+<circle class="g-dot" cx="700.0" cy="117.5" r="3.4" fill="#2F6DB5"/>
+<polyline class="g-line" stroke="var(--theme)" points="78.0,114.4 226.4,90.4 389.0,80.2 537.4,77.6 700.0,75.3"/>
+<circle class="g-dot" cx="78.0" cy="114.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="226.4" cy="90.4" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="389.0" cy="80.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="537.4" cy="77.6" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="700.0" cy="75.3" r="3.4" fill="var(--theme)"/>
+<line class="g-line" x1="722" x2="744" y1="62" y2="62" stroke="var(--theme)"/>
+<text class="g-note" x="750" y="66">Bayesian shrinkage</text>
+<text class="g-note" x="750" y="82"><tspan class="g-em">0.386</tspan> <tspan class="g-note dim">10만 명</tspan></text>
+<line class="g-line" x1="722" x2="744" y1="106" y2="106" stroke="#D9822B"/>
+<text class="g-note" x="750" y="110">C+T</text>
+<text class="g-note" x="750" y="126"><tspan class="g-em">0.371</tspan> <tspan class="g-note dim">10만 명</tspan></text>
+<line class="g-line" x1="722" x2="744" y1="150" y2="150" stroke="#2F6DB5"/>
+<text class="g-note" x="750" y="154">infinitesimal</text>
+<text class="g-note" x="750" y="170"><tspan class="g-em">0.133</tspan> <tspan class="g-note dim">10만 명</tspan></text>
+<line class="g-pp" x1="722" x2="744" y1="194" y2="194" stroke="#A3ABA6" stroke-dasharray="4 3"/>
+<text class="g-note" x="750" y="198">완벽한 가중치</text>
+<text class="g-note dim" x="750" y="214">h²/(1 + M<tspan baseline-shift="sub" font-size="8">c</tspan>/(N h²))</text>
+</g>
+<g class="g-ov" data-ov="dense">
+<text class="g-ttl" x="78" y="30">학습 표본이 커질 때 PRS의 R²<tspan class="g-sub" dx="8">causal 20% · 인과 변이 85,105개 · SNP h² 0.4</tspan></text>
+<polyline class="g-pp" stroke="#A3ABA6" stroke-dasharray="4 3" points="78.0,242.1 226.4,228.3 389.0,193.7 537.4,147.0 700.0,104.9"/>
+<polyline class="g-line" stroke="#D9822B" points="78.0,244.8 226.4,235.4 389.0,210.4 537.4,169.4 700.0,127.3"/>
+<circle class="g-dot" cx="78.0" cy="244.8" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="226.4" cy="235.4" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="389.0" cy="210.4" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="537.4" cy="169.4" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="700.0" cy="127.3" r="3.4" fill="#D9822B"/>
+<polyline class="g-line" stroke="#2F6DB5" points="78.0,237.9 226.4,220.8 389.0,188.0 537.4,151.3 700.0,116.2"/>
+<circle class="g-dot" cx="78.0" cy="237.9" r="3.4" fill="#2F6DB5"/>
+<circle class="g-dot" cx="226.4" cy="220.8" r="3.4" fill="#2F6DB5"/>
+<circle class="g-dot" cx="389.0" cy="188.0" r="3.4" fill="#2F6DB5"/>
+<circle class="g-dot" cx="537.4" cy="151.3" r="3.4" fill="#2F6DB5"/>
+<circle class="g-dot" cx="700.0" cy="116.2" r="3.4" fill="#2F6DB5"/>
+<polyline class="g-line" stroke="var(--theme)" points="78.0,238.0 226.4,221.1 389.0,188.7 537.4,149.8 700.0,112.1"/>
+<circle class="g-dot" cx="78.0" cy="238.0" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="226.4" cy="221.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="389.0" cy="188.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="537.4" cy="149.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="700.0" cy="112.1" r="3.4" fill="var(--theme)"/>
+<line class="g-line" x1="722" x2="744" y1="62" y2="62" stroke="var(--theme)"/>
+<text class="g-note" x="750" y="66">Bayesian shrinkage</text>
+<text class="g-note" x="750" y="82"><tspan class="g-em">0.139</tspan> <tspan class="g-note dim">10만 명</tspan></text>
+<line class="g-line" x1="722" x2="744" y1="106" y2="106" stroke="#D9822B"/>
+<text class="g-note" x="750" y="110">C+T</text>
+<text class="g-note" x="750" y="126"><tspan class="g-em">0.090</tspan> <tspan class="g-note dim">10만 명</tspan></text>
+<line class="g-line" x1="722" x2="744" y1="150" y2="150" stroke="#2F6DB5"/>
+<text class="g-note" x="750" y="154">infinitesimal</text>
+<text class="g-note" x="750" y="170"><tspan class="g-em">0.141</tspan> <tspan class="g-note dim">10만 명</tspan></text>
+<line class="g-pp" x1="722" x2="744" y1="194" y2="194" stroke="#A3ABA6" stroke-dasharray="4 3"/>
+<text class="g-note" x="750" y="198">완벽한 가중치</text>
+<text class="g-note dim" x="750" y="214">h²/(1 + M<tspan baseline-shift="sub" font-size="8">c</tspan>/(N h²))</text>
+</g>
+</svg>
+<!--/GEN:CURVE-->
+          </div>
+          <figcaption>
+            세 모드 모두 SNP h² <!--GEN:H2-->0.4<!--/GEN:H2-->에 SNP <!--GEN:M-->425,904<!--/GEN:M-->개 · 인과 변이 수만 다름(1% = <!--GEN:CAUSAL-->4,234<!--/GEN:CAUSAL-->개 · 0.05% = <!--GEN:SPARSE_N-->227<!--/GEN:SPARSE_N-->개 · 20% = <!--GEN:DENSE_N-->85,105<!--/GEN:DENSE_N-->개) · y축은 형질 분산 가운데 PRS가 설명하는 비율. 표본을 뽑아 회귀한 값이 아니라 시뮬레이션의 참값 효과와 LD로 계산한 기대 R² · C+T의 p 임계값과 shrinkage의 causal 비율은 표본 크기마다 기대 R²가 가장 큰 값으로 골랐음. 실제 분석에서는 validation 표본에서 고르므로 유한 표본의 잡음이 더 붙음 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a> · 회색 점선 = 인과 변이가 전부 알려진 경우의 기대 R² <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a>
+          </figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>정확도를 정하는 것</th><th>그림 3에서</th><th>문헌</th></tr></thead>
+            <tbody>
+              <tr><th>SNP heritability</th><td>세 모드 모두 <!--GEN:H2-->0.4<!--/GEN:H2--> 선을 넘지 못함</td><td>h²가 상한을 정함 <a class="src" href="https://doi.org/10.1093/bioinformatics/btaa1029" target="_blank" rel="noopener">Privé 2020</a> · h² 40% · 유병률 15%인 형질의 최대 AUC는 82.5%이고 30만 명 LDpred2가 79.1%에 닿음 <a class="src" href="https://doi.org/10.1093/bioinformatics/btaa1029" target="_blank" rel="noopener">Privé 2020</a></td></tr>
+              <tr><th>학습 표본 크기</th><td>shrinkage의 R²가 1만 명 <!--GEN:R2_1E4-->0.043<!--/GEN:R2_1E4-->에서 10만 명 <!--GEN:R2_1E5-->0.284<!--/GEN:R2_1E5-->, 100만 명 <!--GEN:R2_1E6-->0.381<!--/GEN:R2_1E6-->으로 오름</td><td>표본이 클수록 변이별 효과 추정이 정밀해져서 가중치의 질이 원 GWAS 규모에 달림 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a></td></tr>
+              <tr><th>polygenicity</th><td>인과 변이 1% 모드의 10만 명에서 C+T <!--GEN:R2_CT-->0.259<!--/GEN:R2_CT--> · shrinkage <!--GEN:R2_SHR-->0.284<!--/GEN:R2_SHR-->, 0.05%에서 <!--GEN:SPARSE_CT-->0.371<!--/GEN:SPARSE_CT--> · <!--GEN:SPARSE_LD-->0.386<!--/GEN:SPARSE_LD-->, 20%에서 <!--GEN:DENSE_CT-->0.090<!--/GEN:DENSE_CT--> · <!--GEN:DENSE_LD-->0.139<!--/GEN:DENSE_LD--></td><td>h²를 고정한 채 인과 변이를 100개에서 100,000개로 늘리면 개별 효과가 작아지고 서로 LD에 놓이는 인과 SNP가 늘어 모든 방법의 정확도가 떨어짐 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a></td></tr>
+              <tr><th>형질 자체</th><td>시뮬레이션 밖의 일</td><td>중간~큰 효과 SNP가 있는 자가면역질환이나 만성질환이 극도로 polygenic하고 이질적인 우울증보다 쓸 만한 예측에 가까움. MDD는 SNP h²의 80%를 설명하려면 수백만 명 규모 GWAS가 필요함 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a></td></tr>
+              <tr><th>최적 SNP 수</th><td>C+T가 남기는 SNP 수가 임계값에 따라 달라짐</td><td>p 임계값을 넓혀 가며 고른 최적 PRS의 SNP 수는 유방암 5,158개, T2DM 6,893,037개로 질환마다 세 자릿수 차이 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout blue">
+          <h4>유전 구조가 방법 순서를 바꿈</h4>
+          <p>인과 변이가 드문 모드에서는 큰 효과가 소수에 몰려 있어 C+T가 shrinkage에 가깝게 따라붙고, 아주 많은 모드에서는 역치를 넘는 신호가 거의 없어 C+T가 크게 뒤처짐 · infinitesimal은 모든 변이를 같은 비율로 줄이기 때문에 인과 변이가 적을 때 특히 불리함 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a> · 10만 명 기준 infinitesimal <!--GEN:INF_1E5-->0.142<!--/GEN:INF_1E5--> · 어느 방법이 최적인지는 유전 구조, 학습 GWAS의 규모와 다양성, target 표본의 ancestry 구성에 함께 달림 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></p>
+        </div>
+
+        <!-- ───────── 4. 평가 ───────── -->
+        <h2 id="evaluate">성능을 어떻게 재나<small>Evaluation</small></h2>
+        <p class="lede">연속 형질은 R², binary 형질은 AUC가 가장 흔히 쓰이는 지표 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a>. 어느 하나로 PRS의 성질을 다 담지 못해서, 분위별 위험과 calibration을 같이 봄 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a></p>
+        <figure class="fig" id="fig-binary">
+          <div class="fig-scroll">
+<!--GEN:BINARY-->
+<svg class="g-svg " viewBox="0 0 900 300" role="img" aria-labelledby="bnT bnD" xmlns="http://www.w3.org/2000/svg">
+<title id="bnT">환자와 대조군의 점수 분포, 그리고 분위별 위험</title>
+<desc id="bnD">왼쪽은 같은 표본을 환자와 대조군으로 나눠 PRS 분포를 겹쳐 그린 것이다. 두 평균은 뚜렷하게 떨어져 있지만 분포는 크게 겹친다. 오른쪽은 PRS를 십분위로 나눠 40–50% 구간을 기준으로 삼은 odds ratio이고, 세로선은 95% 구간이다. 위험은 분포의 양 끝에서 가장 크게 벌어진다.</desc>
+<line class="g-grid" x1="530" x2="876" y1="218.7" y2="218.7"/><text class="g-tick" x="523" y="222.2" text-anchor="end">0.25</text>
+<line class="g-grid" x1="530" x2="876" y1="177.6" y2="177.6"/><text class="g-tick" x="523" y="181.1" text-anchor="end">0.5</text>
+<line class="g-grid" x1="530" x2="876" y1="136.4" y2="136.4"/><text class="g-tick" x="523" y="139.9" text-anchor="end">1</text>
+<line class="g-grid" x1="530" x2="876" y1="95.2" y2="95.2"/><text class="g-tick" x="523" y="98.7" text-anchor="end">2</text>
+<text class="g-ttl" x="24" y="30">환자와 대조군의 PRS 분포<tspan class="g-sub" dx="8">유병률 15% · 같은 표본 30,000명</tspan></text>
+<path fill="#6B736E" fill-opacity="0.14" d="M62.0,232.0L62.0,231.9L64.6,231.9L67.2,231.9L69.8,231.9L72.4,231.8L75.0,231.7L77.6,231.7L80.2,231.7L82.8,231.7L85.4,231.7L88.0,231.6L90.6,231.6L93.3,231.5L95.9,231.3L98.5,231.1L101.1,230.9L103.7,230.6L106.3,230.1L108.9,229.6L111.5,229.1L114.1,228.5L116.7,228.0L119.3,227.5L121.9,226.9L124.5,226.3L127.1,225.6L129.7,224.7L132.3,223.6L134.9,222.4L137.5,220.9L140.1,219.2L142.7,217.2L145.3,215.1L147.9,212.8L150.5,210.3L153.2,207.6L155.8,204.7L158.4,201.7L161.0,198.6L163.6,195.4L166.2,192.1L168.8,188.7L171.4,185.1L174.0,181.1L176.6,176.4L179.2,171.1L181.8,165.5L184.4,159.8L187.0,154.5L189.6,149.6L192.2,145.1L194.8,140.8L197.4,136.5L200.0,132.2L202.6,127.8L205.2,123.4L207.8,118.8L210.4,114.1L213.1,109.3L215.7,104.8L218.3,100.7L220.9,96.9L223.5,93.4L226.1,90.0L228.7,87.1L231.3,84.7L233.9,83.3L236.5,83.0L239.1,83.5L241.7,84.6L244.3,85.9L246.9,87.2L249.5,88.7L252.1,90.2L254.7,92.0L257.3,94.1L259.9,96.7L262.5,100.0L265.1,104.1L267.7,108.8L270.3,113.8L272.9,119.0L275.6,124.2L278.2,129.4L280.8,134.6L283.4,139.8L286.0,144.8L288.6,149.9L291.2,155.0L293.8,160.4L296.4,165.8L299.0,171.3L301.6,176.5L304.2,181.3L306.8,185.8L309.4,190.0L312.0,194.0L314.6,197.8L317.2,201.2L319.8,204.3L322.4,207.1L325.0,209.5L327.6,211.6L330.2,213.5L332.8,215.4L335.5,217.2L338.1,218.9L340.7,220.5L343.3,221.9L345.9,223.1L348.5,224.1L351.1,225.0L353.7,225.9L356.3,226.8L358.9,227.7L361.5,228.5L364.1,229.1L366.7,229.6L369.3,230.1L371.9,230.4L374.5,230.7L377.1,230.9L379.7,231.1L382.3,231.3L384.9,231.4L387.5,231.5L390.1,231.5L392.7,231.6L395.4,231.6L398.0,231.7L400.6,231.7L403.2,231.7L405.8,231.8L408.4,231.8L411.0,231.9L413.6,231.9L416.2,231.9L418.8,231.9L421.4,232.0L424.0,232.0L424.0,232.0Z"/>
+<polyline class="g-line" stroke="#6B736E" points="62.0,231.9 64.6,231.9 67.2,231.9 69.8,231.9 72.4,231.8 75.0,231.7 77.6,231.7 80.2,231.7 82.8,231.7 85.4,231.7 88.0,231.6 90.6,231.6 93.3,231.5 95.9,231.3 98.5,231.1 101.1,230.9 103.7,230.6 106.3,230.1 108.9,229.6 111.5,229.1 114.1,228.5 116.7,228.0 119.3,227.5 121.9,226.9 124.5,226.3 127.1,225.6 129.7,224.7 132.3,223.6 134.9,222.4 137.5,220.9 140.1,219.2 142.7,217.2 145.3,215.1 147.9,212.8 150.5,210.3 153.2,207.6 155.8,204.7 158.4,201.7 161.0,198.6 163.6,195.4 166.2,192.1 168.8,188.7 171.4,185.1 174.0,181.1 176.6,176.4 179.2,171.1 181.8,165.5 184.4,159.8 187.0,154.5 189.6,149.6 192.2,145.1 194.8,140.8 197.4,136.5 200.0,132.2 202.6,127.8 205.2,123.4 207.8,118.8 210.4,114.1 213.1,109.3 215.7,104.8 218.3,100.7 220.9,96.9 223.5,93.4 226.1,90.0 228.7,87.1 231.3,84.7 233.9,83.3 236.5,83.0 239.1,83.5 241.7,84.6 244.3,85.9 246.9,87.2 249.5,88.7 252.1,90.2 254.7,92.0 257.3,94.1 259.9,96.7 262.5,100.0 265.1,104.1 267.7,108.8 270.3,113.8 272.9,119.0 275.6,124.2 278.2,129.4 280.8,134.6 283.4,139.8 286.0,144.8 288.6,149.9 291.2,155.0 293.8,160.4 296.4,165.8 299.0,171.3 301.6,176.5 304.2,181.3 306.8,185.8 309.4,190.0 312.0,194.0 314.6,197.8 317.2,201.2 319.8,204.3 322.4,207.1 325.0,209.5 327.6,211.6 330.2,213.5 332.8,215.4 335.5,217.2 338.1,218.9 340.7,220.5 343.3,221.9 345.9,223.1 348.5,224.1 351.1,225.0 353.7,225.9 356.3,226.8 358.9,227.7 361.5,228.5 364.1,229.1 366.7,229.6 369.3,230.1 371.9,230.4 374.5,230.7 377.1,230.9 379.7,231.1 382.3,231.3 384.9,231.4 387.5,231.5 390.1,231.5 392.7,231.6 395.4,231.6 398.0,231.7 400.6,231.7 403.2,231.7 405.8,231.8 408.4,231.8 411.0,231.9 413.6,231.9 416.2,231.9 418.8,231.9 421.4,232.0 424.0,232.0"/>
+<path fill="#B5525C" fill-opacity="0.14" d="M62.0,232.0L62.0,232.0L64.6,232.0L67.2,232.0L69.8,232.0L72.4,232.0L75.0,232.0L77.6,232.0L80.2,232.0L82.8,231.9L85.4,231.9L88.0,231.8L90.6,231.8L93.3,231.7L95.9,231.6L98.5,231.5L101.1,231.5L103.7,231.5L106.3,231.5L108.9,231.5L111.5,231.5L114.1,231.5L116.7,231.4L119.3,231.3L121.9,231.2L124.5,231.1L127.1,230.9L129.7,230.8L132.3,230.6L134.9,230.2L137.5,229.8L140.1,229.2L142.7,228.5L145.3,227.8L147.9,226.9L150.5,226.0L153.2,225.0L155.8,223.9L158.4,222.7L161.0,221.4L163.6,219.9L166.2,218.4L168.8,216.9L171.4,215.4L174.0,213.9L176.6,212.3L179.2,210.5L181.8,208.5L184.4,206.0L187.0,203.0L189.6,199.5L192.2,195.5L194.8,191.1L197.4,186.6L200.0,182.1L202.6,177.6L205.2,173.1L207.8,168.4L210.4,163.5L213.1,158.3L215.7,152.7L218.3,147.0L220.9,141.1L223.5,135.4L226.1,129.7L228.7,124.2L231.3,118.7L233.9,113.1L236.5,107.4L239.1,101.7L241.7,96.2L244.3,91.1L246.9,86.8L249.5,83.5L252.1,81.3L254.7,79.9L257.3,79.2L259.9,79.0L262.5,79.1L265.1,79.6L267.7,80.8L270.3,82.6L272.9,85.2L275.6,88.4L278.2,92.2L280.8,96.3L283.4,100.5L286.0,104.8L288.6,108.9L291.2,113.0L293.8,117.1L296.4,121.1L299.0,125.2L301.6,129.4L304.2,133.7L306.8,138.2L309.4,142.8L312.0,147.6L314.6,152.5L317.2,157.6L319.8,162.6L322.4,167.5L325.0,172.1L327.6,176.6L330.2,180.8L332.8,184.8L335.5,188.7L338.1,192.4L340.7,195.9L343.3,199.1L345.9,202.0L348.5,204.7L351.1,207.3L353.7,209.7L356.3,212.0L358.9,214.1L361.5,216.2L364.1,218.0L366.7,219.7L369.3,221.2L371.9,222.6L374.5,223.9L377.1,225.0L379.7,226.1L382.3,227.1L384.9,228.0L387.5,228.8L390.1,229.5L392.7,230.1L395.4,230.5L398.0,230.8L400.6,231.0L403.2,231.0L405.8,231.0L408.4,231.0L411.0,231.0L413.6,231.1L416.2,231.2L418.8,231.4L421.4,231.6L424.0,231.7L424.0,232.0Z"/>
+<polyline class="g-line" stroke="#B5525C" points="62.0,232.0 64.6,232.0 67.2,232.0 69.8,232.0 72.4,232.0 75.0,232.0 77.6,232.0 80.2,232.0 82.8,231.9 85.4,231.9 88.0,231.8 90.6,231.8 93.3,231.7 95.9,231.6 98.5,231.5 101.1,231.5 103.7,231.5 106.3,231.5 108.9,231.5 111.5,231.5 114.1,231.5 116.7,231.4 119.3,231.3 121.9,231.2 124.5,231.1 127.1,230.9 129.7,230.8 132.3,230.6 134.9,230.2 137.5,229.8 140.1,229.2 142.7,228.5 145.3,227.8 147.9,226.9 150.5,226.0 153.2,225.0 155.8,223.9 158.4,222.7 161.0,221.4 163.6,219.9 166.2,218.4 168.8,216.9 171.4,215.4 174.0,213.9 176.6,212.3 179.2,210.5 181.8,208.5 184.4,206.0 187.0,203.0 189.6,199.5 192.2,195.5 194.8,191.1 197.4,186.6 200.0,182.1 202.6,177.6 205.2,173.1 207.8,168.4 210.4,163.5 213.1,158.3 215.7,152.7 218.3,147.0 220.9,141.1 223.5,135.4 226.1,129.7 228.7,124.2 231.3,118.7 233.9,113.1 236.5,107.4 239.1,101.7 241.7,96.2 244.3,91.1 246.9,86.8 249.5,83.5 252.1,81.3 254.7,79.9 257.3,79.2 259.9,79.0 262.5,79.1 265.1,79.6 267.7,80.8 270.3,82.6 272.9,85.2 275.6,88.4 278.2,92.2 280.8,96.3 283.4,100.5 286.0,104.8 288.6,108.9 291.2,113.0 293.8,117.1 296.4,121.1 299.0,125.2 301.6,129.4 304.2,133.7 306.8,138.2 309.4,142.8 312.0,147.6 314.6,152.5 317.2,157.6 319.8,162.6 322.4,167.5 325.0,172.1 327.6,176.6 330.2,180.8 332.8,184.8 335.5,188.7 338.1,192.4 340.7,195.9 343.3,199.1 345.9,202.0 348.5,204.7 351.1,207.3 353.7,209.7 356.3,212.0 358.9,214.1 361.5,216.2 364.1,218.0 366.7,219.7 369.3,221.2 371.9,222.6 374.5,223.9 377.1,225.0 379.7,226.1 382.3,227.1 384.9,228.0 387.5,228.8 390.1,229.5 392.7,230.1 395.4,230.5 398.0,230.8 400.6,231.0 403.2,231.0 405.8,231.0 408.4,231.0 411.0,231.0 413.6,231.1 416.2,231.2 418.8,231.4 421.4,231.6 424.0,231.7"/>
+<line class="g-ax" x1="62.0" x2="424.0" y1="232" y2="232"/>
+<line class="g-ax" x1="62.0" x2="62.0" y1="232" y2="236"/><text class="g-tick" x="62.0" y="248" text-anchor="middle">-4</text>
+<line class="g-ax" x1="152.5" x2="152.5" y1="232" y2="236"/><text class="g-tick" x="152.5" y="248" text-anchor="middle">-2</text>
+<line class="g-ax" x1="243.0" x2="243.0" y1="232" y2="236"/><text class="g-tick" x="243.0" y="248" text-anchor="middle">0</text>
+<line class="g-ax" x1="333.5" x2="333.5" y1="232" y2="236"/><text class="g-tick" x="333.5" y="248" text-anchor="middle">2</text>
+<line class="g-ax" x1="424.0" x2="424.0" y1="232" y2="236"/><text class="g-tick" x="424.0" y="248" text-anchor="middle">4</text>
+<text class="g-lab" x="243.0" y="266" text-anchor="middle">표준화 PRS</text>
+<line class="g-vline thin" x1="265.1" x2="265.1" y1="54" y2="232" stroke="#B5525C"/>
+<line class="g-vline thin" x1="239.1" x2="239.1" y1="54" y2="232" stroke="#6B736E"/>
+<text class="g-note" x="24" y="44"><tspan class="g-em" fill="#B5525C">환자</tspan> 4,552명 평균 0.49 · <tspan class="g-em">대조군</tspan> 25,448명 평균 −0.09</text>
+<text class="g-note" x="424" y="62" text-anchor="end">AUC <tspan class="g-em">0.661</tspan></text>
+<text class="g-ttl" x="496" y="30">십분위별 odds ratio<tspan class="g-sub" dx="8">40–50% 구간 대비</tspan></text>
+<line class="g-eq" x1="530" x2="876" y1="136.4" y2="136.4"/>
+<line class="g-ci" x1="547.3" x2="547.3" y1="205.3" y2="182.2" stroke="var(--theme)"/>
+<circle class="g-dot" cx="547.3" cy="193.7" r="3.8" fill="var(--theme)"/>
+<text class="g-tick" x="547.3" y="248" text-anchor="middle">1</text>
+<line class="g-ci" x1="581.9" x2="581.9" y1="180.5" y2="159.8" stroke="var(--theme)"/>
+<circle class="g-dot" cx="581.9" cy="170.2" r="3.8" fill="var(--theme)"/>
+<text class="g-tick" x="581.9" y="248" text-anchor="middle">2</text>
+<line class="g-ci" x1="616.5" x2="616.5" y1="166.5" y2="147.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="616.5" cy="156.7" r="3.8" fill="var(--theme)"/>
+<text class="g-tick" x="616.5" y="248" text-anchor="middle">3</text>
+<line class="g-ci" x1="651.1" x2="651.1" y1="153.3" y2="134.6" stroke="var(--theme)"/>
+<circle class="g-dot" cx="651.1" cy="143.9" r="3.8" fill="var(--theme)"/>
+<text class="g-tick" x="651.1" y="248" text-anchor="middle">4</text>
+<line class="g-ci" x1="685.7" x2="685.7" y1="145.5" y2="127.3" stroke="#A3ABA6"/>
+<circle class="g-dot" cx="685.7" cy="136.4" r="3.8" fill="#A3ABA6"/>
+<text class="g-tick" x="685.7" y="248" text-anchor="middle">5</text>
+<line class="g-ci" x1="720.3" x2="720.3" y1="125.3" y2="108.1" stroke="var(--theme)"/>
+<circle class="g-dot" cx="720.3" cy="116.7" r="3.8" fill="var(--theme)"/>
+<text class="g-tick" x="720.3" y="248" text-anchor="middle">6</text>
+<line class="g-ci" x1="754.9" x2="754.9" y1="124.7" y2="107.6" stroke="var(--theme)"/>
+<circle class="g-dot" cx="754.9" cy="116.2" r="3.8" fill="var(--theme)"/>
+<text class="g-tick" x="754.9" y="248" text-anchor="middle">7</text>
+<line class="g-ci" x1="789.5" x2="789.5" y1="113.7" y2="97.0" stroke="var(--theme)"/>
+<circle class="g-dot" cx="789.5" cy="105.3" r="3.8" fill="var(--theme)"/>
+<text class="g-tick" x="789.5" y="248" text-anchor="middle">8</text>
+<line class="g-ci" x1="824.1" x2="824.1" y1="105.8" y2="89.3" stroke="var(--theme)"/>
+<circle class="g-dot" cx="824.1" cy="97.6" r="3.8" fill="var(--theme)"/>
+<text class="g-tick" x="824.1" y="248" text-anchor="middle">9</text>
+<line class="g-ci" x1="858.7" x2="858.7" y1="74.7" y2="58.9" stroke="var(--theme)"/>
+<circle class="g-dot" cx="858.7" cy="66.8" r="3.8" fill="var(--theme)"/>
+<text class="g-tick" x="858.7" y="248" text-anchor="middle">10</text>
+<line class="g-ax" x1="530" x2="876" y1="232" y2="232"/><line class="g-ax" x1="530" x2="530" y1="56" y2="232"/>
+<text class="g-lab" x="703.0" y="266" text-anchor="middle">PRS 십분위 (1 = 하위 10%)</text>
+<text class="g-lab" transform="translate(494,144.0) rotate(-90)" text-anchor="middle">odds ratio (로그 눈금)</text>
+<text class="g-note" x="876" y="46" text-anchor="end">10번째 십분위 OR <tspan class="g-em">3.23</tspan></text>
+</svg>
+<!--/GEN:BINARY-->
+          </div>
+          <figcaption>
+            그림 1과 같은 형질을 liability threshold 모형으로 binary로 바꾼 것. 연속적인 liability가 유병률 <!--GEN:KPREV-->15%<!--/GEN:KPREV--> 기준선을 넘으면 환자 <a class="src" href="https://doi.org/10.1093/bioinformatics/btaa1029" target="_blank" rel="noopener">Privé 2020</a>. target 표본 <!--GEN:NTGT-->30,000<!--/GEN:NTGT-->명 가운데 환자 <!--GEN:NCASE-->4,552<!--/GEN:NCASE-->명 · PRS는 <!--GEN:NBIN-->20,000<!--/GEN:NBIN-->명 GWAS의 shrinkage 가중치(기대 R² <!--GEN:R2_BIN-->0.095<!--/GEN:R2_BIN-->). 상위 분위 위험이 실제 보고된 눈금에 들어오는 표본 크기를 골랐음 · 환자 평균 <!--GEN:MEAN_CASE-->0.49<!--/GEN:MEAN_CASE--> SD · 대조군 평균 <!--GEN:MEAN_CTRL-->−0.09<!--/GEN:MEAN_CTRL--> SD · AUC <!--GEN:AUC-->0.661<!--/GEN:AUC--> · 십분위 odds ratio는 40–50% 구간을 기준으로 삼았고 세로선은 Woolf 방식 95% 구간 <a class="src" href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener">Choi 2019</a>
+          </figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>지표</th><th>무엇을 보나</th><th>한계</th></tr></thead>
+            <tbody>
+              <tr><th>R²</th><td>연속 형질에서 설명되는 분산. 공변량 모형 대비 증가분(incremental R²)으로 보고 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a></td><td>설명 분산이 작으면 판별력도 낮음. 골밀도 분산의 5.8%를 설명한 점수는 osteoporosis 예측에서 우연 수준과 크게 다르지 않았음 <a class="src" href="https://doi.org/10.1038/nrg.2017.101" target="_blank" rel="noopener">Timpson 2017</a></td></tr>
+              <tr><th>AUC · C-index</th><td>환자와 대조군을 가려내는 능력 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a></td><td>기저 발생률을 반영하지 않고, 상위 백분위에 고위험군이 몰리는 enrichment를 담지 못함 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a> <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a>. 흔한 질환의 최상 PRS도 여러 집단에서 0.6–0.7 수준 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></td></tr>
+              <tr><th>분위별 odds ratio</th><td>상위 구간의 위험 증가. PRS 1 표준편차당 OR · HR도 함께 씀 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></td><td>분포를 어느 집단에서 정의했는지에 따라 값이 달라져서 다른 집단으로 그대로 옮기지 못함 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></td></tr>
+              <tr><th>calibration</th><td>예측 확률이 실제 발생 빈도와 맞는 정도. 관측 형질을 PRS에 회귀한 기울기가 1에 가까우면 잘 보정된 예측자 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a></td><td>한 집단에서 잘 보정된 모형도 PRS 성능 · 기저 위험 · 공변량 분포가 다른 집단에서는 어긋남 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></td></tr>
+              <tr><th>추가 가치</th><td>기존 임상 위험 모형 대비 재분류 정도. net reclassification index나 decision curve analysis <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></td><td>NRI도 질병 발생률을 반영하지 않고, 사전 정의된 위험 범주가 없으면 오용될 수 있음 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout blue">
+          <h4>평균 차이가 커도 분포는 겹침</h4>
+          <p>환자와 대조군의 PRS 평균 차이가 통계적으로 매우 유의해도 두 분포는 크게 겹쳐서, PRS를 단독 선별검사로 쓰지 못함 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a> · 그림 4 왼쪽: 두 평균이 <!--GEN:MEAN_CTRL-->−0.09<!--/GEN:MEAN_CTRL--> SD와 <!--GEN:MEAN_CASE-->0.49<!--/GEN:MEAN_CASE--> SD로 떨어져 있고 AUC가 <!--GEN:AUC-->0.661<!--/GEN:AUC-->인데도 겹치는 구간이 대부분 · PRS와 위험의 관계가 선형이 아니라 꼬리가 벌어지는 모양이라 정보량이 분포의 양 끝에 몰림 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a> · 그림 4 오른쪽: 1번째 십분위 OR <!--GEN:OR1-->0.38<!--/GEN:OR1-->, 10번째 십분위 OR <!--GEN:OR10-->3.23<!--/GEN:OR10-->, 상위 5% OR <!--GEN:OR_T5-->3.32<!--/GEN:OR_T5-->, 상위 1% OR <!--GEN:OR_T1-->4.56<!--/GEN:OR_T1-->(상위 구간 대 나머지) · 실제 보고된 값: CHD PRS 상위 5%는 아래 구간보다 위험이 2–3배로 familial hypercholesterolaemia 같은 monogenic 질환에 상응함 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a>, 여러 질환에서 상위 1.5–8% 구간이 3배 넘는 위험 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a></p>
+        </div>
+        <div class="callout">
+          <h4>학습 · 검증 · 시험을 나눔</h4>
+          <p>세 데이터셋을 겹치지 않는 사람으로 구성함. 효과크기를 추정하는 discovery, 모수를 고르는 validation, 정확도를 재는 testing <a class="src" href="https://doi.org/10.1038/s41588-022-01054-7" target="_blank" rel="noopener">Ruan 2022</a> <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a> · 모든 PRS 계산법이 최종 모형을 고를 때 모수를 최적화하므로 과적합에 취약함 <a class="src" href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener">Choi 2019</a> · 자체 코호트로 만든 PRS를 같은 집단에 적용하면 과적합이 생겨서, 데이터 freeze 시점을 고정하거나 cross-validation을 씀 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a> · cryptic relatedness나 공유된 population stratification 때문에 두 표본이 실제로 독립이 아니면 정확도가 과대평가됨 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a> · permutation으로 구하는 empirical P-value는 Type 1 error만 통제하고, 보고되는 R²는 여전히 보정되지 않은 값 <a class="src" href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener">Choi 2019</a></p>
+        </div>
+        <div class="callout">
+          <h4>성능 수치를 읽을 때</h4>
+          <p>기존 논문의 성능 수치는 연구 설계, 참가자 구성, case 정의, 보정한 공변량에 조건부라 서로 직접 비교하지 못함. 대개 단일 ancestry group에서만 측정된 값 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a> · 그래서 지표마다 모형에 넣은 공변량(가장 흔히 연령 · 성별 · genetic principal component)을 함께 적어야 해석이 됨 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a> · 평가 표본이 원 GWAS나 학습 코호트에 기여한 사람을 포함하지 않는지 확인함 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a> · 같은 외부 자료에서 같은 모형으로 여러 점수를 돌리면 비교 가능한 수치가 나옴 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a></p>
+        </div>
+        <div class="callout" id="sim">
+          <h4>이 페이지의 시뮬레이션</h4>
+          <p><a href="../02-association/manhattan.html#sim">Manhattan 페이지</a> · <a href="genetic-correlation.html#sim">유전 상관 페이지</a>와 같은 가상 유전체와 형질(SNP <!--GEN:M-->425,904<!--/GEN:M-->개 · 인과 변이 <!--GEN:CAUSAL-->4,234<!--/GEN:CAUSAL-->개 · SNP h² <!--GEN:H2-->0.4<!--/GEN:H2-->) · discovery GWAS는 개인 genotype 없이 SNP별 z를 바로 뽑음 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a> · PRS는 개인 genotype이 필요해서, target 표본은 LD 블록마다 founder 하나를 복사해 하플로타입을 만드는 방식으로 <!--GEN:NTGT-->30,000<!--/GEN:NTGT-->명을 뽑음 · 형질은 유전값에 환경 잡음을 더해 만들고, 환경 분산을 집단 사이에 같게 두었음 · 가중치 추정에 쓰는 LD는 유전체 모형의 참값. 실제 분석에서 참조 패널로 LD를 추정할 때 생기는 불일치는 이 시뮬레이션에 없음 <a class="src" href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener">Ge 2019</a> · 인과 변이가 모두 측정된 SNP 안에 있어서, array가 causal 변이를 직접 재지 못해 생기는 손실도 없음</p>
+        </div>
+
+        <!-- ───────── 5. ancestry ───────── -->
+        <h2 id="ancestry">다른 집단으로 옮기면<small>Transferability</small></h2>
+        <p class="lede">GWAS의 85% 이상이 European ancestry 참가자에서 수행되어서, 그 결과로 만든 PRS는 다른 집단에서 예측력이 크게 떨어지고 건강 격차를 키울 수 있음 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></p>
+        <figure class="fig" id="fig-anc">
+          <div class="fig-scroll">
+<!--GEN:ANC-->
+<svg class="g-svg " viewBox="0 0 900 300" role="img" aria-labelledby="anT anD" xmlns="http://www.w3.org/2000/svg">
+<title id="anT">학습 집단에서 멀어질 때의 정확도와 점수 분포</title>
+<desc id="anD">왼쪽은 집단 A에서 만든 PRS를 빈도만 다르게 흘러간 집단들에 그대로 적용했을 때의 R²다. x축은 집단 A와의 F_ST이고, 회색 점선은 그 집단에서의 SNP heritability, 곧 PRS가 넘을 수 없는 상한이다. 오른쪽은 같은 가중치로 계산한 PRS의 분포를 집단별로 겹쳐 그린 것이다. 집단 A의 평균과 표준편차로 맞췄기 때문에, 집단이 멀어지면 분포 자체가 옆으로 밀리고 폭도 달라진다. 집단 A에서 정한 상위 5% 기준선을 그대로 쓰면 다른 집단에서 걸리는 비율이 달라진다.</desc>
+<line class="g-grid" x1="70" x2="400" y1="232.0" y2="232.0"/><text class="g-tick" x="64" y="235.5" text-anchor="end">0</text>
+<line class="g-grid" x1="70" x2="400" y1="192.9" y2="192.9"/><text class="g-tick" x="64" y="196.4" text-anchor="end">0.1</text>
+<line class="g-grid" x1="70" x2="400" y1="153.8" y2="153.8"/><text class="g-tick" x="64" y="157.3" text-anchor="end">0.2</text>
+<line class="g-grid" x1="70" x2="400" y1="114.7" y2="114.7"/><text class="g-tick" x="64" y="118.2" text-anchor="end">0.3</text>
+<line class="g-grid" x1="70" x2="400" y1="75.6" y2="75.6"/><text class="g-tick" x="64" y="79.1" text-anchor="end">0.4</text>
+<line class="g-ax" x1="70" x2="400" y1="232" y2="232"/><line class="g-ax" x1="70" x2="70" y1="56" y2="232"/>
+<line class="g-ax" x1="70.0" x2="70.0" y1="232" y2="236"/><text class="g-tick" x="70.0" y="248" text-anchor="middle">0.00</text>
+<line class="g-ax" x1="176.8" x2="176.8" y1="232" y2="236"/><text class="g-tick" x="176.8" y="248" text-anchor="middle">0.05</text>
+<line class="g-ax" x1="283.6" x2="283.6" y1="232" y2="236"/><text class="g-tick" x="283.6" y="248" text-anchor="middle">0.10</text>
+<line class="g-ax" x1="390.4" x2="390.4" y1="232" y2="236"/><text class="g-tick" x="390.4" y="248" text-anchor="middle">0.15</text>
+<text class="g-ttl" x="30" y="30">학습 집단에서 멀어질수록<tspan class="g-sub" dx="8">가중치는 집단 A의 100,000명 GWAS</tspan></text>
+<text class="g-lab" x="235.0" y="266" text-anchor="middle">집단 A와의 F_ST</text>
+<text class="g-lab" transform="translate(32,144.0) rotate(-90)" text-anchor="middle">R² · SNP h²</text>
+<polyline class="g-pp" stroke="#A3ABA6" stroke-dasharray="4 3" points="70.0,75.6 80.3,77.2 100.8,80.6 153.0,90.1 223.9,98.8 375.6,122.1"/>
+<text class="g-note dim" x="76.0" y="68.6">그 집단의 SNP h². PRS가 넘을 수 없는 선</text>
+<line class="g-line" x1="80" x2="102" y1="98" y2="98" stroke="var(--theme)"/>
+<text class="g-note" x="108" y="102">Bayesian shrinkage</text>
+<line class="g-line" x1="80" x2="102" y1="115" y2="115" stroke="#D9822B"/>
+<text class="g-note" x="108" y="119">C+T</text>
+<polyline class="g-line" stroke="var(--theme)" points="70.0,121.1 80.3,121.5 100.8,122.8 153.0,127.7 223.9,132.2 375.6,146.5"/>
+<circle class="g-dot" cx="70.0" cy="121.1" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="80.3" cy="121.5" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="100.8" cy="122.8" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="153.0" cy="127.7" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="223.9" cy="132.2" r="3.4" fill="var(--theme)"/>
+<circle class="g-dot" cx="375.6" cy="146.5" r="3.4" fill="var(--theme)"/>
+<polyline class="g-line" stroke="#D9822B" points="70.0,130.8 80.3,131.3 100.8,132.1 153.0,137.3 223.9,141.2 375.6,154.3"/>
+<circle class="g-dot" cx="70.0" cy="130.8" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="80.3" cy="131.3" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="100.8" cy="132.1" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="153.0" cy="137.3" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="223.9" cy="141.2" r="3.4" fill="#D9822B"/>
+<circle class="g-dot" cx="375.6" cy="154.3" r="3.4" fill="#D9822B"/>
+<text class="g-note" x="371.6" y="136.5" text-anchor="end" fill="var(--theme)"><tspan class="g-em">77%</tspan>만 남음</text>
+<text class="g-ttl" x="502" y="30">같은 가중치, 집단마다 다른 분포<tspan class="g-sub" dx="8">집단 A의 평균 · 표준편차로 맞춤</tspan></text>
+<line class="g-ax" x1="536.0" x2="876.0" y1="232" y2="232"/>
+<polyline class="g-line" stroke="var(--theme)" points="536.0,232.0 538.4,232.0 540.9,232.0 543.3,232.0 545.8,232.0 548.2,232.0 550.7,232.0 553.1,232.0 555.6,232.0 558.0,232.0 560.5,232.0 562.9,232.0 565.4,232.0 567.8,232.0 570.2,232.0 572.7,232.0 575.1,232.0 577.6,232.0 580.0,231.9 582.5,231.9 584.9,231.8 587.4,231.8 589.8,231.7 592.3,231.6 594.7,231.5 597.2,231.5 599.6,231.3 602.0,231.1 604.5,230.9 606.9,230.6 609.4,230.2 611.8,229.8 614.3,229.3 616.7,228.8 619.2,228.3 621.6,227.6 624.1,226.8 626.5,225.9 628.9,224.9 631.4,223.9 633.8,222.6 636.3,221.0 638.7,219.1 641.2,217.1 643.6,215.2 646.1,213.3 648.5,211.1 651.0,208.4 653.4,205.3 655.9,201.8 658.3,198.1 660.7,194.6 663.2,191.4 665.6,188.3 668.1,185.0 670.5,181.1 673.0,176.6 675.4,171.9 677.9,167.5 680.3,163.7 682.8,160.4 685.2,157.3 687.7,154.5 690.1,152.2 692.5,150.3 695.0,148.6 697.4,147.0 699.9,145.4 702.3,144.2 704.8,143.5 707.2,143.3 709.7,143.5 712.1,144.1 714.6,145.0 717.0,146.5 719.5,148.7 721.9,151.7 724.3,155.2 726.8,159.0 729.2,162.7 731.7,166.2 734.1,169.8 736.6,173.4 739.0,177.1 741.5,180.9 743.9,184.7 746.4,188.3 748.8,191.7 751.3,195.1 753.7,198.4 756.1,201.7 758.6,204.8 761.0,207.7 763.5,210.3 765.9,212.7 768.4,215.0 770.8,217.3 773.3,219.4 775.7,221.3 778.2,222.9 780.6,224.2 783.1,225.3 785.5,226.3 787.9,227.1 790.4,227.7 792.8,228.3 795.3,228.8 797.7,229.3 800.2,229.7 802.6,230.1 805.1,230.3 807.5,230.6 810.0,230.8 812.4,231.0 814.8,231.2 817.3,231.4 819.7,231.5 822.2,231.6 824.6,231.7 827.1,231.8 829.5,231.9 832.0,231.9 834.4,231.9 836.9,231.9 839.3,231.9 841.8,232.0 844.2,232.0 846.6,232.0 849.1,232.0 851.5,232.0 854.0,232.0 856.4,232.0 858.9,232.0 861.3,232.0 863.8,232.0 866.2,232.0 868.7,232.0 871.1,232.0 873.6,232.0 876.0,232.0"/>
+<polyline class="g-line" stroke="#D9822B" points="536.0,232.0 538.4,232.0 540.9,232.0 543.3,232.0 545.8,232.0 548.2,232.0 550.7,232.0 553.1,232.0 555.6,232.0 558.0,232.0 560.5,232.0 562.9,232.0 565.4,232.0 567.8,232.0 570.2,232.0 572.7,231.9 575.1,231.9 577.6,231.9 580.0,231.9 582.5,232.0 584.9,232.0 587.4,232.0 589.8,232.0 592.3,231.9 594.7,231.9 597.2,231.9 599.6,231.8 602.0,231.8 604.5,231.8 606.9,231.7 609.4,231.6 611.8,231.5 614.3,231.4 616.7,231.2 619.2,231.0 621.6,230.8 624.1,230.5 626.5,230.2 628.9,229.7 631.4,229.1 633.8,228.3 636.3,227.5 638.7,226.6 641.2,225.6 643.6,224.7 646.1,223.6 648.5,222.3 651.0,220.8 653.4,219.1 655.9,217.2 658.3,215.3 660.7,213.2 663.2,210.8 665.6,208.1 668.1,205.0 670.5,201.6 673.0,198.1 675.4,194.7 677.9,191.3 680.3,187.7 682.8,184.0 685.2,179.9 687.7,175.6 690.1,171.3 692.5,167.3 695.0,163.6 697.4,160.2 699.9,157.0 702.3,153.8 704.8,150.9 707.2,148.4 709.7,146.6 712.1,145.3 714.6,144.5 717.0,144.1 719.5,143.8 721.9,143.8 724.3,143.9 726.8,144.2 729.2,144.7 731.7,145.6 734.1,147.0 736.6,149.2 739.0,152.0 741.5,155.5 743.9,159.6 746.4,164.1 748.8,168.7 751.3,173.3 753.7,177.6 756.1,181.6 758.6,185.4 761.0,189.1 763.5,192.9 765.9,196.6 768.4,200.2 770.8,203.5 773.3,206.6 775.7,209.4 778.2,212.0 780.6,214.5 783.1,216.7 785.5,218.7 787.9,220.5 790.4,222.1 792.8,223.5 795.3,224.7 797.7,225.8 800.2,226.8 802.6,227.7 805.1,228.5 807.5,229.2 810.0,229.8 812.4,230.2 814.8,230.5 817.3,230.8 819.7,231.1 822.2,231.2 824.6,231.3 827.1,231.3 829.5,231.4 832.0,231.4 834.4,231.6 836.9,231.7 839.3,231.8 841.8,231.9 844.2,231.9 846.6,232.0 849.1,231.9 851.5,231.9 854.0,231.9 856.4,231.9 858.9,232.0 861.3,232.0 863.8,232.0 866.2,232.0 868.7,232.0 871.1,232.0 873.6,232.0 876.0,232.0"/>
+<polyline class="g-line" stroke="#B5525C" points="536.0,232.0 538.4,232.0 540.9,232.0 543.3,232.0 545.8,232.0 548.2,232.0 550.7,232.0 553.1,232.0 555.6,232.0 558.0,231.9 560.5,231.9 562.9,231.8 565.4,231.7 567.8,231.6 570.2,231.4 572.7,231.3 575.1,231.2 577.6,231.1 580.0,230.9 582.5,230.6 584.9,230.2 587.4,229.6 589.8,228.7 592.3,227.6 594.7,226.2 597.2,224.6 599.6,222.8 602.0,221.0 604.5,219.0 606.9,216.6 609.4,213.8 611.8,210.5 614.3,206.8 616.7,203.1 619.2,199.3 621.6,195.6 624.1,191.7 626.5,187.1 628.9,181.8 631.4,175.9 633.8,170.1 636.3,164.6 638.7,159.7 641.2,155.1 643.6,150.5 646.1,146.1 648.5,142.1 651.0,138.5 653.4,135.0 655.9,131.2 658.3,127.5 660.7,124.6 663.2,123.4 665.6,123.9 668.1,125.7 670.5,128.4 673.0,131.3 675.4,134.5 677.9,138.1 680.3,142.3 682.8,147.2 685.2,152.5 687.7,158.1 690.1,163.6 692.5,168.8 695.0,173.7 697.4,178.5 699.9,183.6 702.3,188.9 704.8,194.0 707.2,198.7 709.7,202.8 712.1,206.5 714.6,210.0 717.0,213.2 719.5,216.2 721.9,219.0 724.3,221.3 726.8,223.4 729.2,225.1 731.7,226.5 734.1,227.6 736.6,228.3 739.0,228.7 741.5,229.0 743.9,229.3 746.4,229.7 748.8,230.3 751.3,230.8 753.7,231.1 756.1,231.4 758.6,231.5 761.0,231.6 763.5,231.7 765.9,231.7 768.4,231.8 770.8,231.9 773.3,231.9 775.7,232.0 778.2,232.0 780.6,232.0 783.1,232.0 785.5,232.0 787.9,232.0 790.4,232.0 792.8,232.0 795.3,232.0 797.7,232.0 800.2,232.0 802.6,232.0 805.1,232.0 807.5,232.0 810.0,232.0 812.4,232.0 814.8,232.0 817.3,232.0 819.7,232.0 822.2,232.0 824.6,232.0 827.1,232.0 829.5,232.0 832.0,232.0 834.4,232.0 836.9,232.0 839.3,232.0 841.8,232.0 844.2,232.0 846.6,232.0 849.1,232.0 851.5,232.0 854.0,232.0 856.4,232.0 858.9,232.0 861.3,232.0 863.8,232.0 866.2,232.0 868.7,232.0 871.1,232.0 873.6,232.0 876.0,232.0"/>
+<line class="g-vline thin" x1="761.9" x2="761.9" y1="54" y2="232" stroke="var(--text)"/>
+<text class="g-note" x="756.9" y="49" text-anchor="end" fill="var(--text)">집단 A 상위 5% 기준</text>
+<line class="g-ax" x1="536.0" x2="536.0" y1="232" y2="236"/><text class="g-tick" x="536.0" y="248" text-anchor="middle">-5</text>
+<line class="g-ax" x1="570.0" x2="570.0" y1="232" y2="236"/><text class="g-tick" x="570.0" y="248" text-anchor="middle">-4</text>
+<line class="g-ax" x1="604.0" x2="604.0" y1="232" y2="236"/><text class="g-tick" x="604.0" y="248" text-anchor="middle">-3</text>
+<line class="g-ax" x1="638.0" x2="638.0" y1="232" y2="236"/><text class="g-tick" x="638.0" y="248" text-anchor="middle">-2</text>
+<line class="g-ax" x1="672.0" x2="672.0" y1="232" y2="236"/><text class="g-tick" x="672.0" y="248" text-anchor="middle">-1</text>
+<line class="g-ax" x1="706.0" x2="706.0" y1="232" y2="236"/><text class="g-tick" x="706.0" y="248" text-anchor="middle">0</text>
+<line class="g-ax" x1="740.0" x2="740.0" y1="232" y2="236"/><text class="g-tick" x="740.0" y="248" text-anchor="middle">1</text>
+<line class="g-ax" x1="774.0" x2="774.0" y1="232" y2="236"/><text class="g-tick" x="774.0" y="248" text-anchor="middle">2</text>
+<line class="g-ax" x1="808.0" x2="808.0" y1="232" y2="236"/><text class="g-tick" x="808.0" y="248" text-anchor="middle">3</text>
+<line class="g-ax" x1="842.0" x2="842.0" y1="232" y2="236"/><text class="g-tick" x="842.0" y="248" text-anchor="middle">4</text>
+<line class="g-ax" x1="876.0" x2="876.0" y1="232" y2="236"/><text class="g-tick" x="876.0" y="248" text-anchor="middle">5</text>
+<text class="g-lab" x="706.0" y="266" text-anchor="middle">표준화 PRS (집단 A 기준)</text>
+<line class="g-line" x1="542" x2="564" y1="74" y2="74" stroke="var(--theme)"/>
+<text class="g-note" x="570" y="78">집단 A (학습) — 기준 위 <tspan class="g-em">5.0%</tspan></text>
+<line class="g-line" x1="542" x2="564" y1="94" y2="94" stroke="#D9822B"/>
+<text class="g-note" x="570" y="98">F_ST 0.014 — 기준 위 <tspan class="g-em">10.1%</tspan></text>
+<line class="g-line" x1="542" x2="564" y1="114" y2="114" stroke="#B5525C"/>
+<text class="g-note" x="570" y="118">F_ST 0.143 — 기준 위 <tspan class="g-em">0.0%</tspan></text>
+</svg>
+<!--/GEN:ANC-->
+          </div>
+          <figcaption>
+            집단 A에서 <!--GEN:N0-->100,000<!--/GEN:N0-->명으로 만든 가중치를, 같은 유전체에서 allele 빈도만 다르게 흘러간 집단들에 그대로 적용. allele 1개당 인과 효과는 집단 사이에 같게 두었고, 달라진 것은 allele 빈도와 그에 따라 바뀌는 LD뿐 · F_ST는 Hudson 방식(평균의 비율) · 오른쪽 분포는 집단마다 <!--GEN:NPOP-->8,000<!--/GEN:NPOP-->명을 뽑아 집단 A의 평균 · 표준편차로 표준화한 값 · 가장 먼 집단(F_ST <!--GEN:FST_FAR-->0.143<!--/GEN:FST_FAR-->)에서 SNP h²가 <!--GEN:H2_FAR-->0.28<!--/GEN:H2_FAR-->로 내려가고 R²는 집단 A의 <!--GEN:REL_FAR-->77%<!--/GEN:REL_FAR-->만 남음
+          </figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>정확도가 떨어지는 유전적 이유</th><th>그림 5에서</th></tr></thead>
+            <tbody>
+              <tr><th>heritability 차이 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></th><td>회색 점선. 같은 인과 효과인데도 빈도가 달라져 SNP h²가 <!--GEN:H2-->0.4<!--/GEN:H2-->에서 <!--GEN:H2_FAR-->0.28<!--/GEN:H2_FAR-->로 내려감</td></tr>
+              <tr><th>인과 allele 빈도 차이 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></th><td>이 시뮬레이션이 바꾼 유일한 것. 빈도가 바뀌면 같은 allele이 설명하는 분산도 바뀜</td></tr>
+              <tr><th>LD 패턴 차이 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></th><td>빈도에서 따라오는 부분만 들어 있음. 블록 길이 자체는 집단 사이에 같게 두었음</td></tr>
+              <tr><th>효과 크기 차이 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></th><td>넣지 않았음. 최근 연구들은 인과 allele의 효과가 집단 사이에 대체로 비슷하다고 보지만, 어느 요인도 성능 손실을 전부 설명하지는 못함 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></td></tr>
+              <tr><th>학습 GWAS 규모 불균형 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></th><td>넣지 않았음. European과 African 계통 사이 격차의 주된 이유 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout blue">
+          <h4>시뮬레이션이 실제보다 낙관적임</h4>
+          <p>빈도만 흘러간 집단에서 R²가 <!--GEN:REL_FAR-->77%<!--/GEN:REL_FAR-->까지 내려가지만, 실제 보고된 감소는 이보다 큼 · UK Biobank에서 colorectal cancer PGS 9개를 돌렸을 때 European ancestry에서는 8개가 예측했으나 South Asian · African ancestry 참가자에서는 대체로 예측력이 없었음 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a> · 같은 CHD PRS의 1 표준편차당 odds ratio가 European 계통 1.53, African 계통 1.27 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a> · 차이의 원인: 이 시뮬레이션은 LD 블록 구조와 학습 GWAS 규모를 집단 사이에 같게 두었고, 인과 변이가 모두 측정돼 tagging 손실이 없음. African 집단은 평균 LD 블록이 짧아 같은 수준의 변이를 포착하려면 훨씬 많은 변이가 필요하고, tag SNP 기반 PRS가 특히 잘 전이되지 않음 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></p>
+        </div>
+        <div class="callout">
+          <h4>분포 자체가 옆으로 밀림</h4>
+          <p>집단마다 PRS의 평균과 분산이 달라서, 고위험을 가리는 단일 cut-off를 쓰려면 집단 간 분포 보정이 필요함 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a> · 그림 5 오른쪽: 집단 A에서 정한 상위 5% 기준선을 그대로 쓰면 F_ST <!--GEN:FST_NEAR-->0.014<!--/GEN:FST_NEAR--> 집단에서 <!--GEN:OVER_NEAR-->10.1%<!--/GEN:OVER_NEAR-->, F_ST <!--GEN:FST_FAR-->0.143<!--/GEN:FST_FAR--> 집단에서 <!--GEN:OVER_FAR-->0.0%<!--/GEN:OVER_FAR-->가 걸림 · 임상에서는 PCA로 개인을 ancestry 공간에 놓고 PRS의 평균과 분산을 ancestry에 따라 보정하거나, 유전적 거리에 기반한 k-nearest-neighbour 가중치로 연속적인 ancestry를 반영함 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a> · 거의 모든 사람이 어느 정도 admixed라서 뚜렷한 대륙 집단으로 떨어지지 않음. 연속적인 표현이 더 적절함 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></p>
+        </div>
+        <div class="callout">
+          <h4>통계 방법만으로는 메워지지 않음</h4>
+          <p>여러 집단의 summary statistics를 함께 모형화하면 비유럽 집단의 정확도가 올라감. PRS-CSx는 UK Biobank와 Biobank Japan을 합쳐 East Asian target에서 단일 집단 PRS-CS 대비 R²를 33% 높였고, 표본이 작은 PAGE를 더하면 African ancestry target에서 28% 더 올랐음 <a class="src" href="https://doi.org/10.1038/s41588-022-01054-7" target="_blank" rel="noopener">Ruan 2022</a> · 그래도 African 집단의 절대 정확도는 다른 집단보다 훨씬 낮게 남아서, 저자들은 통계 방법만으로 GWAS의 European 편중을 극복할 수 없다고 못박음 <a class="src" href="https://doi.org/10.1038/s41588-022-01054-7" target="_blank" rel="noopener">Ruan 2022</a> · 시뮬레이션에서 target이 East Asian이나 African일 때는 표본이 5배 작은 ancestry-matched GWAS(2만 명)로 만든 PRS가 훨씬 큰 European GWAS(10만 명) 기반 PRS보다 더 잘 예측했음 <a class="src" href="https://doi.org/10.1038/s41588-022-01054-7" target="_blank" rel="noopener">Ruan 2022</a> · 여러 집단 GWAS를 메타분석한 뒤 단일 집단용 방법을 적용하는 것은 권하지 않음. 메타 GWAS의 LD는 집단별 LD가 섞인 형태라 모형화가 어렵고, 효과가 집단 사이에 같다는 가정에 성능이 크게 의존함 <a class="src" href="https://doi.org/10.1038/s41588-022-01054-7" target="_blank" rel="noopener">Ruan 2022</a></p>
+        </div>
+        <div class="callout">
+          <h4>집단 라벨이 아니라 거리</h4>
+          <p>PRS 정확도는 뚜렷한 집단 라벨보다 discovery 표본과 target 개인 사이의 유전적 거리로 더 잘 설명되고, 구축 방법과 무관하게 거리가 멀수록 떨어짐 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a> · race는 사회적으로 구성된 범주라 genetic ancestry나 admixture 양상의 대용이 되지 못하지만, 사회환경 요인과 genetic ancestry 양쪽에 상관되어 PRS와 건강 결과 사이에 confounding을 만듦 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a> · <a href="../index.html#article/ancestry">ancestry 카드</a></p>
+        </div>
+
+        <!-- ───────── 6. 임상 ───────── -->
+        <h2 id="clinic">임상으로 옮길 때<small>Clinical translation</small></h2>
+        <p class="lede">PRS는 risk factor이고 진단검사가 아님. 민감도 · 특이도 기준으로 재서 쓸모없다고 판정하는 것은 범주 오류이고, 같은 기준을 적용하면 연령 · 성별 · 가족력도 모두 탈락함 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a>. 최적의 형태라도 단독 예측자가 아니라 임상 변수 · 가족력 · 생활습관 · 환경 노출과 함께 쓰는 다요인 위험 모형의 한 구성요소 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>전달 방식</th><th>무엇을 말하나</th><th>주의</th></tr></thead>
+            <tbody>
+              <tr><th>절대 위험</th><td>일정 기간의 발병 확률. 기존 임상 위험 방정식에 PRS를 넣어 계산 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></td><td>유병률에 비례하는 baseline risk를 정확히 잡는 것이 핵심. 지역 인구 구성이나 진료과 특성 때문에 국가 평균과 어긋나면 그 기관 자료로 보정함 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a></td></tr>
+              <tr><th>상대 위험 · odds ratio</th><td>기준 구간 대비 몇 배 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></td><td>진단 · 치료 결정에 쓰는 위험 임계값으로 바로 번역되지 않음. 임상 평가에는 positive · negative predictive value 같은 절대 위험 척도가 필요함 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></td></tr>
+              <tr><th>백분위</th><td>집단에서의 순위. PRS가 대체로 정규분포에 가까워 혈압 · 체중처럼 전달함 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a></td><td>95th percentile은 발병 확률 95%가 아니라 100명 중 95명보다 점수가 높다는 뜻 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a>. 백분위만으로는 전체 위험 가운데 PRS가 설명하는 몫을 알 수 없음 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a>. 임상 결정용 범주 구분 지침은 아직 없음 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <h4>질환마다 쓸모가 다름</h4>
+          <p>1형 당뇨 PRS는 단독 AUC가 0.90을 넘고, 심혈관질환 PRS는 연령을 제외한 어떤 단일 전통적 위험인자와 같거나 더 나음 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a> · 2형 당뇨는 BMI가 강한 위험인자라 PRS가 통계적 지표를 거의 올리지 못하지만, BMI 층 안에서는 추가 정보를 줌. 과체중에 PRS 최상위 5분위인 사람이 비만에 PRS 최하위 5분위인 사람보다 고위험 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a> · 전립선암처럼 연령 · 성별 · 조상 · 가족력 외에 확립된 위험인자가 없는 질환에서는 PRS의 상대 기여가 커짐 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a> · 실제 효용은 질환의 유병률, 최상위 분위의 상대위험, 가용 치료제의 정밀도와 효능에 함께 달려서 질환별로 판단함 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a></p>
+        </div>
+        <div class="callout">
+          <h4>근거는 어디까지 쌓였나</h4>
+          <p>임상 유용성을 뒷받침하는 경험적 근거가 아직 제한적이고 완료된 무작위 시험이 소수. MI-GENES(NCT01936675)에서 PRS를 합친 위험을 받은 군이 6개월 시점 LDL 콜레스테롤이 유의하게 낮았고, 사후 분석에서 10년 주요 심혈관 사건률도 낮았음 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a> · 관상동맥질환 PRS를 알려 준 군은 전통적 위험인자만 알려 준 군보다 statin 시작과 순응도가 높았음 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a> · 미국 WISDOM 시험의 위험기반군에서는 유방암 PRS를 넣은 모형이 전체 선별 횟수를 크게 바꾸지 않으면서 40–49세 여성의 14%, 50–74세의 10%에서 유방촬영 권고를 바꿨음 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a> · 인구 전체 대상 유전검사를 승인한 나라는 아직 없지만 Estonia Biobank가 성인 약 20%의 유전정보를 갖고 결과 제공을 시작했고, 영국 NHS 10년 계획에 인구기반 polygenic risk scoring이 들어 있음 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a> · PRS를 계산할 genome-wide SNP array는 연구 규모에서 약 20달러, 임상에서 약 300달러 수준(2026년 근사치) <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a></p>
+        </div>
+        <div class="callout">
+          <h4>개인 수준의 불확실성</h4>
+          <p>개인별 PRS 추정에는 SNP 가중치의 오차 등 여러 불확실성이 있어 백분위 순위가 아주 넓은 구간을 가짐. 13개 형질 분석에서 HDL PRS 90th percentile인 사람의 95% credible interval이 41st–99th percentile에 걸쳤고, 표본이 작은 비European 집단에서는 이 불확실성이 더 클 가능성이 높음 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a> · 같은 질환에 서로 다른 방법 · 다른 원자료로 만든 PRS가 서로 다른 위험을 내는 것이 임상 도입의 선결 과제 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a> · 여러 PRS를 한꺼번에 계산하면 환자 상당수가 최소 한 질환에서 고위험으로 표시되어 해석과 후속 관리 부담이 생김 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a> · 위험 추정은 연령 · 동반질환 · 노출 변화와 방법 발전에 따라 바뀌므로 주기적 재평가가 필요하고, 그러려면 원 genotype 자료가 보존돼 있어야 함 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></p>
+        </div>
+        <div class="callout">
+          <h4>재현되게 보고하기</h4>
+          <p><a href="https://www.pgscatalog.org/" target="_blank" rel="noopener">PGS Catalog</a>는 점수 파일과 큐레이션한 메타데이터(점수 · 표본 · 성능 지표 · 논문)를 표준 형식으로 모음. 2020년 12월 기준 119편에서 657개 PGS <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a> · 새 PGS를 개발한 논문의 약 40%가 다른 표본에서 점수를 다시 계산할 만한 변이 정보를 싣지 않아 재사용이 불가능했음 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a> · 657개 가운데 개발과 평가가 모두 non-European ancestry에서 이루어진 점수는 11개 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a> · ClinGen Complex Disease working group과 함께 만든 Polygenic Risk Score Reporting Standards(PRS-RS)가 보고 항목을 정함 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a> · multi-ancestry 메타분석 결과와 함께 ancestry별 summary statistics를 공개하는 것이 더 나은 방법 개발에 중요함 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></p>
+        </div>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">PRS 읽기의 흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>PRS가 95th percentile이면 발병 확률 95% ✗</code><p class="why">100명 중 95명보다 점수가 높다는 뜻 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></p></div>
+          <div class="fix"><code>PRS가 높으면 발병이 정해짐 ✗</code><p class="why">수정 시점에 polygenic risk가 고정되더라도 운명이 정해지지는 않음. 건강한 생활습관이 관상동맥질환 위험을 낮춤 <a class="src" href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener">Hunter 2026</a>. 반대로 가족력이 있는데 PRS가 높지 않은 환자가 잘못 안심할 수도 있음 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a></p></div>
+          <div class="fix"><code>AUC가 0.7 수준이면 쓸 데가 없음 ✗</code><p class="why">AUC는 기저 발생률을 반영하지 않고 상위 백분위의 enrichment를 담지 못함 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a> · <a href="#evaluate">그림 4</a></p></div>
+          <div class="fix"><code>상위 분위 odds ratio를 다른 집단에 그대로 ✗</code><p class="why">순위 기반 위험 분류는 PRS 분포를 어느 reference population에서 정의했는지에 의존함 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a> · <a href="#ancestry">그림 5</a></p></div>
+          <div class="fix"><code>race를 ancestry 대용으로 써도 됨 ✗</code><p class="why">race는 사회적으로 구성된 범주. 사회환경 요인과 genetic ancestry 양쪽에 상관되어 confounding을 만듦 <a class="src" href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener">Kachuri 2024</a></p></div>
+          <div class="fix"><code>자기 코호트로 만든 PRS를 같은 코호트에 적용 ✗</code><p class="why">과적합이 생김. 학습 · 검증 · 시험 표본을 겹치지 않게 나눔 <a class="src" href="https://doi.org/10.1038/s41576-020-0224-1" target="_blank" rel="noopener">Li 2020</a> <a class="src" href="https://doi.org/10.1038/s41588-022-01054-7" target="_blank" rel="noopener">Ruan 2022</a></p></div>
+          <div class="fix"><code>empirical P-value를 받으면 R²도 보정됨 ✗</code><p class="why">permutation은 Type 1 error rate만 통제함 <a class="src" href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener">Choi 2019</a></p></div>
+          <div class="fix"><code>genome-wide 유의 SNP만 넣는 쪽이 안전 ✗</code><p class="why">polygenicity가 높은 형질에서는 역치 아래 변이를 훨씬 많이 넣을 때 성능이 좋아짐 <a class="src" href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener">Kullo 2025</a> · <a href="#weights">그림 2</a></p></div>
+          <div class="fix"><code>PRS를 집단 사이 평균 비교에 씀 ✗</code><p class="why">PGS로 집단 간 차이를 평가하는 연구에서 부정확한 해석이 나올 수 있음 <a class="src" href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener">Lambert 2021</a></p></div>
+          <div class="fix"><code>WGS로 바꾸면 PRS가 크게 좋아짐 ✗</code><p class="why">현재 GWAS summary statistics 자체가 대부분 imputed array genotype에서 나와서, 최적 array를 쓰면 WGS 기반 점수와 백분위 차이가 대부분 5 미만 <a class="src" href="https://doi.org/10.1038/s41598-022-22215-y" target="_blank" rel="noopener">Nguyen 2022</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">polygenic risk score · PRS · polygenic score · PGS · genetic risk score · GRS · genomic risk score · 다유전자 위험점수 · weighted sum · scoring file · dosage · best-guess genotype · clumping · thresholding · C+T · P+T · PRSice · PRSice-2 · LDpred · LDpred2 · LDpred2-inf · LDpred2-auto · spike-and-slab · PRS-CS · PRS-CSx · continuous shrinkage · SBayesR · lassosum · shrinkage · posterior mean · infinitesimal model · HapMap3 · PGS Catalog · PRS-RS · incremental R² · AUC · Nagelkerke R² · liability scale · odds ratio by decile · strata plot · calibration · net reclassification index · decision curve analysis · transferability · cross-ancestry · multi-ancestry · genetic distance · absolute risk · percentile rank · BOADICEA · CanRisk</p></details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>1분 요약</h3><div class="related-list">
+          <a href="../index.html#article/prs">Polygenic risk score 용어 카드 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="genetic-correlation.html">Heritability · genetic correlation (그림) →</a>
+          <a href="../02-association/manhattan.html">Manhattan · QQ · LD Score (그림) →</a>
+          <a href="../01-genetics/ld.html">Linkage disequilibrium (그림) →</a>
+          <a href="fine-mapping.html">Fine-mapping (그림) →</a>
+          <a href="../index.html#article/ancestry">Ancestry · population structure →</a>
+          <a href="../index.html#article/imputation">Imputation →</a>
+          <a href="../index.html#article/mr">Mendelian randomization →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://www.pgscatalog.org/" target="_blank" rel="noopener noreferrer">PGS Catalog ↗</a>
+          <a href="https://choishingwan.github.io/PRSice/" target="_blank" rel="noopener noreferrer">PRSice-2 (C+T) ↗</a>
+          <a href="https://privefl.github.io/bigsnpr/articles/LDpred2.html" target="_blank" rel="noopener noreferrer">LDpred2 (bigsnpr) ↗</a>
+          <a href="https://github.com/getian107/PRScs" target="_blank" rel="noopener noreferrer">PRS-CS (GitHub) ↗</a>
+          <a href="https://github.com/getian107/PRScsx" target="_blank" rel="noopener noreferrer">PRS-CSx (GitHub) ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener noreferrer">Choi 2019, GigaScience — PRSice-2 (C+T) ↗</a>
+          <a href="https://doi.org/10.1038/s41467-019-09718-5" target="_blank" rel="noopener noreferrer">Ge 2019, Nat Commun — PRS-CS ↗</a>
+          <a href="https://doi.org/10.1093/bioinformatics/btaa1029" target="_blank" rel="noopener noreferrer">Privé 2020, Bioinformatics — LDpred2 ↗</a>
+          <a href="https://doi.org/10.1038/s41588-021-00783-5" target="_blank" rel="noopener noreferrer">Lambert 2021, Nat Genet — PGS Catalog ↗</a>
+          <a href="https://doi.org/10.1038/s41588-022-01054-7" target="_blank" rel="noopener noreferrer">Ruan 2022, Nat Genet — PRS-CSx ↗</a>
+          <a href="https://doi.org/10.1038/s41576-023-00637-2" target="_blank" rel="noopener noreferrer">Kachuri 2024, Nat Rev Genet — transferability ↗</a>
+          <a href="https://doi.org/10.1038/s41576-025-00900-8" target="_blank" rel="noopener noreferrer">Kullo 2025, Nat Rev Genet — clinical use ↗</a>
+          <a href="https://doi.org/10.1056/NEJMra2413201" target="_blank" rel="noopener noreferrer">Hunter 2026, NEJM — clinical uses ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../gwas-fig.js"></script>
+</body>
+</html>

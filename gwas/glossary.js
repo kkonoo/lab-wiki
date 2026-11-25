@@ -43,7 +43,18 @@
     "pleiotropy": { key: "pleiotropy", definition: "변이 하나가 여러 형질에 영향을 주는 것." },
     "liability": { key: "liability", definition: "질병으로 이어지는 연속적인 소인. 문턱을 넘으면 발병한다고 보는 liability threshold 모형의 척도." },
     "assortative mating": { key: "assortative-mating", definition: "비슷한 형질을 가진 사람끼리 짝을 짓는 것. 유전 분산과 genetic correlation 추정치를 키움." },
-    "collider bias": { key: "collider-bias", definition: "두 변수가 함께 영향을 주는 제3의 변수(예: 연구 참여)로 표본을 고를 때 생기는 가짜 상관." }
+    "collider bias": { key: "collider-bias", definition: "두 변수가 함께 영향을 주는 제3의 변수(예: 연구 참여)로 표본을 고를 때 생기는 가짜 상관." },
+    "polygenic risk score": { key: "prs", definition: "개인의 genotype에 GWAS에서 추정한 효과를 곱해 모두 더한 점수. 유전 소인을 값 하나로 요약함." },
+    "polygenic score": { key: "prs", definition: "개인의 genotype에 GWAS에서 추정한 효과를 곱해 모두 더한 점수. 유전 소인을 값 하나로 요약함." },
+    "prs": { key: "prs", definition: "개인의 genotype에 GWAS에서 추정한 효과를 곱해 모두 더한 점수. 유전 소인을 값 하나로 요약함." },
+    "pgs": { key: "prs", definition: "개인의 genotype에 GWAS에서 추정한 효과를 곱해 모두 더한 점수. 유전 소인을 값 하나로 요약함." },
+    "dosage": { key: "dosage", definition: "개인이 가진 효과 allele 개수. imputed genotype에서는 0과 2 사이 실수." },
+    "clumping": { key: "clumping", definition: "p가 가장 작은 variant를 고르고 그와 LD에 있는 이웃을 지우는 절차. C+T의 첫 단계." },
+    "shrinkage": { key: "shrinkage", definition: "추정한 효과를 0쪽으로 줄이는 것. 잡음이 섞인 작은 효과를 눌러 예측 정확도를 올림." },
+    "scoring file": { key: "scoring-file", definition: "점수를 다시 계산하는 데 필요한 최소 정보를 담은 파일. genome build · 위치 · 효과 allele · 가중치." },
+    "auc": { key: "auc", definition: "환자와 대조군을 가려내는 능력. 0.5가 무작위, 1이 완전 분류." },
+    "calibration": { key: "calibration", definition: "예측한 확률이 실제 발생 빈도와 맞는 정도." },
+    "transferability": { key: "transferability", definition: "한 집단에서 만든 점수가 다른 집단에서도 예측력을 유지하는 정도." }
   };
 
   /* (앞 경계)(용어)(뒤 경계) — 영문·숫자에 붙은 부분 일치는 잡지 않는다. 긴 용어가 먼저 맞도록 길이순 */
