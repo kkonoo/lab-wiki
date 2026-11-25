@@ -1,0 +1,2121 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Genotype imputation: array가 재는 것과 못 재는 것, Li–Stephens copying model로 참조 haplotype을 골라 빈칸을 채우는 원리, dosage와 INFO·r²의 뜻, minor allele frequency와 array 밀도와 reference panel이 정확도를 가르는 방식, pre-phasing에서 사후 QC까지의 순서, low-pass WGS라는 다른 길">
+  <title>측정하지 않은 변이를 어떻게 채우나? · GWAS</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/spa.css">
+  <link rel="stylesheet" href="../gwas.css">
+  <link rel="stylesheet" href="../../assets/css/article.css">
+  <link rel="stylesheet" href="../gwas-fig.css">
+</head>
+<body class="vpage" data-domain="gwas">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../index.html"><img class="mark" src="../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../index.html"><span>/ GWAS</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../gwas/index.html" aria-current="page">GWAS</a>
+        <a href="../../omics/index.html">Omics</a>
+        <a href="../../single-cell/index.html">Single-cell</a>
+        <a href="../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../disease/index.html">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../index.html">HaLab Wiki</a><span>›</span><a href="../index.html">GWAS</a><span>›</span><a href="../index.html#section/genetics">Genetics Basics</a><span>›</span>Genotype imputation</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">Genetics Basics — Genotype imputation</p>
+        <h1>측정하지 않은 변이를 어떻게 채우나?</h1>
+        <p class="definition">Genotype imputation: 참조 패널(reference panel)에서 관찰된 haplotype을 이용해, array로 측정하지 않은 변이의 genotype을 통계적으로 추론하는 절차 <a class="src" href="https://doi.org/10.1016/j.ajhg.2018.07.015" target="_blank" rel="noopener">Browning 2018</a>. array가 재는 것은 보통 30만–100만 개인데, 채워 넣으면 검정할 수 있는 변이가 100배 넘게 늘어남 <a class="src" href="https://doi.org/10.1038/ng.3656" target="_blank" rel="noopener">Das 2016</a> <a class="src" href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener">Bycroft 2018</a></p>
+
+        <!-- ───────── 1. 무엇을 재나 ───────── -->
+        <h2 id="why">array는 무엇을 재고 무엇을 못 재나<small>What an array measures</small></h2>
+        <p class="lede">genotyping array는 미리 고른 probe로 정해진 변이만 읽음. 그 변이들은 LD를 통해 주변을 대신 대표하도록 고른 tag SNP이고, 나머지는 측정 대상이 아님 <a class="src" href="https://doi.org/10.1038/s41598-022-22215-y" target="_blank" rel="noopener">Nguyen 2022</a></p>
+        <div class="cases">
+          <div style="--c:var(--theme)"><span class="lv">array</span><h4>싸고 많이, 대신 고른 것만</h4><p>UK Biobank Axiom array는 약 63만 개를 genome 전반 coverage용으로 깔고, 나머지를 rare·coding·관심 영역·형질 특이 marker에 배분했음 <a class="src" href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener">Bycroft 2018</a>. 실제 array는 약 29만 개(CytoSNP-12)에서 433만 개(Omni5)까지 <a class="src" href="https://doi.org/10.1038/s41598-022-22215-y" target="_blank" rel="noopener">Nguyen 2022</a></p></div>
+          <div style="--c:#2F6DB5"><span class="lv">WES</span><h4>단백질 코딩 영역만</h4><p>exon 중심이라 regulatory 변이와 intergenic 영역이 빠짐. GWAS 신호의 대부분이 비코딩 영역에 있다는 점과 어긋남</p></div>
+          <div style="--c:#B5525C"><span class="lv">WGS</span><h4>재지만 비쌈</h4><p>imputation 없이 바로 읽지만 표본당 비용이 큼. 그래서 대규모 코호트는 array + imputation, 또는 low-pass WGS + imputation으로 감 <a class="src" href="https://doi.org/10.1038/s41588-020-00756-0" target="_blank" rel="noopener">Rubinacci 2021</a>. 세 가지가 서열을 읽어 내는 방식 자체는 교재의 <a href="../../disease/genetics/01-genome/sequencing.html#platforms">시퀀싱 쪽</a></p></div>
+        </div>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>채워 넣으면 얼마나 늘어나나</th><th>값</th></tr></thead>
+            <tbody>
+              <tr><th>UK Biobank</th><td>직접 genotyping 805,426개 → imputation 후 약 9,600만 개(100배 이상). 최종 자료는 상염색체 93,095,623개 + X 염색체 3,963,705개 <a class="src" href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener">Bycroft 2018</a></td></tr>
+              <tr><th>외부 GWAS와의 겹침</th><td>QC 통과 array SNP 725,459개 가운데 외부 연구와 겹치는 것이 222,956개(31%) → imputed를 쓰면 2,121,036개 <a class="src" href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener">Choi 2019</a></td></tr>
+              <tr><th>필터 뒤에 남는 수</th><td>MAF &gt; 0.001 · info &gt; 0.3 기준으로 UK Biobank imputed 16,443,622개 대 genotyped 703,946개 <a class="src" href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener">Bycroft 2018</a></td></tr>
+              <tr><th>패널을 바꿨을 때</th><td>같은 자료를 phase 3로 다시 채우면 R² &gt; 0.3 변이가 17.0M(phase 3) 대 14.1M(phase 1) 대 2.4M(HapMap2). 희귀 변이에서 50% 이상, indel에서 70% 늘었음 <a class="src" href="https://doi.org/10.1038/nature15393" target="_blank" rel="noopener">1000G 2015</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>채우기가 하는 일은 세 가지. 검정할 변이 수를 늘려 검출력과 fine-mapping 해상도를 높이고, 서로 다른 array로 측정한 코호트를 공통 변이 집합으로 바꿔 메타분석을 가능하게 하고, 산발적 결측을 메움 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a> <a class="src" href="https://doi.org/10.1016/j.ajhg.2018.07.015" target="_blank" rel="noopener">Browning 2018</a></p>
+
+        <!-- ───────── 2. 원리 ───────── -->
+        <h2 id="copy">빈칸을 채우는 원리<small>Haplotype copying</small></h2>
+        <p class="lede">핵심 생각 하나. 측정한 marker의 패턴으로 내 haplotype이 참조 패널의 어느 haplotype과 긴 구간을 공유하는지 찾고, 그 구간의 측정되지 않은 allele을 베껴 옴 <a class="src" href="https://doi.org/10.1016/j.ajhg.2018.07.015" target="_blank" rel="noopener">Browning 2018</a></p>
+        <figure class="fig" id="fig-copy">
+          <div class="fig-scroll">
+<!--GEN:COPY-->
+<svg class="g-svg " viewBox="0 0 640 404" role="img" aria-labelledby="cpT cpD" xmlns="http://www.w3.org/2000/svg">
+<title id="cpT">imputation은 측정한 marker로 참조 하플로타입을 고른 뒤 나머지를 베낀다</title>
+<desc id="cpD">위쪽 일곱 줄은 참조 패널에서 사후확률이 높은 하플로타입이고, 칸이 색칠되어 있으면 비주요 allele이다. 오른쪽 막대가 그 하플로타입을 베낄 사후확률이며, 패널에 같은 하플로타입이 몇 벌 들어 있는지도 적었다. 파란 띠가 걸린 열이 array로 실제 측정한 marker다. 아래 세 줄은 한 사람의 하플로타입 하나다. 측정한 것, 채워 넣은 것, 그리고 비교용으로 숨겨 둔 정답이다. 채워 넣은 줄의 진하기가 그 marker에 비주요 allele이 있을 사후확률이고, 정답 줄과 견주면 어디가 맞고 어디가 흐릿한지 보인다.</desc>
+<text class="g-ttl" x="34" y="26">블록 하나 안에서 가장 닮은 참조 하플로타입을 찾는다<tspan class="g-sub" dx="8">색칠 = 비주요 allele</tspan></text>
+<text class="g-note dim" x="34" y="46">이 블록에는 marker 1,421개가 있고 그중 <tspan class="g-em">30개</tspan>만 array로 측정됨. 그림에는 측정한 것과 측정하지 않은 것을 번갈아 15칸만 추려 그림</text>
+<rect x="150.0" y="66" width="18.0" height="214.0" fill="#2F6DB5" opacity=".07"/>
+<text class="g-tick" x="159.0" y="78" text-anchor="middle" fill="#2F6DB5">●</text>
+<rect x="190.0" y="66" width="18.0" height="214.0" fill="#2F6DB5" opacity=".07"/>
+<text class="g-tick" x="199.0" y="78" text-anchor="middle" fill="#2F6DB5">●</text>
+<rect x="230.0" y="66" width="18.0" height="214.0" fill="#2F6DB5" opacity=".07"/>
+<text class="g-tick" x="239.0" y="78" text-anchor="middle" fill="#2F6DB5">●</text>
+<rect x="270.0" y="66" width="18.0" height="214.0" fill="#2F6DB5" opacity=".07"/>
+<text class="g-tick" x="279.0" y="78" text-anchor="middle" fill="#2F6DB5">●</text>
+<text class="g-hd" x="150" y="60">● = array로 측정한 marker</text>
+<text class="g-hd" x="138" y="90" text-anchor="end">참조 패널</text>
+<text class="g-note" x="138" y="104.0" text-anchor="end" fill="var(--text)">28벌</text>
+<rect x="150.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="170.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="190.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="210.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="230.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="250.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="270.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="290.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="310.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="330.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="350.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="370.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="390.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="410.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="430.0" y="92.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect class="g-bar" x="464.0" y="94.0" width="108.0" height="15.0" fill="var(--theme)"/>
+<text class="g-note" x="576.0" y="104.0">1.00</text>
+<text class="g-note" x="138" y="126.0" text-anchor="end" fill="var(--text)">26벌</text>
+<rect x="150.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="170.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="190.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="210.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="230.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="250.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="270.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="290.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="310.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="330.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="350.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="370.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="390.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="410.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="430.0" y="114.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect class="g-bar" x="464.0" y="116.0" width="1.0" height="15.0" fill="var(--theme)"/>
+<text class="g-note" x="469.0" y="126.0">0.00</text>
+<text class="g-note" x="138" y="148.0" text-anchor="end" fill="var(--text)">7벌</text>
+<rect x="150.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="170.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="190.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="210.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="230.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="250.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="270.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="290.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="310.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="330.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="350.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="370.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="390.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="410.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="430.0" y="136.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect class="g-bar" x="464.0" y="138.0" width="1.0" height="15.0" fill="var(--theme)"/>
+<text class="g-note" x="469.0" y="148.0">0.00</text>
+<text class="g-note" x="138" y="170.0" text-anchor="end" fill="#A3ABA6">89벌</text>
+<rect x="150.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="170.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="190.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="210.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="230.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="250.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="270.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="290.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="310.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="330.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="350.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="370.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="390.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="410.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="430.0" y="158.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect class="g-bar" x="464.0" y="160.0" width="1.0" height="15.0" fill="var(--theme)"/>
+<text class="g-note" x="469.0" y="170.0">0.00</text>
+<text class="g-note" x="138" y="192.0" text-anchor="end" fill="#A3ABA6">72벌</text>
+<rect x="150.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="170.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="190.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="210.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="230.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="250.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="270.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="290.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="310.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="330.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="350.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="370.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="390.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="410.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="430.0" y="180.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect class="g-bar" x="464.0" y="182.0" width="1.0" height="15.0" fill="var(--theme)"/>
+<text class="g-note" x="469.0" y="192.0">0.00</text>
+<text class="g-note" x="138" y="214.0" text-anchor="end" fill="#A3ABA6">63벌</text>
+<rect x="150.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="170.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="190.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="210.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="230.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="250.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="270.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="290.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="310.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="330.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="350.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="370.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="390.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="410.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="430.0" y="202.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect class="g-bar" x="464.0" y="204.0" width="1.0" height="15.0" fill="var(--theme)"/>
+<text class="g-note" x="469.0" y="214.0">0.00</text>
+<text class="g-note" x="138" y="236.0" text-anchor="end" fill="#A3ABA6">60벌</text>
+<rect x="150.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="170.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="190.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="210.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="230.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="250.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="270.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="290.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="310.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="330.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="350.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="370.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="390.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect x="410.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#EEF1EF" opacity="1"/>
+<rect x="430.0" y="224.0" width="18.0" height="19.0" rx="2" fill="#6B736E" opacity="0.75"/>
+<rect class="g-bar" x="464.0" y="226.0" width="1.0" height="15.0" fill="var(--theme)"/>
+<text class="g-note" x="469.0" y="236.0">0.00</text>
+<text class="g-hd" x="464.0" y="90">사후확률</text>
+<line class="g-ax" x1="50" x2="570.0" y1="252.0" y2="252.0"/>
+<text class="g-lab" x="138" y="272.0" text-anchor="end">측정한 것</text>
+<rect x="150.0" y="260.0" width="18.0" height="19.0" rx="2" fill="#2F6DB5" opacity="1.0"/>
+<text class="g-note dim" x="179.0" y="274.0" text-anchor="middle">·</text>
+<rect x="190.0" y="260.0" width="18.0" height="19.0" rx="2" fill="#2F6DB5" opacity="1.0"/>
+<text class="g-note dim" x="219.0" y="274.0" text-anchor="middle">·</text>
+<rect x="230.0" y="260.0" width="18.0" height="19.0" rx="2" fill="#2F6DB5" opacity="1.0"/>
+<text class="g-note dim" x="259.0" y="274.0" text-anchor="middle">·</text>
+<rect x="270.0" y="260.0" width="18.0" height="19.0" rx="2" fill="#2F6DB5" opacity="1.0"/>
+<text class="g-note dim" x="299.0" y="274.0" text-anchor="middle">·</text>
+<text class="g-note dim" x="319.0" y="274.0" text-anchor="middle">·</text>
+<text class="g-note dim" x="339.0" y="274.0" text-anchor="middle">·</text>
+<text class="g-note dim" x="359.0" y="274.0" text-anchor="middle">·</text>
+<text class="g-note dim" x="379.0" y="274.0" text-anchor="middle">·</text>
+<text class="g-note dim" x="399.0" y="274.0" text-anchor="middle">·</text>
+<text class="g-note dim" x="419.0" y="274.0" text-anchor="middle">·</text>
+<text class="g-note dim" x="439.0" y="274.0" text-anchor="middle">·</text>
+<text class="g-lab" x="138" y="300.0" text-anchor="end">채워 넣은 것</text>
+<rect x="150.0" y="288.0" width="18.0" height="19.0" rx="2" fill="none" stroke="#A3ABA6" stroke-dasharray="2 2"/>
+<rect x="170.0" y="288.0" width="18.0" height="19.0" rx="2" fill="var(--theme)" opacity="0.93"/>
+<rect x="190.0" y="288.0" width="18.0" height="19.0" rx="2" fill="none" stroke="#A3ABA6" stroke-dasharray="2 2"/>
+<rect x="210.0" y="288.0" width="18.0" height="19.0" rx="2" fill="var(--theme)" opacity="0.93"/>
+<rect x="230.0" y="288.0" width="18.0" height="19.0" rx="2" fill="none" stroke="#A3ABA6" stroke-dasharray="2 2"/>
+<rect x="250.0" y="288.0" width="18.0" height="19.0" rx="2" fill="var(--theme)" opacity="0.93"/>
+<rect x="270.0" y="288.0" width="18.0" height="19.0" rx="2" fill="none" stroke="#A3ABA6" stroke-dasharray="2 2"/>
+<rect x="290.0" y="288.0" width="18.0" height="19.0" rx="2" fill="var(--theme)" opacity="0.93"/>
+<rect x="310.0" y="288.0" width="18.0" height="19.0" rx="2" fill="var(--theme)" opacity="0.93"/>
+<rect x="330.0" y="288.0" width="18.0" height="19.0" rx="2" fill="var(--theme)" opacity="0.93"/>
+<rect x="350.0" y="288.0" width="18.0" height="19.0" rx="2" fill="var(--theme)" opacity="0.93"/>
+<rect x="370.0" y="288.0" width="18.0" height="19.0" rx="2" fill="var(--theme)" opacity="0.93"/>
+<rect x="390.0" y="288.0" width="18.0" height="19.0" rx="2" fill="var(--theme)" opacity="0.93"/>
+<rect x="410.0" y="288.0" width="18.0" height="19.0" rx="2" fill="var(--theme)" opacity="0.93"/>
+<rect x="430.0" y="288.0" width="18.0" height="19.0" rx="2" fill="var(--theme)" opacity="0.93"/>
+<text class="g-lab" x="138" y="328.0" text-anchor="end">숨겨 둔 정답</text>
+<rect x="150.0" y="316.0" width="18.0" height="19.0" rx="2" fill="none" stroke="#A3ABA6" stroke-dasharray="2 2"/>
+<rect x="170.0" y="316.0" width="18.0" height="19.0" rx="2" fill="#B5525C" opacity="0.8"/>
+<rect x="190.0" y="316.0" width="18.0" height="19.0" rx="2" fill="none" stroke="#A3ABA6" stroke-dasharray="2 2"/>
+<rect x="210.0" y="316.0" width="18.0" height="19.0" rx="2" fill="#B5525C" opacity="0.8"/>
+<rect x="230.0" y="316.0" width="18.0" height="19.0" rx="2" fill="none" stroke="#A3ABA6" stroke-dasharray="2 2"/>
+<rect x="250.0" y="316.0" width="18.0" height="19.0" rx="2" fill="#B5525C" opacity="0.8"/>
+<rect x="270.0" y="316.0" width="18.0" height="19.0" rx="2" fill="none" stroke="#A3ABA6" stroke-dasharray="2 2"/>
+<rect x="290.0" y="316.0" width="18.0" height="19.0" rx="2" fill="#B5525C" opacity="0.8"/>
+<rect x="310.0" y="316.0" width="18.0" height="19.0" rx="2" fill="#B5525C" opacity="0.8"/>
+<rect x="330.0" y="316.0" width="18.0" height="19.0" rx="2" fill="#B5525C" opacity="0.8"/>
+<rect x="350.0" y="316.0" width="18.0" height="19.0" rx="2" fill="#B5525C" opacity="0.8"/>
+<rect x="370.0" y="316.0" width="18.0" height="19.0" rx="2" fill="#B5525C" opacity="0.8"/>
+<rect x="390.0" y="316.0" width="18.0" height="19.0" rx="2" fill="#B5525C" opacity="0.8"/>
+<rect x="410.0" y="316.0" width="18.0" height="19.0" rx="2" fill="#B5525C" opacity="0.8"/>
+<rect x="430.0" y="316.0" width="18.0" height="19.0" rx="2" fill="#B5525C" opacity="0.8"/>
+<text class="g-note dim" x="34" y="360.0">사후확률이 한 하플로타입에 몰릴수록 채운 값이 0 또는 1에 붙음. 이 블록에서 유효 하플로타입 수 중앙값은 17.4개</text>
+</svg>
+<!--/GEN:COPY-->
+          </div>
+          <figcaption>그림 1 · 시뮬레이션한 <!--GEN:REGION-->60<!--/GEN:REGION--> Mb 구간 · 변이 <!--GEN:M_ALL-->480,105<!--/GEN:M_ALL-->개가 LD 블록 <!--GEN:NB-->618<!--/GEN:NB-->개에 들어 있고 블록마다 평균 <!--GEN:SNP_BLK-->777<!--/GEN:SNP_BLK-->개 · 이 블록은 marker <!--GEN:BLK_N-->1,421<!--/GEN:BLK_N-->개 가운데 <!--GEN:BLK_TYPED-->30<!--/GEN:BLK_TYPED-->개만 측정 · 참조 패널은 하플로타입 <!--GEN:PANEL0-->2,000<!--/GEN:PANEL0-->벌 · 위 세 줄은 사후확률이 높은 것, 아래 네 줄은 패널에 많이 들어 있지만 측정한 패턴이 맞지 않아 탈락한 것 · 이 블록에서 유효 하플로타입 수 중앙값 <!--GEN:EFF_MED-->17.4<!--/GEN:EFF_MED-->개</figcaption>
+        </figure>
+        <div class="cases">
+          <div style="--c:var(--theme)"><span class="lv">모형</span><h4>Li–Stephens copying model</h4><p>내 haplotype을 참조 haplotype들을 조각조각 베낀 모자이크로 보는 hidden Markov model. 상태 전이 확률은 유효집단크기 Ne, 두 marker 사이의 Morgan 거리, 참조 haplotype 수로 정하고, emission은 작은 오류율 ε로 다른 allele이 나올 확률을 둠 <a class="src" href="https://doi.org/10.1016/j.ajhg.2018.07.015" target="_blank" rel="noopener">Browning 2018</a></p></div>
+          <div style="--c:#2F6DB5"><span class="lv">출력</span><h4>state 확률의 합</h4><p>forward-backward로 각 state의 확률을 구한 뒤, 같은 allele을 가진 state의 확률을 더해 그 allele의 사후확률로 삼음 <a class="src" href="https://doi.org/10.1016/j.ajhg.2018.07.015" target="_blank" rel="noopener">Browning 2018</a></p></div>
+          <div style="--c:#6B736E"><span class="lv">축소</span><h4>같은 haplotype은 하나로</h4><p>구간 안에서 똑같은 참조 haplotype은 하나로 접어 HMM을 돌린 뒤 다시 펼침. 결과를 바꾸지 않고 계산량만 줄임 <a class="src" href="https://doi.org/10.1038/ng.3656" target="_blank" rel="noopener">Das 2016</a>. 위 그림의 '몇 벌'이 접힌 개수</p></div>
+        </div>
+        <p>이 쪽의 시뮬레이션은 블록 안에서 재조합이 없고 블록 사이는 자유롭게 끊기는 유전체를 쓰므로, 베낄 대상이 블록 안에서 바뀌지 않음. 그 덕에 forward-backward 없이 블록마다 사후분포를 정확히 계산할 수 있음. 실제 자료는 블록 경계가 또렷하지 않아 HMM이 필요함</p>
+        <div class="callout">
+          <h4>phasing이 먼저인 이유</h4>
+          <p>heterozygous locus가 하나 이하면 genotype에서 haplotype이 바로 정해지지만, 둘 이상이면 가능한 조합이 지수적으로 늘어남 <a class="src" href="https://doi.org/10.1038/nrg2361" target="_blank" rel="noopener">Slatkin 2008</a>. 그래서 코호트 전체를 먼저 phasing하고(pre-phasing) 그 뒤에 haplotype 하나씩 채움. 동시에 하면 비용이 참조 haplotype 수의 제곱에 비례하는데, 나눠 하면 선형으로 떨어짐 <a class="src" href="https://doi.org/10.1038/ng.3656" target="_blank" rel="noopener">Das 2016</a>. phasing 자체의 정확도는 UK Biobank 696 trio 기준 median switch error 0.229% <a class="src" href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener">Bycroft 2018</a> · phasing의 원리는 <a href="ld.html#haplotype">LD 쪽</a></p>
+        </div>
+
+        <!-- ───────── 3. dosage ───────── -->
+        <h2 id="dosage">채운 값은 숫자가 아니라 확률<small>Dosage &amp; INFO</small></h2>
+        <p class="lede">채운 결과는 0 · 1 · 2가 아니라 그 사이의 실수(dosage)임. best-guess로 반올림하면 저장은 줄지만 불확실성 정보를 버림 <a class="src" href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener">Choi 2019</a></p>
+        <figure class="fig" id="fig-dosage">
+          <div class="fig-scroll">
+<!--GEN:DOSAGE-->
+<svg class="g-svg " viewBox="0 0 900 372" role="img" aria-labelledby="dsT dsD" xmlns="http://www.w3.org/2000/svg">
+<title id="dsT">채워 넣은 genotype은 확률이고, INFO가 그 확신의 정도를 잰다</title>
+<desc id="dsD">왼쪽은 변이 하나에서 300명의 dosage를 가로축에 찍고, 숨겨 둔 정답 genotype에 따라 세 줄로 나눈 것이다. 정답이 0인 사람은 대부분 0 근처에 모이지만 일부가 오른쪽으로 번지고, 정답이 1인 사람도 0과 1 사이에 널리 퍼진다. 세로 점선은 best-guess로 바꿀 때의 경계다. 오른쪽은 변이마다 INFO를 가로축에, 숨겨 둔 정답으로 계산한 참 r²를 세로축에 찍은 산점도다. 점들이 대각선 가까이 모여, 정답을 모르는 채로 계산한 INFO가 실제 정확도를 잘 맞힌다는 것을 보여 준다.</desc>
+<text class="g-ttl" x="34" y="26">채운 값은 0 · 1 · 2가 아니라 그 사이의 실수<tspan class="g-sub" dx="8">변이 하나 · 300명</tspan></text>
+<text class="g-note dim" x="34" y="46">MAF 26.0% · 참 r² 0.57 · INFO 0.62</text>
+<line class="g-grid" x1="92.0" x2="92.0" y1="70" y2="250"/>
+<text class="g-tick" x="92.0" y="266" text-anchor="middle">0</text>
+<line class="g-grid" x1="186.5" x2="186.5" y1="70" y2="250"/>
+<text class="g-tick" x="186.5" y="266" text-anchor="middle">0.5</text>
+<line class="g-grid" x1="281.0" x2="281.0" y1="70" y2="250"/>
+<text class="g-tick" x="281.0" y="266" text-anchor="middle">1</text>
+<line class="g-grid" x1="375.5" x2="375.5" y1="70" y2="250"/>
+<text class="g-tick" x="375.5" y="266" text-anchor="middle">1.5</text>
+<line class="g-grid" x1="470.0" x2="470.0" y1="70" y2="250"/>
+<text class="g-tick" x="470.0" y="266" text-anchor="middle">2</text>
+<line class="g-ax" x1="92" x2="470" y1="250" y2="250"/>
+<text class="g-lab" x="281.0" y="286" text-anchor="middle">채워 넣은 dosage</text>
+<text class="g-note" x="82" y="118.0" text-anchor="end">정답 0</text>
+<text class="g-note dim" x="82" y="133.0" text-anchor="end">156명</text>
+<line class="g-ax" x1="92" x2="470" y1="132.0" y2="132.0"/>
+<polyline points="92.0,132.0 92.0,88.0 101.5,88.0 101.5,132.0 110.9,132.0 110.9,132.0 120.4,132.0 120.4,132.0 129.8,132.0 129.8,132.0 139.2,132.0 139.2,132.0 148.7,132.0 148.7,132.0 158.2,132.0 158.2,132.0 167.6,132.0 167.6,132.0 177.1,132.0 177.1,132.0 186.5,132.0 186.5,132.0 195.9,132.0 195.9,132.0 205.4,132.0 205.4,131.6 214.9,131.6 214.9,113.3 224.3,113.3 224.3,132.0 233.8,132.0 233.8,132.0 243.2,132.0 243.2,132.0 252.7,132.0 252.7,132.0 262.1,132.0 262.1,132.0 271.6,132.0 271.6,132.0 281.0,132.0 281.0,132.0 290.5,132.0 290.5,132.0 299.9,132.0 299.9,132.0 309.4,132.0 309.4,132.0 318.8,132.0 318.8,132.0 328.2,132.0 328.2,132.0 337.7,132.0 337.7,130.3 347.1,130.3 347.1,132.0 356.6,132.0 356.6,132.0 366.1,132.0 366.1,132.0 375.5,132.0 375.5,132.0 384.9,132.0 384.9,132.0 394.4,132.0 394.4,132.0 403.9,132.0 403.9,132.0 413.3,132.0 413.3,132.0 422.8,132.0 422.8,132.0 432.2,132.0 432.2,132.0 441.7,132.0 441.7,132.0 451.1,132.0 451.1,132.0 460.6,132.0 460.6,132.0 470.0,132.0 470.0,132.0" fill="#6B736E" opacity=".5" stroke="#6B736E" stroke-width="1.2"/>
+<line class="g-thr" x1="92.0" x2="92.0" y1="84.0" y2="132.0"/>
+<text class="g-note" x="82" y="176.0" text-anchor="end">정답 1</text>
+<text class="g-note dim" x="82" y="191.0" text-anchor="end">128명</text>
+<line class="g-ax" x1="92" x2="470" y1="190.0" y2="190.0"/>
+<polyline points="92.0,190.0 92.0,189.6 101.5,189.6 101.5,190.0 110.9,190.0 110.9,190.0 120.4,190.0 120.4,190.0 129.8,190.0 129.8,190.0 139.2,190.0 139.2,190.0 148.7,190.0 148.7,190.0 158.2,190.0 158.2,190.0 167.6,190.0 167.6,190.0 177.1,190.0 177.1,190.0 186.5,190.0 186.5,190.0 195.9,190.0 195.9,190.0 205.4,190.0 205.4,190.0 214.9,190.0 214.9,148.5 224.3,148.5 224.3,190.0 233.8,190.0 233.8,190.0 243.2,190.0 243.2,190.0 252.7,190.0 252.7,190.0 262.1,190.0 262.1,190.0 271.6,190.0 271.6,181.7 281.0,181.7 281.0,190.0 290.5,190.0 290.5,190.0 299.9,190.0 299.9,190.0 309.4,190.0 309.4,190.0 318.8,190.0 318.8,190.0 328.2,190.0 328.2,189.6 337.7,189.6 337.7,187.5 347.1,187.5 347.1,190.0 356.6,190.0 356.6,190.0 366.1,190.0 366.1,190.0 375.5,190.0 375.5,190.0 384.9,190.0 384.9,190.0 394.4,190.0 394.4,190.0 403.9,190.0 403.9,190.0 413.3,190.0 413.3,190.0 422.8,190.0 422.8,190.0 432.2,190.0 432.2,190.0 441.7,190.0 441.7,190.0 451.1,190.0 451.1,190.0 460.6,190.0 460.6,190.0 470.0,190.0 470.0,190.0" fill="#B5525C" opacity=".5" stroke="#B5525C" stroke-width="1.2"/>
+<line class="g-thr" x1="281.0" x2="281.0" y1="142.0" y2="190.0"/>
+<text class="g-note" x="82" y="234.0" text-anchor="end">정답 2</text>
+<text class="g-note dim" x="82" y="249.0" text-anchor="end">16명</text>
+<line class="g-ax" x1="92" x2="470" y1="248.0" y2="248.0"/>
+<polyline points="92.0,248.0 92.0,248.0 101.5,248.0 101.5,248.0 110.9,248.0 110.9,248.0 120.4,248.0 120.4,248.0 129.8,248.0 129.8,248.0 139.2,248.0 139.2,248.0 148.7,248.0 148.7,248.0 158.2,248.0 158.2,248.0 167.6,248.0 167.6,248.0 177.1,248.0 177.1,248.0 186.5,248.0 186.5,248.0 195.9,248.0 195.9,248.0 205.4,248.0 205.4,248.0 214.9,248.0 214.9,248.0 224.3,248.0 224.3,248.0 233.8,248.0 233.8,248.0 243.2,248.0 243.2,248.0 252.7,248.0 252.7,248.0 262.1,248.0 262.1,248.0 271.6,248.0 271.6,248.0 281.0,248.0 281.0,248.0 290.5,248.0 290.5,248.0 299.9,248.0 299.9,248.0 309.4,248.0 309.4,248.0 318.8,248.0 318.8,248.0 328.2,248.0 328.2,248.0 337.7,248.0 337.7,243.0 347.1,243.0 347.1,248.0 356.6,248.0 356.6,248.0 366.1,248.0 366.1,248.0 375.5,248.0 375.5,248.0 384.9,248.0 384.9,248.0 394.4,248.0 394.4,248.0 403.9,248.0 403.9,246.3 413.3,246.3 413.3,248.0 422.8,248.0 422.8,248.0 432.2,248.0 432.2,248.0 441.7,248.0 441.7,248.0 451.1,248.0 451.1,248.0 460.6,248.0 460.6,248.0 470.0,248.0 470.0,248.0" fill="#6A3D9A" opacity=".5" stroke="#6A3D9A" stroke-width="1.2"/>
+<line class="g-thr" x1="470.0" x2="470.0" y1="200.0" y2="248.0"/>
+<line class="g-vline thin" x1="186.5" x2="186.5" y1="68" y2="250" stroke="#D9822B"/>
+<text class="g-note" x="181.5" y="62" text-anchor="middle" fill="#D9822B">best-guess 경계</text>
+<line class="g-vline thin" x1="375.5" x2="375.5" y1="68" y2="250" stroke="#D9822B"/>
+<text class="g-note dim" x="92" y="302">세로 점선(회색) = 그 줄의 정답 위치 · 주황 점선 = best-guess로 반올림하는 경계. 이 변이에서 best-guess가 정답과 어긋나는 사람 <tspan class="g-em">21.0%</tspan></text>
+<text class="g-ttl" x="524" y="26">INFO는 참 r²를 거의 그대로 맞힌다<tspan class="g-sub" dx="8">채운 변이 461,693개</tspan></text>
+<line class="g-grid" x1="560" x2="866" y1="250.0" y2="250.0"/>
+<text class="g-tick" x="553" y="253.5" text-anchor="end">0</text>
+<text class="g-tick" x="560.0" y="266" text-anchor="middle">0</text>
+<line class="g-grid" x1="560" x2="866" y1="161.0" y2="161.0"/>
+<text class="g-tick" x="553" y="164.5" text-anchor="end">0.5</text>
+<text class="g-tick" x="713.0" y="266" text-anchor="middle">0.5</text>
+<line class="g-grid" x1="560" x2="866" y1="72.0" y2="72.0"/>
+<text class="g-tick" x="553" y="75.5" text-anchor="end">1</text>
+<text class="g-tick" x="866.0" y="266" text-anchor="middle">1</text>
+<line class="g-ax" x1="560" x2="866" y1="250" y2="250"/>
+<line class="g-ax" x1="560" x2="560" y1="72" y2="250"/>
+<line class="g-eq" x1="560.0" y1="250.0" x2="866.0" y2="72.0"/>
+<g fill="#D9822B" opacity=".3">
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="572" cy="243" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="577" cy="236" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="563" cy="248" r="1.7"/>
+<circle cx="848" cy="86" r="1.7"/>
+<circle cx="847" cy="90" r="1.7"/>
+<circle cx="863" cy="74" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="567" cy="245" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="617" cy="155" r="1.7"/>
+<circle cx="853" cy="88" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="721" cy="155" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="857" cy="81" r="1.7"/>
+<circle cx="763" cy="124" r="1.7"/>
+<circle cx="662" cy="212" r="1.7"/>
+<circle cx="858" cy="79" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="865" cy="75" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="827" cy="73" r="1.7"/>
+<circle cx="865" cy="75" r="1.7"/>
+<circle cx="865" cy="75" r="1.7"/>
+<circle cx="663" cy="178" r="1.7"/>
+<circle cx="842" cy="72" r="1.7"/>
+<circle cx="862" cy="78" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="565" cy="242" r="1.7"/>
+<circle cx="638" cy="200" r="1.7"/>
+<circle cx="564" cy="245" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="683" cy="154" r="1.7"/>
+<circle cx="572" cy="242" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="848" cy="72" r="1.7"/>
+<circle cx="568" cy="248" r="1.7"/>
+<circle cx="847" cy="72" r="1.7"/>
+<circle cx="705" cy="193" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="841" cy="95" r="1.7"/>
+<circle cx="859" cy="79" r="1.7"/>
+<circle cx="863" cy="74" r="1.7"/>
+<circle cx="855" cy="72" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="864" cy="76" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="855" cy="91" r="1.7"/>
+<circle cx="796" cy="110" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="862" cy="77" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="842" cy="72" r="1.7"/>
+<circle cx="744" cy="142" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="78" r="1.7"/>
+<circle cx="845" cy="87" r="1.7"/>
+<circle cx="611" cy="215" r="1.7"/>
+<circle cx="844" cy="92" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="863" cy="74" r="1.7"/>
+<circle cx="857" cy="77" r="1.7"/>
+<circle cx="602" cy="226" r="1.7"/>
+<circle cx="675" cy="217" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="856" cy="89" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="750" cy="140" r="1.7"/>
+<circle cx="754" cy="72" r="1.7"/>
+<circle cx="864" cy="73" r="1.7"/>
+<circle cx="588" cy="224" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="847" cy="100" r="1.7"/>
+<circle cx="863" cy="78" r="1.7"/>
+<circle cx="822" cy="72" r="1.7"/>
+<circle cx="655" cy="183" r="1.7"/>
+<circle cx="862" cy="75" r="1.7"/>
+<circle cx="594" cy="235" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="852" cy="85" r="1.7"/>
+<circle cx="863" cy="74" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="595" cy="236" r="1.7"/>
+<circle cx="601" cy="224" r="1.7"/>
+<circle cx="738" cy="144" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="857" cy="72" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="841" cy="100" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="865" cy="77" r="1.7"/>
+<circle cx="618" cy="209" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="858" cy="83" r="1.7"/>
+<circle cx="562" cy="241" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="842" cy="72" r="1.7"/>
+<circle cx="611" cy="220" r="1.7"/>
+<circle cx="838" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="852" cy="95" r="1.7"/>
+<circle cx="573" cy="246" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="725" cy="159" r="1.7"/>
+<circle cx="574" cy="244" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="744" cy="145" r="1.7"/>
+<circle cx="625" cy="207" r="1.7"/>
+<circle cx="573" cy="244" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="864" cy="76" r="1.7"/>
+<circle cx="562" cy="249" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="626" cy="198" r="1.7"/>
+<circle cx="844" cy="92" r="1.7"/>
+<circle cx="864" cy="75" r="1.7"/>
+<circle cx="858" cy="98" r="1.7"/>
+<circle cx="624" cy="205" r="1.7"/>
+<circle cx="652" cy="199" r="1.7"/>
+<circle cx="602" cy="226" r="1.7"/>
+<circle cx="851" cy="72" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="589" cy="235" r="1.7"/>
+<circle cx="684" cy="187" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="711" cy="170" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="854" cy="84" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="571" cy="246" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="852" cy="86" r="1.7"/>
+<circle cx="844" cy="72" r="1.7"/>
+<circle cx="599" cy="231" r="1.7"/>
+<circle cx="601" cy="212" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="720" cy="165" r="1.7"/>
+<circle cx="852" cy="85" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="719" cy="144" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="842" cy="95" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="858" cy="86" r="1.7"/>
+<circle cx="862" cy="75" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="566" cy="247" r="1.7"/>
+<circle cx="848" cy="72" r="1.7"/>
+<circle cx="576" cy="244" r="1.7"/>
+<circle cx="859" cy="78" r="1.7"/>
+<circle cx="848" cy="85" r="1.7"/>
+<circle cx="858" cy="79" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="865" cy="75" r="1.7"/>
+<circle cx="615" cy="216" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="859" cy="81" r="1.7"/>
+<circle cx="647" cy="209" r="1.7"/>
+<circle cx="849" cy="104" r="1.7"/>
+<circle cx="844" cy="72" r="1.7"/>
+<circle cx="760" cy="141" r="1.7"/>
+<circle cx="851" cy="72" r="1.7"/>
+<circle cx="858" cy="72" r="1.7"/>
+<circle cx="863" cy="74" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="851" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="566" cy="244" r="1.7"/>
+<circle cx="682" cy="195" r="1.7"/>
+<circle cx="857" cy="80" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="846" cy="90" r="1.7"/>
+<circle cx="859" cy="78" r="1.7"/>
+<circle cx="833" cy="88" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="845" cy="104" r="1.7"/>
+<circle cx="768" cy="129" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="861" cy="76" r="1.7"/>
+<circle cx="588" cy="234" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="620" cy="176" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="575" cy="239" r="1.7"/>
+<circle cx="581" cy="235" r="1.7"/>
+<circle cx="584" cy="232" r="1.7"/>
+<circle cx="608" cy="222" r="1.7"/>
+<circle cx="859" cy="76" r="1.7"/>
+<circle cx="844" cy="92" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="864" cy="75" r="1.7"/>
+<circle cx="576" cy="243" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="851" cy="72" r="1.7"/>
+<circle cx="858" cy="72" r="1.7"/>
+<circle cx="780" cy="90" r="1.7"/>
+<circle cx="837" cy="87" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="598" cy="231" r="1.7"/>
+<circle cx="836" cy="98" r="1.7"/>
+<circle cx="666" cy="189" r="1.7"/>
+<circle cx="682" cy="199" r="1.7"/>
+<circle cx="566" cy="250" r="1.7"/>
+<circle cx="861" cy="77" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="833" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="844" cy="72" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="855" cy="72" r="1.7"/>
+<circle cx="575" cy="242" r="1.7"/>
+<circle cx="754" cy="136" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="864" cy="76" r="1.7"/>
+<circle cx="796" cy="103" r="1.7"/>
+<circle cx="745" cy="131" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="864" cy="73" r="1.7"/>
+<circle cx="616" cy="225" r="1.7"/>
+<circle cx="864" cy="73" r="1.7"/>
+<circle cx="614" cy="215" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="856" cy="85" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="717" cy="161" r="1.7"/>
+<circle cx="784" cy="119" r="1.7"/>
+<circle cx="858" cy="72" r="1.7"/>
+<circle cx="848" cy="96" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="571" cy="239" r="1.7"/>
+<circle cx="863" cy="74" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="578" cy="240" r="1.7"/>
+<circle cx="648" cy="193" r="1.7"/>
+<circle cx="773" cy="108" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="848" cy="89" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="864" cy="77" r="1.7"/>
+<circle cx="711" cy="167" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="815" cy="162" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="854" cy="82" r="1.7"/>
+<circle cx="587" cy="240" r="1.7"/>
+<circle cx="855" cy="72" r="1.7"/>
+<circle cx="574" cy="239" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="850" cy="96" r="1.7"/>
+<circle cx="857" cy="77" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="856" cy="82" r="1.7"/>
+<circle cx="848" cy="72" r="1.7"/>
+<circle cx="626" cy="203" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="800" cy="119" r="1.7"/>
+<circle cx="651" cy="210" r="1.7"/>
+<circle cx="702" cy="165" r="1.7"/>
+<circle cx="858" cy="80" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="633" cy="204" r="1.7"/>
+<circle cx="857" cy="79" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="833" cy="94" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="852" cy="78" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="842" cy="95" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="577" cy="239" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="609" cy="209" r="1.7"/>
+<circle cx="725" cy="200" r="1.7"/>
+<circle cx="833" cy="102" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="703" cy="170" r="1.7"/>
+<circle cx="863" cy="78" r="1.7"/>
+<circle cx="567" cy="240" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="583" cy="240" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="744" cy="159" r="1.7"/>
+<circle cx="624" cy="221" r="1.7"/>
+<circle cx="576" cy="202" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="658" cy="191" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="843" cy="90" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="856" cy="81" r="1.7"/>
+<circle cx="800" cy="96" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="736" cy="146" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="577" cy="240" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="836" cy="98" r="1.7"/>
+<circle cx="660" cy="205" r="1.7"/>
+<circle cx="816" cy="72" r="1.7"/>
+<circle cx="860" cy="77" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="623" cy="219" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="656" cy="179" r="1.7"/>
+<circle cx="642" cy="209" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="862" cy="75" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="74" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="834" cy="90" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="798" cy="103" r="1.7"/>
+<circle cx="788" cy="106" r="1.7"/>
+<circle cx="820" cy="104" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="574" cy="241" r="1.7"/>
+<circle cx="833" cy="80" r="1.7"/>
+<circle cx="849" cy="85" r="1.7"/>
+<circle cx="600" cy="209" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="570" cy="247" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="581" cy="236" r="1.7"/>
+<circle cx="864" cy="78" r="1.7"/>
+<circle cx="682" cy="173" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="577" cy="230" r="1.7"/>
+<circle cx="607" cy="230" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="864" cy="76" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="862" cy="75" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="864" cy="75" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="858" cy="75" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="611" cy="230" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="624" cy="210" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="864" cy="73" r="1.7"/>
+<circle cx="857" cy="72" r="1.7"/>
+<circle cx="593" cy="231" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="812" cy="104" r="1.7"/>
+<circle cx="851" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="606" cy="195" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="847" cy="90" r="1.7"/>
+<circle cx="731" cy="108" r="1.7"/>
+<circle cx="732" cy="136" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="565" cy="245" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="864" cy="79" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="616" cy="208" r="1.7"/>
+<circle cx="584" cy="228" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="862" cy="75" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="821" cy="131" r="1.7"/>
+<circle cx="854" cy="89" r="1.7"/>
+<circle cx="616" cy="231" r="1.7"/>
+<circle cx="861" cy="76" r="1.7"/>
+<circle cx="861" cy="77" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="578" cy="230" r="1.7"/>
+<circle cx="859" cy="84" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="662" cy="203" r="1.7"/>
+<circle cx="854" cy="90" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="589" cy="235" r="1.7"/>
+<circle cx="743" cy="163" r="1.7"/>
+<circle cx="779" cy="127" r="1.7"/>
+<circle cx="758" cy="142" r="1.7"/>
+<circle cx="801" cy="107" r="1.7"/>
+<circle cx="853" cy="84" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="733" cy="134" r="1.7"/>
+<circle cx="848" cy="89" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="852" cy="72" r="1.7"/>
+<circle cx="566" cy="246" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="576" cy="242" r="1.7"/>
+<circle cx="738" cy="155" r="1.7"/>
+<circle cx="706" cy="163" r="1.7"/>
+<circle cx="618" cy="219" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="565" cy="246" r="1.7"/>
+<circle cx="811" cy="103" r="1.7"/>
+<circle cx="641" cy="215" r="1.7"/>
+<circle cx="586" cy="237" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="864" cy="76" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="657" cy="194" r="1.7"/>
+<circle cx="577" cy="226" r="1.7"/>
+<circle cx="844" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="697" cy="168" r="1.7"/>
+<circle cx="761" cy="149" r="1.7"/>
+<circle cx="792" cy="106" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="561" cy="249" r="1.7"/>
+<circle cx="850" cy="87" r="1.7"/>
+<circle cx="816" cy="101" r="1.7"/>
+<circle cx="660" cy="159" r="1.7"/>
+<circle cx="827" cy="102" r="1.7"/>
+<circle cx="846" cy="90" r="1.7"/>
+<circle cx="700" cy="168" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="854" cy="82" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="863" cy="78" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="858" cy="72" r="1.7"/>
+<circle cx="641" cy="229" r="1.7"/>
+<circle cx="579" cy="239" r="1.7"/>
+<circle cx="799" cy="119" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="661" cy="191" r="1.7"/>
+<circle cx="602" cy="231" r="1.7"/>
+<circle cx="699" cy="178" r="1.7"/>
+<circle cx="726" cy="148" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="564" cy="245" r="1.7"/>
+<circle cx="826" cy="108" r="1.7"/>
+<circle cx="748" cy="140" r="1.7"/>
+<circle cx="584" cy="233" r="1.7"/>
+<circle cx="805" cy="105" r="1.7"/>
+<circle cx="658" cy="186" r="1.7"/>
+<circle cx="861" cy="77" r="1.7"/>
+<circle cx="612" cy="228" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="838" cy="72" r="1.7"/>
+<circle cx="854" cy="90" r="1.7"/>
+<circle cx="644" cy="197" r="1.7"/>
+<circle cx="864" cy="77" r="1.7"/>
+<circle cx="797" cy="120" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="823" cy="72" r="1.7"/>
+<circle cx="844" cy="92" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="671" cy="217" r="1.7"/>
+<circle cx="865" cy="75" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="572" cy="239" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="750" cy="128" r="1.7"/>
+<circle cx="865" cy="75" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="856" cy="82" r="1.7"/>
+<circle cx="584" cy="242" r="1.7"/>
+<circle cx="827" cy="94" r="1.7"/>
+<circle cx="848" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="852" cy="93" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="599" cy="217" r="1.7"/>
+<circle cx="734" cy="137" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="644" cy="213" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="615" cy="228" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="580" cy="236" r="1.7"/>
+<circle cx="848" cy="72" r="1.7"/>
+<circle cx="732" cy="152" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="851" cy="72" r="1.7"/>
+<circle cx="845" cy="78" r="1.7"/>
+<circle cx="651" cy="205" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="606" cy="233" r="1.7"/>
+<circle cx="647" cy="208" r="1.7"/>
+<circle cx="850" cy="87" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="624" cy="218" r="1.7"/>
+<circle cx="859" cy="77" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="863" cy="74" r="1.7"/>
+<circle cx="857" cy="81" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="691" cy="174" r="1.7"/>
+<circle cx="851" cy="98" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="614" cy="220" r="1.7"/>
+<circle cx="681" cy="195" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="612" cy="202" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="803" cy="103" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="862" cy="80" r="1.7"/>
+<circle cx="733" cy="146" r="1.7"/>
+<circle cx="695" cy="158" r="1.7"/>
+<circle cx="602" cy="236" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="848" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="581" cy="232" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="720" cy="151" r="1.7"/>
+<circle cx="858" cy="72" r="1.7"/>
+<circle cx="854" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="844" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="857" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="850" cy="93" r="1.7"/>
+<circle cx="582" cy="238" r="1.7"/>
+<circle cx="623" cy="210" r="1.7"/>
+<circle cx="862" cy="75" r="1.7"/>
+<circle cx="865" cy="75" r="1.7"/>
+<circle cx="842" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="622" cy="229" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="728" cy="141" r="1.7"/>
+<circle cx="649" cy="203" r="1.7"/>
+<circle cx="621" cy="237" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="570" cy="244" r="1.7"/>
+<circle cx="584" cy="244" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="849" cy="86" r="1.7"/>
+<circle cx="581" cy="227" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="600" cy="219" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="76" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="857" cy="80" r="1.7"/>
+<circle cx="651" cy="211" r="1.7"/>
+<circle cx="835" cy="89" r="1.7"/>
+<circle cx="561" cy="250" r="1.7"/>
+<circle cx="817" cy="92" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="849" cy="72" r="1.7"/>
+<circle cx="864" cy="75" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="865" cy="75" r="1.7"/>
+<circle cx="611" cy="202" r="1.7"/>
+<circle cx="688" cy="179" r="1.7"/>
+<circle cx="660" cy="188" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="792" cy="99" r="1.7"/>
+<circle cx="842" cy="90" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="571" cy="247" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="690" cy="164" r="1.7"/>
+<circle cx="858" cy="79" r="1.7"/>
+<circle cx="570" cy="245" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="698" cy="191" r="1.7"/>
+<circle cx="864" cy="76" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="861" cy="76" r="1.7"/>
+<circle cx="846" cy="105" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="862" cy="75" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="700" cy="168" r="1.7"/>
+<circle cx="862" cy="79" r="1.7"/>
+<circle cx="663" cy="177" r="1.7"/>
+<circle cx="865" cy="76" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="642" cy="211" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="787" cy="139" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="862" cy="79" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="857" cy="90" r="1.7"/>
+<circle cx="709" cy="149" r="1.7"/>
+<circle cx="614" cy="237" r="1.7"/>
+<circle cx="603" cy="218" r="1.7"/>
+<circle cx="806" cy="114" r="1.7"/>
+<circle cx="605" cy="229" r="1.7"/>
+<circle cx="571" cy="248" r="1.7"/>
+<circle cx="569" cy="246" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="76" r="1.7"/>
+<circle cx="842" cy="84" r="1.7"/>
+<circle cx="849" cy="72" r="1.7"/>
+<circle cx="863" cy="76" r="1.7"/>
+<circle cx="719" cy="168" r="1.7"/>
+<circle cx="861" cy="76" r="1.7"/>
+<circle cx="581" cy="234" r="1.7"/>
+<circle cx="865" cy="75" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="852" cy="72" r="1.7"/>
+<circle cx="811" cy="115" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="570" cy="248" r="1.7"/>
+<circle cx="604" cy="210" r="1.7"/>
+<circle cx="620" cy="225" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="850" cy="82" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="860" cy="77" r="1.7"/>
+<circle cx="652" cy="192" r="1.7"/>
+<circle cx="864" cy="75" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="854" cy="84" r="1.7"/>
+<circle cx="859" cy="79" r="1.7"/>
+<circle cx="583" cy="241" r="1.7"/>
+<circle cx="860" cy="77" r="1.7"/>
+<circle cx="568" cy="241" r="1.7"/>
+<circle cx="714" cy="170" r="1.7"/>
+<circle cx="864" cy="73" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="848" cy="87" r="1.7"/>
+<circle cx="816" cy="102" r="1.7"/>
+<circle cx="854" cy="72" r="1.7"/>
+<circle cx="632" cy="203" r="1.7"/>
+<circle cx="861" cy="77" r="1.7"/>
+<circle cx="853" cy="72" r="1.7"/>
+<circle cx="827" cy="89" r="1.7"/>
+<circle cx="669" cy="143" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="826" cy="95" r="1.7"/>
+<circle cx="844" cy="84" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="739" cy="150" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="789" cy="198" r="1.7"/>
+<circle cx="626" cy="220" r="1.7"/>
+<circle cx="832" cy="78" r="1.7"/>
+<circle cx="588" cy="230" r="1.7"/>
+<circle cx="858" cy="72" r="1.7"/>
+<circle cx="586" cy="230" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="860" cy="77" r="1.7"/>
+<circle cx="738" cy="143" r="1.7"/>
+<circle cx="864" cy="73" r="1.7"/>
+<circle cx="588" cy="234" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="571" cy="240" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="864" cy="75" r="1.7"/>
+<circle cx="861" cy="78" r="1.7"/>
+<circle cx="863" cy="79" r="1.7"/>
+<circle cx="856" cy="89" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="854" cy="78" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="858" cy="88" r="1.7"/>
+<circle cx="689" cy="186" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="575" cy="243" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="855" cy="82" r="1.7"/>
+<circle cx="748" cy="148" r="1.7"/>
+<circle cx="714" cy="155" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="579" cy="224" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="847" cy="90" r="1.7"/>
+<circle cx="568" cy="244" r="1.7"/>
+<circle cx="619" cy="216" r="1.7"/>
+<circle cx="808" cy="109" r="1.7"/>
+<circle cx="860" cy="78" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="862" cy="75" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="625" cy="208" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="806" cy="95" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="820" cy="97" r="1.7"/>
+<circle cx="563" cy="245" r="1.7"/>
+<circle cx="861" cy="82" r="1.7"/>
+<circle cx="562" cy="249" r="1.7"/>
+<circle cx="614" cy="218" r="1.7"/>
+<circle cx="861" cy="76" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="75" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="621" cy="207" r="1.7"/>
+<circle cx="838" cy="72" r="1.7"/>
+<circle cx="840" cy="82" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="861" cy="77" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="804" cy="92" r="1.7"/>
+<circle cx="853" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="649" cy="210" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="857" cy="94" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="803" cy="114" r="1.7"/>
+<circle cx="851" cy="72" r="1.7"/>
+<circle cx="864" cy="75" r="1.7"/>
+<circle cx="842" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="858" cy="80" r="1.7"/>
+<circle cx="850" cy="86" r="1.7"/>
+<circle cx="657" cy="198" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="864" cy="76" r="1.7"/>
+<circle cx="574" cy="232" r="1.7"/>
+<circle cx="586" cy="233" r="1.7"/>
+<circle cx="865" cy="76" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="856" cy="82" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="647" cy="208" r="1.7"/>
+<circle cx="848" cy="72" r="1.7"/>
+<circle cx="625" cy="229" r="1.7"/>
+<circle cx="858" cy="72" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="645" cy="212" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="855" cy="72" r="1.7"/>
+<circle cx="565" cy="246" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="607" cy="221" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="865" cy="76" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="75" r="1.7"/>
+<circle cx="829" cy="101" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="568" cy="238" r="1.7"/>
+<circle cx="754" cy="130" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="845" cy="72" r="1.7"/>
+<circle cx="860" cy="78" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="612" cy="221" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="804" cy="120" r="1.7"/>
+<circle cx="859" cy="85" r="1.7"/>
+<circle cx="652" cy="228" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="610" cy="231" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="849" cy="86" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="863" cy="73" r="1.7"/>
+<circle cx="838" cy="85" r="1.7"/>
+<circle cx="855" cy="84" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="858" cy="73" r="1.7"/>
+<circle cx="855" cy="72" r="1.7"/>
+<circle cx="590" cy="225" r="1.7"/>
+<circle cx="858" cy="72" r="1.7"/>
+<circle cx="860" cy="77" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="863" cy="77" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="617" cy="222" r="1.7"/>
+<circle cx="854" cy="82" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="855" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="723" cy="172" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="800" cy="112" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="855" cy="82" r="1.7"/>
+<circle cx="858" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="858" cy="77" r="1.7"/>
+<circle cx="849" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="811" cy="106" r="1.7"/>
+<circle cx="807" cy="144" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="770" cy="120" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="614" cy="233" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="852" cy="72" r="1.7"/>
+<circle cx="706" cy="176" r="1.7"/>
+<circle cx="864" cy="73" r="1.7"/>
+<circle cx="787" cy="114" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="680" cy="188" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="76" r="1.7"/>
+<circle cx="562" cy="250" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="857" cy="72" r="1.7"/>
+<circle cx="826" cy="108" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="858" cy="77" r="1.7"/>
+<circle cx="576" cy="236" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="798" cy="105" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="859" cy="84" r="1.7"/>
+<circle cx="863" cy="77" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="855" cy="72" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="844" cy="101" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="720" cy="150" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="647" cy="200" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="817" cy="108" r="1.7"/>
+<circle cx="857" cy="81" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="583" cy="243" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="851" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="703" cy="177" r="1.7"/>
+<circle cx="580" cy="248" r="1.7"/>
+<circle cx="858" cy="80" r="1.7"/>
+<circle cx="857" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="576" cy="249" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="740" cy="170" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="602" cy="235" r="1.7"/>
+<circle cx="844" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="632" cy="192" r="1.7"/>
+<circle cx="860" cy="77" r="1.7"/>
+<circle cx="601" cy="235" r="1.7"/>
+<circle cx="647" cy="208" r="1.7"/>
+<circle cx="626" cy="201" r="1.7"/>
+<circle cx="580" cy="234" r="1.7"/>
+<circle cx="763" cy="134" r="1.7"/>
+<circle cx="580" cy="242" r="1.7"/>
+<circle cx="590" cy="227" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="855" cy="74" r="1.7"/>
+<circle cx="857" cy="81" r="1.7"/>
+<circle cx="752" cy="126" r="1.7"/>
+<circle cx="565" cy="245" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="674" cy="184" r="1.7"/>
+<circle cx="675" cy="181" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="725" cy="167" r="1.7"/>
+<circle cx="610" cy="229" r="1.7"/>
+<circle cx="739" cy="136" r="1.7"/>
+<circle cx="599" cy="223" r="1.7"/>
+<circle cx="599" cy="217" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="858" cy="79" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="834" cy="101" r="1.7"/>
+<circle cx="864" cy="73" r="1.7"/>
+<circle cx="860" cy="77" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="604" cy="217" r="1.7"/>
+<circle cx="859" cy="78" r="1.7"/>
+<circle cx="857" cy="72" r="1.7"/>
+<circle cx="602" cy="235" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="855" cy="72" r="1.7"/>
+<circle cx="563" cy="245" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="849" cy="72" r="1.7"/>
+<circle cx="705" cy="170" r="1.7"/>
+<circle cx="858" cy="80" r="1.7"/>
+<circle cx="582" cy="237" r="1.7"/>
+<circle cx="859" cy="86" r="1.7"/>
+<circle cx="864" cy="73" r="1.7"/>
+<circle cx="857" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="650" cy="217" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="767" cy="124" r="1.7"/>
+<circle cx="649" cy="225" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="617" cy="217" r="1.7"/>
+<circle cx="861" cy="81" r="1.7"/>
+<circle cx="720" cy="155" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="712" cy="150" r="1.7"/>
+<circle cx="591" cy="224" r="1.7"/>
+<circle cx="864" cy="76" r="1.7"/>
+<circle cx="729" cy="163" r="1.7"/>
+<circle cx="844" cy="92" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="840" cy="72" r="1.7"/>
+<circle cx="627" cy="216" r="1.7"/>
+<circle cx="849" cy="72" r="1.7"/>
+<circle cx="857" cy="72" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="575" cy="233" r="1.7"/>
+<circle cx="854" cy="82" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="865" cy="75" r="1.7"/>
+<circle cx="840" cy="72" r="1.7"/>
+<circle cx="673" cy="172" r="1.7"/>
+<circle cx="863" cy="77" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="850" cy="81" r="1.7"/>
+<circle cx="848" cy="89" r="1.7"/>
+<circle cx="848" cy="100" r="1.7"/>
+<circle cx="851" cy="86" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="842" cy="95" r="1.7"/>
+<circle cx="573" cy="238" r="1.7"/>
+<circle cx="850" cy="87" r="1.7"/>
+<circle cx="694" cy="185" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="850" cy="87" r="1.7"/>
+<circle cx="586" cy="228" r="1.7"/>
+<circle cx="649" cy="221" r="1.7"/>
+<circle cx="579" cy="242" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="726" cy="172" r="1.7"/>
+<circle cx="573" cy="246" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="571" cy="237" r="1.7"/>
+<circle cx="852" cy="72" r="1.7"/>
+<circle cx="588" cy="239" r="1.7"/>
+<circle cx="850" cy="87" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="577" cy="240" r="1.7"/>
+<circle cx="792" cy="117" r="1.7"/>
+<circle cx="590" cy="240" r="1.7"/>
+<circle cx="837" cy="92" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="75" r="1.7"/>
+<circle cx="798" cy="124" r="1.7"/>
+<circle cx="863" cy="78" r="1.7"/>
+<circle cx="611" cy="219" r="1.7"/>
+<circle cx="589" cy="228" r="1.7"/>
+<circle cx="603" cy="231" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="791" cy="123" r="1.7"/>
+<circle cx="842" cy="101" r="1.7"/>
+<circle cx="864" cy="77" r="1.7"/>
+<circle cx="709" cy="151" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="74" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="579" cy="235" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="586" cy="231" r="1.7"/>
+<circle cx="856" cy="91" r="1.7"/>
+<circle cx="864" cy="76" r="1.7"/>
+<circle cx="725" cy="164" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="672" cy="182" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="838" cy="72" r="1.7"/>
+<circle cx="767" cy="130" r="1.7"/>
+<circle cx="673" cy="132" r="1.7"/>
+<circle cx="585" cy="245" r="1.7"/>
+<circle cx="770" cy="122" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="610" cy="226" r="1.7"/>
+<circle cx="585" cy="238" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="581" cy="241" r="1.7"/>
+<circle cx="855" cy="83" r="1.7"/>
+<circle cx="566" cy="246" r="1.7"/>
+<circle cx="864" cy="73" r="1.7"/>
+<circle cx="647" cy="191" r="1.7"/>
+<circle cx="603" cy="218" r="1.7"/>
+<circle cx="736" cy="143" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="861" cy="75" r="1.7"/>
+<circle cx="618" cy="223" r="1.7"/>
+<circle cx="574" cy="250" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="644" cy="218" r="1.7"/>
+<circle cx="852" cy="72" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="693" cy="181" r="1.7"/>
+<circle cx="855" cy="93" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="861" cy="72" r="1.7"/>
+<circle cx="861" cy="82" r="1.7"/>
+<circle cx="648" cy="209" r="1.7"/>
+<circle cx="592" cy="230" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="853" cy="84" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="798" cy="144" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="644" cy="196" r="1.7"/>
+<circle cx="845" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="813" cy="100" r="1.7"/>
+<circle cx="604" cy="240" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="567" cy="249" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="842" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="699" cy="177" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="74" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="850" cy="87" r="1.7"/>
+<circle cx="850" cy="98" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="855" cy="83" r="1.7"/>
+<circle cx="628" cy="212" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="857" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="681" cy="178" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="862" cy="80" r="1.7"/>
+<circle cx="578" cy="235" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="861" cy="82" r="1.7"/>
+<circle cx="746" cy="144" r="1.7"/>
+<circle cx="610" cy="215" r="1.7"/>
+<circle cx="863" cy="73" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="625" cy="218" r="1.7"/>
+<circle cx="846" cy="118" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="850" cy="85" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="846" cy="84" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="856" cy="79" r="1.7"/>
+<circle cx="856" cy="72" r="1.7"/>
+<circle cx="859" cy="72" r="1.7"/>
+<circle cx="864" cy="76" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="660" cy="201" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="639" cy="197" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="671" cy="173" r="1.7"/>
+<circle cx="864" cy="76" r="1.7"/>
+<circle cx="620" cy="213" r="1.7"/>
+<circle cx="609" cy="230" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="853" cy="83" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="861" cy="77" r="1.7"/>
+<circle cx="844" cy="92" r="1.7"/>
+<circle cx="624" cy="216" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="819" cy="95" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="568" cy="240" r="1.7"/>
+<circle cx="596" cy="221" r="1.7"/>
+<circle cx="639" cy="185" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="579" cy="243" r="1.7"/>
+<circle cx="855" cy="83" r="1.7"/>
+<circle cx="864" cy="78" r="1.7"/>
+<circle cx="853" cy="72" r="1.7"/>
+<circle cx="683" cy="183" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="853" cy="72" r="1.7"/>
+<circle cx="863" cy="77" r="1.7"/>
+<circle cx="789" cy="136" r="1.7"/>
+<circle cx="847" cy="93" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="863" cy="77" r="1.7"/>
+<circle cx="671" cy="193" r="1.7"/>
+<circle cx="854" cy="84" r="1.7"/>
+<circle cx="755" cy="133" r="1.7"/>
+<circle cx="809" cy="100" r="1.7"/>
+<circle cx="855" cy="82" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="862" cy="76" r="1.7"/>
+<circle cx="597" cy="235" r="1.7"/>
+<circle cx="800" cy="104" r="1.7"/>
+<circle cx="746" cy="150" r="1.7"/>
+<circle cx="837" cy="77" r="1.7"/>
+<circle cx="774" cy="110" r="1.7"/>
+<circle cx="564" cy="243" r="1.7"/>
+<circle cx="860" cy="78" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="570" cy="239" r="1.7"/>
+<circle cx="777" cy="107" r="1.7"/>
+<circle cx="861" cy="77" r="1.7"/>
+<circle cx="843" cy="84" r="1.7"/>
+<circle cx="657" cy="188" r="1.7"/>
+<circle cx="576" cy="239" r="1.7"/>
+<circle cx="586" cy="240" r="1.7"/>
+<circle cx="850" cy="100" r="1.7"/>
+<circle cx="848" cy="81" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="632" cy="209" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="792" cy="106" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="855" cy="72" r="1.7"/>
+<circle cx="573" cy="244" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="639" cy="214" r="1.7"/>
+<circle cx="853" cy="84" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="863" cy="76" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="577" cy="228" r="1.7"/>
+<circle cx="842" cy="72" r="1.7"/>
+<circle cx="861" cy="81" r="1.7"/>
+<circle cx="854" cy="84" r="1.7"/>
+<circle cx="770" cy="120" r="1.7"/>
+<circle cx="849" cy="72" r="1.7"/>
+<circle cx="864" cy="76" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="862" cy="79" r="1.7"/>
+<circle cx="853" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="588" cy="235" r="1.7"/>
+<circle cx="616" cy="199" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="858" cy="79" r="1.7"/>
+<circle cx="863" cy="76" r="1.7"/>
+<circle cx="864" cy="74" r="1.7"/>
+<circle cx="855" cy="72" r="1.7"/>
+<circle cx="861" cy="74" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="743" cy="138" r="1.7"/>
+<circle cx="863" cy="75" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="582" cy="238" r="1.7"/>
+<circle cx="855" cy="91" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="857" cy="81" r="1.7"/>
+<circle cx="800" cy="104" r="1.7"/>
+<circle cx="680" cy="186" r="1.7"/>
+<circle cx="706" cy="157" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="827" cy="72" r="1.7"/>
+<circle cx="855" cy="81" r="1.7"/>
+<circle cx="850" cy="72" r="1.7"/>
+<circle cx="860" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="864" cy="75" r="1.7"/>
+<circle cx="645" cy="199" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="864" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="753" cy="143" r="1.7"/>
+<circle cx="854" cy="72" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="863" cy="74" r="1.7"/>
+<circle cx="578" cy="239" r="1.7"/>
+<circle cx="862" cy="72" r="1.7"/>
+<circle cx="858" cy="72" r="1.7"/>
+<circle cx="620" cy="221" r="1.7"/>
+<circle cx="564" cy="250" r="1.7"/>
+<circle cx="865" cy="73" r="1.7"/>
+<circle cx="859" cy="79" r="1.7"/>
+<circle cx="561" cy="248" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="865" cy="72" r="1.7"/>
+<circle cx="863" cy="72" r="1.7"/>
+<circle cx="864" cy="73" r="1.7"/>
+</g>
+<line class="g-vline thin" x1="651.8" x2="651.8" y1="72" y2="250" stroke="#6B736E"/>
+<text class="g-note" x="656.8" y="66" text-anchor="start" fill="#6B736E">INFO 0.3</text>
+<text class="g-lab" x="713.0" y="286" text-anchor="middle">INFO (정답 없이 계산)</text>
+<text class="g-lab" transform="translate(524,161.0) rotate(-90)" text-anchor="middle">참 r²</text>
+<text class="g-note" x="568" y="86">상관 <tspan class="g-em">0.990</tspan></text>
+<text class="g-note dim" x="34" y="320">INFO ≈ 1 − (채운 값의 사후 분산 합) ÷ (완전히 관측했을 때의 분산). 정답을 쓰지 않으므로 실제 분석에서 쓸 수 있는 유일한 지표</text>
+<text class="g-note dim" x="34" y="338">INFO &gt; 0.8인 변이의 참 r² 중앙값 <tspan class="g-em">1.00</tspan> · INFO &lt; 0.3인 변이는 <tspan class="g-em">0.11</tspan></text>
+</svg>
+<!--/GEN:DOSAGE-->
+          </div>
+          <figcaption>그림 2 · 왼쪽은 변이 하나(MAF <!--GEN:FOCUS_MAF-->26.0%<!--/GEN:FOCUS_MAF--> · 참 r² <!--GEN:FOCUS_R2-->0.57<!--/GEN:FOCUS_R2--> · INFO <!--GEN:FOCUS_INFO-->0.62<!--/GEN:FOCUS_INFO-->)에서 <!--GEN:N_TARGET-->300<!--/GEN:N_TARGET-->명의 dosage 분포를 숨겨 둔 정답별로 나눈 것 · best-guess로 반올림하면 <!--GEN:FOCUS_HARD-->21.0%<!--/GEN:FOCUS_HARD-->가 정답과 어긋남 · 오른쪽은 채운 변이 <!--GEN:N_IMP-->461,693<!--/GEN:N_IMP-->개 가운데 1,400개를 뽑아 INFO와 참 r²를 찍은 것, 상관 <!--GEN:INFO_CORR-->0.990<!--/GEN:INFO_CORR--></figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>지표</th><th>정의</th><th>쓰는 자리</th></tr></thead>
+            <tbody>
+              <tr><th>dosage</th><td>효과 allele 개수의 기대값, 0에서 2 사이의 실수</td><td>연관 검정의 독립변수. best-guess 대신 쓰면 불확실성이 모형에 반영됨 <a class="src" href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener">Choi 2019</a> · 이 값을 설명변수로 넣는 회귀 자체는 <a href="../02-association/association-model.html#model">연관 모형 쪽</a></td></tr>
+              <tr><th>INFO</th><td>1 − (채운 값의 사후 분산 합) ÷ (완전히 관측했을 때의 분산). 정답을 쓰지 않음</td><td>실제 분석에서 변이를 거르는 기준. 표본 N명에서 info α는 αN명을 완벽히 genotyping한 것과 대략 같은 정보량 <a class="src" href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener">Bycroft 2018</a></td></tr>
+              <tr><th>imputation r²</th><td>채운 dosage와 실제 genotype(WGS 등)의 squared Pearson correlation. 정답이 있어야 계산됨</td><td>벤치마크. 연관 검정의 유효 표본 크기를 얼마나 깎는지를 나타냄 <a class="src" href="https://doi.org/10.1038/s41598-022-22215-y" target="_blank" rel="noopener">Nguyen 2022</a> <a class="src" href="https://doi.org/10.1038/s41588-020-00756-0" target="_blank" rel="noopener">Rubinacci 2021</a></td></tr>
+              <tr><th>imputation coverage</th><td>r²가 0.8을 넘는 변이의 비율</td><td>array끼리 비교할 때의 요약 지표 <a class="src" href="https://doi.org/10.1038/s41598-022-22215-y" target="_blank" rel="noopener">Nguyen 2022</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>시뮬레이션에서 INFO는 정답을 전혀 쓰지 않고도 참 r²를 거의 그대로 맞혔음(상관 <!--GEN:INFO_CORR-->0.990<!--/GEN:INFO_CORR-->). INFO &gt; 0.8인 변이의 참 r² 중앙값이 <!--GEN:INFO_HI-->1.00<!--/GEN:INFO_HI-->이고, INFO &lt; 0.3인 변이는 <!--GEN:INFO_LO-->0.11<!--/GEN:INFO_LO-->. r² 대신 allele concordance를 쓰면 allele frequency에 훨씬 민감해지고 dosage의 불확실성도 버리게 됨 <a class="src" href="https://doi.org/10.1038/s41598-022-22215-y" target="_blank" rel="noopener">Nguyen 2022</a></p>
+
+        <!-- ───────── 4. 정확도 ───────── -->
+        <h2 id="quality">무엇이 정확도를 가르나<small>Frequency &amp; array density</small></h2>
+        <p class="lede">두 축이 가장 크게 작용함. 변이가 얼마나 드문가, 그리고 주변에 측정한 marker가 얼마나 촘촘한가. 아래 시뮬레이션의 기본 array는 marker <!--GEN:N_TYPED-->18,412<!--/GEN:N_TYPED-->개, 평균 <!--GEN:KB_TYPED-->3.3<!--/GEN:KB_TYPED--> kb 간격이고, 채울 대상이 그 <!--GEN:FOLD-->26<!--/GEN:FOLD-->배임</p>
+        <figure class="fig" id="fig-quality" data-mode="low">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-quality" role="group" aria-label="array 밀도">
+              <button type="button" data-mode="low" aria-pressed="true">10 kb 간격</button>
+              <button type="button" data-mode="mid" aria-pressed="false">3 kb 간격</button>
+              <button type="button" data-mode="high" aria-pressed="false">1 kb 간격</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:QUALITY-->
+<svg class="g-svg " viewBox="0 0 900 392" role="img" aria-labelledby="qlT qlD" xmlns="http://www.w3.org/2000/svg">
+<title id="qlT">채우기의 정확도는 변이 빈도와 array 밀도가 정한다</title>
+<desc id="qlD">왼쪽은 minor allele frequency 구간마다 채운 값과 숨겨 둔 정답의 r²를 이은 선이다. 점선은 정답을 쓰지 않고 계산한 INFO이고, 두 선이 거의 겹친다. 오른쪽은 같은 구간에서 r²가 0.8을 넘는 변이의 비율을 막대로 그린 것이다. 버튼으로 array 밀도를 바꾸면 두 그림이 함께 올라가거나 내려간다. 어느 밀도에서도 흔한 변이는 거의 완전히 채워지고 드문 변이는 많이 남는다.</desc>
+<text class="g-ttl" x="34" y="26">드문 변이일수록 덜 채워진다<tspan class="g-sub" dx="8">세로축 = 채운 값과 정답의 r²</tspan></text>
+<text class="g-ttl" x="516" y="26">r² 0.8을 넘는 변이의 비율<tspan class="g-sub" dx="8">imputation coverage</tspan></text>
+<line x1="88" x2="110" y1="54" y2="54" stroke="var(--theme)" stroke-width="2.4"/>
+<text class="g-note" x="116" y="58">참 r² (정답을 알 때)</text>
+<line x1="236" x2="258" y1="54" y2="54" stroke="#D9822B" stroke-width="2" stroke-dasharray="5 3"/>
+<text class="g-note" x="264" y="58">INFO (정답 없이)</text>
+<line class="g-grid" x1="86" x2="418" y1="300.0" y2="300.0"/>
+<text class="g-tick" x="79" y="303.5" text-anchor="end">0</text>
+<line class="g-grid" x1="552" x2="866" y1="300.0" y2="300.0"/>
+<text class="g-tick" x="545" y="303.5" text-anchor="end">0</text>
+<line class="g-grid" x1="86" x2="418" y1="245.0" y2="245.0"/>
+<text class="g-tick" x="79" y="248.5" text-anchor="end">0.25</text>
+<line class="g-grid" x1="552" x2="866" y1="245.0" y2="245.0"/>
+<text class="g-tick" x="545" y="248.5" text-anchor="end">0.25</text>
+<line class="g-grid" x1="86" x2="418" y1="190.0" y2="190.0"/>
+<text class="g-tick" x="79" y="193.5" text-anchor="end">0.5</text>
+<line class="g-grid" x1="552" x2="866" y1="190.0" y2="190.0"/>
+<text class="g-tick" x="545" y="193.5" text-anchor="end">0.5</text>
+<line class="g-grid" x1="86" x2="418" y1="135.0" y2="135.0"/>
+<text class="g-tick" x="79" y="138.5" text-anchor="end">0.75</text>
+<line class="g-grid" x1="552" x2="866" y1="135.0" y2="135.0"/>
+<text class="g-tick" x="545" y="138.5" text-anchor="end">0.75</text>
+<line class="g-grid" x1="86" x2="418" y1="80.0" y2="80.0"/>
+<text class="g-tick" x="79" y="83.5" text-anchor="end">1</text>
+<line class="g-grid" x1="552" x2="866" y1="80.0" y2="80.0"/>
+<text class="g-tick" x="545" y="83.5" text-anchor="end">1</text>
+<line class="g-ax" x1="86" x2="418" y1="300" y2="300"/>
+<line class="g-ax" x1="552" x2="866" y1="300" y2="300"/>
+<text class="g-tick" x="119.2" y="316" text-anchor="middle">0.1–0.5%</text>
+<text class="g-tick" x="583.4" y="316" text-anchor="middle">0.1–0.5%</text>
+<text class="g-tick" x="185.6" y="316" text-anchor="middle">0.5–1%</text>
+<text class="g-tick" x="646.2" y="316" text-anchor="middle">0.5–1%</text>
+<text class="g-tick" x="252.0" y="316" text-anchor="middle">1–5%</text>
+<text class="g-tick" x="709.0" y="316" text-anchor="middle">1–5%</text>
+<text class="g-tick" x="318.4" y="316" text-anchor="middle">5–20%</text>
+<text class="g-tick" x="771.8" y="316" text-anchor="middle">5–20%</text>
+<text class="g-tick" x="384.8" y="316" text-anchor="middle">20–50%</text>
+<text class="g-tick" x="834.6" y="316" text-anchor="middle">20–50%</text>
+<text class="g-lab" x="252.0" y="336" text-anchor="middle">minor allele frequency</text>
+<text class="g-lab" x="709.0" y="336" text-anchor="middle">minor allele frequency</text>
+<g class="g-ov on" data-ov="low">
+<polyline class="g-line g-l1" points="119.2,293.1 185.6,282.1 252.0,218.2 318.4,150.0 384.8,101.9"/>
+<polyline class="g-pp" stroke="#D9822B" stroke-width="2" stroke-dasharray="5 3" points="119.2,296.4 185.6,285.5 252.0,219.8 318.4,150.2 384.8,101.9"/>
+<circle class="g-dot" cx="119.2" cy="293.1" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="119.2" y="282.1" text-anchor="middle"><tspan class="g-em">0.03</tspan></text>
+<rect class="g-bar" x="569.6" y="300.0" width="27.6" height="0.0" fill="var(--theme)"/>
+<text class="g-note" x="583.4" y="294.0" text-anchor="middle">0%</text>
+<circle class="g-dot" cx="185.6" cy="282.1" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="185.6" y="271.1" text-anchor="middle"><tspan class="g-em">0.08</tspan></text>
+<rect class="g-bar" x="632.4" y="295.7" width="27.6" height="4.3" fill="var(--theme)"/>
+<text class="g-note" x="646.2" y="289.7" text-anchor="middle">2%</text>
+<circle class="g-dot" cx="252.0" cy="218.2" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="252.0" y="207.2" text-anchor="middle"><tspan class="g-em">0.37</tspan></text>
+<rect class="g-bar" x="695.2" y="238.0" width="27.6" height="62.0" fill="var(--theme)"/>
+<text class="g-note" x="709.0" y="232.0" text-anchor="middle">28%</text>
+<circle class="g-dot" cx="318.4" cy="150.0" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="318.4" y="139.0" text-anchor="middle"><tspan class="g-em">0.68</tspan></text>
+<rect class="g-bar" x="758.0" y="176.9" width="27.6" height="123.1" fill="var(--theme)"/>
+<text class="g-note" x="771.8" y="170.9" text-anchor="middle">56%</text>
+<circle class="g-dot" cx="384.8" cy="101.9" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="384.8" y="90.9" text-anchor="middle"><tspan class="g-em">0.90</tspan></text>
+<rect class="g-bar" x="820.8" y="118.6" width="27.6" height="181.4" fill="var(--theme)"/>
+<text class="g-note" x="834.6" y="112.6" text-anchor="middle">82%</text>
+<text class="g-note" x="552" y="68">측정한 marker 6,162개 · 평균 9.7 kb 간격 · INFO &gt; 0.3로 거르면 60% 남음</text>
+</g>
+<g class="g-ov" data-ov="mid">
+<polyline class="g-line g-l1" points="119.2,271.0 185.6,249.0 252.0,171.2 318.4,108.4 384.8,84.5"/>
+<polyline class="g-pp" stroke="#D9822B" stroke-width="2" stroke-dasharray="5 3" points="119.2,283.0 185.6,259.4 252.0,173.1 318.4,108.5 384.8,84.5"/>
+<circle class="g-dot" cx="119.2" cy="271.0" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="119.2" y="260.0" text-anchor="middle"><tspan class="g-em">0.13</tspan></text>
+<rect class="g-bar" x="569.6" y="298.7" width="27.6" height="1.3" fill="var(--theme)"/>
+<text class="g-note" x="583.4" y="292.7" text-anchor="middle">1%</text>
+<circle class="g-dot" cx="185.6" cy="249.0" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="185.6" y="238.0" text-anchor="middle"><tspan class="g-em">0.23</tspan></text>
+<rect class="g-bar" x="632.4" y="277.8" width="27.6" height="22.2" fill="var(--theme)"/>
+<text class="g-note" x="646.2" y="271.8" text-anchor="middle">10%</text>
+<circle class="g-dot" cx="252.0" cy="171.2" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="252.0" y="160.2" text-anchor="middle"><tspan class="g-em">0.59</tspan></text>
+<rect class="g-bar" x="695.2" y="195.2" width="27.6" height="104.8" fill="var(--theme)"/>
+<text class="g-note" x="709.0" y="189.2" text-anchor="middle">48%</text>
+<circle class="g-dot" cx="318.4" cy="108.4" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="318.4" y="97.4" text-anchor="middle"><tspan class="g-em">0.87</tspan></text>
+<rect class="g-bar" x="758.0" y="124.6" width="27.6" height="175.4" fill="var(--theme)"/>
+<text class="g-note" x="771.8" y="118.6" text-anchor="middle">80%</text>
+<circle class="g-dot" cx="384.8" cy="84.5" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="384.8" y="73.5" text-anchor="middle"><tspan class="g-em">0.98</tspan></text>
+<rect class="g-bar" x="820.8" y="87.2" width="27.6" height="212.8" fill="var(--theme)"/>
+<text class="g-note" x="834.6" y="81.2" text-anchor="middle">97%</text>
+<text class="g-note" x="552" y="68">측정한 marker 18,412개 · 평균 3.3 kb 간격 · INFO &gt; 0.3로 거르면 75% 남음</text>
+</g>
+<g class="g-ov" data-ov="high">
+<polyline class="g-line g-l1" points="119.2,235.7 185.6,205.3 252.0,128.9 318.4,89.0 384.8,81.3"/>
+<polyline class="g-pp" stroke="#D9822B" stroke-width="2" stroke-dasharray="5 3" points="119.2,266.0 185.6,219.7 252.0,130.9 318.4,89.0 384.8,81.3"/>
+<circle class="g-dot" cx="119.2" cy="235.7" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="119.2" y="224.7" text-anchor="middle"><tspan class="g-em">0.29</tspan></text>
+<rect class="g-bar" x="569.6" y="290.1" width="27.6" height="9.9" fill="var(--theme)"/>
+<text class="g-note" x="583.4" y="284.1" text-anchor="middle">4%</text>
+<circle class="g-dot" cx="185.6" cy="205.3" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="185.6" y="194.3" text-anchor="middle"><tspan class="g-em">0.43</tspan></text>
+<rect class="g-bar" x="632.4" y="249.7" width="27.6" height="50.3" fill="var(--theme)"/>
+<text class="g-note" x="646.2" y="243.7" text-anchor="middle">23%</text>
+<circle class="g-dot" cx="252.0" cy="128.9" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="252.0" y="117.9" text-anchor="middle"><tspan class="g-em">0.78</tspan></text>
+<rect class="g-bar" x="695.2" y="149.1" width="27.6" height="150.9" fill="var(--theme)"/>
+<text class="g-note" x="709.0" y="143.1" text-anchor="middle">69%</text>
+<circle class="g-dot" cx="318.4" cy="89.0" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="318.4" y="78.0" text-anchor="middle"><tspan class="g-em">0.96</tspan></text>
+<rect class="g-bar" x="758.0" y="93.0" width="27.6" height="207.0" fill="var(--theme)"/>
+<text class="g-note" x="771.8" y="87.0" text-anchor="middle">94%</text>
+<circle class="g-dot" cx="384.8" cy="81.3" r="4.6" fill="var(--theme)"/>
+<text class="g-note" x="384.8" y="70.3" text-anchor="middle"><tspan class="g-em">0.99</tspan></text>
+<rect class="g-bar" x="820.8" y="80.4" width="27.6" height="219.6" fill="var(--theme)"/>
+<text class="g-note" x="834.6" y="74.4" text-anchor="middle">100%</text>
+<text class="g-note" x="552" y="68">측정한 marker 54,430개 · 평균 1.1 kb 간격 · INFO &gt; 0.3로 거르면 85% 남음</text>
+</g>
+</svg>
+<!--/GEN:QUALITY-->
+          </div>
+          <figcaption>그림 3 · 참조 패널 <!--GEN:PANEL0-->2,000<!--/GEN:PANEL0-->벌 · 대상 <!--GEN:N_TARGET-->300<!--/GEN:N_TARGET-->명 · 세 밀도는 실제 array 범위와 겹침(CytoSNP-12 약 29만 개에서 Omni5 433만 개) · 3 kb 간격일 때 구간별 r²는 <!--GEN:R2_MID-->0.13 · 0.23 · 0.59 · 0.87 · 0.98<!--/GEN:R2_MID-->, 10 kb에서 <!--GEN:R2_LOW-->0.03 · 0.08 · 0.37 · 0.68 · 0.90<!--/GEN:R2_LOW-->, 1 kb에서 <!--GEN:R2_HIGH-->0.29 · 0.43 · 0.78 · 0.96 · 0.99<!--/GEN:R2_HIGH--></figcaption>
+        </figure>
+        <p>이 시뮬레이션의 구간별 r²는 실제 벤치마크보다 낮음. 블록 안에서 재조합이 없는 모형이라 측정한 marker가 블록 안 haplotype을 끝까지 갈라내지 못하기 때문이고, 실제 자료에서는 참조 패널과 공유하는 구간이 더 길어 흔한 변이에서 r²가 0.95를 넘김 <a class="src" href="https://doi.org/10.1038/nature15393" target="_blank" rel="noopener">1000G 2015</a>. 기울어지는 방향과 축이 바뀌는 폭은 같음</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>실제 벤치마크</th><th>값</th></tr></thead>
+            <tbody>
+              <tr><th>MAF 구간별 평균 r²</th><td>(0–0.01] 0.814 · (0.01–0.05] 0.897 · (0.05–0.5] 0.954 <a class="src" href="https://doi.org/10.1038/s41598-022-22215-y" target="_blank" rel="noopener">Nguyen 2022</a></td></tr>
+              <tr><th>가장 조밀한 array</th><td>Omni5(433만 개) 평균 r² AFR 0.903 · AMR 0.914 · EAS 0.864 · EUR 0.918 · SAS 0.887 <a class="src" href="https://doi.org/10.1038/s41598-022-22215-y" target="_blank" rel="noopener">Nguyen 2022</a></td></tr>
+              <tr><th>가장 성긴 array</th><td>CytoSNP-12(약 29만 개) 평균 r² AFR 0.668 · EUR 0.761 · coverage는 AFR에서 0.403까지 떨어짐 <a class="src" href="https://doi.org/10.1038/s41598-022-22215-y" target="_blank" rel="noopener">Nguyen 2022</a></td></tr>
+              <tr><th>밀도만으로 정해지지 않음</th><td>671k Japonica NEO가 EAS에서 더 큰 multi-ethnic array보다 나았고, 844k Axiom UK Biobank array가 EUR에서 919k·932k array보다 coverage가 높았음. 저자 권고는 집단 최적화 650k–850k <a class="src" href="https://doi.org/10.1038/s41598-022-22215-y" target="_blank" rel="noopener">Nguyen 2022</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>같은 설정에서 흔한 변이(MAF 20–50%)의 r²는 <!--GEN:R2_COMMON-->0.98<!--/GEN:R2_COMMON-->인데 MAF 0.5–1% 구간은 <!--GEN:R2_RARE-->0.23<!--/GEN:R2_RARE-->까지 떨어짐. 3 kb 간격 array로 채운 변이 가운데 r² 0.8을 넘는 비율은 구간별로 <!--GEN:COV_MID-->1% · 10% · 48% · 80% · 97%<!--/GEN:COV_MID-->. INFO &gt; 0.3으로 거르면 <!--GEN:KEEP_MID-->75%<!--/GEN:KEEP_MID-->가 남고 0.8로 거르면 <!--GEN:KEEP08-->64%<!--/GEN:KEEP08-->가 남음</p>
+
+        <!-- ───────── 5. 패널 ───────── -->
+        <h2 id="panel">참조 패널이 범위를 정한다<small>Reference panel</small></h2>
+        <p class="lede">패널에 없는 변이는 어떤 방법으로도 채울 수 없음. 더 큰 패널이 나오면 같은 자료를 다시 채우는 편이 유리함 <a class="src" href="https://doi.org/10.1016/j.ajhg.2018.07.015" target="_blank" rel="noopener">Browning 2018</a></p>
+        <figure class="fig" id="fig-panel">
+          <div class="fig-scroll">
+<!--GEN:PANEL-->
+<svg class="g-svg " viewBox="0 0 900 392" role="img" aria-labelledby="pnT pnD" xmlns="http://www.w3.org/2000/svg">
+<title id="pnT">패널 크기와 array 설계가 채울 수 있는 범위를 정한다</title>
+<desc id="pnD">왼쪽은 참조 패널에 그 변이의 비주요 allele이 한 번이라도 들어 있는 비율을, minor allele frequency 구간마다 패널 크기별 막대로 그린 것이다. 흔한 변이는 작은 패널에도 모두 들어 있지만, 드문 변이는 패널이 커져야 비로소 패널 안에 나타난다. 패널에 없는 변이는 어떤 방법으로도 채울 수 없다. 오른쪽은 집단 A에서 고른 array marker들이 먼 집단 D에서 어떤 MAF 분포를 갖는지 겹쳐 그린 것이다. 분포 전체가 왼쪽으로 밀리고 상당수가 1% 아래로 내려가, 같은 array가 다른 집단에서 정보를 덜 싣는다.</desc>
+<text class="g-ttl" x="34" y="26">패널에 없는 변이는 채울 수 없다<tspan class="g-sub" dx="8">비주요 allele이 패널에 한 번이라도 들어 있는 비율</tspan></text>
+<text class="g-ttl" x="516" y="26">array를 설계한 집단을 벗어나면<tspan class="g-sub" dx="8">같은 marker의 MAF 분포</tspan></text>
+<line class="g-grid" x1="86" x2="418" y1="286.0" y2="286.0"/>
+<text class="g-tick" x="79" y="289.5" text-anchor="end">0</text>
+<line class="g-grid" x1="86" x2="418" y1="233.0" y2="233.0"/>
+<text class="g-tick" x="79" y="236.5" text-anchor="end">0.25</text>
+<line class="g-grid" x1="86" x2="418" y1="180.0" y2="180.0"/>
+<text class="g-tick" x="79" y="183.5" text-anchor="end">0.5</text>
+<line class="g-grid" x1="86" x2="418" y1="127.0" y2="127.0"/>
+<text class="g-tick" x="79" y="130.5" text-anchor="end">0.75</text>
+<line class="g-grid" x1="86" x2="418" y1="74.0" y2="74.0"/>
+<text class="g-tick" x="79" y="77.5" text-anchor="end">1</text>
+<line class="g-ax" x1="86" x2="418" y1="286" y2="286"/>
+<rect class="g-bar" x="92.6" y="247.1" width="12.0" height="38.9" fill="#D9CFC3"/>
+<rect class="g-bar" x="105.9" y="161.1" width="12.0" height="124.9" fill="#C2A98D"/>
+<rect class="g-bar" x="119.2" y="95.0" width="12.0" height="191.0" fill="#8E6F4E"/>
+<rect class="g-bar" x="132.5" y="78.1" width="12.0" height="207.9" fill="var(--theme)"/>
+<text class="g-tick" x="119.2" y="302" text-anchor="middle">0.1–0.5%</text>
+<rect class="g-bar" x="159.0" y="184.2" width="12.0" height="101.8" fill="#D9CFC3"/>
+<rect class="g-bar" x="172.3" y="85.6" width="12.0" height="200.4" fill="#C2A98D"/>
+<rect class="g-bar" x="185.6" y="74.0" width="12.0" height="212.0" fill="#8E6F4E"/>
+<rect class="g-bar" x="198.9" y="74.0" width="12.0" height="212.0" fill="var(--theme)"/>
+<text class="g-tick" x="185.6" y="302" text-anchor="middle">0.5–1%</text>
+<rect class="g-bar" x="225.4" y="103.4" width="12.0" height="182.6" fill="#D9CFC3"/>
+<rect class="g-bar" x="238.7" y="74.2" width="12.0" height="211.8" fill="#C2A98D"/>
+<rect class="g-bar" x="252.0" y="74.0" width="12.0" height="212.0" fill="#8E6F4E"/>
+<rect class="g-bar" x="265.3" y="74.0" width="12.0" height="212.0" fill="var(--theme)"/>
+<text class="g-tick" x="252.0" y="302" text-anchor="middle">1–5%</text>
+<rect class="g-bar" x="291.8" y="74.1" width="12.0" height="211.9" fill="#D9CFC3"/>
+<rect class="g-bar" x="305.1" y="74.0" width="12.0" height="212.0" fill="#C2A98D"/>
+<rect class="g-bar" x="318.4" y="74.0" width="12.0" height="212.0" fill="#8E6F4E"/>
+<rect class="g-bar" x="331.7" y="74.0" width="12.0" height="212.0" fill="var(--theme)"/>
+<text class="g-tick" x="318.4" y="302" text-anchor="middle">5–20%</text>
+<rect class="g-bar" x="358.2" y="74.0" width="12.0" height="212.0" fill="#D9CFC3"/>
+<rect class="g-bar" x="371.5" y="74.0" width="12.0" height="212.0" fill="#C2A98D"/>
+<rect class="g-bar" x="384.8" y="74.0" width="12.0" height="212.0" fill="#8E6F4E"/>
+<rect class="g-bar" x="398.1" y="74.0" width="12.0" height="212.0" fill="var(--theme)"/>
+<text class="g-tick" x="384.8" y="302" text-anchor="middle">20–50%</text>
+<text class="g-lab" x="252.0" y="322" text-anchor="middle">minor allele frequency</text>
+<rect x="88" y="54" width="11" height="11" fill="#D9CFC3"/>
+<text class="g-note" x="103" y="64">패널 100벌</text>
+<rect x="174" y="54" width="11" height="11" fill="#C2A98D"/>
+<text class="g-note" x="189" y="64">패널 500벌</text>
+<rect x="260" y="54" width="11" height="11" fill="#8E6F4E"/>
+<text class="g-note" x="275" y="64">패널 2,000벌</text>
+<rect x="346" y="54" width="11" height="11" fill="var(--theme)"/>
+<text class="g-note" x="361" y="64">패널 10,000벌</text>
+<polyline class="g-pp" stroke="#2F6DB5" stroke-width="2.2" points="552.0,163.8 583.4,163.8 583.4,228.9 614.8,228.9 614.8,249.3 646.2,249.3 646.2,260.4 677.6,260.4 677.6,265.5 709.0,265.5 709.0,266.5 740.4,266.5 740.4,268.9 771.8,268.9 771.8,272.6 803.2,272.6 803.2,272.8 834.6,272.8 834.6,271.0 866.0,271.0"/>
+<rect x="560" y="52" width="11" height="11" fill="#2F6DB5"/>
+<text class="g-note" x="576" y="62">설계한 집단 A</text>
+<polyline class="g-pp" stroke="#B5525C" stroke-width="2.2" points="552.0,96.7 583.4,96.7 583.4,256.9 614.8,256.9 614.8,265.4 646.2,265.4 646.2,266.3 677.6,266.3 677.6,270.6 709.0,270.6 709.0,271.8 740.4,271.8 740.4,273.3 771.8,273.3 771.8,272.1 803.2,272.1 803.2,273.6 834.6,273.6 834.6,273.0 866.0,273.0"/>
+<rect x="696" y="52" width="11" height="11" fill="#B5525C"/>
+<text class="g-note" x="712" y="62">먼 집단 D</text>
+<line class="g-ax" x1="552" x2="866" y1="286" y2="286"/>
+<text class="g-tick" x="552.0" y="302" text-anchor="middle">0</text>
+<text class="g-tick" x="614.8" y="302" text-anchor="middle">0.1</text>
+<text class="g-tick" x="677.6" y="302" text-anchor="middle">0.2</text>
+<text class="g-tick" x="740.4" y="302" text-anchor="middle">0.3</text>
+<text class="g-tick" x="803.2" y="302" text-anchor="middle">0.4</text>
+<text class="g-tick" x="866.0" y="302" text-anchor="middle">0.5</text>
+<text class="g-lab" x="709.0" y="322" text-anchor="middle">측정한 marker의 MAF</text>
+<text class="g-note" x="552" y="340">MAF 중앙값 0.090 → <tspan class="g-em">0.030</tspan> · 1% 아래로 내려간 marker <tspan class="g-em">41%</tspan></text>
+<text class="g-note dim" x="552" y="356">두 집단의 F_ST 0.14 · 세로축은 marker 수</text>
+</svg>
+<!--/GEN:PANEL-->
+          </div>
+          <figcaption>그림 4 · 왼쪽은 패널 크기별로 그 변이의 비주요 allele이 패널에 한 번이라도 들어 있는 비율 · MAF 0.1–0.5% 구간에서 <!--GEN:PANEL_RARE-->18% · 59% · 90% · 98%<!--/GEN:PANEL_RARE-->, 0.5–1% 구간에서 <!--GEN:PANEL_LOW-->48% · 95% · 100% · 100%<!--/GEN:PANEL_LOW--> · 오른쪽은 집단 A에서 고른 array marker가 F_ST <!--GEN:ASC_FST-->0.14<!--/GEN:ASC_FST-->만큼 떨어진 집단 D에서 갖는 MAF 분포, 중앙값 <!--GEN:ASC_MED-->0.090 → 0.030<!--/GEN:ASC_MED-->이고 <!--GEN:ASC_LOST-->41%<!--/GEN:ASC_LOST-->가 MAF 1% 아래로 내려감</figcaption>
+        </figure>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>패널</th><th>규모</th><th>메모</th></tr></thead>
+            <tbody>
+              <tr><th>HapMap</th><td>haplotype 420벌 · SNP 3.1M · 대륙 집단 3개</td><td>1세대. tag SNP 설계의 토대 <a class="src" href="https://doi.org/10.1038/nature04226" target="_blank" rel="noopener">HapMap 2005</a></td></tr>
+              <tr><th>1000 Genomes phase 3</th><td>haplotype 5,008벌 · 변이 8,800만 개 이상 · 26개 집단</td><td>다양성이 가장 넓은 공개 패널 <a class="src" href="https://doi.org/10.1038/nature15393" target="_blank" rel="noopener">1000G 2015</a></td></tr>
+              <tr><th>HRC release 1</th><td>haplotype 64,976벌 · 표본 32,488명 · SNP 39,235,157개</td><td>20개 연구의 4–8× WGS를 합침. SNP만 담고 indel은 빠졌으며 대부분 European ancestry. MAF 0.1%까지 정확한 채우기를 표방 <a class="src" href="https://doi.org/10.1038/ng.3643" target="_blank" rel="noopener">McCarthy 2016</a></td></tr>
+              <tr><th>TOPMed</th><td>표본 62,784명 · 변이 4억 6,300만 개</td><td>더 다양하고 더 깊음 <a class="src" href="https://doi.org/10.1038/s41576-019-0127-1" target="_blank" rel="noopener">Tam 2019</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cases">
+          <div style="--c:var(--theme)"><span class="lv">크기</span><h4>희귀 변이에서만 크게 벌어짐</h4><p>같은 도구에서 희귀 변이 r²가 패널 1,092명에서 32,390명으로 가면 45.3%에서 77.2%로 뜀 <a class="src" href="https://doi.org/10.1038/ng.3656" target="_blank" rel="noopener">Das 2016</a>. MAF 0.1%에서 aggregate R²는 1000GP3 0.36 대 HRC 0.64 <a class="src" href="https://doi.org/10.1038/ng.3643" target="_blank" rel="noopener">McCarthy 2016</a>. 흔한 변이에서는 거의 차이가 없음</p></div>
+          <div style="--c:#2F6DB5"><span class="lv">일치</span><h4>패널이 대상 집단을 담아야 함</h4><p>채우기가 잘 되려면 패널의 LD 패턴과 allele frequency가 연구 표본을 대표해야 함 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a>. 집단 간 채우기 정확도 차이는 GWAS 결과의 집단 간 이질성을 만드는 기술적 원인 가운데 하나 <a class="src" href="https://doi.org/10.1038/s41576-019-0144-0" target="_blank" rel="noopener">Gurdasani 2019</a> · <a href="ancestry.html#diverse">집단 구조 쪽</a></p></div>
+          <div style="--c:#B5525C"><span class="lv">한계</span><h4>패널을 키워도 놓치는 것</h4><p>HRC+UK10K와 TOPMed로 채운 GWAS가 WGS GWAS의 일부 연관을 주변 신호 없이 통째로 놓쳤음 <a class="src" href="https://doi.org/10.1038/s41576-019-0127-1" target="_blank" rel="noopener">Tam 2019</a>. 빈도 1/100,000 수준의 ultra-rare 변이와 개인·가계 고유 변이는 사실상 채울 수 없고, 현실적 한계는 1/1,000 근처 <a class="src" href="https://doi.org/10.1038/s41576-019-0127-1" target="_blank" rel="noopener">Tam 2019</a></p></div>
+        </div>
+        <div class="callout">
+          <h4>이 시뮬레이션이 보여 주지 못하는 것</h4>
+          <p>패널 크기를 키울 때의 정확도 상승이 위 그림에서 일찍 멈춤. 이 모형은 블록마다 조상 haplotype이 <!--GEN:K_FOUND-->100<!--/GEN:K_FOUND-->가지로 닫혀 있어서, 패널이 그 수를 넘어서면 새로 배울 것이 없기 때문임. 실제 패널은 haplotype 종류가 사실상 열려 있어 커질수록 더 긴 일치 구간을 찾아냄. 그래서 패널 크기의 효과는 위 표의 실제 수치로 읽고, 그림에서는 '패널에 있느냐 없느냐'만 읽는 편이 맞음. 집단 불일치의 효과도 이 모형에서는 재현되지 않음 — 집단을 멀리 보내도 조상 haplotype 집합 자체는 같아서, 패널이 대상 집단의 haplotype을 통째로 빠뜨리는 상황이 생기지 않음</p>
+        </div>
+
+        <!-- ───────── 6. 순서 ───────── -->
+        <h2 id="pipeline">실제로 돌리는 순서<small>Pipeline</small></h2>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>단계</th><th>하는 일</th><th>실제 설정</th></tr></thead>
+            <tbody>
+              <tr><th>1 · 사전 QC</th><td>strand 방향, allele 표기, genome build를 패널과 맞추고 품질 미달 marker를 뺌</td><td>pre-phasing 전에 MAF &lt; 1% · HWE P &lt; 1×10⁻⁴ · missingness &gt; 1%를 제거해 483,991개를 남긴 예 <a class="src" href="https://doi.org/10.1038/ng.3643" target="_blank" rel="noopener">McCarthy 2016</a>. 서버는 업로드 뒤 strand·allele·missingness·MAF 분포를 자동 점검하고 패널과 대조함 <a class="src" href="https://doi.org/10.1038/ng.3656" target="_blank" rel="noopener">Das 2016</a></td></tr>
+              <tr><th>2 · pre-phasing</th><td>코호트 전체의 haplotype을 추정</td><td>두 array에 모두 있는 marker만 쓰고, QC 실패·missing rate &gt; 5%·MAF &lt; 0.0001을 빼 670,739개를 남긴 예 <a class="src" href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener">Bycroft 2018</a></td></tr>
+              <tr><th>3 · 채우기</th><td>패널에 대해 haplotype 하나씩 채움</td><td>약 5만 marker 단위 chunk에 250 kb 여유 구간, 표본 5,000명 단위 job, 표본당 약 10분 <a class="src" href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener">Bycroft 2018</a>. 서버는 20 Mb chunk에 phasing 5 Mb·채우기 500 kb 여유를 붙여 경계 효과를 피함 <a class="src" href="https://doi.org/10.1038/ng.3656" target="_blank" rel="noopener">Das 2016</a></td></tr>
+              <tr><th>4 · 사후 QC</th><td>품질 지표로 변이를 거르고 dosage로 분석</td><td>IMPUTE info &lt; 0.4를 빼고 39,723,562개를 남긴 예 <a class="src" href="https://doi.org/10.1038/s41586-019-1310-4" target="_blank" rel="noopener">Wojcik 2019</a> · R² ≥ 0.5에서 HRC 15,501,516개 대 1000GP3 13,238,968개 <a class="src" href="https://doi.org/10.1038/ng.3643" target="_blank" rel="noopener">McCarthy 2016</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cases">
+          <div style="--c:#6B736E"><span class="lv">도구</span><h4>정확도는 거의 같고 비용이 다름</h4><p>평가한 프로그램이 모두 Li–Stephens 모형이라 정확도가 사실상 같았고 차이는 계산 비용에서 났음 <a class="src" href="https://doi.org/10.1016/j.ajhg.2018.07.015" target="_blank" rel="noopener">Browning 2018</a>. HRC 규모에서 minimac3는 minimac2·IMPUTE2보다 약 30배 빨랐고 메모리를 94–97% 덜 썼음 <a class="src" href="https://doi.org/10.1038/ng.3656" target="_blank" rel="noopener">Das 2016</a></p></div>
+          <div style="--c:var(--theme)"><span class="lv">서버</span><h4>패널을 내려받지 않고 쓰는 길</h4><p>HRC는 참여자 보호와 용량 때문에 직접 내려받기 어렵고, GWAS 1,000명을 단일 CPU로 채우면 약 2년이 걸림 <a class="src" href="https://doi.org/10.1038/ng.3656" target="_blank" rel="noopener">Das 2016</a>. imputation server는 입력을 암호화해 받고 처리 뒤 삭제하며 결과를 7일 보관함 <a class="src" href="https://doi.org/10.1038/ng.3656" target="_blank" rel="noopener">Das 2016</a></p></div>
+          <div style="--c:#B5525C"><span class="lv">손실</span><h4>형식을 바꿀 때 버려지는 것</h4><p>VCF·BCF·Oxford 파일을 PLINK 1.9로 들여오면 phase가 버려지고 다중 alternate allele 변이는 가장 흔한 것만 남음. genotype likelihood는 0.9 미만이면 결측으로 처리됨 <a class="src" href="https://doi.org/10.1186/s13742-015-0047-8" target="_blank" rel="noopener">Chang 2015</a></p></div>
+        </div>
+
+        <!-- ───────── 7. low-pass ───────── -->
+        <h2 id="lowpass">low-pass WGS라는 다른 길<small>Low-coverage sequencing</small></h2>
+        <p class="lede">array 대신 아주 얕게 전장 시퀀싱하고, 고정된 genotype call 대신 read의 genotype likelihood를 그대로 채우기에 넣는 방식 <a class="src" href="https://doi.org/10.1038/s41588-020-00756-0" target="_blank" rel="noopener">Rubinacci 2021</a></p>
+        <p>아래 표의 r²는 전부 <b>채운 dosage와 참 genotype의 상관</b>임. "깊은 WGS에서 보이는 변이 가운데 몇 퍼센트를 잡아내는가"(변이 회수율)는 다른 자이고, 같은 설계가 어느 자로 재느냐에 따라 다른 숫자로 나옴. 회수율로 본 비교는 <a href="../../disease/genetics/01-genome/sequencing.html#blend">교재 쪽 exome · genome 섞기</a>에 있음</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>무엇이</th><th>값</th></tr></thead>
+            <tbody>
+              <tr><th>흔한 변이</th><td>0.3×에서 r² &gt; 0.9, 0.1×에서도 r² &gt; 0.7 (MAF &gt; 5%) <a class="src" href="https://doi.org/10.1038/s41588-020-00756-0" target="_blank" rel="noopener">Rubinacci 2021</a></td></tr>
+              <tr><th>드문 변이</th><td>1×에서 MAF 0.1% 변이가 r² ≈ 0.8, 8×에서는 0.95를 넘김 <a class="src" href="https://doi.org/10.1038/s41588-020-00756-0" target="_blank" rel="noopener">Rubinacci 2021</a></td></tr>
+              <tr><th>array와 견주면</th><td>EUR에서 1×가 MAF &lt; 1% 변이에서 Omni2.5 채우기를 앞질렀고 흔한 변이에서는 비슷했음. 0.5×도 저가 array보다 나았음 <a class="src" href="https://doi.org/10.1038/s41588-020-00756-0" target="_blank" rel="noopener">Rubinacci 2021</a></td></tr>
+              <tr><th>ASW 표본</th><td>0.5×만으로 Global Screening Array와 UK Biobank Axiom array의 결과보다 전 빈도 구간에서 더 정확했음. 저자들은 array probe 설계의 European 쪽 ascertainment bias로 해석함 <a class="src" href="https://doi.org/10.1038/s41588-020-00756-0" target="_blank" rel="noopener">Rubinacci 2021</a></td></tr>
+              <tr><th>비용</th><td>HRC에서 1× genome 하나에 약 5.5 CPU 시간, 당시 클라우드 기준 1달러 미만. array 기반 표준 파이프라인보다는 한 자릿수 비쌈 <a class="src" href="https://doi.org/10.1038/s41588-020-00756-0" target="_blank" rel="noopener">Rubinacci 2021</a></td></tr>
+              <tr><th>제약</th><td>참조 패널의 개인 단위 haplotype이 필요해 summary 접근만 주는 서버로는 쓸 수 없고, 패널이 없는 집단에는 그대로 적용하기 어려움 <a class="src" href="https://doi.org/10.1038/s41588-020-00756-0" target="_blank" rel="noopener">Rubinacci 2021</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>summary statistics만 있을 때는 typed SNP의 z값과 참조 LD로 untyped SNP의 z값을 조건부 평균·분산으로 채우는 길도 있음. 흔한 변이에서 개인 자료 기반 채우기 정보의 80% 이상을 회복하지만, 선형 결합이라 haplotype 구조를 담지 못함 <a class="src" href="https://doi.org/10.1038/nrg.2016.142" target="_blank" rel="noopener">Pasaniuc 2016</a></p>
+
+        <!-- ───────── 8. 읽는 법 ───────── -->
+        <h2 id="read">읽는 법과 흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>채운 genotype은 측정한 genotype과 같다 ✗</code><p class="why">채운 값은 확률이고, 그 확신의 정도가 변이마다 크게 다름. INFO α는 표본의 α배만 완벽히 측정한 것과 같은 정보량 <a class="src" href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener">Bycroft 2018</a> · <a href="#dosage">그림 2</a></p></div>
+          <div class="fix"><code>best-guess로 바꿔도 큰 손해는 없다 ✗</code><p class="why">하드콜은 불확실성 정보를 버림 <a class="src" href="https://doi.org/10.1093/gigascience/giz082" target="_blank" rel="noopener">Choi 2019</a>. 위 변이에서는 <!--GEN:FOCUS_HARD-->21.0%<!--/GEN:FOCUS_HARD-->가 정답과 어긋났음</p></div>
+          <div class="fix"><code>SNP이 더 많은 array가 더 좋다 ✗</code><p class="why">대상 집단에 맞춘 중간 밀도 array가 더 조밀한 global array를 능가할 수 있음. 저자 권고 범위는 집단 최적화 650k–850k <a class="src" href="https://doi.org/10.1038/s41598-022-22215-y" target="_blank" rel="noopener">Nguyen 2022</a></p></div>
+          <div class="fix"><code>패널만 키우면 희귀 변이도 채워진다 ✗</code><p class="why">패널에 없는 변이는 채울 수 없고, ultra-rare 변이와 가계 고유 변이는 어떤 패널로도 닿지 않음 <a class="src" href="https://doi.org/10.1038/s41576-019-0127-1" target="_blank" rel="noopener">Tam 2019</a> · <a href="#panel">그림 4</a></p></div>
+          <div class="fix"><code>패널이 크면 집단이 달라도 괜찮다 ✗</code><p class="why">HRC는 1000 Genomes phase 3를 포함하고도 대부분 European ancestry 표본이고, 저자들이 다음 release의 과제로 다양성 확대를 들었음 <a class="src" href="https://doi.org/10.1038/ng.3643" target="_blank" rel="noopener">McCarthy 2016</a></p></div>
+          <div class="fix"><code>도구를 바꾸면 정확도가 달라진다 ✗</code><p class="why">모두 같은 Li–Stephens 모형이라 정확도는 사실상 같고 차이는 계산 비용에서 남 <a class="src" href="https://doi.org/10.1016/j.ajhg.2018.07.015" target="_blank" rel="noopener">Browning 2018</a></p></div>
+          <div class="fix"><code>rare allele 보유자로 지목되면 보유자다 ✗</code><p class="why">20,000명 패널 기준으로 MAF 0.01–0.1% 변이의 보유자 지목이 실제로 맞을 확률은 약 84%. 후속 실험 전에 직접 sequencing으로 확인하라고 권함 <a class="src" href="https://doi.org/10.1038/ng.3656" target="_blank" rel="noopener">Das 2016</a></p></div>
+          <div class="fix"><code>info 0.3은 절대 기준이다 ✗</code><p class="why">UK Biobank 규모에서 info 0.3은 유효 표본 약 15만 명에 해당해, 더 낮춰도 검정력이 유지될 수 있다고 저자들이 봄 <a class="src" href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener">Bycroft 2018</a></p></div>
+          <div class="fix"><code>array의 allele frequency가 외부 DB와 다르면 집단 차이다 ✗</code><p class="why">probeset 실패나 annotation·mapping 오류일 수 있음. ExAC와 공통 marker 91,298개를 견준 결과 약 300개(0.3%)가 크게 어긋났고, 관심 marker는 cluster plot으로 직접 보라고 권함 <a class="src" href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener">Bycroft 2018</a></p></div>
+          <div class="fix"><code>multi-allelic 변이도 쪼개서 채우면 된다 ✗</code><p class="why">여러 diallelic 변이로 쪼개면 사후확률의 합을 1로 강제할 수 없어 정확도 손실과 비일관된 결과가 생김 <a class="src" href="https://doi.org/10.1016/j.ajhg.2018.07.015" target="_blank" rel="noopener">Browning 2018</a></p></div>
+          <div class="fix"><code>채운 변이는 QC 필터에 민감하다 ✗</code><p class="why">필터 선택 자체에는 비교적 둔감함. 정작 중요한 것은 채우기 정확도이고, 낮을수록 연관 검출력이 떨어짐 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a></p></div>
+          <div class="fix"><code>fine-mapping도 채운 변이로 끝낼 수 있다 ✗</code><p class="why">LD가 약한 영역, lead SNP과 강한 LD가 없는 저빈도 변이, 패널에 잘 표현되지 않은 변이는 직접 genotyping이 필요함 <a class="src" href="https://doi.org/10.1038/s41576-018-0016-z" target="_blank" rel="noopener">Schaid 2018</a> · <a href="../03-postgwas/fine-mapping.html">fine-mapping 쪽</a></p></div>
+        </div>
+        <div class="callout">
+          <h4>이 쪽 그림이 담지 못한 것</h4>
+          <p>시뮬레이션 유전체는 블록 안에서 재조합이 없고 블록 사이 LD가 0임. 그래서 공유 구간의 길이가 블록 하나로 고정되고, 패널을 키워도 새 haplotype이 나타나지 않음. 참조 패널 haplotype에는 오류를 넣지 않았고(고품질 WGS 패널에 대응), 대상의 phase는 정확하다고 두었음 — 실제로는 switch error가 따로 더해짐. 위 수치는 이 조건 아래의 값이고 실제 자료에서는 흔한 변이가 더 잘, 드문 변이는 패널 규모에 따라 더 넓게 갈림</p>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">genotype imputation · imputation · imputed genotype · untyped variant · typed marker · tag SNP · genotyping array · SNP array · Axiom · Illumina Omni · CytoSNP · Global Screening Array · WES · WGS · low-pass WGS · low-coverage sequencing · genotype likelihood · GL · dosage · best-guess genotype · hard call · INFO · info score · imputation r² · aggregate R² · imputation quality · imputation coverage · reference panel · HapMap · 1000 Genomes · 1000GP3 · HRC · Haplotype Reference Consortium · TOPMed · UK10K · imputation server · Michigan Imputation Server · phasing · pre-phasing · switch error · haplotype · Li–Stephens · hidden Markov model · forward-backward · copying model · state space reduction · composite reference haplotype · PBWT · minimac · minimac3 · minimac4 · IMPUTE2 · Impute4 · Beagle · BEAGLE 5 · SHAPEIT · GLIMPSE · STITCH · summary statistic imputation</p></details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>1분 요약</h3><div class="related-list">
+          <a href="../index.html#article/imputation">Genotype imputation 용어 카드 →</a>
+          <a href="../index.html#article/genotyping">Genotyping &amp; sequencing 카드 →</a>
+        </div></div>
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="ld.html#haplotype">Linkage disequilibrium · haplotype (그림) →</a>
+          <a href="ancestry.html#diverse">Ancestry · population structure (그림) →</a>
+          <a href="../03-postgwas/fine-mapping.html">Fine-mapping (그림) →</a>
+          <a href="../02-association/manhattan.html#sumstats">Summary statistics (그림) →</a>
+          <a href="../02-association/association-model.html#model">Association model · dosage 코딩 (그림) →</a>
+          <a href="../03-postgwas/prs.html">Polygenic risk score (그림) →</a>
+          <a href="../index.html#article/qc">Quality control →</a>
+          <a href="../index.html#article/1000-genomes">1000 Genomes →</a>
+          <a href="../../disease/genetics/01-genome/sequencing.html">교재 — 유전체를 어떻게 읽나 →</a>
+          <a href="../../disease/genetics/01-genome/variant-types.html">교재 — 변이에 어떤 종류가 있나 →</a>
+        </div></div>
+        <div class="aside-box source-box"><h3>Resources / External links</h3><div class="source-list">
+          <a href="https://imputation.biodatacatalyst.nhlbi.nih.gov/" target="_blank" rel="noopener noreferrer">TOPMed Imputation Server ↗</a>
+          <a href="https://imputationserver.sph.umich.edu/" target="_blank" rel="noopener noreferrer">Michigan Imputation Server ↗</a>
+          <a href="https://faculty.washington.edu/browning/beagle/beagle.html" target="_blank" rel="noopener noreferrer">Beagle ↗</a>
+          <a href="https://genome.sph.umich.edu/wiki/Minimac4" target="_blank" rel="noopener noreferrer">Minimac4 ↗</a>
+          <a href="https://odelaneau.github.io/shapeit5/" target="_blank" rel="noopener noreferrer">SHAPEIT5 ↗</a>
+          <a href="https://odelaneau.github.io/GLIMPSE/" target="_blank" rel="noopener noreferrer">GLIMPSE ↗</a>
+          <a href="https://www.internationalgenome.org/" target="_blank" rel="noopener noreferrer">1000 Genomes ↗</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/nature04226" target="_blank" rel="noopener noreferrer">HapMap 2005, Nature — haplotype map ↗</a>
+          <a href="https://doi.org/10.1038/nature15393" target="_blank" rel="noopener noreferrer">1000G 2015, Nature — phase 3 ↗</a>
+          <a href="https://doi.org/10.1038/ng.3643" target="_blank" rel="noopener noreferrer">McCarthy 2016, Nat Genet — HRC ↗</a>
+          <a href="https://doi.org/10.1038/ng.3656" target="_blank" rel="noopener noreferrer">Das 2016, Nat Genet — minimac3 · 서버 ↗</a>
+          <a href="https://doi.org/10.1016/j.ajhg.2018.07.015" target="_blank" rel="noopener noreferrer">Browning 2018, Am J Hum Genet — Beagle 5 ↗</a>
+          <a href="https://doi.org/10.1038/s41586-018-0579-z" target="_blank" rel="noopener noreferrer">Bycroft 2018, Nature — UK Biobank ↗</a>
+          <a href="https://doi.org/10.1038/s41588-020-00756-0" target="_blank" rel="noopener noreferrer">Rubinacci 2021, Nat Genet — GLIMPSE ↗</a>
+          <a href="https://doi.org/10.1038/s41598-022-22215-y" target="_blank" rel="noopener noreferrer">Nguyen 2022, Sci Rep — array 벤치마크 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../gwas-fig.js"></script>
+</body>
+</html>

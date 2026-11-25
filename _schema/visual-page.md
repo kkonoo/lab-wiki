@@ -161,7 +161,11 @@ tr -dc '\000' < wiki/site/assets/css/article.css | wc -c
 python3 wiki/site-meta/tools/check_svg.py wiki/site/gwas/03-postgwas/coloc.html   # html 여러 개를 한 번에 줘도 된다
 ```
 
-§4.1을 HTML 안 `<svg>`에서 잰다: `diagonal`(비스듬한 화살표) · `behind`(끝점 아닌 상자를 지남) · `port`(한 점에 화살표 끝 둘) · `on-line`(화살표가 글자 위를 지남) · `too-wide`(글자가 상자보다 넓음 — 글자 폭은 어림). 화살표 = `marker-end`/`marker-start`가 붙은 `path`·`line`, 상자 = 40×20 이상 `rect`(영역 클래스 `zone`·`lane`·`band`·`ov`·`frame`·`hl` 등과 그림 폭 80% 넘는 띠는 뺀다).
+§4.1을 HTML 안 `<svg>`에서 잰다: `diagonal`(비스듬한 화살표) · `behind`(끝점 아닌 상자를 지남) · `port`(한 점에 화살표 끝 둘) · `on-line`(화살표가 글자 위를 지남) · `too-wide`(글자가 상자보다 넓음 — 글자 폭은 어림) · **`covered`(나중에 그린 불투명한 면이 글자를 덮음, 2026-11-25 추가)**. 화살표 = `marker-end`/`marker-start`가 붙은 `path`·`line`, 상자 = 40×20 이상 `rect`(영역 클래스 `zone`·`lane`·`band`·`ov`·`frame`·`hl` 등과 그림 폭 80% 넘는 띠는 뺀다).
+
+`covered`는 그 영역 클래스들을 **다시 본다** — 상자로는 안 쳐도 뒤를 가리는 면이기 때문이다. SVG는 나중에 그린 것이 위에 오므로 **글자보다 문서 순서가 뒤인 면**만 보고, 그 면의 `fill`이 `none`이 아니면서 실효 불투명도가 0.85 이상일 때, 글자 상자의 30% 넘게 덮으면 잡는다. 칠은 inline 속성 · `style` · CSS 클래스(조상 클래스 + 요소 꼴인 `.xfig .bx rect{fill:…}`도 읽는다)에서 찾고, **상태 선택자(`[data-mode=…]` · `:not(…)`)가 붙은 규칙은 켜졌는지 알 수 없어 건너뛴다**. `gfig.band()`가 띠 위에 얹는 `g-band-t`는 예외다.
+
+못 잡는 것: 채운 `<path>`·`<circle>`(면은 `<rect>`만 본다) · **불투명한 면 위에 나중에 글자를 얹어 색이 묻히는 경우**(색 계산이 필요하다). 이름표가 점 위에 겹치는 것도 여기 들어가니 모드별 PNG는 계속 눈으로 본다.
 
 - **0이 목표가 아니다** — 생성기를 고친 전후로 돌려 신규 0건을 본다. 기준선(2026-11-05, 그림 있는 29쪽): 102건(too-wide 58 · diagonal 24 · on-line 12 · behind 4 · port 4). 눈으로 확인한 진짜 예: sensing 그림 1 MAVS → IRF3 선이 `K⁺ 유출…` 알약 뒤를 지남(behind), MyD88 · TRIF에서 점선 · 실선이 한 점에서 나감(port).
 - 토글로 숨긴 오버레이 글자도 잰다 — 기본 화면에 안 보이는 글이 걸릴 수 있다.
