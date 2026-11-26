@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="감수분열의 교차가 염색체를 조각으로 쪼개고, 그 조각의 길이가 유전자를 어디까지 좁힐 수 있는지 정함. 교차가 일어나는 과정과 몰리는 자리, 재조합 빈도와 cM, lod score로 영역을 찾는 일, 그리고 흔한 질환에서 연관 분석이 꺾인 자리">
+  <title>재조합은 어떻게 일어나고, 연관 분석은 무엇을 찾았나? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">재조합과 집단</a><span>›</span>재조합과 연관 분석</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">재조합과 집단 · Recombination and linkage</p>
+        <h1>재조합은 어떻게 일어나고, 연관 분석은 무엇을 찾았나?</h1>
+        <p class="definition">감수분열마다 염색체는 몇십 군데에서 끊기고 맞바뀜. 그 결과 사람이 조상에게서 물려받는 것은 염색체 한 벌이 아니라 조각 묶음이고, <strong>조각의 길이가 유전자를 어디까지 좁힐 수 있는지를 정함</strong>. 가계 안에서는 교차가 몇 번뿐이라 영역이 수 Mb로 넓고, 세대를 깊이 쌓으면 같은 재조합이 조각을 kb까지 깎음(HMG 2.3 · 17.1)</p>
+
+        <!-- ───────── 1. 질문이 서는 자리 ───────── -->
+        <h2 id="why">조각의 길이가 해상도<small>Why recombination sets the resolution</small></h2>
+        <p class="lede">재조합은 유전자 사냥의 방해물이 아니라 그 자(尺).</p>
+        <p>멘델의 독립 분리는 조건이 붙은 법칙임. 두 locus가 <strong>서로 다른 염색체</strong>에 있으면 gamete의 절반이 부모의 조합을 깨고 나오므로 재조합 빈도가 0.5가 되지만, 같은 염색체에 있으면 둘은 함께 가려 하고 그 사이를 끊는 것은 교차뿐임. 그래서 같은 염색체 위 두 점의 재조합 빈도는 0과 0.5 사이의 값이 되고, 그 값이 <strong>거리</strong>임(HMG 17.1).</p>
+        <p>이 사실이 유전자 지도의 전부를 만들었음. 질환 변이의 자리를 모르더라도, 이미 자리를 아는 표지(genetic marker)가 가계 안에서 질환과 함께 다니는지를 세면 변이가 그 표지 근처에 있다는 결론이 나옴. 20세기 말 단일유전자 질환의 원인 유전자 대부분이 이 길로 찾아졌음(HMG 17.1).</p>
+        <p>다만 이 자의 눈금은 가계가 품은 교차의 수만큼만 촘촘해짐. 자녀 몇 명에서 일어난 교차 몇 번으로는 변이의 자리를 수 Mb 안으로밖에 못 몰아넣으므로, 연관 분석이 주는 산출물은 변이가 아니라 <strong>영역</strong>임. 반대로 세대를 수천 번 쌓은 집단 전체를 보면 같은 재조합이 조각을 수 kb까지 깎아 놓아 훨씬 가는 눈금이 생김 — 연관 분석에서 집단 수준의 association으로 넘어간 까닭이 여기 있음(HMG 17.2 · 18.2).</p>
+        <p>이 쪽이 따라가는 순서는 넷임 — 교차가 일어나는 과정, 교차가 몰리는 자리, 그것으로 거리를 재는 방식, 그리고 가계 연관이 무엇을 찾고 어디서 꺾였는지.</p>
+
+        <!-- ───────── 2. 교차 ───────── -->
+        <h2 id="meiosis">교차는 어디에서 일어나나<small>Crossover in meiosis I</small></h2>
+        <p class="lede">끊고 다시 붙이는 일. 그리고 그 일이 분리에도 필요함.</p>
+
+        <figure class="fig" id="fig-cross" data-mode="meiosis">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-cross" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="meiosis" aria-pressed="true">한 bivalent에서</button>
+              <button type="button" data-mode="where" aria-pressed="false">교차가 몰리는 자리</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:CROSS-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="rcCrossT rcCrossD" xmlns="http://www.w3.org/2000/svg">
+<title id="rcCrossT">감수분열 교차가 일어나는 과정과 교차가 몰리는 자리를 보여 주는 그림</title>
+<desc id="rcCrossD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 한 bivalent의 chromatid 넷을 어머니 쪽 둘과 아버지 쪽 둘로 놓고, 두 곳에서 교차가 일어나 가운데 조각이 맞바뀐 gamete 넷을 아래에 그린다. 남성 감수분열의 chiasma는 평균 55개, 여성은 약 90개이고, 독립 분리만으로도 2의 23제곱 곧 8,388,608가지가 나온다. 둘째 화면은 500 kb 구간의 재조합률을 선으로 그려 교차가 몇 곳에 몰려 있음을 보이고, ENCODE 500 kb 구간 열 곳이 0.19–1.25 cM으로 흩어진다는 것과 재조합의 약 80%가 서열의 약 15%에서 일어난다는 것을 막대로 견준다. hotspot은 1–2 kb 구간이고 사람에게 약 30,000개가 50–100 kb마다 있다.</desc>
+<g class="g-ov" data-ov="meiosis"><text x="380" y="36" class="g-lab em" text-anchor="middle">한 bivalent에서 일어나는 일 — 끊고 맞바꾸기</text><rect x="196" y="70" width="452" height="10" rx="2" fill="#2563C9"/><rect x="196" y="86" width="452" height="10" rx="2" fill="#2563C9"/><rect x="196" y="104" width="452" height="10" rx="2" fill="#B3261E"/><rect x="196" y="120" width="452" height="10" rx="2" fill="#B3261E"/><path d="M 333,96 L 355,96" fill="none" stroke="#8A949C" stroke-width="1.4"/><path d="M 333,88 L 355,112" fill="none" stroke="#3B4A5A" stroke-width="1.6"/><path d="M 333,112 L 355,88" fill="none" stroke="#3B4A5A" stroke-width="1.6"/><text x="344" y="64" class="g-small" text-anchor="middle">교차</text><path d="M 525,96 L 547,96" fill="none" stroke="#8A949C" stroke-width="1.4"/><path d="M 525,88 L 547,112" fill="none" stroke="#3B4A5A" stroke-width="1.6"/><path d="M 525,112 L 547,88" fill="none" stroke="#3B4A5A" stroke-width="1.6"/><text x="536" y="64" class="g-small" text-anchor="middle">교차</text><text x="30" y="82" class="g-note em" text-anchor="start">어머니 쪽 2</text><text x="30" y="116" class="g-note em" text-anchor="start">아버지 쪽 2</text><text x="188" y="145" class="g-small" text-anchor="start">교차 전 — chromatid 넷이 한 묶음(bivalent)</text><rect x="196" y="176" width="452" height="10" rx="2" fill="#2563C9"/><rect x="196" y="198" width="148" height="10" rx="2" fill="#2563C9"/><rect x="344" y="198" width="192" height="10" rx="2" fill="#B3261E"/><rect x="536" y="198" width="112" height="10" rx="2" fill="#2563C9"/><rect x="196" y="220" width="148" height="10" rx="2" fill="#B3261E"/><rect x="344" y="220" width="192" height="10" rx="2" fill="#2563C9"/><rect x="536" y="220" width="112" height="10" rx="2" fill="#B3261E"/><rect x="196" y="242" width="452" height="10" rx="2" fill="#B3261E"/><line x1="344" y1="170" x2="344" y2="258" class="g-grid"/><line x1="536" y1="170" x2="536" y2="258" class="g-grid"/><text x="30" y="206" class="g-note em" text-anchor="start">교차 뒤 gamete 넷</text><text x="188" y="274" class="g-small" text-anchor="start">두 교차가 같은 두 chromatid에 일어난 경우다 — 가운데 조각만 맞바뀐다.</text><text x="648" y="145" class="g-small" text-anchor="end">남성 평균 chiasma 55개 · 여성 약 90개</text><text x="188" y="294" class="g-small" text-anchor="start">독립 분리만으로 2²³ = 8,388,608가지 — 교차가 그 위에 얹힌다.</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">한 bivalent에서 일어나는 일</text><text x="44" y="347" class="g-band-t" text-anchor="start">교차는 끊고 다시 붙이는 일이다 — 어머니 쪽 한 chromatid와 아버지 쪽 한 chromatid가 조각을 맞바꾼다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">chiasma는 다양성만 만들지 않는다 — 분리될 때까지 두 homolog를 붙잡아 두는 것도 그 일이다.</text></g>
+<g class="g-ov" data-ov="where"><text x="380" y="36" class="g-lab em" text-anchor="middle">교차는 고르게 일어나지 않는다</text><line x1="70" y1="186" x2="700" y2="186" class="g-axis"/><path d="M 70,186 L 101.1,183 L 114.1,152 L 127.1,183 L 164.1,183 L 177.1,128 L 190.1,183 L 233.4,183 L 246.4,160 L 259.4,183 L 309,183 L 322,114 L 335,183 L 365.7,183 L 378.7,146 L 391.7,183 L 435,183 L 448,156 L 461,183 L 491.7,183 L 504.7,122 L 517.7,183 L 567.3,183 L 580.3,164 L 593.3,183 L 642.9,183 L 655.9,140 L 668.9,183 L 700,186" fill="none" stroke="#2563C9" stroke-width="1.8"/><text x="70" y="204" class="g-small" text-anchor="start">0</text><text x="700" y="204" class="g-small" text-anchor="end">500 kb</text><text x="30" y="78" class="g-note em" text-anchor="start">재조합률</text><text x="700" y="78" class="g-small" text-anchor="end">ENCODE 500 kb 구간 열 곳은 0.19–1.25 cM</text><text x="700" y="96" class="g-small" text-anchor="end">유전체 평균은 500 kb당 약 0.5 cM</text><rect x="170" y="236" width="530" height="22" rx="3" fill="none" stroke="#8A949C" stroke-width="1.3"/><rect x="170" y="236" width="79.5" height="22" rx="3" fill="#6E8FC9"/><text x="30" y="252" class="g-note em" text-anchor="start">서열</text><text x="259.5" y="252" class="g-note em" text-anchor="start">15%</text><rect x="170" y="276" width="530" height="22" rx="3" fill="none" stroke="#8A949C" stroke-width="1.3"/><rect x="170" y="276" width="424" height="22" rx="3" fill="#B3261E"/><text x="30" y="292" class="g-note em" text-anchor="start">재조합</text><text x="604" y="292" class="g-note em" text-anchor="start">80%</text><text x="170" y="226" class="g-small" text-anchor="start">재조합의 80%가 서열의 15%에서 일어난다</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">교차가 몰리는 자리</text><text x="44" y="347" class="g-band-t" text-anchor="start">낮은 해상도로 보면 교차가 고르게 흩어진 것처럼 보인다 — 몰림은 1–2 kb 눈금에서 드러난다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">hotspot은 PRDM9가 H3K4me3을 찍는 자리이고, 사람에게 약 30,000개가 50–100 kb마다 있다.</text></g>
+</svg>
+<!--/GEN:CROSS-->
+          </div>
+          <figcaption>chromatid 배치와 둘째 화면의 봉우리 위치는 모양이고 눈금이 아니다. 숫자는 관찰값(HMG 2.3 · 12.2 <a class="src" href="https://doi.org/10.1038/nature04226" target="_blank" rel="noopener">HapMap 2005</a>). 둘째 화면은 다음 절에서 다룸.</figcaption>
+        </figure>
+
+        <p>감수분열 I의 전기는 다섯 단계로 나뉨. zygotene에서 상동 염색체가 바싹 붙고 그 사이에 단백질로 된 <strong>synaptonemal complex</strong>가 생기며, 그것이 완성되는 pachytene에서 교차가 일어남. 이때 염색체는 각각 두 sister chromatid를 가진 상태이므로 짝지은 상동 염색체는 chromatid 넷으로 된 <strong>bivalent</strong>임(HMG 2.3).</p>
+        <p>교차 자체는 물리적인 일임 — 아버지 쪽 chromatid 하나와 어머니 쪽 chromatid 하나에서 DNA가 끊기고, 어머니 쪽 조각과 아버지 쪽 조각이 서로 이어 붙음. synaptonemal complex 위에 일정한 간격으로 놓인 거대한 단백질 덩어리(recombination nodule)가 이 일을 매개하는 것으로 보임. 교차가 끝난 두 상동 염색체는 특정 지점에서 물리적으로 이어져 보이고, 그 지점이 <strong>chiasma</strong>임(HMG 2.3).</p>
+        <p>수는 세어져 있음. 사람 남성 감수분열에서 세포당 chiasma가 평균 <strong>55개</strong>, 여성에서는 <strong>약 90개</strong>이고 대부분이 재조합 hotspot에서 일어남(HMG 2.3). 여성의 전기 I은 태아기에 시작해 수십 년에 걸쳐 진행되므로 이 과정이 걸리는 시간도 성별에 따라 전혀 다름(HMG 2.3).</p>
+        <div class="callout blue">
+          <h4>chiasma의 두 번째 일</h4>
+          <p>교차를 다양성 장치로만 보면 절반을 놓침. chiasma는 감수분열 I에서 분리가 시작될 때까지 어머니 쪽과 아버지 쪽 상동 염색체를 방추에 붙잡아 두는 일을 하고, 그 역할은 체세포분열에서 centromere가 하는 것과 비슷함. 염색체 수가 잘못된 아이들이 <strong>bivalent에 chiasma가 없던 gamete</strong>에서 나온 경우가 많다는 것이 유전학적으로 확인되어 있음(HMG 2.3). 교차가 모자라면 다양성이 줄어드는 데서 끝나지 않고 염색체 수부터 틀어짐.</p>
+        </div>
+        <p>다양성의 규모는 독립 분리만으로도 이미 큼. 상동 염색체 23쌍이 서로 무관하게 갈라지므로 가능한 조합이 <strong>2<sup>23</sup> = 8,388,608</strong>가지이고(HMG Figure 2.13), 교차가 그 위에 얹혀 각 chromatid를 조각 묶음으로 바꾸므로 한 사람이 만드는 gamete는 사실상 모두 다름(HMG 2.3).</p>
+        <p>예외처럼 보이는 구간도 재조합으로 유지됨. X와 Y는 서열이 크게 다르지만 단완 끝의 <strong>2.6 Mb</strong> 상동 구간에서 의무적으로 교차가 일어나고, 그 교차가 둘의 짝짓기를 떠받침(HMG 2.3).</p>
+
+        <!-- ───────── 3. 몰리는 자리 ───────── -->
+        <h2 id="where">교차가 몰리는 자리<small>Hotspots</small></h2>
+        <p class="lede">낮은 해상도로 보면 고르고, 들여다보면 몇 군데에 몰려 있음.</p>
+        <p>염색체 전체를 멀리서 보면 교차는 유전체에 거의 무작위로 흩어진 것처럼 보이고, 실제로 염색체 팔마다 보통 교차가 하나 이상 생김(HMG 17.1). 그런데 눈금을 kb로 내리면 그림이 완전히 달라짐 — 감수분열 재조합은 <strong>1–2 kb</strong> 길이의 <strong>hotspot</strong>에 몰려 있음. 사람에게 그런 hotspot이 약 <strong>30,000개</strong> 있고 대체로 <strong>50–100 kb</strong>마다 하나씩 놓임(HMG 12.2).</p>
+        <p>hotspot을 정하는 것은 서열에 붙는 표지임. hotspot은 histone 메틸화 표지 H3K4me3을 지니고, 그 표지는 <strong>PRDM9</strong> histone methyltransferase가 서열을 특이적으로 알아보고 찍음(HMG 12.2). 이 그림이 일반적이라는 근거는 두 방향에서 왔음 — 집단 유전형 자료로 재조합률을 추정하는 계산 방법과, 개별 정자를 직접 유전형 분석하는 실험(HMG 12.2가 인용한 Myers 2005 · Jeffreys 2000).</p>
+        <p>규모를 수치로 보면 이렇음. HapMap이 ENCODE 구간 열 곳(각 500 kb, 합쳐 5 Mb)에서 재조합률을 추정했을 때 hotspot <strong>88개</strong>가 나왔고 이는 <strong>57 kb마다 하나</strong>에 해당함. 구간마다 4개에서 14개까지 있었고 열 곳 모두에 hotspot이 있었음. 그 5 Mb 안에서 <strong>재조합의 약 80%가 서열의 약 15%</strong>에서 일어난 것으로 추정됨 <a class="src" href="https://doi.org/10.1038/nature04226" target="_blank" rel="noopener">HapMap 2005</a>.</p>
+        <p>그래서 재조합률은 자리마다 크게 다름. 유전체 전체에서 500 kb당 평균이 약 0.5 cM인데, ENCODE 500 kb 구간들의 추정값은 0.19 cM에서 1.25 cM까지 열 배 가까이 흩어졌음. 그리고 이 열 배조차 더 가는 눈금의 변동을 가린 값임 <a class="src" href="https://doi.org/10.1038/nature04226" target="_blank" rel="noopener">HapMap 2005</a>.</p>
+        <p>결과는 다음 절과 그다음 쪽으로 이어짐. 교차가 몇 군데에 몰리므로 유전거리는 물리거리에 비례하지 않고, 한 염색체를 따라가며 보는 상관 구조도 매끄럽게 줄지 않고 계단처럼 끊김. 그 상관을 어떻게 재고 어떻게 쓰는지는 <a href="../../../gwas/01-genetics/ld.html">가까운 variant들은 왜 함께 움직이는가?</a>에 있음.</p>
+
+        <!-- ───────── 4. 거리 ───────── -->
+        <h2 id="cm">거리를 어떻게 재나<small>Recombination fraction and the centiMorgan</small></h2>
+        <p class="lede">재조합 빈도가 거리. 다만 0.5에서 멈추는 자.</p>
+
+        <figure class="fig" id="fig-map" data-mode="cm">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-map" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="cm" aria-pressed="true">거리 단위</button>
+              <button type="button" data-mode="linkage" aria-pressed="false">lod score</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:MAP-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="rcMapT rcMapD" xmlns="http://www.w3.org/2000/svg">
+<title id="rcMapT">재조합 빈도로 거리를 재는 방식과 lod score 곡선을 보여 주는 그림</title>
+<desc id="rcMapD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 재조합 빈도 θ의 정의와 θ 0.01이 1 cM이라는 것, 다른 염색체에 있으면 θ가 0.5라는 것을 적고, 10 cM씩 떨어진 locus A부터 J까지를 눈금으로 놓아 지도상으로는 100 cM인 거리가 가계에서 직접 재면 50 cM으로 나온다는 것을 보여 준다. 둘째 화면은 lod score 곡선으로, 자녀 여섯 가운데 재조합이 한 명인 가계 하나의 최대 Z가 0.63이고 재조합이 없으면 1.81이며 같은 가계 다섯 집의 Z를 더하면 3.16이 되어 수용 threshold +3을 넘는다는 것을 보여 준다. 배제 threshold −2는 그림 아래 띠에 적었다. 곡선은 HMG Box 17.1의 식으로 계산한 값이다.</desc>
+<g class="g-ov" data-ov="cm"><text x="380" y="36" class="g-lab em" text-anchor="middle">재조합 빈도가 거리이고, 0.5에서 멈춘다</text><rect x="30" y="64" width="230" height="30" rx="5" fill="none" stroke="#8A949C" stroke-width="1.3"/><text x="145" y="84" class="g-note" text-anchor="middle">θ = 재조합 gamete의 비율</text><rect x="290" y="64" width="170" height="30" rx="5" fill="none" stroke="#8A949C" stroke-width="1.3"/><text x="375" y="84" class="g-note" text-anchor="middle">θ 0.01 = 1 cM</text><rect x="490" y="64" width="240" height="30" rx="5" fill="none" stroke="#8A949C" stroke-width="1.3"/><text x="610" y="84" class="g-note" text-anchor="middle">다른 염색체면 θ = 0.5</text><line x1="96" y1="158" x2="654" y2="158" class="g-axis"/><line x1="96" y1="151" x2="96" y2="165" class="g-axis"/><text x="96" y="143" class="g-note em" text-anchor="middle">A</text><line x1="158" y1="151" x2="158" y2="165" class="g-axis"/><text x="158" y="143" class="g-note em" text-anchor="middle">B</text><line x1="220" y1="151" x2="220" y2="165" class="g-axis"/><text x="220" y="143" class="g-note em" text-anchor="middle">C</text><line x1="282" y1="151" x2="282" y2="165" class="g-axis"/><text x="282" y="143" class="g-note em" text-anchor="middle">D</text><line x1="344" y1="151" x2="344" y2="165" class="g-axis"/><text x="344" y="143" class="g-note em" text-anchor="middle">E</text><line x1="406" y1="151" x2="406" y2="165" class="g-axis"/><text x="406" y="143" class="g-note em" text-anchor="middle">F</text><line x1="468" y1="151" x2="468" y2="165" class="g-axis"/><text x="468" y="143" class="g-note em" text-anchor="middle">G</text><line x1="530" y1="151" x2="530" y2="165" class="g-axis"/><text x="530" y="143" class="g-note em" text-anchor="middle">H</text><line x1="592" y1="151" x2="592" y2="165" class="g-axis"/><text x="592" y="143" class="g-note em" text-anchor="middle">I</text><line x1="654" y1="151" x2="654" y2="165" class="g-axis"/><text x="654" y="143" class="g-note em" text-anchor="middle">J</text><text x="127" y="184" class="g-small" text-anchor="middle">10 cM</text><text x="189" y="184" class="g-small" text-anchor="middle">10 cM</text><text x="437" y="184" class="g-small" text-anchor="middle">… 아홉 칸이 모두 10 cM</text><text x="96" y="208" class="g-note em" text-anchor="start">지도상 A–J = 100 cM</text><rect x="96" y="214" width="558" height="18" rx="3" fill="#2563C9"/><text x="96" y="252" class="g-note em" text-anchor="start">가계에서 A–J를 직접 재면 50 cM — 여기서 멈춘다</text><rect x="96" y="258" width="279" height="18" rx="3" fill="#B3261E"/><line x1="375" y1="170" x2="375" y2="256" class="g-mid"/><text x="96" y="288" class="g-small" text-anchor="start">같은 두 점인데 값이 다르다 — 두 번 교차한 gamete가 비재조합형으로 세어진다.</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">거리 단위</text><text x="44" y="347" class="g-band-t" text-anchor="start">재조합 빈도는 0.5를 넘지 않는다 — 멀리 떨어진 두 점은 연관되지 않은 것과 같아 보인다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">그래서 지도는 가까운 구간을 이어 붙여 만든다. 유전거리와 물리거리는 정확히 대응하지 않는다.</text></g>
+<g class="g-ov" data-ov="linkage"><text x="380" y="36" class="g-lab em" text-anchor="middle">lod score — 두 가설의 우도비</text><line x1="112" y1="215.652" x2="668" y2="215.652" class="g-axis"/><line x1="112" y1="92" x2="112" y2="250" class="g-axis"/><line x1="112" y1="215.652" x2="112" y2="221.652" class="g-axis"/><text x="112" y="235.652" class="g-small" text-anchor="middle">0</text><line x1="223.2" y1="215.652" x2="223.2" y2="221.652" class="g-axis"/><text x="223.2" y="235.652" class="g-small" text-anchor="middle">0.1</text><line x1="334.4" y1="215.652" x2="334.4" y2="221.652" class="g-axis"/><text x="334.4" y="235.652" class="g-small" text-anchor="middle">0.2</text><line x1="445.6" y1="215.652" x2="445.6" y2="221.652" class="g-axis"/><text x="445.6" y="235.652" class="g-small" text-anchor="middle">0.3</text><line x1="556.8" y1="215.652" x2="556.8" y2="221.652" class="g-axis"/><text x="556.8" y="235.652" class="g-small" text-anchor="middle">0.4</text><line x1="668" y1="215.652" x2="668" y2="221.652" class="g-axis"/><text x="668" y="235.652" class="g-small" text-anchor="middle">0.5</text><text x="390" y="255.652" class="g-small" text-anchor="middle">재조합 빈도 θ</text><text x="102" y="116.609" class="g-small" text-anchor="end">3</text><text x="102" y="150.957" class="g-small" text-anchor="end">2</text><text x="102" y="185.304" class="g-small" text-anchor="end">1</text><text x="102" y="219.652" class="g-small" text-anchor="end">0</text><text x="102" y="254" class="g-small" text-anchor="end">-1</text><text x="102" y="82" class="g-note em" text-anchor="end">Z</text><line x1="112" y1="112.609" x2="668" y2="112.609" class="g-thr"/><text x="664" y="104.609" class="g-small" text-anchor="end">+3 수용</text><path d="M 125.344,239.842 L 129.792,219.898 L 134.24,204.774 L 138.688,192.701 L 143.136,182.735 L 147.584,174.313 L 152.032,167.073 L 156.48,160.765 L 160.928,155.213 L 165.376,150.287 L 169.824,145.887 L 174.272,141.937 L 178.72,138.375 L 183.168,135.151 L 187.616,132.227 L 192.064,129.568 L 196.512,127.146 L 200.96,124.938 L 205.408,122.924 L 209.856,121.086 L 214.304,119.41 L 218.752,117.882 L 223.2,116.491 L 227.648,115.227 L 232.096,114.081 L 236.544,113.044 L 240.992,112.111 L 245.44,111.273 L 249.888,110.527 L 254.336,109.866 L 258.784,109.285 L 263.232,108.781 L 267.68,108.35 L 272.128,107.987 L 276.576,107.69 L 281.024,107.456 L 285.472,107.282 L 289.92,107.165 L 294.368,107.104 L 298.816,107.095 L 303.264,107.137 L 307.712,107.228 L 312.16,107.367 L 316.608,107.551 L 321.056,107.78 L 325.504,108.051 L 329.952,108.364 L 334.4,108.717 L 338.848,109.109 L 343.296,109.54 L 347.744,110.007 L 352.192,110.511 L 356.64,111.05 L 361.088,111.623 L 365.536,112.231 L 369.984,112.871 L 374.432,113.543 L 378.88,114.247 L 383.328,114.982 L 387.776,115.748 L 392.224,116.543 L 396.672,117.369 L 401.12,118.223 L 405.568,119.105 L 410.016,120.016 L 414.464,120.954 L 418.912,121.92 L 423.36,122.913 L 427.808,123.933 L 432.256,124.979 L 436.704,126.051 L 441.152,127.149 L 445.6,128.273 L 450.048,129.422 L 454.496,130.596 L 458.944,131.796 L 463.392,133.02 L 467.84,134.269 L 472.288,135.543 L 476.736,136.841 L 481.184,138.163 L 485.632,139.51 L 490.08,140.881 L 494.528,142.275 L 498.976,143.694 L 503.424,145.136 L 507.872,146.603 L 512.32,148.093 L 516.768,149.607 L 521.216,151.145 L 525.664,152.706 L 530.112,154.291 L 534.56,155.9 L 539.008,157.533 L 543.456,159.19 L 547.904,160.87 L 552.352,162.575 L 556.8,164.303 L 561.248,166.055 L 565.696,167.832 L 570.144,169.632 L 574.592,171.457 L 579.04,173.307 L 583.488,175.18 L 587.936,177.079 L 592.384,179.002 L 596.832,180.95 L 601.28,182.923 L 605.728,184.922 L 610.176,186.945 L 614.624,188.995 L 619.072,191.07 L 623.52,193.17 L 627.968,195.297 L 632.416,197.451 L 636.864,199.63 L 641.312,201.837 L 645.76,204.07 L 650.208,206.331 L 654.656,208.62 L 659.104,210.936 L 663.552,213.28 L 668,215.652" fill="none" stroke="#B3261E" stroke-width="2"/><path d="M 116.448,153.973 L 120.896,154.333 L 125.344,154.694 L 129.792,155.057 L 134.24,155.422 L 138.688,155.788 L 143.136,156.156 L 147.584,156.525 L 152.032,156.895 L 156.48,157.267 L 160.928,157.641 L 165.376,158.016 L 169.824,158.393 L 174.272,158.772 L 178.72,159.152 L 183.168,159.533 L 187.616,159.917 L 192.064,160.302 L 196.512,160.688 L 200.96,161.077 L 205.408,161.467 L 209.856,161.858 L 214.304,162.252 L 218.752,162.647 L 223.2,163.044 L 227.648,163.443 L 232.096,163.843 L 236.544,164.245 L 240.992,164.649 L 245.44,165.055 L 249.888,165.463 L 254.336,165.873 L 258.784,166.284 L 263.232,166.698 L 267.68,167.113 L 272.128,167.53 L 276.576,167.949 L 281.024,168.37 L 285.472,168.794 L 289.92,169.219 L 294.368,169.646 L 298.816,170.075 L 303.264,170.507 L 307.712,170.94 L 312.16,171.376 L 316.608,171.813 L 321.056,172.253 L 325.504,172.695 L 329.952,173.139 L 334.4,173.586 L 338.848,174.034 L 343.296,174.485 L 347.744,174.938 L 352.192,175.394 L 356.64,175.852 L 361.088,176.312 L 365.536,176.774 L 369.984,177.239 L 374.432,177.707 L 378.88,178.177 L 383.328,178.649 L 387.776,179.124 L 392.224,179.601 L 396.672,180.081 L 401.12,180.563 L 405.568,181.049 L 410.016,181.536 L 414.464,182.027 L 418.912,182.52 L 423.36,183.016 L 427.808,183.514 L 432.256,184.016 L 436.704,184.52 L 441.152,185.027 L 445.6,185.537 L 450.048,186.05 L 454.496,186.566 L 458.944,187.085 L 463.392,187.607 L 467.84,188.132 L 472.288,188.66 L 476.736,189.191 L 481.184,189.725 L 485.632,190.263 L 490.08,190.803 L 494.528,191.348 L 498.976,191.895 L 503.424,192.446 L 507.872,193 L 512.32,193.558 L 516.768,194.119 L 521.216,194.683 L 525.664,195.252 L 530.112,195.824 L 534.56,196.399 L 539.008,196.978 L 543.456,197.562 L 547.904,198.148 L 552.352,198.739 L 556.8,199.334 L 561.248,199.933 L 565.696,200.535 L 570.144,201.142 L 574.592,201.753 L 579.04,202.368 L 583.488,202.988 L 587.936,203.611 L 592.384,204.239 L 596.832,204.872 L 601.28,205.509 L 605.728,206.151 L 610.176,206.797 L 614.624,207.448 L 619.072,208.103 L 623.52,208.764 L 627.968,209.429 L 632.416,210.1 L 636.864,210.775 L 641.312,211.456 L 645.76,212.142 L 650.208,212.833 L 654.656,213.529 L 659.104,214.231 L 663.552,214.939 L 668,215.652" fill="none" stroke="#5B6B7A" stroke-width="2" stroke-dasharray="5 4"/><path d="M 116.448,236.277 L 120.896,226.237 L 125.344,220.49 L 129.792,216.501 L 134.24,213.477 L 138.688,211.062 L 143.136,209.069 L 147.584,207.384 L 152.032,205.936 L 156.48,204.675 L 160.928,203.564 L 165.376,202.579 L 169.824,201.699 L 174.272,200.909 L 178.72,200.197 L 183.168,199.552 L 187.616,198.967 L 192.064,198.435 L 196.512,197.951 L 200.96,197.509 L 205.408,197.107 L 209.856,196.739 L 214.304,196.404 L 218.752,196.098 L 223.2,195.82 L 227.648,195.567 L 232.096,195.338 L 236.544,195.131 L 240.992,194.944 L 245.44,194.776 L 249.888,194.627 L 254.336,194.495 L 258.784,194.379 L 263.232,194.278 L 267.68,194.192 L 272.128,194.119 L 276.576,194.06 L 281.024,194.013 L 285.472,193.978 L 289.92,193.955 L 294.368,193.942 L 298.816,193.941 L 303.264,193.949 L 307.712,193.967 L 312.16,193.995 L 316.608,194.032 L 321.056,194.078 L 325.504,194.132 L 329.952,194.195 L 334.4,194.265 L 338.848,194.344 L 343.296,194.43 L 347.744,194.523 L 352.192,194.624 L 356.64,194.732 L 361.088,194.846 L 365.536,194.968 L 369.984,195.096 L 374.432,195.23 L 378.88,195.371 L 383.328,195.518 L 387.776,195.671 L 392.224,195.83 L 396.672,195.995 L 401.12,196.166 L 405.568,196.343 L 410.016,196.525 L 414.464,196.713 L 418.912,196.906 L 423.36,197.104 L 427.808,197.308 L 432.256,197.517 L 436.704,197.732 L 441.152,197.952 L 445.6,198.176 L 450.048,198.406 L 454.496,198.641 L 458.944,198.881 L 463.392,199.126 L 467.84,199.376 L 472.288,199.63 L 476.736,199.89 L 481.184,200.154 L 485.632,200.424 L 490.08,200.698 L 494.528,200.977 L 498.976,201.261 L 503.424,201.549 L 507.872,201.842 L 512.32,202.14 L 516.768,202.443 L 521.216,202.751 L 525.664,203.063 L 530.112,203.38 L 534.56,203.702 L 539.008,204.028 L 543.456,204.36 L 547.904,204.696 L 552.352,205.037 L 556.8,205.382 L 561.248,205.733 L 565.696,206.088 L 570.144,206.448 L 574.592,206.813 L 579.04,207.183 L 583.488,207.558 L 587.936,207.938 L 592.384,208.322 L 596.832,208.712 L 601.28,209.106 L 605.728,209.506 L 610.176,209.911 L 614.624,210.321 L 619.072,210.736 L 623.52,211.156 L 627.968,211.581 L 632.416,212.012 L 636.864,212.448 L 641.312,212.889 L 645.76,213.336 L 650.208,213.788 L 654.656,214.246 L 659.104,214.709 L 663.552,215.178 L 668,215.652" fill="none" stroke="#2563C9" stroke-width="2"/><path d="M 126,290 L 146,290" fill="none" stroke="#B3261E" stroke-width="2"/><text x="153" y="294" class="g-small" text-anchor="start">가계 다섯 집 = 3.16</text><path d="M 330,290 L 350,290" fill="none" stroke="#2563C9" stroke-width="2"/><text x="357" y="294" class="g-small" text-anchor="start">가계 하나 = 0.63</text><path d="M 508,290 L 528,290" fill="none" stroke="#5B6B7A" stroke-width="2" stroke-dasharray="5 4"/><text x="535" y="294" class="g-small" text-anchor="start">재조합 없는 가계 = 1.81</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">lod score와 threshold</text><text x="44" y="347" class="g-band-t" text-anchor="start">Z = 3은 1000:1이다 — 두 locus가 우연히 연관일 사전 확률 1/50과 곱하면 20:1, 곧 p = 0.05가 된다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">Z가 −2 아래면 배제하고 그 사이는 미결이다. 가계 하나는 자녀 여섯 중 재조합이 한 명인 경우다.</text></g>
+</svg>
+<!--/GEN:MAP-->
+          </div>
+          <figcaption>A…J 눈금은 HMG 17.1의 예시. lod 곡선은 HMG Box 17.1의 식으로 계산한 값이고 관찰값이 아님. 둘째 화면은 다음 절에서 다룸.</figcaption>
+        </figure>
+
+        <p><strong>재조합 빈도</strong>는 두 locus에 대해 재조합형인 gamete의 비율임. 사람에서는 gamete가 아니라 자녀의 유전형을 보므로 "이 사람은 재조합형"이라 말하지만, 실제로 가리키는 것은 그 사람을 만든 부모 쪽 gamete임(HMG 17.1).</p>
+        <p>교과서의 예가 셈법을 보여 줌. 두 locus에서 모두 이형접합인 남성이 어머니에게서 <em>A1</em>·<em>B1</em>을, 아버지에게서 <em>A2</em>·<em>B2</em>를 받았다면, 그의 정자 가운데 <em>A1B1</em>이나 <em>A2B2</em>를 지닌 것은 비재조합형이고 <em>A1B2</em>나 <em>A2B1</em>을 지닌 것은 재조합형임. 자녀 일곱 중 둘이 재조합형 정자에서 나왔으므로 재조합 빈도는 <strong>0.28</strong>임(HMG 17.1).</p>
+        <p>기준점은 둘임. 두 locus가 다른 염색체에 있으면 평균적으로 gamete의 절반이 재조합형이므로 기대값이 <strong>0.5</strong>이고, 같은 염색체에 있으면(syntenic) 둘은 교차가 끊지 않는 한 함께 감. 1% 비율로 재조합하는 두 locus를 <strong>1 cM</strong> 떨어져 있다고 하며, 대문자 M은 Morgan을 기림(HMG 17.1).</p>
+        <p>이 자에는 상한이 있음. <strong>재조합 빈도는 0.5를 넘지 않음</strong>. 10개의 locus가 각각 10 cM씩 떨어져 한 줄로 놓여 있으면 지도상 양 끝 사이는 100 cM이지만, 그 두 점만 가계에서 직접 재면 50 cM으로 나옴 — 한 번 교차하고 다시 교차한 gamete는 비재조합형으로 세어지기 때문임(HMG 17.1). 그래서 유전 지도는 긴 거리를 한 번에 재는 대신 가까운 구간을 이어 붙여 만듦.</p>
+        <p>읽을 수 있는 감수분열만 셈에 들어간다는 제약도 있음. 위의 예에서 그 남성의 아내가 두 locus에서 모두 동형접합이면 자녀가 어느 쪽 조합을 어머니에게서 받았는지 구분되지 않으므로, 그 감수분열은 재조합 여부를 알려 주지 못함(HMG 17.1). 한 가계가 품은 정보량은 자녀 수가 아니라 <strong>읽을 수 있는 감수분열의 수</strong>임.</p>
+        <p>마지막으로 유전거리와 물리거리는 정확히 대응하지 않음(HMG 17.1). 앞 절의 hotspot이 그 이유이고, 둘이 얼마나 어긋나는지를 나타내는 수치는 <a href="../../../gwas/01-genetics/ld.html#decay">LD가 왜 생기고 얼마나 남나</a>에 있음.</p>
+
+        <!-- ───────── 5. 연관 분석 ───────── -->
+        <h2 id="linkage">가계에서 영역을 찾는 일<small>Lod scores and positional cloning</small></h2>
+        <p class="lede">연관 분석이 내놓는 것은 변이가 아니라 염색체 구간.</p>
+        <p>1980~1990년대의 표준 경로가 <strong>positional cloning</strong>이었음. 환자가 여럿인 가계를 모으고, 유전체 전체에 흩어진 표지로 연관 분석을 해서 후보 염색체 위치를 얻고, 그 구간의 유전자를 모두 찾아 표현형과의 관련성으로 우선순위를 매긴 뒤, 서로 무관한 환자들에서 그 유전자를 시퀀싱해 변이를 확인하는 순서임(HMG 17.1).</p>
+        <p>연관의 증거는 <strong>lod score</strong>로 잼. 두 가설의 우도를 견주는데, 하나는 두 locus가 재조합 빈도 θ로 연관되어 있다는 것이고 다른 하나는 연관되지 않았다(θ = 0.5)는 것임. 두 우도의 비가 연관의 odds이고 그 상용로그가 lod score(기호 Z)임. 1955년 Newton Morton이 이것이 가계에서 연관을 평가하는 가장 효율적인 통계량임을 보였음(HMG 17.1).</p>
+        <p>Z는 θ의 함수이므로 여러 θ에 대해 계산해 곡선으로 그림. 곡선이 가장 높은 θ가 가장 그럴듯한 재조합 빈도이고, 재조합형이 하나도 없으면 최대점이 θ = 0에 놓임. 로그이므로 <strong>가계마다 구한 Z를 그냥 더할 수 있음</strong>(HMG 17.1). 위 그림의 둘째 화면이 그 모양임 — 자녀 여섯 중 재조합형이 한 명인 가계 하나로는 최대 Z가 0.63에 그치고, 같은 가계 다섯 집을 더해야 수용 threshold를 넘음.</p>
+        <p>threshold는 두 개임. <strong>Z = +3이면 연관을 받아들이고 Z &lt; −2면 배제하며 그 사이는 미결</strong>임(HMG 17.1). +3은 1000:1을 뜻하므로 보통의 p &lt; 0.05보다 훨씬 엄해 보이지만, 그 엄함에는 이유가 있음 — 무작위로 고른 두 locus가 애초에 연관일 사전 확률이 약 1/50로 받아들여지므로, 1/50과 1000:1을 곱하면 20:1이 되어 정확히 p = 0.05에 해당함(HMG Box 17.2). threshold의 크기는 통계의 관행이 아니라 <strong>사전 확률</strong>에서 나온 값임.</p>
+        <p>표지를 수백~수천 개 쓰는 전유전체 탐색에서는 threshold가 올라감. Bonferroni식으로 하면 n개 표지에 3 + log(n)이 되지만 연관 자료는 서로 독립이 아니어서 이것은 과하게 엄함 — 멘델 질환이라면 원인 변이가 유전체 어딘가에 반드시 있으므로, 한 자리가 배제될 때마다 다른 자리의 사전 확률이 올라감. 멘델 형질에 널리 받아들여진 전유전체 threshold는 <strong>3.3</strong>이고, 표지 수와 무관하게 Z가 5 미만인 연관 주장은 잠정으로 보는 것이 실무임(HMG 17.1).</p>
+        <p>성과와 한계가 함께 분명함. 비교적 흔한 상염색체 우성·X 연관 질환은 <strong>1985–2000년</strong> 사이에 대부분 이 방식으로 지도에 올랐고, 낭성섬유증처럼 환자가 둘 이상인 가계를 모을 수 있던 흔한 열성 질환도 같은 길을 갔음. 걸림돌은 둘이었음 — 가계를 충분히 모아야 한다는 요구, 그리고 <strong>유전적 이질성</strong>. 결절성 경화증이 <em>TSC1</em>(9q34)과 <em>TSC2</em>(16p13) 어느 쪽 변이로도 생긴다는 것을 보이는 데 여러 해가 걸렸음(HMG 17.1 · 17.2).</p>
+        <p>희귀 열성 질환에는 우회로가 있었음. 근친 부부의 자녀가 희귀 열성 질환을 지녔다면 원인 변이 두 copy가 부모의 최근 공통 조상에서 왔을 가능성이 높고, 그러면 원인 변이뿐 아니라 <strong>그 주변 구간의 표지까지 모두 동형접합</strong>일 것임. 그런 구간을 찾는 것이 <strong>autozygosity</strong> 지도화임(HMG 17.2).</p>
+        <p>이때 구별해야 하는 것이 같은 서열이 <strong>공통 조상에서 온 것(IBD)</strong>인지 <strong>그저 같은 것(IBS)</strong>인지임. 어떤 사람의 동형접합이 IBD일 odds는 그의 <strong>inbreeding coefficient</strong> F와 그 allele의 집단 빈도 q의 비 F:q로 어림됨. F는 사촌 결혼의 자녀에서 1/16, 육촌에서 1/64, 팔촌에서 1/256임. 한 locus의 allele만으로는 q가 충분히 낮지 않아 결론이 안 나지만, 여러 locus에 걸친 긴 공유 haplotype이면 훨씬 강한 근거가 됨 — <strong>Mb 규모</strong>의 공유는 최근 공통 조상 없이는 거의 생기지 않음(HMG 17.2).</p>
+        <div class="callout blue">
+          <h4>환자 세 명으로 지도를 만든 예</h4>
+          <p>Houwen 등이 1994년에 보인 사례임. 네덜란드의 고립된 어촌에서 희귀 열성 질환(benign recurrent intrahepatic cholestasis) 환자 세 명이 나왔고, 서로 친척인 줄 몰랐지만 마을의 역사로 보아 여섯 세대쯤 전의 공통 조상을 공유할 것으로 보였음. 세 환자와 부모를 microsatellite 표지 <strong>256개</strong>로 유전형 분석했을 때 인접한 두 표지가 동형접합인 곳이 유전체 전체에 <strong>14군데</strong> 나왔는데, 각 구간에 표지를 더 넣어 보니 자세한 haplotype까지 공유된 곳은 <strong>한 군데</strong>뿐이었음 — 나머지는 처음 두 표지만 IBS였고 IBD가 아니었음. 유일하게 IBD인 구간은 18q21의 <strong>19 cM</strong>이었고, 그만한 길이의 구간이 우연히 그렇게 공유될 확률은 <strong>5 × 10<sup>−7</sup></strong>으로 계산되었음. 뒤이어 다른 지역의 근친 가계들을 보았더니 가계마다 18q21에서 공유 haplotype이 있었지만 가계끼리는 서로 달랐고, <strong>그 겹침이 후보 영역을 1 cM로 줄였음</strong>(HMG 17.2).</p>
+        </div>
+        <p>반대로 아무 길도 없던 쪽이 있었음. 희귀한 우성 질환, 특히 새 변이로 생긴 것으로 보이는 중증 산발성 질환은 가계가 만들어지지 않으므로 지도화 자체가 불가능했고, 염색체 재배열이 단서를 주는 경우가 아니면 차세대 시퀀싱이 나오기까지 연구의 손이 닿지 않았음(HMG 17.2). 그 뒤 이야기는 <a href="../02-mendelian/rare-disease-dx.html">희귀질환의 원인 변이는 어떻게 찾나?</a>가 받음.</p>
+
+        <!-- ───────── 6. 꺾인 자리 ───────── -->
+        <h2 id="limits">흔한 질환에서 꺾인 자리<small>Why linkage gave way to association</small></h2>
+        <p class="lede">방법이 틀려서가 아니라 검정력이 모자라서.</p>
+        <p>단일유전자 질환에서의 성공에 힘입어 1990년대 연구자들은 같은 도구를 복합질환에 들이댔음. 바로 걸린 것이 모형이었음 — 표준 lod score 프로그램은 질환 locus의 allele 빈도와 침투도를 넣어야 돌아가는데, 멘델 형질에서는 그럴듯한 값을 추측할 수 있어도 복합질환에서는 그것이 불가능함. 그래서 복합질환의 연관 분석은 <strong>model-free</strong> 방식이어야 했음(비모수 연관, NPL)(HMG 18.2).</p>
+        <p>model-free 연관은 질환 모형 대신 <strong>공유</strong>를 봄. 친족이 조상에서 같이 받은(IBD) allele이나 haplotype을 얼마나 공유하는지와 표현형을 얼마나 공유하는지를 견주어, 환자인 친족끼리 멘델 법칙이 기대하는 것보다 더 많이 공유하는 구간을 찾음(HMG 18.2).</p>
+        <p>기준선은 단순함. 부모의 네 haplotype을 두고 보면 형제 한 쌍은 어떤 구간에서 2개·1개·0개를 각각 1/4 · 1/2 · 1/4의 비율로 공유함. 질환과 관련된 구간에서는 환자 형제 쌍의 공유가 이 1:2:1을 넘어서므로, <strong>환자 형제 쌍</strong> 100쌍 남짓과 되도록 그 부모까지 유전체 전체 표지로 유전형 분석해 그런 구간을 찾는 설계가 쓰였음(HMG 18.2).</p>
+        <p>결과는 실망이었음. 1990년대에 많은 노력이 들어갔지만 후보 영역은 몇 개뿐이었고 같은 질환을 본 연구끼리 결과가 어긋나는 일이 흔했음. 거의 유일하게 논란 없는 성과가 <strong>1991년 만기 발병 알츠하이머병과 19번 염색체의 연관</strong>이었고, 뒤에 그 자리는 apolipoprotein E locus로 밝혀졌음(HMG 18.2).</p>
+        <p>진단은 분명함. 환자 형제 쌍 분석은 방법론적 함정이 거의 없는 튼튼한 절차이고, <strong>문제는 검정력</strong>임. 아주 강한 효과가 아니면 비현실적으로 많은 형제 쌍이 필요함(HMG 18.2). 검정력을 올리는 길로 표현형이 크게 어긋나는 쌍(한쪽은 환자·다른 쪽은 비환자, 양적 형질이면 상위 10%와 하위 10%)을 쓰거나 형제에 매이지 않고 확장 가계를 쓰는 방법이 제시되었고, model-free 연관의 성과 가운데 적은 수나마 나온 것은 대개 확장 가계에서 양적 형질을 본 경우였음(HMG 18.2).</p>
+        <p>그러면 왜 집단으로 가면 사정이 달라지나. <strong>조각이 쪼개진 깊이가 다르기 때문</strong>임. 30세대, 곧 1,000년쯤 전으로 올라가면 계보상 조상의 수가 2<sup>30</sup> 곧 10억 명을 넘는데, 그 사람들 전부에게서 DNA를 받지는 않음 — 세대마다 특정 DNA 조각을 물려받지 못할 확률이 1/2이므로 대부분의 계보상 조상에게서 온 DNA는 30세대 사이에 사라짐. 남은 것도 작은 조각임. 1,000년 전의 어떤 유전적 조상에게서 내 유전체로 오는 길에는 교차가 <strong>2,000번</strong> 넘게 일어났고, 유전체 크기를 그 수로 나누면 조각 하나의 평균이 <strong>약 1 Mb</strong>가 됨. 그래서 1,000년 전의 유전적 조상은 수천 명 규모에 그치고, 더 올라가면 조상은 늘지만 각자에게서 받는 조각은 더 짧아짐(HMG 12.4).</p>
+        <p>해상도가 그 길이를 따라감.</p>
+        <div class="tblwrap">
+          <table class="vtable">
+            <thead><tr><th>공통 조상까지</th><th>공유 조각</th><th>그래서 좁혀지는 범위</th></tr></thead>
+            <tbody>
+              <tr><th>한 가계 · 몇 세대</th><td>염색체 팔 규모</td><td>연관 분석의 산출물은 수 Mb의 구간. Houwen의 세 환자에서 공유 구간이 19 cM이었음(HMG 17.2)</td></tr>
+              <tr><th>고립 집단 · 약 100세대</th><td>Mb 아래</td><td>핀란드의 창시자 집단에서 LD로 변이 자리를 60 kb 안으로 좁혔음 <a class="src" href="https://doi.org/10.1038/nrg2361" target="_blank" rel="noopener">Slatkin 2008</a></td></tr>
+              <tr><th>집단 전체 · 수천 세대</th><td>수 kb의 haplotype block</td><td>GWAS가 보는 눈금. 원리는 같은 조상 haplotype 찾기이고 길이만 다름(HMG 17.2)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>가운데 칸의 사례가 전환점을 잘 보여 줌. 핀란드에서 diastrophic dysplasia 환자 대부분이 한 조상 변이에서 왔고, 그 구간의 표지 둘로 네 가지 haplotype을 세었더니 비환자 염색체에서는 4 · 28 · 7 · 84개였는데 환자 염색체에서는 <strong>144 · 1 · 0 · 2개</strong>였음. 변이가 첫 haplotype 위에서 생겼고 핀란드 집단이 세워진 뒤 2,000년, 약 100세대 동안 그 연관이 거의 깨지지 않았다는 뜻임. 여기서 변이가 표지에서 <strong>약 0.06 cM, 곧 60 kb</strong> 떨어져 있을 것으로 추정했고 실제 유전자는 <strong>70 kb</strong> 거리에서 발견되었음 <a class="src" href="https://doi.org/10.1038/nrg2361" target="_blank" rel="noopener">Slatkin 2008</a>. 가계 연관이 수 Mb를 주던 자리에서, 집단의 역사가 쌓아 둔 재조합이 같은 질환을 60 kb로 좁혀 준 것임.</p>
+        <p>연관 분석이 사라진 것은 아님. 전장 시퀀싱 시대에도 작은 가계에서 나온 +3 미만의 Z는 exome 자료를 분석할 때 <strong>먼저 볼 영역</strong>을 가리키는 데 쓸모가 있음(HMG 17.1). 가계 자료는 통계적 유의성을 혼자 세우는 대신 우선순위를 정하는 쪽으로 자리를 옮겼음.</p>
+        <p>그리고 감수분열의 무작위성 자체가 오늘은 <strong>무작위 배정</strong>으로 쓰임. 가계 안에서 형제 사이의 유전적 차이는 부모 allele이 감수분열에서 무작위로 분리된 결과이므로, 가계 내 유전형–표현형 연관은 물려받은 allele의 인과 효과만 반영할 것으로 기대됨 <a class="src" href="https://doi.org/10.1038/s41586-026-11039-9" target="_blank" rel="noopener">Wang 2026</a>. 다만 그 무작위성이 만드는 폭은 좁음 — 멕시코시티 코호트에서 부모 둘의 유전형이 모두 있는 2,847 가계를 보았을 때, Indigenous American ancestry 비율의 표준편차는 가계 <strong>사이</strong>에서 0.167인데 가계 <strong>안</strong>에서는 <strong>0.020</strong>이었음 <a class="src" href="https://doi.org/10.1038/s41586-026-11039-9" target="_blank" rel="noopener">Wang 2026</a>. 한 번의 감수분열은 부모의 평균 주위에서만 패를 섞음.</p>
+        <p>끝으로 재조합이 닿지 않는 두 구간이 있음. 미토콘드리아 DNA와 Y 염색체의 비재조합 부분은 몇 세대를 올라가도 조각으로 쪼개지지 않고 한 조상에게서 한 묶음으로 내려옴(HMG 12.4). 그 성질이 유전 양식에서 하는 일은 <a href="../02-mendelian/inheritance.html#mito">미토콘드리아에 확률값이 없는 이유</a>에 있음. 집단 안에서 allele 빈도가 바뀌는 쪽, 곧 Hardy–Weinberg와 drift와 선택은 이 절의 몫이 아니고 같은 절의 다음 쪽이 받음.</p>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>독립 분리는 모든 유전자 쌍에 성립함 ✗</code><p class="why">다른 염색체에 있을 때만 재조합 빈도가 0.5임. 같은 염색체면 거리에 달림(HMG 17.1)</p></div>
+          <div class="fix"><code>교차는 유전체에 고르게 흩어짐 ✗</code><p class="why">1–2 kb hotspot 약 30,000개에 몰려 있고, ENCODE 5 Mb에서 재조합의 약 80%가 서열의 약 15%에서 일어났음(HMG 12.2 <a class="src" href="https://doi.org/10.1038/nature04226" target="_blank" rel="noopener">HapMap 2005</a>)</p></div>
+          <div class="fix"><code>재조합은 다양성을 위한 장치 ✗</code><p class="why">chiasma는 분리될 때까지 상동 염색체를 붙잡아 두고, 염색체 수가 틀린 아이들은 chiasma가 없던 gamete에서 자주 나옴(HMG 2.3)</p></div>
+          <div class="fix"><code>1 cM은 정해진 물리적 길이 ✗</code><p class="why">1 cM은 재조합 1%이고, hotspot 때문에 유전거리와 물리거리는 정확히 대응하지 않음(HMG 17.1)</p></div>
+          <div class="fix"><code>멀리 떨어지면 재조합 빈도가 1에 가까워짐 ✗</code><p class="why">0.5를 넘지 않음. 지도상 100 cM 떨어진 두 점도 직접 재면 50 cM으로 나옴(HMG 17.1)</p></div>
+          <div class="fix"><code>자녀가 많으면 가계의 정보량도 많음 ✗</code><p class="why">읽을 수 있는 감수분열만 셈에 들어감 — 한쪽 부모가 두 locus에서 동형접합이면 그 자녀는 재조합 여부를 알려 주지 못함(HMG 17.1)</p></div>
+          <div class="fix"><code>lod 3은 p = 0.001 ✗</code><p class="why">1000:1 우도비이고, 두 locus가 우연히 연관일 사전 확률 1/50과 곱해 20:1 곧 p = 0.05가 됨(HMG Box 17.2)</p></div>
+          <div class="fix"><code>표지를 n개 쓰면 threshold를 3 + log(n)으로 올림 ✗</code><p class="why">연관 자료는 독립이 아니어서 과하게 엄함. 멘델 형질의 전유전체 threshold로 널리 쓰이는 값은 3.3임(HMG 17.1)</p></div>
+          <div class="fix"><code>형제 쌍 연관이 복합질환에서 실패한 것은 방법이 틀려서 ✗</code><p class="why">절차 자체는 튼튼하고 문제는 검정력임 — 강한 효과가 아니면 비현실적으로 많은 쌍이 필요함(HMG 18.2)</p></div>
+          <div class="fix"><code>근친 가계에서 동형접합 구간이면 공통 조상에서 온 것 ✗</code><p class="why">그저 같은 것(IBS)일 수 있음. Houwen의 분석에서 후보 14곳 가운데 진짜 IBD는 한 곳이었음(HMG 17.2)</p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">recombination · 재조합 · crossover · 교차 · chiasma · bivalent · synaptonemal complex · recombination nodule · meiosis · 감수분열 · recombination hotspot · PRDM9 · H3K4me3 · recombination fraction · 재조합 빈도 · centiMorgan · cM · Morgan · genetic distance · 유전거리 · genetic map · 유전 지도 · genetic marker · 표지 · syntenic · linkage analysis · 연관 분석 · lod score · Z · positional cloning · locus heterogeneity · 유전적 이질성 · autozygosity · homozygosity mapping · identity by descent · IBD · identity by state · IBS · inbreeding coefficient · 근친계수 · model-free linkage · nonparametric linkage · NPL · affected sib pair · 환자 형제 쌍 · LD mapping · haplotype block · genealogical ancestor · genetic ancestor · 유전적 조상 · TSC1 · TSC2 · APOE · diastrophic dysplasia</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../../../gwas/01-genetics/ld.html">가까운 variant들은 왜 함께 움직이는가? →</a>
+          <a href="../02-mendelian/rare-disease-dx.html">희귀질환의 원인 변이는 어떻게 찾나? →</a>
+          <a href="../02-mendelian/inheritance.html">유전 양식은 가계도에서 어떻게 보이나? →</a>
+          <a href="../01-genome/variant-origin.html">변이는 언제, 어디서 생기나? →</a>
+          <a href="../01-genome/allele-frequency.html">왜 어떤 변이는 흔하고 어떤 변이는 드문가? →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/nature04226" target="_blank" rel="noopener noreferrer">HapMap 2005, Nature — ENCODE 구간의 hotspot 수와 재조합이 몰리는 비율 ↗</a>
+          <a href="https://doi.org/10.1038/nrg2361" target="_blank" rel="noopener noreferrer">Slatkin 2008, Nat Rev Genet — 창시자 집단에서 LD로 변이 자리를 좁힌 사례 ↗</a>
+          <a href="https://doi.org/10.1038/s41586-026-11039-9" target="_blank" rel="noopener noreferrer">Wang 2026, Nature — 감수분열의 무작위 분리를 설계로 쓰는 가계 내 분석 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-26<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>
