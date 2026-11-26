@@ -32,7 +32,13 @@ module.exports = function buildGlossary({ ROOT, items, DOMAINS, U }) {
   };
   /* 용어집은 ABC순 하나로 간다. 한글로만 적힌 점선 용어는 데이터에 영어가 없어 여기서만 대응시킨다
      (정의를 새로 쓰는 게 아니라 정렬·합치기용 영어 이름). 새 한글 용어가 생기면 빌드가 경고를 낸다 */
-  const EN = { "보체": "complement", "과민반응": "hypersensitivity", "경구 관용": "oral tolerance" };
+  const EN = { "보체": "complement", "과민반응": "hypersensitivity", "경구 관용": "oral tolerance",
+               "가계도": "pedigree", "보인자": "carrier", "근친": "consanguinity",
+               "생식세포 모자이크": "gonadal mosaicism",
+               "유전자 패널": "gene panel", "가상 패널": "virtual gene panel",
+               "우연한 발견": "incidental finding", "유전적 이질성": "locus heterogeneity",
+               "보상된 병원성 치환": "compensated pathogenic deviation",
+               "임상 유용성": "clinical utility" };
   const isKo = (s) => /^[ㄱ-ㆎ가-힣]/.test(String(s).trim());
   /* 한글로 시작하는 질환 카드 제목의 영어 표제어 — 괄호 속 영어(노화 유전학 (Aging genetics)),
      없으면 카드 키워드 중 첫 일반명사(소문자로 시작), 그것도 없으면 첫 영어 키워드 */

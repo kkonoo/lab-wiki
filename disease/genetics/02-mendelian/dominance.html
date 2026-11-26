@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="두 copy 가운데 하나가 망가졌을 때 왜 어떤 유전자는 아무 일이 없고 어떤 유전자는 질환이 되나. 남은 50%가 모자라는 경우, 망가진 산물이 멀쩡한 쪽을 방해하는 경우, 없던 기능이 새로 생기는 경우, 그리고 셋 중 어느 기전인지 가리는 법">
+  <title>한 copy만 망가져도 왜 질환이 되나? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">멘델 유전</a><span>›</span>우성의 기전</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">멘델 유전 · Dominance mechanisms</p>
+        <h1>한 copy만 망가져도 왜 질환이 되나?</h1>
+        <p class="definition">두 copy 가운데 하나가 망가졌을 때 대부분의 유전자는 아무 일도 일어나지 않음. 그 "대부분"이 깨지는 길은 셋 — 남은 50%로 양이 모자라거나(<strong>haploinsufficiency</strong>), 망가진 산물이 멀쩡한 쪽을 방해하거나(<strong>dominant negative</strong>), 없던 기능이 새로 생기거나(<strong>gain-of-function</strong>)(HMG 16.1–16.2)</p>
+
+        <!-- ───────── 1. 질문이 서는 자리 ───────── -->
+        <h2 id="why">왜 대부분은 괜찮은가<small>Why one copy is usually enough</small></h2>
+        <p class="lede">질문을 "왜 우성이 되나"로 세우면 답이 안 나옴. "어떤 조건에서 50%가 모자라게 되나"로 세워야 함.</p>
+        <p>기준선부터. 사람은 평균 100개쯤의 단백질 유전자 loss-of-function 변이를 지니고 다니며 대부분은 heterozygous이고 아무 일도 일으키지 않음 <a class="src" href="https://doi.org/10.1146/annurev-immunol-082323-124920" target="_blank" rel="noopener">Bender 2025</a>. 한 copy를 잃는 것이 기본적으로는 조용한 사건이라는 뜻.</p>
+        <p>왜 그런지에 대한 설명은 선택 쪽에 있음. 어떤 유전자가 두 copy로 겨우 충분할 만큼만 만든다면, 더 많이 만드는 변이가 선택되어 여유가 생겼을 것임. 실제로 많은 유전자에서 그렇게 되었고, 그래서 <strong>용량에 민감한 유전자는 비교적 적음</strong>(HMG 16.1).</p>
+        <p>그러면 남는 질문은 좁아짐 — 그 여유가 생기지 않은 유전자는 어떤 것이고, 양이 아니라 다른 이유로 한 copy가 문제가 되는 경우는 무엇인가. 아래 네 절이 그 갈래를 하나씩 봄.</p>
+
+        <!-- ───────── 2. 양이 모자랄 때 ───────── -->
+        <h2 id="dosage">남은 50%로 양이 모자랄 때<small>Haploinsufficiency</small></h2>
+        <p class="lede">첫 번째 갈래. 산물은 멀쩡한데 양이 부족해지는 경우.</p>
+        <p>이 경우가 <strong>haploinsufficiency</strong>임. 한 copy만 망가져도 전체 기능량이 질환이 생기는 수준 아래로 내려가므로, 유전 양식은 우성이 됨(HMG 16.1). 용량에 민감해지는 이유는 크게 둘로 갈림.</p>
+        <p><strong>수요가 큰 경우.</strong> 한 copy로는 많은 양을 쓰는 조직의 수요를 못 댐. <em>ELN</em>(elastin) 결손을 heterozygous로 지닌 사람에게서 elastin을 적당히만 쓰는 피부와 폐는 영향이 없는데, 훨씬 많이 쓰는 대동맥에서는 supravalvular aortic stenosis가 자주 나타남. haemoglobin과 type 1 collagen도 같은 부류(HMG 16.1).</p>
+        <p><strong>상대량이 중요한 경우.</strong> 수용체나 DNA 결합 자리의 점유 정도로 작동하는 정량적 신호계, 그리고 발생·대사의 스위치를 두고 서로 경쟁하는 산물은 본래 용량에 민감함. 이런 산물은 세포 안의 다른 무언가와 견주어지므로 <strong>절대량이 아니라 상호작용 상대와의 비율</strong>이 문제가 됨. 그래서 이 부류의 우성 질환은 발현도가 크게 흔들림 — 상대 쪽이 조금만 달라져도 결과가 달라지기 때문. 반대로 혼자 일하는 산물, 이를테면 가용성 대사 효소 상당수는 용량 효과를 거의 보이지 않음(HMG 16.1).</p>
+        <p>이 구조를 사람 세포에서 직접 잰 연구가 있음. 얼굴 전구세포에서 <em>SOX9</em> 농도를 degron으로 연속 조절하며 조절 요소의 반응을 보니, SOX9 의존 조절 요소 <strong>26,026개(73%)</strong>가 작은 농도 변화를 버텼고 5,276개(14%)가 중간, <strong>4,411개(13%)</strong>만 민감하게 반응했음. 민감한 쪽은 SOX9이 직접·주로 조절하는 요소였고, 그 요소와 유전자가 연골 형성과 Pierre Robin sequence 유사 안면 형태 변이에 몰려 있었음 <a class="src" href="https://doi.org/10.1038/s41588-023-01366-2" target="_blank" rel="noopener">Naqvi 2023</a>.</p>
+
+        <figure class="fig" id="fig-residual" data-mode="buffer">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-residual" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="buffer" aria-pressed="true">대부분은 버틴다</button>
+              <button type="button" data-mode="levels" aria-pressed="false">네 가지 관계</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:RESIDUAL-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="domResidualT domResidualD" xmlns="http://www.w3.org/2000/svg">
+<title id="domResidualT">남은 유전자 기능의 양이 표현형을 정하는 방식을 보여 주는 그림</title>
+<desc id="domResidualD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 두 allele이 함께 내는 전체 기능량을 가로축에 놓고 네 가지 관계를 막대로 보여 준다 — 50%로 충분해 단순 열성이 되는 경우, 50%로 부족해 haploinsufficiency가 되는 경우, 열성이되 남은 양에 따라 가벼움과 중증이 갈리는 경우, 남은 양에 따라 아예 다른 질환으로 불리는 경우다. 둘째 화면은 사람 얼굴 전구세포에서 SOX9 농도를 연속으로 낮추며 잰 결과로, SOX9 의존 조절 요소 26,026개(73%)가 농도 변화를 버티고 5,276개(14%)가 중간, 4,411개(13%)가 민감했으며, 버티는 서열과 민감한 서열의 motif 특징이 서로 다르다는 것을 보여 준다.</desc>
+<g class="g-ov" data-ov="levels"><text x="380" y="38" class="g-lab em" text-anchor="middle">남은 기능이 줄어들 때 무슨 일이 생기나</text><rect x="70.0" y="78" width="554.4" height="28" rx="4" fill="none" stroke="#8A949C" stroke-width="1.3"/><rect x="624.4" y="78" width="75.6" height="28" rx="4" fill="#B3261E"/><rect x="70.0" y="132" width="252.0" height="28" rx="4" fill="none" stroke="#8A949C" stroke-width="1.3"/><rect x="322.0" y="132" width="378.0" height="28" rx="4" fill="#B3261E"/><rect x="70.0" y="186" width="409.5" height="28" rx="4" fill="none" stroke="#8A949C" stroke-width="1.3"/><rect x="479.5" y="186" width="126.0" height="28" rx="4" fill="#D9822B"/><rect x="605.5" y="186" width="94.5" height="28" rx="4" fill="#B3261E"/><rect x="70.0" y="240" width="346.5" height="28" rx="4" fill="none" stroke="#8A949C" stroke-width="1.3"/><rect x="416.5" y="240" width="157.5" height="28" rx="4" fill="#D9822B"/><rect x="574.0" y="240" width="126.0" height="28" rx="4" fill="#B3261E"/><line x1="70" y1="268" x2="700" y2="268" class="g-axis"/><line x1="70.0" y1="268" x2="70.0" y2="274" class="g-axis"/><line x1="227.5" y1="268" x2="227.5" y2="274" class="g-axis"/><line x1="385.0" y1="268" x2="385.0" y2="274" class="g-axis"/><line x1="542.5" y1="268" x2="542.5" y2="274" class="g-axis"/><line x1="700.0" y1="268" x2="700.0" y2="274" class="g-axis"/><text x="70" y="70" class="g-note em" text-anchor="start">A · 50%로 충분 — 단순 열성</text><text x="347.2" y="96.5" class="g-small" text-anchor="middle">영향 없음</text><text x="662.2" y="96.5" class="g-box-t" text-anchor="middle">질환</text><text x="70" y="124" class="g-note em" text-anchor="start">B · 50%로 부족 — haploinsufficiency</text><text x="196" y="150.5" class="g-small" text-anchor="middle">영향 없음</text><text x="511" y="150.5" class="g-box-t" text-anchor="middle">질환</text><text x="70" y="178" class="g-note em" text-anchor="start">C · 열성이되 남은 양이 중증도를 가름</text><text x="274.75" y="204.5" class="g-small" text-anchor="middle">영향 없음</text><text x="542.5" y="204.5" class="g-box-t" text-anchor="middle">가벼움</text><text x="652.75" y="204.5" class="g-box-t" text-anchor="middle">중증</text><text x="70" y="232" class="g-note em" text-anchor="start">D · 남은 양에 따라 다른 질환</text><text x="243.25" y="258.5" class="g-small" text-anchor="middle">영향 없음</text><text x="495.25" y="258.5" class="g-box-t" text-anchor="middle">계통 A</text><text x="637" y="258.5" class="g-box-t" text-anchor="middle">계통 A+B</text><text x="70" y="290" class="g-small" text-anchor="middle">100%</text><text x="227.5" y="290" class="g-small" text-anchor="middle">75%</text><text x="385" y="290" class="g-small" text-anchor="middle">50%</text><text x="542.5" y="290" class="g-small" text-anchor="middle">25%</text><text x="700" y="290" class="g-small" text-anchor="middle">0%</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">네 가지 관계</text><text x="44" y="347" class="g-band-t" text-anchor="start">가로축은 두 allele이 함께 내는 전체 기능량이다 — 왼쪽이 100%, 오른쪽이 0%다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">경계 자리는 도식이다 — 유전자마다 증상이 시작되는 지점이 다르다는 것만 나타낸다.</text></g>
+<g class="g-ov" data-ov="buffer"><text x="380" y="38" class="g-lab em" text-anchor="middle">SOX9 농도를 연속으로 낮추며 조절 요소를 보면</text><rect x="70.0" y="110" width="459.9" height="58" rx="4" fill="#5B6B7A"/><rect x="529.9" y="110" width="88.2" height="58" rx="4" fill="#D9822B"/><rect x="618.1" y="110" width="81.9" height="58" rx="4" fill="#B3261E"/><rect x="70" y="240" width="300" height="46" rx="6" fill="#5B6B7A"/><rect x="400" y="240" width="300" height="46" rx="6" fill="#B3261E"/><text x="299.95" y="144" class="g-box-t" text-anchor="middle">buffered 26,026개 (73%)</text><text x="574" y="144" class="g-box-t" text-anchor="middle">중간 14%</text><text x="659.05" y="144" class="g-box-t" text-anchor="middle">고민감 13%</text><text x="70" y="192" class="g-small" text-anchor="start">민감한 쪽은 SOX9이 직접 · 주로 조절하는 요소다.</text><text x="70" y="212" class="g-small" text-anchor="start">그 요소와 유전자가 연골 형성, 그리고 Pierre Robin sequence 유사 안면 형태 변이에 몰린다.</text><text x="220" y="258" class="g-box-t" text-anchor="middle">buffering 쪽 서열</text><text x="220" y="276" class="g-box-t" text-anchor="middle">친화도 높고 서로 다른 TF와 함께, 가운데에 몰림</text><text x="550" y="258" class="g-box-t" text-anchor="middle">sensitizing 쪽 서열</text><text x="550" y="276" class="g-box-t" text-anchor="middle">친화도 낮거나 같은 TF끼리, 전체에 흩어짐</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">대부분은 버틴다</text><text x="44" y="347" class="g-band-t" text-anchor="start">대부분의 조절 요소는 농도가 조금 내려가도 버티고, 일부만 그 변화를 그대로 받는다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">버티는 쪽 서열과 민감한 쪽 서열 모두에서 정화 선택의 흔적이 나타난다.</text></g>
+</svg>
+<!--/GEN:RESIDUAL-->
+          </div>
+          <figcaption>첫 화면의 값은 관찰값 <a class="src" href="https://doi.org/10.1038/s41588-023-01366-2" target="_blank" rel="noopener">Naqvi 2023</a> · 서열 특징은 <a class="src" href="https://doi.org/10.1016/j.xgen.2025.100780" target="_blank" rel="noopener">Naqvi 2025</a>. 둘째 화면은 다음 절에서 다룸.</figcaption>
+        </figure>
+
+        <p>버티는 쪽과 민감한 쪽을 가르는 것이 서열에 적혀 있다는 보고도 이어짐. 친화도가 높고 서로 다른 transcription factor가 함께 붙을 수 있으며 조절 요소 가운데에 몰린 motif는 농도 변화를 <strong>버티는</strong> 쪽으로, 친화도가 낮거나 같은 transcription factor끼리 붙고 요소 전체에 흩어진 motif는 <strong>민감한</strong> 쪽으로 작동함. 두 특징 모두에서 정화 선택의 흔적이 나타남 <a class="src" href="https://doi.org/10.1016/j.xgen.2025.100780" target="_blank" rel="noopener">Naqvi 2025</a>.</p>
+
+        <!-- ───────── 3. 남은 양이 정하는 것 ───────── -->
+        <h2 id="residual">남은 기능의 양이 정하는 것<small>Residual function</small></h2>
+        <p class="lede">우성이냐 열성이냐는 유전자의 고정된 성질이 아니라, 그 유전자의 기능–표현형 곡선 위 어디에 50%가 놓이느냐의 문제.</p>
+        <p>위 그림의 둘째 화면이 그 네 가지 관계임(HMG 16.1).</p>
+        <ul>
+          <li><strong>50%로 충분한 경우</strong> — 보인자는 완전히 건강하고 기능이 거의 사라져야 질환이 됨. 단순 열성이고 낭성섬유증이 그 예.</li>
+          <li><strong>50%로 부족한 경우</strong> — 앞 절의 haploinsufficiency. 유전 양식이 우성이 됨.</li>
+          <li><strong>열성이되 남은 양이 중증도를 가르는 경우</strong> — 유전형과 표현형의 대응이 생김.</li>
+          <li><strong>남은 양에 따라 다른 질환으로 불리는 경우</strong> — 임상 결과가 충분히 달라지면 별개의 질환명이 붙고 유전 양식도 달라질 수 있음.</li>
+        </ul>
+        <p>마지막 경우의 실례가 <em>DTDST</em> 황산 전달체임. 같은 유전자의 변이가 남은 기능의 양에 따라 diastrophic dysplasia · multiple epiphyseal dysplasia 4 · atelosteogenesis II · achondrogenesis 1B로 갈리고, 뒤로 갈수록 중증임(HMG 16.1).</p>
+        <p>같은 남은 양을 지니고도 사람마다 결과가 갈리는 축은 따로 있음 — <a href="./penetrance.html">같은 변이가 왜 다른 결과를 내나?</a>에서 다룸.</p>
+
+        <!-- ───────── 4. 방해하는 경우 ───────── -->
+        <h2 id="interfere">망가진 산물이 멀쩡한 쪽을 방해할 때<small>Dominant negative</small></h2>
+        <p class="lede">두 번째 갈래. 양의 문제가 아니라, 남아 있는 비정상 산물이 적극적으로 훼방을 놓는 경우.</p>
+        <p>heterozygous missense 변이를 지닌 사람에게서 비정상 단백질이 제 일을 못 할 뿐 아니라 정상형의 기능까지 방해하는 것을 <strong>dominant-negative 효과</strong>라 부름. 여러 단위체가 모여 구조를 이루는 단백질이 특히 취약함(HMG 16.1).</p>
+        <p>고전적인 예가 collagen임. type I procollagen은 <em>COL1A1</em>이 만드는 사슬 둘과 <em>COL1A2</em>가 만드는 사슬 하나가 삼중나선을 이룬 것이고, 사슬은 (Gly-X-Y)<sub>n</sub> 반복으로 되어 있음. glycine을 다른 아미노산으로 바꾸는 변이는 나선의 촘촘한 포장을 깨므로 대개 강한 dominant-negative 효과를 냄. heterozygote에서 변이 사슬이 정상 사슬과 결합한 뒤 삼중나선 형성을 망가뜨리기 때문에, 기능하는 collagen의 양이 50%보다 훨씬 아래로 떨어짐. type I collagen의 missense 변이가 가장 중증인 골형성부전(osteogenesis imperfecta type IIA)의 원인인 것이 이 때문임(HMG 16.1).</p>
+
+        <figure class="fig" id="fig-mech" data-mode="dn">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-mech" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="dn" aria-pressed="true">null이 더 가볍다</button>
+              <button type="button" data-mode="gof" aria-pressed="false">없앨 길과 얻을 길</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:MECH-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="domMechT domMechD" xmlns="http://www.w3.org/2000/svg">
+<title id="domMechT">우성을 만드는 두 기전을 보여 주는 그림</title>
+<desc id="domMechD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 type I collagen에서 만들어지는 정상 삼중나선의 양을 막대 세 개로 견준다 — 정상을 100%로 두면 변이 사슬이 섞이는 heterozygous missense에서 25%로 떨어져 중증 골형성부전이 되고, 한쪽이 아예 없는 null에서는 50%가 남아 오히려 가볍다. 둘째 화면은 유전자를 가로 막대로 놓고 변이 자리를 점으로 찍어, 기능을 잃게 하는 변이는 유전자 전체에 흩어지는 반면 기능을 얻게 하는 변이는 몇 자리에 몰린다는 비대칭을 보여 준다.</desc>
+<g class="g-ov" data-ov="dn"><text x="380" y="38" class="g-lab em" text-anchor="middle">collagen에서 만들어지는 정상 삼중나선의 양</text><rect x="125" y="104.0" width="130" height="160.0" rx="4" fill="#5B6B7A"/><rect x="315" y="224.0" width="130" height="40.0" rx="4" fill="#B3261E"/><rect x="505" y="184.0" width="130" height="80.0" rx="4" fill="#D9822B"/><line x1="70" y1="264" x2="700" y2="264" class="g-axis"/><text x="190" y="78" class="g-note em" text-anchor="middle">100%</text><text x="190" y="96" class="g-small" text-anchor="middle">기준</text><text x="190" y="284" class="g-note em" text-anchor="middle">정상</text><text x="380" y="198" class="g-note em" text-anchor="middle">25%</text><text x="380" y="216" class="g-small" text-anchor="middle">중증 골형성부전</text><text x="380" y="284" class="g-note em" text-anchor="middle">missense 하나</text><text x="570" y="158" class="g-note em" text-anchor="middle">50%</text><text x="570" y="176" class="g-small" text-anchor="middle">가벼운 골형성부전</text><text x="570" y="284" class="g-note em" text-anchor="middle">null 하나</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">null이 missense보다 가볍다</text><text x="44" y="347" class="g-band-t" text-anchor="start">type I procollagen은 COL1A1 두 사슬과 COL1A2 한 사슬이 삼중나선을 이룬 것이다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">변이 사슬이 섞이면 정상 삼중나선이 4분의 1로 떨어지고, 아예 없으면 절반이 남는다.</text></g>
+<g class="g-ov" data-ov="gof"><text x="380" y="38" class="g-lab em" text-anchor="middle">기능을 없애는 변이와 얻는 변이가 놓이는 자리</text><rect x="90" y="96" width="600" height="26" rx="4" fill="none" stroke="#8A949C" stroke-width="1.4"/><circle cx="126.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><circle cx="168.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><circle cx="204.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><circle cx="252.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><circle cx="288.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><circle cx="336.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><circle cx="378.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><circle cx="420.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><circle cx="462.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><circle cx="510.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><circle cx="552.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><circle cx="600.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><circle cx="642.0" cy="109" r="5.5" fill="#2563C9" stroke="#fff" stroke-width="1.4"/><rect x="90" y="206" width="600" height="26" rx="4" fill="none" stroke="#8A949C" stroke-width="1.4"/><circle cx="402.0" cy="219" r="5.5" fill="#B3261E" stroke="#fff" stroke-width="1.4"/><circle cx="426.0" cy="219" r="5.5" fill="#B3261E" stroke="#fff" stroke-width="1.4"/><circle cx="450.0" cy="219" r="5.5" fill="#B3261E" stroke="#fff" stroke-width="1.4"/><text x="90" y="62" class="g-note em" text-anchor="start">기능을 잃는 길</text><text x="90" y="144" class="g-small" text-anchor="start">끊기든 틀이 밀리든 이어 붙는 자리가 바뀌든 — 어디서든 기능이 사라짐</text><text x="90" y="172" class="g-note em" text-anchor="start">기능을 얻는 길</text><text x="90" y="254" class="g-small" text-anchor="start">산물이 남아 있어야 하므로 대개 missense이거나 조절 서열 변화</text><text x="90" y="282" class="g-small" text-anchor="start">가로 막대는 유전자 하나다.</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">없앨 길은 많고 얻을 길은 적다</text><text x="44" y="347" class="g-band-t" text-anchor="start">기능을 없애는 변이는 유전자 전체에 흩어지지만, 얻는 변이는 몇 자리에 몰린다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">산물을 아예 없애는 기전으로는 원리상 기능을 얻을 수 없다.</text></g>
+</svg>
+<!--/GEN:MECH-->
+          </div>
+          <figcaption>첫 화면의 값은 관찰값(HMG 16.1). 둘째 화면은 눈금 없는 도식이고 다음 절에서 다룸.</figcaption>
+        </figure>
+
+        <p>그래서 직관과 반대되는 결과가 나옴. 같은 유전자의 null 변이는 단백질을 아예 만들지 못하니 더 심할 것 같지만, <strong>실제로는 더 가벼운 질환이 됨</strong>. 일부가 아예 없는 쪽이 비정상 사슬이 섞여 있는 쪽보다 덜 파괴적이기 때문(HMG 16.1). 변이가 앉은 자리도 중증도를 가름 — 나선이 C말단 쪽에서부터 조립되므로 그쪽의 glycine 치환이 N말단 쪽보다 중증임(HMG 16.1).</p>
+        <p><em>GJB2</em>가 만드는 connexin 26은 같은 유전자 안에서 유전 양식 자체가 갈리는 예임. connexin 26 분자 여섯이 모여 connexon을 이루고 그것이 gap junction의 절반이 됨. null 변이를 homozygous로 지닌 사람은 속귀의 gap junction이 없어 난청이 되지만 heterozygote는 완전히 정상임 — 열성. 그런데 어떤 missense 변이는 구조가 틀어진 connexin 26을 만들고, 이것은 여섯 중 일부만 비정상이어도 connexon의 기능을 깨므로 heterozygote에서 난청이 나타남 — 우성(HMG 16.1).</p>
+        <p>이 기전을 거꾸로 읽으면 세포가 왜 잘린 전사체를 치우는지도 설명됨. nonsense-mediated decay는 비정상 절단 단백질의 dominant-negative 효과를 막는 보호 장치로 진화했을 것으로 봄 — 변이 유전자에서 비정상 산물이 나오는 것보다 아무 산물도 나오지 않는 쪽이 나을 수 있음(HMG 16.1). 이 기구가 변이 종류에 따라 어떻게 작동하는지는 <a href="../01-genome/variant-effect.html">변이는 단백질을 어떻게 바꾸나?</a>에 있음.</p>
+
+        <!-- ───────── 5. 새 기능 ───────── -->
+        <h2 id="gain">없던 기능이 생길 때<small>Gain of function</small></h2>
+        <p class="lede">세 번째 갈래. 앞의 둘과 달리 변이가 놓일 수 있는 자리가 훨씬 좁음.</p>
+        <p>여기에 비대칭이 있음. <strong>기능을 없앨 길은 무수히 많지만 얻을 길은 적음.</strong> 기능 획득은 바뀐 산물이 실제로 존재해야 성립하는데, 기능을 없애는 기전의 상당수는 산물 자체를 없애므로 원리상 기능 획득을 만들 수 없음. 그래서 기능 획득 변이는 대개 단백질의 missense이거나 조절 서열의 변화임(HMG 16.2). 위 그림의 둘째 화면이 그 비대칭을 그린 것.</p>
+        <p>얻는다고 해서 완전히 새로운 일을 하게 되는 경우는 드묾. 보통은 제 일을 엉뚱한 때에 하는 쪽 — 리간드가 없는데도 신호를 보내는 수용체 같은 식임(HMG 16.2).</p>
+        <p>진짜로 새 반응을 얻는 예도 있기는 함. α1-antitrypsin은 혈류로 나온 elastase를 막는 단백질이고 358번 methionine이 elastase를 낚는 미끼 역할을 하는데, Pittsburgh 변이체 <em>p.Met358Arg</em>에서는 이 자리가 thrombin을 낚음. 결과적으로 antithrombin처럼 작동해 중증 출혈질환이 생김(HMG 16.2).</p>
+        <p>암 쪽에도 같은 종류가 있음. <em>IDH1</em>의 132번 잔기 치환(<em>p.R132H</em>·<em>p.R132S</em>)이 grade II·III astrocytoma와 oligodendroglioma, 그리고 거기서 진행한 glioblastoma의 <strong>70% 초과</strong>에서 발견되고, <em>IDH1</em> 변이가 없는 종양은 <em>IDH2</em>의 대응 잔기 R172에 변이를 지니는 경우가 많음. 정상 효소는 isocitrate를 α-ketoglutarate로 바꾸는데 변이형은 반대로 α-ketoglutarate를 2-hydroxyglutarate로 환원하고, 이 비정상 대사체가 histone 탈메틸화를 억제해 유전자 발현을 바꿈(HMG 16.2).</p>
+        <p>기능 획득을 만드는 기전은 대체로 넷으로 묶임 — 활성 유전자의 copy를 늘리는 증폭, 유전자를 강한 enhancer의 영향 아래로 옮기는 염색체 재배열, 두 유전자의 exon을 합쳐 새 키메라 유전자를 만드는 재배열, 그리고 단백질의 성질을 바꾸는 missense(HMG 16.2).</p>
+        <p>한 유전자 안에서 기능 획득과 기능 상실이 서로 다른 질환으로 갈리는 사례는 <a href="./monogenic-to-complex.html#direction">단일유전자 질환은 흔한 질환에 대해 무엇을 알려주나?</a>에서 다룸.</p>
+
+        <!-- ───────── 6. 가리는 법 ───────── -->
+        <h2 id="tell">셋 중 어느 기전인지 가리기<small>Telling them apart</small></h2>
+        <p class="lede">유전자 이름만으로는 정해지지 않음. 같은 유전자가 변이에 따라 다른 갈래로 갈 수 있기 때문.</p>
+        <p>가장 먼저 보는 것은 <strong>같은 유전자의 null 변이를 heterozygous로 지닌 사람이 건강한가</strong>임. 건강하다면 그 유전자는 50%로 충분하다는 뜻이고, 그런데도 어떤 변이가 heterozygous 상태에서 질환을 만든다면 양의 문제가 아니라 방해하거나 새 기능을 얻은 쪽임. 앞의 connexin 26이 그 대조를 한 유전자 안에서 보여 줌.</p>
+        <p>남은 기능의 양과 중증도가 차례로 대응하는 <strong>allelic series</strong>가 보이면 단순한 기능 상실 쪽에 가깝고, 앞 절의 <em>DTDST</em>가 그 모양임.</p>
+        <p>예측 지표도 있음. haploinsufficient 유전자는 코딩 서열과 promoter가 진화적으로 더 보존되고, paralog와의 서열 유사도가 낮으며(기능을 대신할 사본이 없다는 뜻), 초기 배아 발현이 높고, 상호작용 상대가 많으며, 다른 haploinsufficient 유전자와 상호작용할 확률이 높음. 이런 특징을 묶은 점수에서 가장 큰 가중치를 받은 것은 알려진 haploinsufficient 유전자와 네트워크상 가까운지였음(HMG 16.1).</p>
+        <p>다만 저자들이 바로 덧붙이는 경고가 중요함 — 이런 예측은 <strong>유전자 하나에 초점을 맞추느라 맥락과 유전적 배경의 역할을 빼놓음</strong>(HMG 16.1). 유전자 단위의 점수는 후보를 좁히는 데까지이고 그 변이가 이 환자에게 무엇을 했는지를 말해 주지는 않음.</p>
+        <p>그래서 실무 기준은 기능 검증 쪽으로 옮겨 왔음. IUIS의 2024년 선천 면역 오류 분류에서는 유전자 40개 넘게 두 개 이상의 항목을 갖게 되었는데, 같은 유전자가 기능 획득이냐 상실이냐에 따라 전혀 다른 표현형으로 가기 때문이고, 그래서 새 변이는 병원성을 말하기 전에 in vitro 기능 검증을 거쳐야 한다는 결론이 따라붙음 <a class="src" href="https://doi.org/10.70962/jhi.20250003" target="_blank" rel="noopener">Poli 2025</a>. 변이를 직접 바꿔 확인하는 방법은 <a href="../05-function/perturbation.html">변이를 직접 바꿔서 확인하려면?</a>에 있음.</p>
+        <p>왜 전사조절자에 haploinsufficiency가 유독 흔한지를 설명하려는 <strong>가설</strong>도 나와 있음. 세포 운명 결정은 유전자 조절망의 쌍안정성(bistability)에 기대고 있고 그 쌍안정성은 양성 되먹임과 초민감성을 함께 요구하는데, 전사조절자의 용량이 절반으로 줄면 이 요건이 무너져 발달장애가 된다는 제안임. 저자는 이 틀이 불완전 침투까지 설명한다고 보지만, 스스로 가설로 제시한 것이고 직접 검정은 아직임 <a class="src" href="https://doi.org/10.1242/bio.058896" target="_blank" rel="noopener">Zug 2022</a>.</p>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>우성이면 변이가 더 심하게 망가진 것 ✗</code><p class="why">collagen에서는 단백질을 아예 못 만드는 null 변이가 삼중나선을 망가뜨리는 missense보다 <em>가벼운</em> 질환을 만듦(HMG 16.1)</p></div>
+          <div class="fix"><code>한 copy를 잃으면 기능이 절반이니 절반쯤 아픔 ✗</code><p class="why">대부분의 유전자는 50%로 충분하도록 여유가 생겨 있고, 용량에 민감한 유전자는 비교적 적음(HMG 16.1)</p></div>
+          <div class="fix"><code>우성·열성은 그 유전자의 성질 ✗</code><p class="why">connexin 26은 null이면 열성, 어떤 missense면 우성 — 같은 유전자에서 변이가 유전 양식을 바꿈(HMG 16.1)</p></div>
+          <div class="fix"><code>dominant negative는 기능 상실의 한 종류 ✗</code><p class="why">제 기능을 잃는 데 더해 정상형까지 방해하므로 전체 기능이 50%보다 아래로 내려감(HMG 16.1)</p></div>
+          <div class="fix"><code>유전자를 망가뜨리면 기능 획득도 생길 수 있음 ✗</code><p class="why">바뀐 산물이 존재해야 하므로 산물을 없애는 기전으로는 원리상 기능 획득이 불가능함(HMG 16.2)</p></div>
+          <div class="fix"><code>기능 획득은 완전히 새로운 기능을 얻는 것 ✗</code><p class="why">대개 제 일을 엉뚱한 때에 하는 것이고, 새 반응을 얻는 예는 드묾(HMG 16.2)</p></div>
+          <div class="fix"><code>절단 변이는 언제나 missense보다 나쁨 ✗</code><p class="why">nonsense-mediated decay가 절단 산물을 치워 dominant-negative 효과를 막는 쪽으로 작동함(HMG 16.1)</p></div>
+          <div class="fix"><code>haploinsufficiency 예측 점수가 높으면 그 변이가 원인 ✗</code><p class="why">점수는 유전자 단위이고 맥락과 유전적 배경을 빼놓음 — 후보를 좁히는 데까지임(HMG 16.1)</p></div>
+          <div class="fix"><code>한 유전자의 변이는 한 가지 기전으로 묶임 ✗</code><p class="why">IUIS 2024에서 유전자 40개 넘게 두 개 이상의 항목을 갖고, 새 변이는 기능 검증을 거쳐야 함 <a class="src" href="https://doi.org/10.70962/jhi.20250003" target="_blank" rel="noopener">Poli 2025</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">haploinsufficiency · 반수부족 · dominant negative · gain-of-function · GoF · 기능 획득 · loss-of-function · LoF · 기능 상실 · hypomorphic · dosage sensitivity · 용량 민감성 · buffering · nonsense-mediated decay · NMD · allelic series · osteogenesis imperfecta · OI · 골형성부전 · connexin 26 · gap junction · supravalvular aortic stenosis · elastin · DTDST · IDH1 · 2-hydroxyglutarate · α1-antitrypsin · Pierre Robin sequence · bistability · 쌍안정성 · ultrasensitivity</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="./penetrance.html">같은 변이가 왜 다른 결과를 내나? →</a>
+          <a href="./monogenic-to-complex.html">단일유전자 질환은 흔한 질환에 대해 무엇을 알려주나? →</a>
+          <a href="../01-genome/variant-effect.html">변이는 단백질을 어떻게 바꾸나? →</a>
+          <a href="../05-function/perturbation.html">변이를 직접 바꿔서 확인하려면? →</a>
+          <a href="../04-polygenic/architecture.html">질환마다 유전 구조는 어떻게 다른가? →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41588-023-01366-2" target="_blank" rel="noopener noreferrer">Naqvi 2023, Nat Genet — SOX9 농도를 연속으로 바꿔 잰 buffering과 민감성 ↗</a>
+          <a href="https://doi.org/10.1016/j.xgen.2025.100780" target="_blank" rel="noopener noreferrer">Naqvi 2025, Cell Genom — 버티는 서열과 민감한 서열의 motif 문법 ↗</a>
+          <a href="https://doi.org/10.1242/bio.058896" target="_blank" rel="noopener noreferrer">Zug 2022, Biol Open — haploinsufficiency를 쌍안정성 붕괴로 보는 가설 ↗</a>
+          <a href="https://doi.org/10.70962/jhi.20250003" target="_blank" rel="noopener noreferrer">Poli 2025, J Hum Immun — 같은 유전자를 기능 방향별로 나눠 세는 분류 ↗</a>
+          <a href="https://doi.org/10.1146/annurev-immunol-082323-124920" target="_blank" rel="noopener noreferrer">Bender 2025, Annu Rev Immunol — 사람당 LoF 변이 기준선 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-25<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>

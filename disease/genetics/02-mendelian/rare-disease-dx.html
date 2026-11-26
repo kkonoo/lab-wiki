@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="icon" href="../../../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../../../assets/img/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../assets/img/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="exome 하나에서 나오는 변이 2만 개를 원인 하나로 줄이는 깔때기. 어디까지 읽을지 정하는 일, 필터 여섯 단계, 그 필터가 거는 가정이 깨진 세 사례, 등급으로 끝나는 판정, 그리고 가장 많이 나오는 산출물인 VUS">
+  <title>희귀질환의 원인 변이는 어떻게 찾나? · Human genetics</title>
+  <link rel="stylesheet" href="../../../assets/css/base.css">
+  <link rel="stylesheet" href="../../../assets/css/spa.css">
+  <link rel="stylesheet" href="../genetics.css">
+  <link rel="stylesheet" href="../../../assets/css/article.css">
+  <link rel="stylesheet" href="../genetics-fig.css">
+</head>
+<body class="vpage" data-domain="disease">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-group"><a class="brand brand-home" href="../../../index.html"><img class="mark" src="../../../assets/img/symbol.png" alt="">HaLab Wiki</a><a class="brand brand-domain" href="../../index.html"><span>/ Human diseases</span></a><a class="brand brand-domain" href="../index.html"><span>/ Human genetics</span></a></div>
+      <nav class="domain-nav" aria-label="도메인">
+        <a href="../../../gwas/index.html">GWAS</a>
+        <a href="../../../omics/index.html">Omics</a>
+        <a href="../../../single-cell/index.html">Single-cell</a>
+        <a href="../../../multi-omics/index.html">Multi-omics</a>
+        <a href="../../../disease/index.html" aria-current="page">Diseases</a>
+      </nav>
+      <form class="top-search" id="topSearchForm" role="search">
+        <input id="topSearch" type="search" aria-label="위키 검색" placeholder="Search term / acronym">
+        <span class="keycap">/</span>
+      </form>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="현재 위치"><a href="../../../index.html">HaLab Wiki</a><span>›</span><a href="../../index.html">Human diseases</a><span>›</span><a href="../index.html">Human genetics</a><span>›</span><a href="./index.html">멘델 유전</a><span>›</span>희귀질환 진단</nav>
+    <div class="article-layout">
+      <article class="article">
+        <p class="eyebrow">멘델 유전 · Rare disease diagnosis</p>
+        <h1>희귀질환의 원인 변이는 어떻게 찾나?</h1>
+        <p class="definition">한 사람의 exome에서는 참조 서열과 다른 자리가 2만 군데쯤 나오고 genome에서는 400만 군데가 나옴. 멘델 질환이라면 그중 하나가 원인임. 그 하나까지 좁히는 일이 깔때기이고, 어려운 것은 깔때기가 거는 가정 쪽(HMG 17.4)</p>
+
+        <!-- ───────── 1. 질문이 서는 자리 ───────── -->
+        <h2 id="why">2만 개에서 하나로<small>From twenty thousand to one</small></h2>
+        <p class="lede">깔때기의 단계는 짧게 적을 수 있음. 각 단계가 무엇을 전제하는지가 실제 일.</p>
+        <p>출발점은 숫자 둘임. exome 하나를 읽으면 참조 서열과 다른 자리가 보통 <strong>2만 군데쯤</strong> 나오고, genome이면 <strong>400만 군데</strong>가 나옴. 환자가 멘델 질환을 지녔다면 그 가운데 하나가 원인이어야 함(HMG 17.4).</p>
+        <p>경험이 쌓이면서 첫 탐색의 방향은 정해졌음. 멘델 질환의 대부분은 단백질 암호화 서열 안의 missense · nonsense · frameshift · splice-site 변이로 생기므로, 처음에는 아미노산 서열을 바꾸리라 예측되는 변이부터 봄. 예외는 늘 있고 특히 잘못된 splicing을 일으키는 변이는 엉뚱한 자리에 있을 수 있음(HMG 17.4).</p>
+        <p>이 쪽이 다루는 순서는 넷임 — 어디까지 읽을지 정하고, 후보를 줄이고, 줄이는 데 쓴 가정이 깨지는 자리를 알아보고, 남은 변이에 등급을 매기는 것. 마지막에 가장 많이 남는 산출물이 진단이 아니라 <strong>의미 불확실 변이</strong>라는 점이 이 일의 실제 모습에 가까움.</p>
+
+        <!-- ───────── 2. 읽는 범위 ───────── -->
+        <h2 id="net">어디까지 읽을 것인가<small>How wide to cast the net</small></h2>
+        <p class="lede">그물을 넓힐수록 놓치는 것은 줄고 해석할 것은 늘어남.</p>
+
+        <figure class="fig" id="fig-net" data-mode="scope">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-net" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="scope" aria-pressed="true">읽는 범위</button>
+              <button type="button" data-mode="funnel" aria-pressed="false">후보가 줄어드는 길</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:NET-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="dxNetT dxNetD" xmlns="http://www.w3.org/2000/svg">
+<title id="dxNetT">희귀질환 진단에서 읽는 범위와 후보를 줄이는 과정을 보여 주는 그림</title>
+<desc id="dxNetD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 읽는 범위를 단일 유전자 · 유전자 패널 · clinical exome · exome · genome 다섯 단계의 막대로 놓고 각각이 덮는 것을 적는다 — 패널은 영국 100,000 Genomes Project의 224개, clinical exome은 멘델 질환 원인으로 보고된 유전자 3,000개쯤, exome은 단백질 암호화 exon 18만 개로 40–60 Mb다. 둘째 화면은 Kabuki syndrome 환자 10명의 exome을 필터링한 결과로, 아미노산을 바꾸는 변이를 지닌 유전자가 적어도 한 명에서 12,042개인데 열 명 모두에서는 1,459개, 희귀 조건을 더하면 6,935개에서 1개, 기능 상실이 확실한 변이로 좁히면 753개에서 0개로 줄어, 열 명 모두가 공유하는 유전자가 없고 일곱 명에서 나온 KMT2D가 답이었음을 보여 준다.</desc>
+<g class="g-ov" data-ov="scope"><text x="380" y="36" class="g-lab em" text-anchor="middle">어디까지 읽을 것인가</text><rect x="200" y="73" width="60" height="18" rx="3" fill="#2563C9"/><rect x="200" y="117" width="150" height="18" rx="3" fill="#2563C9"/><rect x="200" y="161" width="250" height="18" rx="3" fill="#2563C9"/><rect x="200" y="205" width="350" height="18" rx="3" fill="#2563C9"/><rect x="200" y="249" width="490" height="18" rx="3" fill="#2563C9"/><text x="30" y="86" class="g-note em" text-anchor="start">단일 유전자</text><text x="200" y="102" class="g-small" text-anchor="start">임상 소견이 한 유전자를 분명히 가리킬 때 — CFTR처럼</text><text x="30" y="130" class="g-note em" text-anchor="start">유전자 패널</text><text x="200" y="146" class="g-small" text-anchor="start">그 표현형을 내는 유전자만 모아서 — 100,000 Genomes Project는 패널 224개</text><text x="30" y="174" class="g-note em" text-anchor="start">clinical exome</text><text x="200" y="190" class="g-small" text-anchor="start">멘델 질환의 원인으로 보고된 적 있는 유전자 3,000개쯤</text><text x="30" y="218" class="g-note em" text-anchor="start">exome</text><text x="200" y="234" class="g-small" text-anchor="start">단백질 암호화 exon 18만 개 · 40–60 Mb · 유전체의 1–2%</text><text x="30" y="262" class="g-note em" text-anchor="start">genome</text><text x="200" y="278" class="g-small" text-anchor="start">capture를 건너뜀 · 구조 변이까지 봄</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">어디까지 읽을 것인가</text><text x="44" y="347" class="g-band-t" text-anchor="start">막대 길이는 눈금이 아니다 — 읽는 범위가 넓어지는 차례만 나타낸다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">패널은 싸고 분석이 가볍지만 새 원인 유전자를 놓치고, 목록을 계속 고쳐야 한다.</text></g>
+<g class="g-ov" data-ov="funnel"><text x="380" y="36" class="g-lab em" text-anchor="middle">같은 질환 10명에서 몇 명이 공유하는 유전자를 세면</text><rect x="481" y="72" width="50" height="146" fill="#B3261E" opacity="0.10"/><text x="30" y="90" class="g-small" text-anchor="start">10명 중 몇 명 이상</text><text x="200" y="90" class="g-small" text-anchor="middle">1</text><text x="251" y="90" class="g-small" text-anchor="middle">2</text><text x="302" y="90" class="g-small" text-anchor="middle">3</text><text x="353" y="90" class="g-small" text-anchor="middle">4</text><text x="404" y="90" class="g-small" text-anchor="middle">5</text><text x="455" y="90" class="g-small" text-anchor="middle">6</text><text x="506" y="90" class="g-small" text-anchor="middle">7</text><text x="557" y="90" class="g-small" text-anchor="middle">8</text><text x="608" y="90" class="g-small" text-anchor="middle">9</text><text x="659" y="90" class="g-small" text-anchor="middle">10</text><text x="30" y="124" class="g-note em" text-anchor="start">아미노산을 바꾸는 변이</text><text x="200" y="124" class="g-small" text-anchor="middle">12,042</text><text x="251" y="124" class="g-small" text-anchor="middle">8,722</text><text x="302" y="124" class="g-small" text-anchor="middle">7,084</text><text x="353" y="124" class="g-small" text-anchor="middle">6,049</text><text x="404" y="124" class="g-small" text-anchor="middle">5,289</text><text x="455" y="124" class="g-small" text-anchor="middle">4,581</text><text x="506" y="124" class="g-small" text-anchor="middle">3,940</text><text x="557" y="124" class="g-small" text-anchor="middle">3,244</text><text x="608" y="124" class="g-small" text-anchor="middle">2,486</text><text x="659" y="124" class="g-small" text-anchor="middle">1,459</text><text x="30" y="158" class="g-note em" text-anchor="start">그중 드문 것</text><text x="200" y="158" class="g-small" text-anchor="middle">6,935</text><text x="251" y="158" class="g-small" text-anchor="middle">2,227</text><text x="302" y="158" class="g-small" text-anchor="middle">701</text><text x="353" y="158" class="g-small" text-anchor="middle">242</text><text x="404" y="158" class="g-small" text-anchor="middle">104</text><text x="455" y="158" class="g-small" text-anchor="middle">44</text><text x="506" y="158" class="g-small" text-anchor="middle">16</text><text x="557" y="158" class="g-small" text-anchor="middle">6</text><text x="608" y="158" class="g-small" text-anchor="middle">3</text><text x="659" y="158" class="g-small" text-anchor="middle">1</text><text x="30" y="192" class="g-note em" text-anchor="start">그중 LoF 확실</text><text x="200" y="192" class="g-small" text-anchor="middle">753</text><text x="251" y="192" class="g-small" text-anchor="middle">49</text><text x="302" y="192" class="g-small" text-anchor="middle">7</text><text x="353" y="192" class="g-small" text-anchor="middle">3</text><text x="404" y="192" class="g-small" text-anchor="middle">2</text><text x="455" y="192" class="g-small" text-anchor="middle">2</text><text x="506" y="192" class="g-small" text-anchor="middle">1</text><text x="557" y="192" class="g-small" text-anchor="middle">0</text><text x="608" y="192" class="g-small" text-anchor="middle">0</text><text x="659" y="192" class="g-small" text-anchor="middle">0</text><text x="380" y="222" class="g-small" text-anchor="middle">드묾 = dbSNP 129 · 1000 Genomes · 사내 exome 26개에 없음 · LoF = nonsense · frameshift · splice-site</text><text x="380" y="256" class="g-note em" text-anchor="middle">열 명 모두에서 나온 유전자는 없었고, 일곱 명에서 나온 KMT2D가 답이었다.</text><text x="506" y="280" class="g-small" text-anchor="middle">KMT2D</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">후보가 줄어드는 길</text><text x="44" y="347" class="g-band-t" text-anchor="start">숫자는 그런 변이를 지닌 유전자의 수다 — 오른쪽으로 갈수록 공유 조건이 세진다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">필터를 세 겹 걸면 수천 개가 한 자리 수로 줄지만, 교집합이 비기도 한다.</text></g>
+</svg>
+<!--/GEN:NET-->
+          </div>
+          <figcaption>값은 모두 관찰값(HMG 20.3 · 17.3). 둘째 화면은 다음 절에서 다룸.</figcaption>
+        </figure>
+
+        <p><strong>단일 유전자.</strong> 임상 소견이 한 유전자를 분명히 가리킬 때. 낭성섬유증에서 보고된 변이가 1,000종을 넘지만 전부 <em>CFTR</em> 안에 있는 것이 그런 경우임(HMG 20.3).</p>
+        <p><strong>유전자 패널.</strong> 한 표현형이 여러 유전자 가운데 어느 하나의 이상으로 생기되 그 목록이 유한할 때 쓰임. 검사실이 보고된 원인 유전자를 모아 exon마다 capture probe나 PCR primer를 만들거나, exome을 읽고 분석만 그 목록으로 제한하는 <strong>가상 패널</strong>을 씀. 영국 100,000 Genomes Project는 국제 전문가를 모아 질환별 패널 <strong>224개</strong>를 만들었고 계속 고치고 있음(HMG 20.3).</p>
+        <p><strong>clinical exome.</strong> 패널과 exome의 중간. 멘델 질환의 원인으로 보고된 적이 있는 유전자 <strong>3,000개쯤</strong>을 한꺼번에 덮음(HMG 20.3).</p>
+        <p><strong>exome.</strong> 사람 유전체의 단백질 암호화 exon <strong>18만 개</strong>를 모으는 것이고 이 exon의 총합이 33 Mb쯤임. 옆 intron과 일부 비번역 서열까지 넣어 실제 capture 라이브러리는 <strong>40–60 Mb</strong>, 유전체의 1–2%가 됨(HMG 17.3).</p>
+        <p><strong>genome.</strong> genome이 exome을 대체하리라 보는 가장 큰 이유는 흔히 생각하는 것과 다름. <strong>비암호화 영역을 읽어서가 아니라 capture 단계를 건너뛰기 때문</strong>임 — 비암호화 변이의 대부분은 현재 지식으로 해석되지 않고 높은 침투도의 원인일 것으로 기대되지도 않는데, capture는 여러 개선에도 여전히 고르지 않아 exome에서 놓친 암호화 서열 변이가 같은 시료의 genome에서 잡힌 예가 많음. 구조 변이를 찾고 특징을 볼 수 있다는 것도 genome 쪽 이득임(HMG 20.3).</p>
+        <p>선택은 비용만의 문제가 아님. 패널은 싸고 분석이 가볍고 원하지 않은 우연한 발견이 적으며 잘 설계하면 해당 exon의 coverage가 exome보다 나을 수 있음. 대신 <strong>새 원인 유전자는 놓치고</strong>, 원인 유전자가 밝혀질 때마다 목록을 고쳐야 함(HMG 20.3). 읽는 깊이와 capture의 성질 자체는 <a href="../01-genome/sequencing.html">사람의 유전체를 어떻게 읽나?</a>에 있음.</p>
+
+        <!-- ───────── 3. 깔때기 ───────── -->
+        <h2 id="funnel">후보를 줄이는 깔때기<small>Filtering down</small></h2>
+        <p class="lede">품질 관리를 통과한 변이 목록에서 시작함. 순서는 바뀔 수 있음.</p>
+        <ol>
+          <li>단백질 암호화 서열의 변이만 남김 — 비번역 영역과 intron은 splice site 바로 옆이 아니면 버림.</li>
+          <li>그중 missense · nonsense · splicing으로 예측되는 변이와 작은 indel만 남김.</li>
+          <li><strong>희귀 질환의 원인 변이는 그 자체로 희귀해야 함.</strong> 우성이면 그 표현형이 없는 사람에게서 보고된 변이를 버리고, 열성이면 질환의 희귀함에 견주어 설명이 안 될 만큼 흔한 변이를 버림. dbSNP · 1000 Genomes · gnomAD와 검사실 자체 데이터베이스를 씀.</li>
+          <li>PolyPhen-2 · SIFT 같은 프로그램이 비병원성으로 예측한 변이를 버림.</li>
+          <li>열성이면 환자마다 그 유전자에 병원성으로 보이는 변이가 <strong>둘</strong> 있는 유전자를, 우성이면 <strong>하나</strong> 있는 유전자를 고름.</li>
+          <li>산발성이면서 우성으로 보이는 경우, 부모 DNA가 있으면 de novo 변이를 고름.</li>
+        </ol>
+        <p>진단 현장에서는 환자 한 명의 exome에 이 필터를 걸어 남은 몇 개 중 하나가 이미 알려진 원인 유전자이면 거기서 끝남. 새 원인 유전자를 찾는 일이라면 한 사람으로는 거의 안 되고 여러 사람을 모아야 함(HMG 17.4).</p>
+        <p>위 그림의 둘째 화면이 그 모으는 과정임. Kabuki syndrome 환자 10명의 exome을 읽고 "몇 명이 공유하는가"를 축으로 세면, 아미노산을 바꾸는 변이를 지닌 유전자는 적어도 한 명에서 12,042개인데 열 명 모두에서는 1,459개로 줄고, 희귀하다는 조건을 더하면 6,935개에서 1개로, 기능 상실이 확실한 변이로 좁히면 753개에서 <strong>0개</strong>로 줄어듦(HMG 17.4).</p>
+        <p>그러니까 <strong>열 명 모두가 공유하는 유전자는 없었음.</strong> 답은 일곱 명에서 나온 <em>KMT2D</em>였고, 이 유전자가 histone을 바꾸는 lysine methyltransferase를 만든다는 점이 발생 질환의 후보로 들어맞았음. Sanger 시퀀싱이 그 일곱을 확인하고 차세대 시퀀싱이 놓친 두 명을 더 찾았으며, 열 번째 환자에서는 끝내 변이가 나오지 않았음(HMG 17.4).</p>
+
+        <!-- ───────── 4. 가정이 깨지는 자리 ───────── -->
+        <h2 id="assume">필터가 거는 가정<small>What the filters assume</small></h2>
+        <p class="lede">초기의 유명한 성공 사례들은 하나같이 가정이 한 번씩 깨진 자리에서 나왔음.</p>
+        <p><strong>예측 점수가 틀릴 수 있음.</strong> Miller syndrome 환자 네 명의 exome을 읽었을 때, 네 명 모두에게서 병원성으로 예측된 변이를 둘 지닌 유전자가 하나도 없어 열성 가설이 깨진 것처럼 보였음. 실제로는 <em>DHODH</em>가 네 명 모두에게서 변이를 둘 지니고 있었는데 여섯 변이 중 다섯만 병원성으로 예측되었고, 나머지 하나인 <em>p.G202A</em>를 PolyPhen이 잘못 분류한 것이었음. 뒤에 LRT · MutationTaster · PhyloP · GERP++는 같은 변이를 병원성으로 맞혔음(HMG 17.4).</p>
+        <p><strong>한 사람에게 질환이 하나라는 보장이 없음.</strong> 같은 연구에서 한 가계의 두 남매가 <em>DNAH5</em>의 양쪽 allele에도 변이를 지니고 있었음. <em>DNAH5</em>는 primary ciliary dyskinesia의 잘 알려진 원인이고, 다시 보니 두 사람은 Miller syndrome <strong>위에</strong> 그 질환을 함께 지니고 있었음(HMG 17.4).</p>
+        <p><strong>데이터베이스에 없다는 것이 희귀하다는 뜻은 아님.</strong> Schinzel–Giedion syndrome 환자 네 명을 우성 가설로 분석했을 때 유전자 12개가 필터를 통과했는데, 그중 <strong>10개는 네 명 모두가 같은 변화를 지니고 있었음</strong> — 당시 dbSNP에 아직 등록되지 않았을 뿐인 흔한 SNP였다는 뜻임. 남은 둘 중 <em>CTBP2</em>는 유전체 다른 곳의 비슷한 서열 때문에 늘 변이가 많이 나오던 유전자여서 제외했고, 그렇게 <em>SETBP1</em> 하나가 남았음(HMG 17.4).</p>
+        <p><strong>같은 진단명이 같은 유전자를 뜻하지 않음.</strong> 앞 절의 Kabuki syndrome이 그 경우임. 교집합이 비는 것이 실패가 아니라 유전적 이질성의 신호였고, 나중에 환자 116명을 보았을 때도 <em>KMT2D</em> 변이는 <strong>74명</strong>에서만 나왔음(HMG 17.4). 유전적 이질성은 지금까지 설명한 전략 전부에 걸리는 장애물임.</p>
+        <p>마지막으로 하나 더. <strong>기능을 완전히 잃는 것과 질환을 일으키는 것은 다름.</strong> ExAC 참여자는 평균적으로 단백질을 끊는 변이를 heterozygous로 85개, homozygous로 35개 지니고 있음(HMG 20.3). 변이가 유전자 산물에 미치는 영향과 그 사람에게 미치는 영향을 가르는 일이 여기서 갈림 — 전자는 <a href="../01-genome/variant-effect.html">변이는 단백질을 어떻게 바꾸나?</a>에서 다루고, 후자는 <a href="./penetrance.html">같은 변이가 왜 다른 결과를 내나?</a>에서 다룸.</p>
+
+        <!-- ───────── 5. 등급 ───────── -->
+        <h2 id="classify">남는 것은 답이 아니라 등급<small>Five tiers, not an answer</small></h2>
+        <p class="lede">깔때기 끝에서 나오는 것은 "원인 변이"가 아니라 확신의 수준.</p>
+        <p>변이 하나를 두고 보는 것은 크게 셋임 — <strong>선례 · 보존 · 희귀함</strong>(HMG 17.5 · 20.3).</p>
+
+        <figure class="fig" id="fig-call" data-mode="pillars">
+          <div class="fig-tools">
+            <div class="seg" data-fig="fig-call" role="group" aria-label="보는 각도">
+              <button type="button" data-mode="pillars" aria-pressed="true">세 기둥과 다섯 등급</button>
+              <button type="button" data-mode="gap" aria-pressed="false">끝에 남는 것</button>
+            </div>
+          </div>
+          <div class="fig-scroll">
+<!--GEN:CALL-->
+<svg class="g-svg" viewBox="0 0 760 392" role="img" aria-labelledby="dxCallT dxCallD" xmlns="http://www.w3.org/2000/svg">
+<title id="dxCallT">변이에 등급을 매기는 세 기둥과 진단이 닿지 못하는 영역을 보여 주는 그림</title>
+<desc id="dxCallD">그림 두 장을 버튼으로 바꿔 본다. 첫 화면은 변이 하나를 판정할 때 보는 선례 · 보존 · 희귀함 세 가지를 상자로 놓고 각각의 한계를 적은 뒤, 병원성 · 병원성 추정 · 의미 불확실 · 양성 추정 · 양성 다섯 등급으로 이어지는 모양을 보여 준다. 둘째 화면은 진단이 닿지 못하는 비율을 막대로 보여 주는데, 단일유전자 자가염증질환에서 확정 진단은 약 30%이고 가족성 AML·MDS 가계에서는 43%가 exome 시퀀싱으로 원인 변이를 찾지 못했으며, 표준 파이프라인이 놓치는 것으로 반복 서열 확장 · 구조 변이 · capture 사각지대 · 비암호화 변이 · 후성유전 변화를 든다.</desc>
+<g class="g-ov" data-ov="pillars"><text x="380" y="36" class="g-lab em" text-anchor="middle">변이 하나를 두고 보는 세 가지</text><rect x="25" y="66" width="220" height="128" rx="6" fill="none" stroke="#8A949C" stroke-width="1.4"/><line x1="135" y1="194" x2="135" y2="228" stroke="#8A949C" stroke-width="1.4"/><line x1="45" y1="128" x2="225" y2="128" stroke="#8A949C" stroke-width="1" stroke-dasharray="3 3"/><rect x="270" y="66" width="220" height="128" rx="6" fill="none" stroke="#8A949C" stroke-width="1.4"/><line x1="380" y1="194" x2="380" y2="228" stroke="#8A949C" stroke-width="1.4"/><line x1="290" y1="128" x2="470" y2="128" stroke="#8A949C" stroke-width="1" stroke-dasharray="3 3"/><rect x="515" y="66" width="220" height="128" rx="6" fill="none" stroke="#8A949C" stroke-width="1.4"/><line x1="625" y1="194" x2="625" y2="228" stroke="#8A949C" stroke-width="1.4"/><line x1="535" y1="128" x2="715" y2="128" stroke="#8A949C" stroke-width="1" stroke-dasharray="3 3"/><rect x="60" y="228" width="128" height="34" fill="#B3261E"/><rect x="188" y="228" width="128" height="34" fill="#D9822B"/><rect x="316" y="228" width="128" height="34" fill="#8A949C"/><rect x="444" y="228" width="128" height="34" fill="#6E8FC9"/><rect x="572" y="228" width="128" height="34" fill="#2563C9"/><text x="135" y="92" class="g-note em" text-anchor="middle">선례</text><text x="135" y="114" class="g-small" text-anchor="middle">ClinVar 등 보고 기록</text><text x="135" y="146" class="g-small em" text-anchor="middle">한계</text><text x="135" y="164" class="g-small" text-anchor="middle">초기 보고에 비병원성</text><text x="135" y="182" class="g-small" text-anchor="middle">missense가 섞여 들어왔음</text><text x="380" y="92" class="g-note em" text-anchor="middle">보존</text><text x="380" y="114" class="g-small" text-anchor="middle">여러 종 서열 정렬 점수</text><text x="380" y="146" class="g-small em" text-anchor="middle">한계</text><text x="380" y="164" class="g-small" text-anchor="middle">대략 80% 정확 · 보상 치환이</text><text x="380" y="182" class="g-small" text-anchor="middle">있으면 양성으로 잘못 봄</text><text x="625" y="92" class="g-note em" text-anchor="middle">희귀함</text><text x="625" y="114" class="g-small" text-anchor="middle">gnomAD 대조군 빈도</text><text x="625" y="146" class="g-small em" text-anchor="middle">한계</text><text x="625" y="164" class="g-small" text-anchor="middle">대조군이 모두 건강하지는</text><text x="625" y="182" class="g-small" text-anchor="middle">않음 — 조현병 코호트 포함</text><text x="124" y="250" class="g-box-t" text-anchor="middle">병원성</text><text x="252" y="250" class="g-box-t" text-anchor="middle">병원성 추정</text><text x="380" y="250" class="g-box-t" text-anchor="middle">의미 불확실</text><text x="508" y="250" class="g-box-t" text-anchor="middle">양성 추정</text><text x="636" y="250" class="g-box-t" text-anchor="middle">양성</text><text x="380" y="286" class="g-small" text-anchor="middle">검사실은 보통 왼쪽 둘만 보고한다. '추정'은 90% 확신을 뜻한다.</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">세 기둥과 다섯 등급</text><text x="44" y="347" class="g-band-t" text-anchor="start">ACMG 지침은 병원성 쪽 근거 16가지와 양성 쪽 근거 12가지를 네 단계 세기로 나눠 묶는다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">세 기둥은 모두 지시일 뿐이고, 하나만으로 등급이 정해지지 않는다.</text></g>
+<g class="g-ov" data-ov="gap"><text x="380" y="36" class="g-lab em" text-anchor="middle">깔때기 끝에 남는 것</text><rect x="250" y="80" width="135.0" height="32" rx="3" fill="#2563C9"/><rect x="385.0" y="80" width="315.0" height="32" rx="3" fill="none" stroke="#8A949C" stroke-width="1.4"/><rect x="250" y="140" width="256.5" height="32" rx="3" fill="#2563C9"/><rect x="506.5" y="140" width="193.5" height="32" rx="3" fill="none" stroke="#8A949C" stroke-width="1.4"/><rect x="30" y="226" width="126" height="36" rx="6" fill="none" stroke="#8A949C" stroke-width="1.3"/><rect x="166" y="226" width="126" height="36" rx="6" fill="none" stroke="#8A949C" stroke-width="1.3"/><rect x="302" y="226" width="126" height="36" rx="6" fill="none" stroke="#8A949C" stroke-width="1.3"/><rect x="438" y="226" width="126" height="36" rx="6" fill="none" stroke="#8A949C" stroke-width="1.3"/><rect x="574" y="226" width="126" height="36" rx="6" fill="none" stroke="#8A949C" stroke-width="1.3"/><text x="30" y="100" class="g-note em" text-anchor="start">단일유전자 자가염증질환</text><text x="317.5" y="102" class="g-box-t" text-anchor="middle">확정 진단 30%</text><text x="542.5" y="102" class="g-small" text-anchor="middle">미해결 70%</text><text x="30" y="160" class="g-note em" text-anchor="start">가족성 AML · MDS 가계</text><text x="378.25" y="162" class="g-box-t" text-anchor="middle">원인 변이 확인 57%</text><text x="603.25" y="162" class="g-small" text-anchor="middle">미확인 43%</text><text x="30" y="210" class="g-note em" text-anchor="start">표준 파이프라인이 놓치는 것</text><text x="93" y="249" class="g-small" text-anchor="middle">반복 서열 확장</text><text x="229" y="249" class="g-small" text-anchor="middle">구조 변이</text><text x="365" y="249" class="g-small" text-anchor="middle">capture 사각지대</text><text x="501" y="249" class="g-small" text-anchor="middle">비암호화 변이</text><text x="637" y="249" class="g-small" text-anchor="middle">후성유전 변화</text><text x="380" y="286" class="g-small" text-anchor="middle">long-read는 한 사람에게서 50 bp 넘는 구조 변이를 평균 2만 개 넘게 찾는다.</text><rect x="30" y="306" width="700" height="71" rx="6" class="g-band"/><text x="44" y="328" class="g-band-t hd" text-anchor="start">끝에 남는 것</text><text x="44" y="347" class="g-band-t" text-anchor="start">같은 질환에서도 원인 변이가 확인되는 비율이 절반을 넘지 못하는 경우가 많다.</text><text x="44" y="366" class="g-band-t" text-anchor="start">남은 쪽은 변이가 없는 것이 아니라, 지금 파이프라인이 보지 못하거나 해석하지 못하는 것이다.</text></g>
+</svg>
+<!--/GEN:CALL-->
+          </div>
+          <figcaption>값은 모두 관찰값(HMG 17.5 · 20.3 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a> <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a>). 둘째 화면은 다음 절에서 다룸.</figcaption>
+        </figure>
+
+        <p><strong>선례</strong>는 ClinVar로 봄. 2018년 7월 기준 676,579건이 올라와 있었고, 같은 변이를 두 검사실이 다르게 해석했으면 두 해석을 나란히 보여 줌(HMG 17.5). 다만 이 기록 자체에 오염이 있음 — 원인 유전자를 처음 찾던 시기에는 환자 패널에서 나온 변이를 통째로 병원성으로 등록했고, 유전자 지목이 옳기만 하면 그중 일부 missense가 사실 양성이어도 문제가 되지 않았음. 그 과정을 거치며 변이 데이터베이스에 비병원성 missense가 상당히 섞여 들어갔음(HMG 20.3).</p>
+        <p><strong>보존</strong>은 여러 종의 서열을 맞춰 보는 것이고 PolyPhen · SIFT가 대표적임. 정확도는 대체로 80% 안팎이며, 도구마다 답이 달라질 수 있어 여럿을 써서 합의를 보는 편이 나음(HMG 20.3). 거짓 음성이 나오는 한 가지 이유가 <strong>보상된 병원성 치환</strong>임 — 사람에게서는 병을 일으키는 아미노산이 다른 종에서는 정상형이어서 보존 기반 도구가 양성으로 분류하는 경우이고, 그 종에서는 단백질의 다른 자리 치환이 효과를 상쇄함. 사람 아미노산 치환의 <strong>최소 3%</strong>가 어느 종에선가 이 상태에 놓인 것으로 추정됨(HMG 17.5).</p>
+        <p><strong>희귀함</strong>은 환자와 대조군의 빈도를 견주는 것이고 gnomAD가 그 자리를 맡음(2017년 10월 기준 exome 126,216개 + genome 15,136개). 여기 전혀 없을 것을 요구하는 것은 현실적이지 않고, <strong>질환의 빈도에 견주어</strong> 희귀한지를 봄 — 우성이면 질환 빈도보다, 열성이면 보인자 빈도보다 낮아야 함(HMG 17.5). 이 자원의 한계도 분명함: 참여자가 반드시 건강한 사람은 아니어서 조현병 코호트 같은 자료가 들어 있음. 중증 소아 질환은 제외되어 있으므로 그쪽은 값을 그대로 쓸 수 있지만, 만기 발병이나 경증 질환을 볼 때는 걸러서 봐야 함(HMG 17.5).</p>
+        <p>이 셋을 묶어 검사실은 변이를 <strong>다섯 등급</strong>으로 나눔 — 병원성 · 병원성 추정 · 의미 불확실 · 양성 추정 · 양성. 미국 의학유전학회 작업반의 지침은 병원성 쪽 근거 <strong>16가지</strong>와 양성 쪽 근거 <strong>12가지</strong>를 두고 각각을 매우 강함 · 강함 · 중간 · 보조로 나눈 뒤 종합 판정 규칙을 줌. "추정"은 <strong>90% 확신</strong>을 뜻하는 것으로 제안되었고, 이 값이 지나치게 높다고 보는 견해도 있음(HMG 20.3). 검사실은 보통 병원성과 병원성 추정만 보고하고 양성 쪽은 보고하지 않음(HMG 20.3).</p>
+        <p>새 변이가 그 환자의 질환과 아직 이어진 적 없는 유전자에 있다면 이 모든 판단을 훨씬 조심해서 적용해야 함(HMG 20.3). 그 경우 기능 근거가 결정적이 되고, 후보 유전자가 해당 조직에서 발현되는지부터 보게 됨 — 지적장애 연구에서 de novo 변이가 확인된 유전자 둘이 중추신경계에서 발현되지 않는다는 이유로 제외된 것이 그 예임(HMG 17.5). 변이를 직접 만들어 재는 방법은 <a href="../05-function/perturbation.html">변이를 직접 바꿔서 확인하려면?</a>에 있음.</p>
+        <p>검사 하나를 임상에 들이기 전에 보는 축은 넷임 — <strong>분석 타당도</strong>(재겠다는 것을 잘 재는가) · <strong>임상 타당도</strong>(주장하는 건강 결과를 잘 예측하는가) · <strong>임상 유용성</strong>(결과가 진료를 바꾸는가) · 윤리·법·사회적 측면. 실험실 성능만으로는 셋째 축이 채워지지 않음(HMG 20.3).</p>
+
+        <!-- ───────── 6. 남는 것 ───────── -->
+        <h2 id="gap">가장 많이 나오는 산출물<small>What the funnel leaves behind</small></h2>
+        <p class="lede">의미 불확실 변이(VUS)는 실패가 아니라 이 절차의 정상적인 산출물.</p>
+        <p>VUS를 어떻게 다룰지는 쉬운 답이 없는 문제임. 보고하면 환자와 의뢰 의사에게 답할 수 없는 질문을 떠넘기고 불안을 만들며 근거 없는 검색으로 이어지기 쉬움. 확률로 보면 대부분의 VUS는 결국 양성으로 판명될 것임. 그런데 보고하지 않으면 지식이 늘었을 때 그 변이를 다시 볼 길이 없어지고, 그중 일부는 병원성이면서 조치가 가능한 것일 수 있음. 지금 쓰는 완화책은 검사 전에 어떤 종류의 결과를 보고하고 보고하지 않을지 환자와 합의해 두는 것임(HMG 20.3). 이는 다른 질환의 병원성 변이가 우연히 발견되는 <strong>우연한 발견</strong>과는 다른 문제임(HMG 20.3).</p>
+        <p>불확실함이 줄어들 수 있다는 근거는 나와 있음. <em>BRCA1</em>의 기능이 중요한 exon 13개에서 가능한 거의 모든 한 염기 치환을 원래 자리에 넣고 기능을 측정했더니, ClinVar에서 의미 불확실이거나 해석이 엇갈리던 변이 378개 가운데 <strong>91.3%</strong>가 기능 있음 또는 기능 없음으로 분류되었음 <a class="src" href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener">Findlay 2018</a>. 불확실함의 상당 부분이 변이의 성질이 아니라 측정의 부재에서 오는 것임. 다만 이 방법은 선별 가능한 표현형과 알맞은 세포주가 있어야 하고 한 번에 다룰 수 있는 범위가 좁음 — 자세한 것은 <a href="../05-function/perturbation.html#endogenous">원래 자리에서 바꿔 재기</a>에 있음.</p>
+        <p>그래도 공백은 큼. 단일유전자 자가염증질환에서 분자 수준의 확정 진단에 이르는 환자는 <strong>약 30%</strong>이고, 저자들은 genome 시퀀싱과 비암호화 영역, 후성유전 조절 쪽을 다음 방향으로 꼽음 <a class="src" href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener">Zhang 2023</a>. 가족성 AML·MDS 가계 코호트에서는 <strong>43%</strong>가 exome 시퀀싱으로 알려진 원인 변이를 찾지 못했고, 그 가운데 다수는 VUS만 지니고 있었음 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a>.</p>
+        <p>남은 쪽에 변이가 없는 것이 아니라 <strong>지금 파이프라인이 보지 못하거나 해석하지 못하는 것</strong>임. 기술적으로 잡기 어려운 것은 반복 서열 확장 · 구조 변이 · 반복이 많거나 capture가 잘 안 되는 구간이고, long-read 시퀀싱은 한 사람에게서 50 bp를 넘는 구조 변이를 평균 <strong>2만 개 넘게</strong> 찾아냄. telomere-to-telomere 참조와 pangenome 참조가 이 구간을 메울 경로로 꼽힘. 해석 쪽에 남은 것은 비암호화 병원성 변이, 침투도가 낮은 allele 여럿이 겹치는 oligogenic 유전, 유전자–유전자와 유전자–환경 상호작용, 그리고 부모 기원 효과나 locus별 메틸화 변화 같은 후성유전 변화임 <a class="src" href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener">Poeschla 2026</a>.</p>
+        <p>마지막으로 참조 자료 자체가 한쪽으로 쏠려 있음. 병원성 분류 자원이 European 자료에 치우쳐 있어 비European 집단의 변이 해석이 양방향으로 흔들림 — 특정 집단에서 실제로 원인인 변이가 해당 집단의 참조 자료와 검정력이 부족해 의미 불확실에 머무는 한편, 참조 자료가 부족한 집단에서 과잉 해석되는 변이도 생김. 빈도 · 기능 · 분리분석을 함께 쓰는 <strong>ancestry를 고려한 (재)분류</strong>가 남은 과제로 제시되어 있음 <a class="src" href="https://doi.org/10.1016/s1474-4422(26)00198-5" target="_blank" rel="noopener">Lange 2026</a>.</p>
+        <p>방향을 뒤집는 접근도 자리를 잡는 중임. 표현형에서 유전자로 가는 대신 대규모 시퀀싱 자료에서 변이를 먼저 찾고 그 보유자의 표현형을 보는 쪽인데, 이 설계가 표현형의 범위 자체를 넓혀 놓고 있음 — 어떻게 작동하는지는 <a href="../05-function/forward-reverse.html">표현형에서 유전자로, 유전자에서 표현형으로 어떻게 가나?</a>에 있음.</p>
+
+        <!-- ───────── 7. 흔한 오해 ───────── -->
+        <h2 id="read">흔한 오해<small>Common misreadings</small></h2>
+        <div class="fixlist">
+          <div class="fix"><code>깔때기를 끝까지 걸면 원인 변이 하나가 남음 ✗</code><p class="why">Kabuki syndrome 10명에서는 열 명 모두가 공유하는 유전자가 0개였고, 답은 일곱 명에서 나온 <em>KMT2D</em>였음(HMG 17.4)</p></div>
+          <div class="fix"><code>데이터베이스에 없으면 희귀한 변이 ✗</code><p class="why">Schinzel–Giedion 분석에서 통과한 12개 중 10개는 당시 dbSNP에 등록되지 않았을 뿐인 흔한 SNP였음(HMG 17.4)</p></div>
+          <div class="fix"><code>예측 점수가 양성이면 후보에서 빼도 됨 ✗</code><p class="why">PolyPhen이 <em>DHODH</em> <em>p.G202A</em>를 양성으로 잘못 분류해 Miller syndrome의 열성 가설이 깨진 것처럼 보였음(HMG 17.4)</p></div>
+          <div class="fix"><code>보존되지 않은 자리면 덜 중요함 ✗</code><p class="why">보상된 병원성 치환 때문에 사람에서 병을 일으키는 아미노산이 다른 종의 정상형일 수 있고, 사람 치환의 최소 3%가 그 상태임(HMG 17.5)</p></div>
+          <div class="fix"><code>환자 한 명의 질환은 하나 ✗</code><p class="why">Miller syndrome 남매 둘은 <em>DNAH5</em> 양쪽 allele에도 변이를 지녀 primary ciliary dyskinesia를 함께 지니고 있었음(HMG 17.4)</p></div>
+          <div class="fix"><code>단백질을 끊는 변이가 있으면 원인 ✗</code><p class="why">ExAC 참여자는 평균적으로 단백질을 끊는 변이를 heterozygous 85개 · homozygous 35개 지니고 있음(HMG 20.3)</p></div>
+          <div class="fix"><code>gnomAD에 있으면 대조군이니 양성 ✗</code><p class="why">참여자가 반드시 건강한 사람은 아니며 조현병 코호트 같은 자료가 들어 있음. 중증 소아 질환만 제외되어 있음(HMG 17.5)</p></div>
+          <div class="fix"><code>genome을 읽는 이유는 비암호화 변이 ✗</code><p class="why">가장 큰 이득은 capture를 건너뛰는 것과 구조 변이이고, 비암호화 변이 대부분은 아직 해석되지 않음(HMG 20.3)</p></div>
+          <div class="fix"><code>VUS는 검사가 실패한 것 ✗</code><p class="why"><em>BRCA1</em>을 원래 자리에서 재자 VUS와 엇갈린 해석 378개 중 91.3%가 분류됨 — 측정이 없었던 것 <a class="src" href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener">Findlay 2018</a></p></div>
+        </div>
+
+        <details class="aliases-fold"><summary>별칭 · 약어</summary>
+        <p class="aliases">rare disease diagnosis · 희귀질환 진단 · gene panel · 유전자 패널 · virtual panel · clinical exome · exome capture · exon capture · whole-exome sequencing · WES · whole-genome sequencing · WGS · variant filtering · 변이 필터링 · locus heterogeneity · 유전적 이질성 · compensated pathogenic deviation · 보상된 병원성 치환 · ACMG · variant of uncertain significance · VUS · 의미 불확실 변이 · incidental finding · 우연한 발견 · ClinVar · gnomAD · ExAC · PolyPhen · SIFT · CADD · VEP · array-CGH · MLPA · ACCE · analytical validity · clinical validity · clinical utility · 100,000 Genomes Project · KMT2D · DHODH · SETBP1 · DNAH5</p>
+        </details>
+      </article>
+
+      <aside class="aside">
+        <div class="aside-box"><h3>Related</h3><div class="related-list">
+          <a href="../01-genome/variant-effect.html">변이는 단백질을 어떻게 바꾸나? →</a>
+          <a href="../05-function/perturbation.html">변이를 직접 바꿔서 확인하려면? →</a>
+          <a href="./penetrance.html">같은 변이가 왜 다른 결과를 내나? →</a>
+          <a href="./inheritance.html">유전 양식은 가계도에서 어떻게 보이나? →</a>
+          <a href="../01-genome/sequencing.html">사람의 유전체를 어떻게 읽나? →</a>
+        </div></div>
+        <div class="aside-box paper-box"><h3>Key papers</h3><div class="paper-list">
+          <a href="https://doi.org/10.1038/s41586-018-0461-z" target="_blank" rel="noopener noreferrer">Findlay 2018, Nature — 원래 자리에서 재서 VUS를 분류한 비율 ↗</a>
+          <a href="https://doi.org/10.1038/s41576-026-00947-1" target="_blank" rel="noopener noreferrer">Poeschla 2026, Nat Rev Genet — 진단이 안 되는 가계의 비율과 기술적 사각지대 ↗</a>
+          <a href="https://doi.org/10.1146/annurev-genet-030123-084224" target="_blank" rel="noopener noreferrer">Zhang 2023, Annu Rev Genet — 단일유전자 자가염증질환의 확정 진단율 ↗</a>
+          <a href="https://doi.org/10.1016/s1474-4422(26)00198-5" target="_blank" rel="noopener noreferrer">Lange 2026, Lancet Neurol — 참조 자료의 쏠림이 변이 해석에 하는 일 ↗</a>
+          <a href="https://doi.org/10.1038/s41576-023-00656-z" target="_blank" rel="noopener noreferrer">Akalu 2024, Nat Rev Genet — 유전형에서 표현형으로 가는 진단 ↗</a>
+        </div></div>
+      </aside>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <div class="container"><span><!--GEN:STAMP-->Updated 2026-11-26<!--/GEN:STAMP--></span></div>
+  </footer>
+  <script src="../../../assets/js/article-page.js"></script>
+  <script src="../glossary.js"></script>
+  <script src="../genetics-fig.js"></script>
+</body>
+</html>
